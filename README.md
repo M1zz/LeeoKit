@@ -36,6 +36,41 @@ let thumb = uiImage.constrainedSize(maxDimension: 1024)
 HapticManager.shared.success()
 ```
 
+## 앱 계약 (LeeoAppSpec)
+
+앱이 공통으로 가져야 하는 항목을 컴파일 타임에 강제하는 프로토콜.
+LeeoKit의 기능 컴포넌트는 이 준수 없이는 생성할 수 없다 — 항목을 빼먹으면 빌드가 실패한다.
+
+```swift
+enum MyAppSpec: LeeoAppSpec {
+    static let appName = "MyApp"
+    static let developerEmail = "leeo@kakao.com"
+    static let feedback = LeeoFeedbackConfig(containerIdentifier: "iCloud.com.Ysoup.MyApp")
+}
+```
+
+## 피드백 시스템
+
+사용자 피드백을 CloudKit Public DB로 접수하고, 개발자는 앱 내 인박스에서 확인·완료 처리한다.
+클립키보드에서 검증된 구현을 그대로 이식 (제출 + 이메일 폴백 + 인박스 + 푸시 알림 구독).
+
+```swift
+// 설정 화면 List 안에 — 이 한 줄이면 끝
+Section("지원") {
+    LeeoSupportSection<MyAppSpec>(showInbox: masterModeEnabled)
+}
+
+// 또는 개별 화면 사용
+LeeoFeedbackView<MyAppSpec>()          // 제출 화면
+LeeoFeedbackInboxView<MyAppSpec>()     // 개발자 인박스
+```
+
+- 앱 테마 주입(선택): `.leeoStyle(LeeoStyle(accent: ..., bg: ...))` — 없으면 시스템 색
+- 다국어(ko/en)는 패키지에 내장
+- CloudKit Dashboard 설정(앱별 1회)은 `LeeoFeedbackService.swift` 상단 주석 참고
+- 여러 앱이 컨테이너 하나를 공유하는 피드백 허브는 `LeeoFeedbackConfig(appIdentifier:)`로 지원
+  (Production 스키마에 appId 필드 배포 필요)
+
 ## 개발
 
 ```bash

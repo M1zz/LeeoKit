@@ -3,6 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "LeeoKit",
+    defaultLocalization: "ko",
     platforms: [
         .iOS(.v17),
         .macOS(.v14),
@@ -12,7 +13,10 @@ let package = Package(
         .library(name: "LeeoKit", targets: ["LeeoKit"])
     ],
     targets: [
-        .target(name: "LeeoKit"),
+        .target(
+            name: "LeeoKit",
+            resources: [.process("Resources")]
+        ),
         .testTarget(name: "LeeoKitTests", dependencies: ["LeeoKit"])
     ]
 )
