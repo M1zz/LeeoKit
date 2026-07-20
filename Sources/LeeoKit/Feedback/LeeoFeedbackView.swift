@@ -76,6 +76,8 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                 }
                 .padding(20)
             }
+            // 입력창 밖 스크롤 시 키보드 내리기 (달빛 v4.0.5 UX 수정에서 이식)
+            .scrollDismissesKeyboard(.interactively)
             .background(theme.bg.ignoresSafeArea())
             .navigationTitle(L("피드백 보내기", comment: "Feedback view title"))
             #if os(iOS)
