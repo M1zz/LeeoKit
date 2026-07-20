@@ -195,6 +195,26 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
                 .foregroundColor(record.isDone ? theme.textMuted : theme.text)
                 .textSelection(.enabled)
 
+            // 회신 정보 (사용자가 남긴 경우에만)
+            if !record.contactName.isEmpty || !record.contactEmail.isEmpty {
+                HStack(spacing: 8) {
+                    Image(systemName: "person.crop.circle")
+                        .font(.caption)
+                        .foregroundColor(theme.accent)
+                        .accessibilityHidden(true)
+                    if !record.contactName.isEmpty {
+                        Text(record.contactName)
+                            .font(.caption)
+                            .foregroundColor(theme.textMuted)
+                    }
+                    if !record.contactEmail.isEmpty,
+                       let url = URL(string: "mailto:\(record.contactEmail)") {
+                        Link(record.contactEmail, destination: url)
+                            .font(.caption)
+                    }
+                }
+            }
+
             Text(record.deviceInfo.isEmpty
                  ? "\(record.appVersion) · \(record.platform) · \(record.locale)"
                  : "\(record.deviceInfo) · \(record.locale)")

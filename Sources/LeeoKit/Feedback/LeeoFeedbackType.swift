@@ -8,26 +8,33 @@
 import Foundation
 
 public enum LeeoFeedbackType: String, CaseIterable, Sendable {
-    case bug      = "bug"
-    case feature  = "feature"
-    case question = "question"
-    case other    = "other"
+    case bug         = "bug"
+    case feature     = "feature"
+    case question    = "question"
+    case improvement = "improvement"
+    case other       = "other"
+
+    /// 앱이 유형 목록을 지정하지 않았을 때의 기본 구성.
+    /// 앱별로 다른 구성이 필요하면 LeeoFeedbackView(types:)로 지정한다.
+    public static let defaultTypes: [LeeoFeedbackType] = [.bug, .feature, .question, .other]
 
     public var localizedName: String {
         switch self {
-        case .bug:      return L("버그 신고", comment: "Feedback type: bug report")
-        case .feature:  return L("기능 제안", comment: "Feedback type: feature request")
-        case .question: return L("사용 방법 문의", comment: "Feedback type: usage question")
-        case .other:    return L("기타", comment: "Feedback type: other")
+        case .bug:         return L("버그 신고", comment: "Feedback type: bug report")
+        case .feature:     return L("기능 제안", comment: "Feedback type: feature request")
+        case .question:    return L("사용 방법 문의", comment: "Feedback type: usage question")
+        case .improvement: return L("개선 제안", comment: "Feedback type: improvement suggestion")
+        case .other:       return L("기타", comment: "Feedback type: other")
         }
     }
 
     public var icon: String {
         switch self {
-        case .bug:      return "ladybug"
-        case .feature:  return "lightbulb"
-        case .question: return "questionmark.circle"
-        case .other:    return "ellipsis.bubble"
+        case .bug:         return "ladybug"
+        case .feature:     return "lightbulb"
+        case .question:    return "questionmark.circle"
+        case .improvement: return "wand.and.stars"
+        case .other:       return "ellipsis.bubble"
         }
     }
 

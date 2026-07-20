@@ -59,6 +59,9 @@ public final class LeeoFeedbackService {
         public let appVersion: String
         public let locale: String
         public let platform: String
+        /// 회신용 이름/이메일 (사용자가 남긴 경우에만 값 존재)
+        public let contactName: String
+        public let contactEmail: String
         /// 공용 허브 컨테이너에서 앱 구분값 (단일 앱 스키마에서는 nil)
         public let appId: String?
         public let createdAt: Date?
@@ -75,6 +78,8 @@ public final class LeeoFeedbackService {
             self.appVersion = record["appVersion"] as? String ?? ""
             self.locale = record["locale"] as? String ?? ""
             self.platform = record["platform"] as? String ?? ""
+            self.contactName = record["contactName"] as? String ?? ""
+            self.contactEmail = record["contactEmail"] as? String ?? ""
             self.appId = record["appId"] as? String
             self.createdAt = record.creationDate
             self.status = record["status"] as? String
@@ -195,13 +200,18 @@ public final class LeeoFeedbackService {
     // MARK: - 제출
 
     /// 제출용 CKRecord 구성 — 필드 키는 Dashboard 스키마·FeedbackRecord 읽기 모델과 1:1 대응.
+    /// contactName/contactEmail은 비어 있으면 필드 자체를 쓰지 않는다 —
+    /// 해당 필드가 없는 기존 Production 스키마(클립키보드 등)와의 호환 유지.
     public static func makeRecord(
-        config: LeeoFeedbackConfig, type: String, message: String, deviceInfo: String
+        config: LeeoFeedbackConfig, type: String, message: String, deviceInfo: String,
+        contactName: String = "", contactEmail: String = ""
     ) -> CKRecord {
         let record = CKRecord(recordType: config.recordType)
         record["type"] = type
         record["message"] = message
         record["deviceInfo"] = deviceInfo
+        if !contactName.isEmpty { record["contactName"] = contactName }
+        if !contactEmail.isEmpty { record["contactEmail"] = contactEmail }
         record["appVersion"] = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "-"
         record["locale"] = Locale.current.identifier
         record["platform"] = {
@@ -218,7 +228,10 @@ public final class LeeoFeedbackService {
     }
 
     /// 피드백을 Public DB에 제출한다. 실패 시 throw — 호출부에서 이메일 폴백 처리.
-    public func submit(type: String, message: String, deviceInfo: String) async throws {
+    public func submit(
+        type: String, message: String, deviceInfo: String,
+        contactName: String = "", contactEmail: String = ""
+    ) async throws {
         let container = CKContainer(identifier: config.containerIdentifier)
 
         // Public DB 쓰기도 iCloud 로그인이 필요하다.
@@ -228,7 +241,9 @@ public final class LeeoFeedbackService {
             throw FeedbackError.iCloudUnavailable
         }
 
-        let record = Self.makeRecord(config: config, type: type, message: message, deviceInfo: deviceInfo)
+        let record = Self.makeRecord(
+            config: config, type: type, message: message, deviceInfo: deviceInfo,
+            contactName: contactName, contactEmail: contactEmail)
 
         do {
             _ = try await container.publicCloudDatabase.save(record)

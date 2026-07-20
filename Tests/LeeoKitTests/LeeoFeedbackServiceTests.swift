@@ -86,6 +86,23 @@ final class LeeoFeedbackServiceTests: XCTestCase {
 
         // appIdentifier가 nil이면 appId 필드도 없어야 한다 (기존 스키마 호환)
         XCTAssertNil(record["appId"])
+
+        // 연락처가 비어 있으면 필드 자체가 없어야 한다 (필드 없는 기존 Production 스키마 호환)
+        XCTAssertNil(record["contactName"])
+        XCTAssertNil(record["contactEmail"])
+    }
+
+    func testMakeRecordWritesContactFieldsOnlyWhenNonEmpty() {
+        let record = LeeoFeedbackService.makeRecord(
+            config: config, type: "bug", message: "m", deviceInfo: "d",
+            contactName: "리오", contactEmail: "leeo@kakao.com")
+
+        XCTAssertEqual(record["contactName"] as? String, "리오")
+        XCTAssertEqual(record["contactEmail"] as? String, "leeo@kakao.com")
+
+        let read = LeeoFeedbackService.FeedbackRecord(record)
+        XCTAssertEqual(read.contactName, "리오")
+        XCTAssertEqual(read.contactEmail, "leeo@kakao.com")
     }
 
     func testMakeRecordWritesAppIdOnlyForHubConfig() {
@@ -177,8 +194,14 @@ final class LeeoFeedbackServiceTests: XCTestCase {
         XCTAssertEqual(LeeoFeedbackType.bug.rawValue, "bug")
         XCTAssertEqual(LeeoFeedbackType.feature.rawValue, "feature")
         XCTAssertEqual(LeeoFeedbackType.question.rawValue, "question")
+        XCTAssertEqual(LeeoFeedbackType.improvement.rawValue, "improvement")
         XCTAssertEqual(LeeoFeedbackType.other.rawValue, "other")
-        XCTAssertEqual(LeeoFeedbackType.allCases.count, 4)
+        XCTAssertEqual(LeeoFeedbackType.allCases.count, 5)
+    }
+
+    func testDefaultTypesKeepLegacyComposition() {
+        // 유형 목록을 지정하지 않은 기존 앱(클립키보드)의 UI 구성 유지
+        XCTAssertEqual(LeeoFeedbackType.defaultTypes, [.bug, .feature, .question, .other])
     }
 
     func testFeedbackTypeRoundTripsThroughStoredRawValue() {

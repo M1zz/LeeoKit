@@ -16,18 +16,40 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
     @Environment(\.leeoStyle) private var theme
     @Environment(\.dismiss) private var dismiss
 
-    @State private var selectedType: LeeoFeedbackType = .bug
+    @State private var selectedType: LeeoFeedbackType
     @State private var message: String = ""
+    @State private var contactName: String
+    @State private var contactEmail: String
     @State private var showMailFallback = false
     @State private var didSend = false
     @State private var isSending = false
+
+    private let types: [LeeoFeedbackType]
+    private let showsContactFields: Bool
 
     /// 앱 자체 메일 컴포저가 있으면 주입 — (제목, 본문)을 받아 처리했으면 true.
     /// nil이거나 false를 반환하면 mailto: 링크로 폴백한다.
     private let emailFallback: ((String, String) -> Bool)?
 
-    public init(emailFallback: ((String, String) -> Bool)? = nil) {
+    /// - Parameters:
+    ///   - types: 유형 선택지 구성 (앱별로 다르면 지정, 기본 bug/feature/question/other)
+    ///   - initialType: 진입 시 미리 선택할 유형 (넛지에서 특정 유형으로 들어오는 경우 등)
+    ///   - showsContactFields: 회신용 이름/이메일 입력 섹션 노출 여부
+    ///   - initialContactName/Email: 회신 정보 초기값 (앱의 프로필 저장소에서 프리필)
+    public init(
+        types: [LeeoFeedbackType] = LeeoFeedbackType.defaultTypes,
+        initialType: LeeoFeedbackType? = nil,
+        showsContactFields: Bool = false,
+        initialContactName: String = "",
+        initialContactEmail: String = "",
+        emailFallback: ((String, String) -> Bool)? = nil
+    ) {
+        self.types = types
+        self.showsContactFields = showsContactFields
         self.emailFallback = emailFallback
+        self._selectedType = State(initialValue: initialType ?? types.first ?? .bug)
+        self._contactName = State(initialValue: initialContactName)
+        self._contactEmail = State(initialValue: initialContactEmail)
     }
 
     private let deviceInfo: String = {
@@ -47,6 +69,7 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                 VStack(alignment: .leading, spacing: 20) {
                     typeSelector
                     messageEditor
+                    if showsContactFields { contactFields }
                     deviceInfoCard
                     sendButton
                     Spacer(minLength: 40)
@@ -88,7 +111,7 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                 .foregroundColor(theme.text)
 
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
-                ForEach(LeeoFeedbackType.allCases, id: \.self) { type in
+                ForEach(types, id: \.self) { type in
                     typeChip(type)
                 }
             }
@@ -162,8 +185,43 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
             return L("어떤 기능이 있으면 좋겠나요?\n예) 단축어를 폴더로 묶는 기능이 필요해요.", comment: "Feature request placeholder")
         case .question:
             return L("어떤 부분이 궁금하신가요?\n예) 클립보드 히스토리는 어떻게 보나요?", comment: "Usage question placeholder")
+        case .improvement:
+            return L("어떤 점이 불편하셨나요? 어떻게 바뀌면 더 좋을지 알려주세요.", comment: "Improvement suggestion placeholder")
         case .other:
             return L("자유롭게 의견을 남겨주세요.", comment: "Other feedback placeholder")
+        }
+    }
+
+    // MARK: - Contact Fields (선택)
+
+    private var contactFields: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(L("회신 정보", comment: "Contact info section label"))
+                .font(.body)
+                .fontWeight(.semibold)
+                .foregroundColor(theme.text)
+
+            VStack(spacing: 8) {
+                TextField(L("이름 (선택)", comment: "Contact name placeholder"), text: $contactName)
+                    .textContentType(.name)
+                    .padding(12)
+                    .background(theme.surfaceAlt)
+                    .cornerRadius(theme.radiusSm)
+                TextField(L("회신 받을 이메일 (선택)", comment: "Contact email placeholder"), text: $contactEmail)
+                    .textContentType(.emailAddress)
+                    .autocorrectionDisabled()
+                    #if os(iOS)
+                    .keyboardType(.emailAddress)
+                    .textInputAutocapitalization(.never)
+                    #endif
+                    .padding(12)
+                    .background(theme.surfaceAlt)
+                    .cornerRadius(theme.radiusSm)
+            }
+
+            Text(L("남겨주시면 답변을 드릴 수 있어요.", comment: "Contact info footer"))
+                .font(.caption)
+                .foregroundColor(theme.textMuted)
         }
     }
 
@@ -247,7 +305,9 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                 try await LeeoFeedbackService(spec: Spec.self).submit(
                     type: selectedType.rawValue,
                     message: message,
-                    deviceInfo: deviceInfo
+                    deviceInfo: deviceInfo,
+                    contactName: contactName.trimmingCharacters(in: .whitespacesAndNewlines),
+                    contactEmail: contactEmail.trimmingCharacters(in: .whitespacesAndNewlines)
                 )
                 await MainActor.run {
                     isSending = false
@@ -279,7 +339,12 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
     }
 
     private func buildEmailBody() -> String {
-        "\(message)\n\n---\n\(deviceInfo)"
+        var lines = [message, "", "---", deviceInfo]
+        let name = contactName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let email = contactEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !name.isEmpty { lines.append("\(L("이름", comment: "Contact name label")): \(name)") }
+        if !email.isEmpty { lines.append("\(L("이메일", comment: "Contact email label")): \(email)") }
+        return lines.joined(separator: "\n")
     }
 
     private func openMailtoURL() {

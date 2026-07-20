@@ -14,6 +14,12 @@
             "state": "translated",
             "value": "Tambahkan ID ini ke peran admin di CloudKit Dashboard untuk membaca semua masukan di aplikasi. Ketuk untuk menyalin."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CloudKit DashboardのadminロールにこのIDを追加すると、アプリで全てのフィードバックを読めます。タップでコピーされます。"
+          }
         }
       }
     },
@@ -29,6 +35,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Mail is not configured. Would you like to open another mail app via mailto: link?"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メールアプリが設定されていません。mailto:リンクで別のメールアプリを開きますか？"
           }
         }
       }
@@ -46,6 +58,28 @@
             "state": "translated",
             "value": "Anda belum masuk ke iCloud"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloudにサインインしていません"
+          }
+        }
+      }
+    },
+    "개선 제안": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Improvement Suggestion"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "改善のご提案"
+          }
         }
       }
     },
@@ -61,6 +95,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Jika ini kesalahan izin, pastikan peran admin di CloudKit Dashboard memiliki izin baca dan menyertakan ID pengguna Anda di bawah."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "権限エラーの場合は、CloudKit Dashboardでadminロールにread権限と以下のユーザーIDが登録されているか確認してください。"
           }
         }
       }
@@ -78,6 +118,12 @@
             "state": "needs_review",
             "value": "Feature Request"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "機能のご提案"
+          }
         }
       }
     },
@@ -93,6 +139,28 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Other"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "その他"
+          }
+        }
+      }
+    },
+    "남겨주시면 답변을 드릴 수 있어요.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If you leave your contact, we can get back to you."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ご記入いただければ返信いたします。"
           }
         }
       }
@@ -110,6 +178,12 @@
             "state": "translated",
             "value": "ID Pengguna Saya"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自分のユーザーID"
+          }
         }
       }
     },
@@ -125,6 +199,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Konten"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "内容"
           }
         }
       }
@@ -142,6 +222,12 @@
             "state": "needs_review",
             "value": "Enter content to enable"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "内容を入力すると有効になります"
+          }
         }
       }
     },
@@ -157,6 +243,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Open with Another Mail App"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "別のメールアプリで開く"
           }
         }
       }
@@ -174,6 +266,12 @@
             "state": "translated",
             "value": "Tutup"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "閉じる"
+          }
         }
       }
     },
@@ -189,6 +287,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Cannot Open Mail App"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メールアプリを開けません"
           }
         }
       }
@@ -206,6 +310,12 @@
             "state": "needs_review",
             "value": "Type"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お問い合わせの種類"
+          }
         }
       }
     },
@@ -221,6 +331,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Bug Report"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "バグ報告"
           }
         }
       }
@@ -238,6 +354,12 @@
             "state": "needs_review",
             "value": "Send"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "送信"
+          }
         }
       }
     },
@@ -253,6 +375,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mengirim…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "送信中…"
           }
         }
       }
@@ -270,6 +398,12 @@
             "state": "translated",
             "value": "Memuat…"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "読み込み中…"
+          }
         }
       }
     },
@@ -285,6 +419,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Feel free to describe your issue or suggestion"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不便な点やご提案を自由にお書きください"
           }
         }
       }
@@ -302,6 +442,12 @@
             "state": "needs_review",
             "value": "Usage Question"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使い方のお問い合わせ"
+          }
         }
       }
     },
@@ -317,6 +463,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Seorang pengguna meninggalkan masukan. Periksa di kotak masuk Anda."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ユーザーからご意見が届きました。受信箱でご確認ください。"
           }
         }
       }
@@ -334,6 +486,12 @@
             "state": "translated",
             "value": "Hapus"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "削除"
+          }
         }
       }
     },
@@ -349,6 +507,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Notifikasi Masukan Baru"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新着フィードバック通知"
           }
         }
       }
@@ -366,6 +530,12 @@
             "state": "translated",
             "value": "Masukan baru tiba 📬"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新しいフィードバックが届きました 📬"
+          }
         }
       }
     },
@@ -381,6 +551,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dapatkan notifikasi push di perangkat ini saat masukan baru tiba. Berfungsi setelah izin baca peran admin CloudKit disiapkan."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新しいフィードバックが届くとこのデバイスにプッシュ通知が届きます。CloudKit adminロールのread権限設定後に動作します。"
           }
         }
       }
@@ -398,6 +574,12 @@
             "state": "translated",
             "value": "Akan dihapus permanen dari server dan tidak dapat dibatalkan."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サーバーから完全に削除され、元に戻せません。"
+          }
         }
       }
     },
@@ -414,6 +596,12 @@
             "state": "translated",
             "value": "Belum ada masukan yang diterima"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "まだ受信したフィードバックはありません"
+          }
         }
       }
     },
@@ -424,6 +612,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Notifications are turned off. Please allow them in iOS Settings > %@ > Notifications."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通知がオフになっています。iOSの設定 > %@ > 通知で許可してください。"
           }
         }
       }
@@ -441,6 +635,12 @@
             "state": "translated",
             "value": "What feature would you like?\nExample: I need a way to group snippets into folders."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "どんな機能があるといいですか？\n例）ショートカットをフォルダにまとめる機能が欲しいです。"
+          }
         }
       }
     },
@@ -456,6 +656,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "What would you like to know?\nExample: How do I view my clipboard history?"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "どの部分が気になりますか？\n例）クリップボード履歴はどこで見られますか？"
           }
         }
       }
@@ -473,6 +679,28 @@
             "state": "translated",
             "value": "Please describe when the issue occurs.\nExample: The app closes when saving a snippet."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "どのような状況で問題が発生したか教えてください。\n例）ショートカットを保存するとアプリが終了します。"
+          }
+        }
+      }
+    },
+    "어떤 점이 불편하셨나요? 어떻게 바뀌면 더 좋을지 알려주세요.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What was inconvenient? Let us know how it could be better."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "どんな点が不便でしたか？どう変わればより良いか教えてください。"
+          }
         }
       }
     },
@@ -488,6 +716,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Selesai"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完了"
           }
         }
       }
@@ -505,6 +739,12 @@
             "state": "translated",
             "value": "Tandai Selesai"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完了にする"
+          }
         }
       }
     },
@@ -520,6 +760,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Batalkan Selesai"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完了を解除"
           }
         }
       }
@@ -537,6 +783,12 @@
             "state": "translated",
             "value": "Geser ke kiri untuk menghapus, geser ke kanan untuk menandai selesai. Selesai/hapus memerlukan izin tulis pada peran admin CloudKit."
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "左にスワイプで削除、右にスワイプで完了。完了/削除はCloudKit adminロールの書き込み権限が必要です。"
+          }
         }
       }
     },
@@ -552,6 +804,60 @@
           "stringUnit": {
             "state": "translated",
             "value": "Hapus masukan ini?"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このフィードバックを削除しますか？"
+          }
+        }
+      }
+    },
+    "이름": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "名前"
+          }
+        }
+      }
+    },
+    "이름 (선택)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name (optional)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "お名前（任意）"
+          }
+        }
+      }
+    },
+    "이메일": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Email"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メール"
           }
         }
       }
@@ -569,6 +875,12 @@
             "state": "needs_review",
             "value": "Auto-attached Info"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動添付情報"
+          }
         }
       }
     },
@@ -584,6 +896,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Leave any feedback you'd like."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自由にご意見をお寄せください。"
           }
         }
       }
@@ -601,6 +919,12 @@
             "state": "translated",
             "value": "Gagal mengirim"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "送信に失敗しました"
+          }
         }
       }
     },
@@ -616,6 +940,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "%d diterima · %d selesai"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "受信 %d件 · 完了 %d件"
           }
         }
       }
@@ -633,6 +963,12 @@
             "state": "translated",
             "value": "Masukan Diterima"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "受信したフィードバック"
+          }
         }
       }
     },
@@ -648,6 +984,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Masukan Diterima (Pengembang)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "受信したフィードバック（開発者）"
           }
         }
       }
@@ -665,6 +1007,12 @@
             "state": "translated",
             "value": "Tidak dapat menyelesaikan tindakan: %@"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "処理できませんでした: %@"
+          }
         }
       }
     },
@@ -680,6 +1028,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Batal"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンセル"
           }
         }
       }
@@ -697,6 +1051,12 @@
             "state": "translated",
             "value": "Ketuk untuk mengirim langsung ke pengembang"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "タップすると開発者に直接送信されます"
+          }
         }
       }
     },
@@ -712,6 +1072,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Feedback Content"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フィードバックの内容"
           }
         }
       }
@@ -729,6 +1095,12 @@
             "state": "needs_review",
             "value": "Send Feedback"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フィードバックを送る"
+          }
         }
       }
     },
@@ -745,6 +1117,12 @@
             "state": "needs_review",
             "value": "Feedback sent!\nThank you for your valuable input 🙏"
           }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フィードバックを送信しました！\n貴重なご意見ありがとうございます 🙏"
+          }
         }
       }
     },
@@ -760,6 +1138,44 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tidak dapat memuat masukan: %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フィードバックを読み込めませんでした: %@"
+          }
+        }
+      }
+    },
+    "회신 받을 이메일 (선택)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Email for reply (optional)"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "返信用メールアドレス（任意）"
+          }
+        }
+      }
+    },
+    "회신 정보": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contact for Reply"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "返信先情報"
           }
         }
       }
