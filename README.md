@@ -66,7 +66,9 @@ LeeoFeedbackInboxView<MyAppSpec>()     // 개발자 인박스
 ```
 
 - 앱 테마 주입(선택): `.leeoStyle(LeeoStyle(accent: ..., bg: ...))` — 없으면 시스템 색
-- 다국어(ko/en)는 패키지에 내장
+- 유형 구성/초기값(선택): `LeeoFeedbackView<Spec>(types: [.improvement, .bug, .feature, .other], initialType: .improvement)`
+- 회신 연락처(선택): `showsContactFields: true, initialContactName:, initialContactEmail:` — 비어 있으면 서버 필드 미기록
+- 다국어(ko/en/ja)는 패키지에 내장
 - CloudKit Dashboard 설정(앱별 1회)은 `LeeoFeedbackService.swift` 상단 주석 참고
 - 여러 앱이 컨테이너 하나를 공유하는 피드백 허브는 `LeeoFeedbackConfig(appIdentifier:)`로 지원
   (Production 스키마에 appId 필드 배포 필요)
