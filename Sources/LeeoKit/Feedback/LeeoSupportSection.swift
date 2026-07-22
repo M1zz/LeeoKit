@@ -11,6 +11,9 @@
 //
 
 import SwiftUI
+#if canImport(StoreKit)
+import StoreKit
+#endif
 
 public struct LeeoSupportSection<Spec: LeeoAppSpec>: View {
     private let showInbox: Bool
@@ -24,10 +27,23 @@ public struct LeeoSupportSection<Spec: LeeoAppSpec>: View {
         self.emailFallback = emailFallback
     }
 
+    @Environment(\.requestReview) private var requestReview
+
     public var body: some View {
         NavigationLink(destination: LeeoFeedbackView<Spec>(emailFallback: emailFallback)) {
             Label(L("피드백 보내기", comment: "Feedback view title"),
                   systemImage: "envelope.badge")
+        }
+        // 리뷰 남기기 — appStoreID 가 있으면 작성 페이지로, 없으면 시스템 평점 프롬프트
+        Button {
+            if let id = Spec.appStoreID {
+                LeeoReviewRequest.openWriteReview(appStoreID: id)
+            } else {
+                LeeoReviewRequest.markRequested()
+                requestReview()
+            }
+        } label: {
+            Label(L("리뷰 남기기", comment: "Write a review entry"), systemImage: "star.bubble")
         }
         if showInbox {
             NavigationLink(destination: LeeoFeedbackInboxView<Spec>()) {

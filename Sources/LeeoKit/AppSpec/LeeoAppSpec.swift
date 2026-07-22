@@ -25,6 +25,15 @@ public protocol LeeoAppSpec {
 
     /// 피드백 시스템 설정 (CloudKit 컨테이너 등)
     static var feedback: LeeoFeedbackConfig { get }
+
+    /// App Store 숫자 ID — "리뷰 남기기" 딥링크에 사용. 미지정(nil)이면 시스템 리뷰 요청만 쓴다.
+    /// (시스템 평점 프롬프트 `requestReview` 는 ID 없이도 동작한다.)
+    static var appStoreID: String? { get }
+}
+
+public extension LeeoAppSpec {
+    /// 기본값 — 앱이 지정하지 않으면 딥링크형 "리뷰 남기기"는 숨기고 시스템 요청만 사용.
+    static var appStoreID: String? { nil }
 }
 
 /// 피드백 시스템의 CloudKit 연결 설정.

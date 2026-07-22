@@ -73,6 +73,31 @@ LeeoFeedbackInboxView<MyAppSpec>()     // 개발자 인박스
 - 여러 앱이 컨테이너 하나를 공유하는 피드백 허브는 `LeeoFeedbackConfig(appIdentifier:)`로 지원
   (Production 스키마에 appId 필드 배포 필요)
 
+## 리뷰 요청 · 만족도 프롬프트
+
+좋은 인상일 때만 App Store 리뷰를 유도하고, 불편한 사용자는 별점 대신 피드백으로 흡수한다.
+
+```swift
+// 1) 앱 시작 시 사용량 기록 (1회)
+LeeoEngagement.shared.registerLaunch()
+
+// 2) 저장/완료/공유 등 "만족했을 법한" 행동 뒤에
+LeeoEngagement.shared.registerSignificantEvent()
+
+// 3) 루트 화면에 한 줄 — 조건이 맞으면 스스로 "즐겁게 쓰고 계신가요?"를 물어본다
+//    만족 → 시스템 리뷰 요청 / 아쉬움 → 피드백 화면
+RootView()
+    .leeoSatisfactionCheck(MyAppSpec.self)
+```
+
+- 노출 조건은 `LeeoReviewPolicy` (기본: 실행 3회·설치 2일·긍정행동 1회↑, 버전당 1회, 120일 쿨다운)
+- 직접 제어: `.leeoReviewGate(MyAppSpec.self, isPresented: $flag)`
+- 시스템 프롬프트만 바로: `LeeoReviewRequest.requestIfAppropriate { requestReview() }`
+  (SwiftUI `@Environment(\.requestReview)`)
+- 설정의 `LeeoSupportSection`에는 **"리뷰 남기기"** 행이 자동 포함된다
+  (`MyAppSpec.appStoreID` 지정 시 작성 페이지 딥링크, 없으면 시스템 평점 프롬프트)
+- App Store ID(선택): `LeeoAppSpec`에 `static let appStoreID: String? = "1234567890"`
+
 ## 개발
 
 ```bash
