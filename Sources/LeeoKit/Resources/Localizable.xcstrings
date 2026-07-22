@@ -8,6 +8,24 @@
             "state": "new",
             "value": "%1$@ · %2$@"
           }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@"
+          }
         }
       }
     },
@@ -17,6 +35,46 @@
           "stringUnit": {
             "state": "new",
             "value": "%1$@ · %2$@ · %3$@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@ · %3$@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@ · %3$@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@ · %3$@"
+          }
+        }
+      }
+    },
+    "%@를 즐겁게 쓰고 계신가요?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Are you enjoying %@?"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apakah Anda menikmati %@?"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@を楽しくお使いいただけていますか？"
           }
         }
       }
@@ -169,6 +227,50 @@
         }
       }
     },
+    "나중에": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Later"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nanti"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "あとで"
+          }
+        }
+      }
+    },
+    "날짜 없음": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No date"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tanpa tanggal"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "日付なし"
+          }
+        }
+      }
+    },
     "남겨주시면 답변을 드릴 수 있어요.": {
       "localizations": {
         "en": {
@@ -251,6 +353,28 @@
         }
       }
     },
+    "네, 좋아요 👍": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yes, I like it 👍"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ya, saya suka 👍"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "はい、気に入っています 👍"
+          }
+        }
+      }
+    },
     "다른 메일 앱으로 열기": {
       "localizations": {
         "en": {
@@ -295,6 +419,28 @@
         }
       }
     },
+    "리뷰 남기기": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Write a Review"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tulis Ulasan"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "レビューを書く"
+          }
+        }
+      }
+    },
     "메일 앱을 열 수 없습니다": {
       "localizations": {
         "en": {
@@ -335,6 +481,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "お問い合わせの種類"
+          }
+        }
+      }
+    },
+    "받은 피드백 %d건": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d feedback received"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d masukan diterima"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "受信したフィードバック %d件"
           }
         }
       }
@@ -603,6 +771,28 @@
         }
       }
     },
+    "아쉬운 점이 있어요": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Something could be better"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ada yang bisa diperbaiki"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "気になる点があります"
+          }
+        }
+      }
+    },
     "아직 접수된 피드백이 없어요": {
       "localizations": {
         "en": {
@@ -724,6 +914,28 @@
         }
       }
     },
+    "오른쪽으로 밀면 완료 표시(이 기기에만 저장돼요), 왼쪽으로 밀면 삭제. 삭제는 CloudKit admin 역할에 쓰기 권한이 있어야 반영돼요.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Swipe right to mark as done (saved on this device only), swipe left to delete. Delete requires write permission on the CloudKit admin role."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geser ke kanan untuk menandai selesai (disimpan hanya di perangkat ini), geser ke kiri untuk menghapus. Menghapus memerlukan izin tulis pada peran admin CloudKit."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "右にスワイプで完了（この端末にのみ保存）、左にスワイプで削除。削除はCloudKit adminロールの書き込み権限が必要です。"
+          }
+        }
+      }
+    },
     "완료": {
       "localizations": {
         "en": {
@@ -786,6 +998,94 @@
           "stringUnit": {
             "state": "translated",
             "value": "完了を解除"
+          }
+        }
+      }
+    },
+    "완료된 피드백": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Completed Feedback"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Masukan Selesai"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完了したフィードバック"
+          }
+        }
+      }
+    },
+    "완료된 피드백 %d건 모아보기": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View %d completed"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lihat %d selesai"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完了した %d件を表示"
+          }
+        }
+      }
+    },
+    "완료된 피드백이 없어요": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No completed feedback"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Belum ada masukan selesai"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完了したフィードバックはありません"
+          }
+        }
+      }
+    },
+    "의견을 들려주시면 더 좋은 앱으로 만들 수 있어요.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your feedback helps us make the app better."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Masukan Anda membantu kami menyempurnakan aplikasi."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ご意見をいただけると、より良いアプリにできます。"
           }
         }
       }
@@ -927,6 +1227,7 @@
       }
     },
     "접수 %d건 · 완료 %d건": {
+      "extractionState": "stale",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -1146,6 +1447,28 @@
         }
       }
     },
+    "활성 피드백이 없어요. 모두 완료했어요 🎉": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No active feedback. All done 🎉"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tidak ada masukan aktif. Semua selesai 🎉"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アクティブなフィードバックはありません。すべて完了 🎉"
+          }
+        }
+      }
+    },
     "회신 받을 이메일 (선택)": {
       "localizations": {
         "en": {
@@ -1178,288 +1501,24 @@
         }
       }
     },
-    "오른쪽으로 밀면 완료 표시(이 기기에만 저장돼요), 왼쪽으로 밀면 삭제. 삭제는 CloudKit admin 역할에 쓰기 권한이 있어야 반영돼요.": {
+    "버전": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Swipe right to mark as done (saved on this device only), swipe left to delete. Delete requires write permission on the CloudKit admin role."
-          }
-        },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Geser ke kanan untuk menandai selesai (disimpan hanya di perangkat ini), geser ke kiri untuk menghapus. Menghapus memerlukan izin tulis pada peran admin CloudKit."
+            "value": "Version"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "右にスワイプで完了（この端末にのみ保存）、左にスワイプで削除。削除はCloudKit adminロールの書き込み権限が必要です。"
-          }
-        }
-      }
-    },
-    "%@를 즐겁게 쓰고 계신가요?": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Are you enjoying %@?"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%@を楽しくお使いいただけていますか？"
+            "value": "バージョン"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apakah Anda menikmati %@?"
-          }
-        }
-      }
-    },
-    "의견을 들려주시면 더 좋은 앱으로 만들 수 있어요.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your feedback helps us make the app better."
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ご意見をいただけると、より良いアプリにできます。"
-          }
-        },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Masukan Anda membantu kami menyempurnakan aplikasi."
-          }
-        }
-      }
-    },
-    "네, 좋아요 👍": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yes, I like it 👍"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "はい、気に入っています 👍"
-          }
-        },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ya, saya suka 👍"
-          }
-        }
-      }
-    },
-    "아쉬운 점이 있어요": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Something could be better"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "気になる点があります"
-          }
-        },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ada yang bisa diperbaiki"
-          }
-        }
-      }
-    },
-    "나중에": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Later"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "あとで"
-          }
-        },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nanti"
-          }
-        }
-      }
-    },
-    "리뷰 남기기": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Write a Review"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "レビューを書く"
-          }
-        },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tulis Ulasan"
-          }
-        }
-      }
-    },
-    "날짜 없음": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No date"
-          }
-        },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tanpa tanggal"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "日付なし"
-          }
-        }
-      }
-    },
-    "활성 피드백이 없어요. 모두 완료했어요 🎉": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No active feedback. All done 🎉"
-          }
-        },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tidak ada masukan aktif. Semua selesai 🎉"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "アクティブなフィードバックはありません。すべて完了 🎉"
-          }
-        }
-      }
-    },
-    "받은 피드백 %d건": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%d feedback received"
-          }
-        },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%d masukan diterima"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "受信したフィードバック %d件"
-          }
-        }
-      }
-    },
-    "완료된 피드백 %d건 모아보기": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "View %d completed"
-          }
-        },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lihat %d selesai"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "完了した %d件を表示"
-          }
-        }
-      }
-    },
-    "완료된 피드백이 없어요": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No completed feedback"
-          }
-        },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Belum ada masukan selesai"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "完了したフィードバックはありません"
-          }
-        }
-      }
-    },
-    "완료된 피드백": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Completed Feedback"
-          }
-        },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Masukan Selesai"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "完了したフィードバック"
+            "value": "Versi"
           }
         }
       }

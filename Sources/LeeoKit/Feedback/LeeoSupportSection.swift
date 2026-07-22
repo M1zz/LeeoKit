@@ -28,6 +28,14 @@ public struct LeeoSupportSection<Spec: LeeoAppSpec>: View {
     }
 
     @Environment(\.requestReview) private var requestReview
+    /// 개발자 모드 — 앱 버전을 7번 탭하면 토글. 켜지면 접수된 피드백(인박스)이 보인다.
+    @AppStorage("dev.masterMode") private var devMode = false
+
+    private var appVersion: String {
+        let v = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?"
+        let b = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "?"
+        return "\(v) (\(b))"
+    }
 
     public var body: some View {
         NavigationLink(destination: LeeoFeedbackView<Spec>(emailFallback: emailFallback)) {
@@ -45,11 +53,19 @@ public struct LeeoSupportSection<Spec: LeeoAppSpec>: View {
         } label: {
             Label(L("리뷰 남기기", comment: "Write a review entry"), systemImage: "star.bubble")
         }
-        if showInbox {
+        if showInbox || devMode {
             NavigationLink(destination: LeeoFeedbackInboxView<Spec>()) {
                 Label(L("접수된 피드백 (개발자)", comment: "Feedback inbox settings entry (developer)"),
                       systemImage: "tray.full")
             }
         }
+        // 앱 버전 — 7번 탭하면 개발자 모드(인박스) 토글. 모든 앱에 공통 노출.
+        HStack {
+            Label(L("버전", comment: "App version row"), systemImage: "info.circle")
+            Spacer()
+            Text(appVersion).foregroundStyle(.secondary)
+        }
+        .contentShape(Rectangle())
+        .onTapGesture(count: 7) { devMode.toggle() }
     }
 }
