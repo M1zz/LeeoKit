@@ -103,7 +103,7 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
                     Text(String(format: L("접수 %d건 · 완료 %d건", comment: "Feedback inbox count header (total, done)"),
                                 records.count, records.filter(\.isDone).count))
                 } footer: {
-                    Text(L("왼쪽으로 밀면 삭제, 오른쪽으로 밀면 완료 표시. 완료/삭제는 CloudKit admin 역할에 쓰기 권한이 있어야 반영돼요.", comment: "Feedback inbox actions footer"))
+                    Text(L("오른쪽으로 밀면 완료 표시(이 기기에만 저장돼요), 왼쪽으로 밀면 삭제. 삭제는 CloudKit admin 역할에 쓰기 권한이 있어야 반영돼요.", comment: "Feedback inbox actions footer"))
                         .font(.body)
                 }
             }
@@ -270,18 +270,13 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
         }
     }
 
-    /// 완료/미완료 토글 — 서버 반영 후 로컬 목록 갱신. 실패 시 에러 표시(권한 안내 포함).
+    /// 완료/미완료 토글 — 이 기기 로컬에 저장(서버 쓰기 없음).
+    /// 공개 DB에선 남이 만든 레코드를 수정할 수 없어(WRITE not permitted) 완료 상태는 로컬로 관리한다.
     private func toggleDone(_ record: LeeoFeedbackService.FeedbackRecord) {
-        Task {
-            do {
-                try await service.setDone(recordName: record.id, done: !record.isDone)
-                if let index = records.firstIndex(where: { $0.id == record.id }) {
-                    records[index].status = record.isDone ? nil : "done"
-                }
-            } catch {
-                print("❌ [LeeoFeedbackInboxView.toggleDone] \(error)")
-                errorMessage = String(format: L("처리하지 못했어요: %@", comment: "Feedback inbox action error"), error.localizedDescription)
-            }
+        let newDone = !record.isDone
+        service.setDoneLocal(recordName: record.id, done: newDone)
+        if let index = records.firstIndex(where: { $0.id == record.id }) {
+            records[index].status = newDone ? "done" : nil
         }
     }
 

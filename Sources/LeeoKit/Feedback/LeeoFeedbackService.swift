@@ -111,8 +111,51 @@ public final class LeeoFeedbackService {
         if let appId = config.appIdentifier {
             records = records.filter { $0.appId == appId }
         }
-        print("📬 [LeeoFeedbackService.fetchAll] 피드백 \(records.count)건 로드")
+        // 완료 상태는 로컬(이 기기)에서 관리한다 — 공개 DB에선 남이 만든 레코드를 수정할 수
+        // 없어(WRITE not permitted) 서버 status 쓰기가 실패하기 때문. 서버에 남아있을 수 있는
+        // 레거시 done(과거 쓰기 성공분)은 로컬로 한 번 흡수한 뒤, 이후엔 로컬을 단일 소스로 쓴다.
+        var doneIDs = loadLocalDoneIDs()
+        let legacyServerDone = records.filter { $0.status == "done" }.map(\.id)
+        if !legacyServerDone.isEmpty {
+            doneIDs.formUnion(legacyServerDone)
+            saveLocalDoneIDs(doneIDs)
+        }
+        records = records.map { rec in
+            var r = rec
+            r.status = doneIDs.contains(r.id) ? "done" : nil
+            return r
+        }
+        print("📬 [LeeoFeedbackService.fetchAll] 피드백 \(records.count)건 로드 (완료 \(doneIDs.count)건, 로컬)")
         return records
+    }
+
+    // MARK: - 완료 상태 로컬 저장
+
+    /// 완료 표시를 저장할 UserDefaults 키 — 컨테이너·레코드타입·앱ID로 네임스페이스(허브 공유 대비).
+    private var localDoneKey: String {
+        "leeo.feedback.done.\(config.containerIdentifier).\(config.recordType).\(config.appIdentifier ?? "-")"
+    }
+
+    private func loadLocalDoneIDs() -> Set<String> {
+        Set(UserDefaults.standard.stringArray(forKey: localDoneKey) ?? [])
+    }
+
+    private func saveLocalDoneIDs(_ ids: Set<String>) {
+        UserDefaults.standard.set(Array(ids), forKey: localDoneKey)
+    }
+
+    /// 특정 피드백의 완료 여부(로컬 기준).
+    public func isDoneLocally(recordName: String) -> Bool {
+        loadLocalDoneIDs().contains(recordName)
+    }
+
+    /// 완료/미완료 표시를 이 기기 로컬에 저장한다(서버 쓰기 없음 → 권한 오류 없음).
+    /// 개발자 한 명만 인박스를 쓰므로 로컬 저장으로 충분하다.
+    public func setDoneLocal(recordName: String, done: Bool) {
+        var ids = loadLocalDoneIDs()
+        if done { ids.insert(recordName) } else { ids.remove(recordName) }
+        saveLocalDoneIDs(ids)
+        print("✅ [LeeoFeedbackService.setDoneLocal] \(recordName) → done=\(done) (로컬)")
     }
 
     /// 현재 iCloud 계정의 CloudKit userRecordName — Dashboard admin 역할 등록에 필요.
