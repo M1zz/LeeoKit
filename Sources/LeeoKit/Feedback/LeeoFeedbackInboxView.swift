@@ -28,6 +28,49 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
 
     public init() {}
 
+    // MARK: - 활성/완료 분리 (완료 상태는 로컬 저장, isDone으로 판별)
+
+    /// 활성(미완료) 피드백 — 메인 목록에 노출.
+    private var activeRecords: [LeeoFeedbackService.FeedbackRecord] {
+        records.filter { !$0.isDone }
+    }
+    /// 완료된 피드백 — 메인 목록에서 감추고 "완료된 피드백" 월별 모아보기로 이동.
+    private var doneRecords: [LeeoFeedbackService.FeedbackRecord] {
+        records.filter { $0.isDone }
+    }
+
+    private struct MonthGroup: Identifiable {
+        let id: String
+        let title: String
+        let records: [LeeoFeedbackService.FeedbackRecord]
+    }
+
+    /// 완료된 피드백을 접수(생성)일 기준으로 월별 그룹핑 (최신 월 먼저).
+    /// records가 이미 최신순이라 각 그룹 내부도 최신순이 유지된다.
+    private var doneMonthGroups: [MonthGroup] {
+        let cal = Calendar.current
+        let grouped = Dictionary(grouping: doneRecords) { rec -> String in
+            guard let date = rec.createdAt else { return "0000-00" }
+            let c = cal.dateComponents([.year, .month], from: date)
+            return String(format: "%04d-%02d", c.year ?? 0, c.month ?? 0)
+        }
+        let monthFormatter = DateFormatter()
+        monthFormatter.locale = .current
+        monthFormatter.setLocalizedDateFormatFromTemplate("yyyyMMMM")
+        return grouped.keys.sorted(by: >).map { key in
+            let recs = grouped[key] ?? []
+            let title: String
+            if key == "0000-00" {
+                title = L("날짜 없음", comment: "Feedback completed: no date group")
+            } else if let date = recs.first?.createdAt {
+                title = monthFormatter.string(from: date)
+            } else {
+                title = key
+            }
+            return MonthGroup(id: key, title: title, records: recs)
+        }
+    }
+
     private var dateFormatter: DateFormatter {
         let f = DateFormatter()
         f.locale = .current
@@ -77,34 +120,53 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
                         .foregroundColor(theme.textMuted)
                 }
             } else {
+                // 활성(미완료) 피드백만 노출 — 완료 표시하면 아래 "완료된 피드백" 월별 모아보기로 이동.
                 Section {
-                    ForEach(records) { record in
-                        recordRow(record)
-                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                                Button {
-                                    toggleDone(record)
-                                } label: {
-                                    Label(record.isDone
-                                          ? L("완료 해제", comment: "Feedback inbox: unmark done")
-                                          : L("완료 표시", comment: "Feedback inbox: mark done"),
-                                          systemImage: record.isDone ? "arrow.uturn.backward" : "checkmark")
+                    if activeRecords.isEmpty {
+                        Text(L("활성 피드백이 없어요. 모두 완료했어요 🎉", comment: "Feedback inbox: no active feedback"))
+                            .font(.body)
+                            .foregroundColor(theme.textMuted)
+                    } else {
+                        ForEach(activeRecords) { record in
+                            recordRow(record)
+                                .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                    Button {
+                                        toggleDone(record)
+                                    } label: {
+                                        Label(L("완료 표시", comment: "Feedback inbox: mark done"),
+                                              systemImage: "checkmark")
+                                    }
+                                    .tint(.green)
                                 }
-                                .tint(record.isDone ? .orange : .green)
-                            }
-                            .swipeActions(edge: .trailing) {
-                                Button(role: .destructive) {
-                                    pendingDelete = record
-                                } label: {
-                                    Label(L("삭제", comment: "Delete"), systemImage: "trash")
+                                .swipeActions(edge: .trailing) {
+                                    Button(role: .destructive) {
+                                        pendingDelete = record
+                                    } label: {
+                                        Label(L("삭제", comment: "Delete"), systemImage: "trash")
+                                    }
                                 }
-                            }
+                        }
                     }
                 } header: {
-                    Text(String(format: L("접수 %d건 · 완료 %d건", comment: "Feedback inbox count header (total, done)"),
-                                records.count, records.filter(\.isDone).count))
+                    Text(String(format: L("받은 피드백 %d건", comment: "Feedback inbox active count header"),
+                                activeRecords.count))
                 } footer: {
                     Text(L("오른쪽으로 밀면 완료 표시(이 기기에만 저장돼요), 왼쪽으로 밀면 삭제. 삭제는 CloudKit admin 역할에 쓰기 권한이 있어야 반영돼요.", comment: "Feedback inbox actions footer"))
                         .font(.body)
+                }
+
+                // 완료된 피드백 — 월별 섹션으로 모아보기 (완료 개수가 있을 때만)
+                if !doneRecords.isEmpty {
+                    Section {
+                        NavigationLink {
+                            completedListView
+                        } label: {
+                            Label(String(format: L("완료된 피드백 %d건 모아보기", comment: "Feedback inbox: completed archive entry"),
+                                         doneRecords.count),
+                                  systemImage: "checkmark.circle.fill")
+                                .foregroundColor(.green)
+                        }
+                    }
                 }
             }
 
@@ -290,6 +352,68 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
                 print("❌ [LeeoFeedbackInboxView.deleteRecord] \(error)")
                 errorMessage = String(format: L("처리하지 못했어요: %@", comment: "Feedback inbox action error"), error.localizedDescription)
             }
+        }
+    }
+
+    // MARK: - 완료된 피드백 모아보기 (월별 섹션)
+
+    /// 완료 처리된 피드백을 "yyyy년 M월" 섹션으로 묶어 보여준다.
+    /// 왼쪽으로 밀어 완료 해제(활성 목록으로 복귀), 오른쪽으로 밀어 삭제.
+    @ViewBuilder
+    private var completedListView: some View {
+        List {
+            if doneMonthGroups.isEmpty {
+                Section {
+                    Text(L("완료된 피드백이 없어요", comment: "Feedback completed archive empty"))
+                        .font(.body)
+                        .foregroundColor(theme.textMuted)
+                }
+            } else {
+                ForEach(doneMonthGroups) { group in
+                    Section {
+                        ForEach(group.records) { record in
+                            recordRow(record)
+                                .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                    Button {
+                                        toggleDone(record)
+                                    } label: {
+                                        Label(L("완료 해제", comment: "Feedback inbox: unmark done"),
+                                              systemImage: "arrow.uturn.backward")
+                                    }
+                                    .tint(.orange)
+                                }
+                                .swipeActions(edge: .trailing) {
+                                    Button(role: .destructive) {
+                                        pendingDelete = record
+                                    } label: {
+                                        Label(L("삭제", comment: "Delete"), systemImage: "trash")
+                                    }
+                                }
+                        }
+                    } header: {
+                        Text(group.title)
+                    }
+                }
+            }
+        }
+        .navigationTitle(L("완료된 피드백", comment: "Feedback completed archive title"))
+        #if os(iOS)
+        .navigationBarTitleDisplayMode(.inline)
+        #endif
+        .alert(
+            L("이 피드백을 삭제할까요?", comment: "Feedback inbox delete confirm title"),
+            isPresented: Binding(
+                get: { pendingDelete != nil },
+                set: { if !$0 { pendingDelete = nil } }
+            )
+        ) {
+            Button(L("삭제", comment: "Delete"), role: .destructive) {
+                if let record = pendingDelete { deleteRecord(record) }
+                pendingDelete = nil
+            }
+            Button(L("취소", comment: "Cancel"), role: .cancel) { pendingDelete = nil }
+        } message: {
+            Text(L("서버에서 완전히 삭제되며 되돌릴 수 없어요.", comment: "Feedback inbox delete confirm message"))
         }
     }
 }
