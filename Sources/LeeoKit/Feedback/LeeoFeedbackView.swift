@@ -21,6 +21,7 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
     @State private var contactName: String
     @State private var contactEmail: String
     @State private var showMailFallback = false
+    @State private var showMailComposer = false
     @State private var didSend = false
     @State private var isSending = false
 
@@ -100,6 +101,21 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
             .overlay(alignment: .center) {
                 if didSend { sentConfirmation }
             }
+            #if canImport(MessageUI)
+            // CloudKit 실패 시 LeeoKit 내장 네이티브 메일 컴포저 (앱별 EmailController 불필요).
+            .sheet(isPresented: $showMailComposer) {
+                LeeoMailComposer(
+                    recipient: Spec.developerEmail,
+                    subject: selectedType.emailSubject(appName: Spec.appName),
+                    body: buildEmailBody(),
+                    onFinish: {
+                        showMailComposer = false
+                        handleSent()
+                    }
+                )
+                .ignoresSafeArea()
+            }
+            #endif
         }
     }
 
@@ -328,10 +344,19 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
     private func sendViaEmail() {
         let subject = selectedType.emailSubject(appName: Spec.appName)
         let body = buildEmailBody()
+        // 1) 앱이 직접 주입한 폴백이 있으면 우선 사용(기존 계약 유지).
         if let emailFallback, emailFallback(subject, body) {
             handleSent()
             return
         }
+        // 2) LeeoKit 내장 네이티브 메일 컴포저 (iOS/macCatalyst) — 앱별 EmailController 불필요.
+        #if canImport(MessageUI)
+        if LeeoMailComposer.canSendMail {
+            showMailComposer = true
+            return
+        }
+        #endif
+        // 3) mailto: 링크 폴백.
         #if os(iOS)
         showMailFallback = true
         #else

@@ -64,6 +64,8 @@ public final class LeeoFeedbackService {
         public let contactEmail: String
         /// 공용 허브 컨테이너에서 앱 구분값 (단일 앱 스키마에서는 nil)
         public let appId: String?
+        /// 공용 허브에서 사람이 읽는 앱 이름 (단일 앱 스키마에서는 빈 문자열)
+        public let appName: String
         public let createdAt: Date?
         /// 처리 상태 — "done"이면 완료 (개발자가 인박스에서 표시)
         public var status: String?
@@ -81,6 +83,7 @@ public final class LeeoFeedbackService {
             self.contactName = record["contactName"] as? String ?? ""
             self.contactEmail = record["contactEmail"] as? String ?? ""
             self.appId = record["appId"] as? String
+            self.appName = record["appName"] as? String ?? ""
             self.createdAt = record.creationDate
             self.status = record["status"] as? String
         }
@@ -247,7 +250,7 @@ public final class LeeoFeedbackService {
     /// 해당 필드가 없는 기존 Production 스키마(클립키보드 등)와의 호환 유지.
     public static func makeRecord(
         config: LeeoFeedbackConfig, type: String, message: String, deviceInfo: String,
-        contactName: String = "", contactEmail: String = ""
+        contactName: String = "", contactEmail: String = "", appName: String = ""
     ) -> CKRecord {
         let record = CKRecord(recordType: config.recordType)
         record["type"] = type
@@ -264,8 +267,12 @@ public final class LeeoFeedbackService {
             return "iOS"
             #endif
         }()
+        // 허브 모드(appIdentifier 지정)에서만 앱 구분값을 쓴다 — 기계용 appId와
+        // 사람이 읽는 appName을 함께 남겨, 공용 허브 뷰어가 프로젝트별로 묶을 수 있게 한다.
+        // 단일 앱 스키마(appIdentifier == nil)에는 두 필드 모두 쓰지 않아 100% 호환.
         if let appId = config.appIdentifier {
             record["appId"] = appId
+            if !appName.isEmpty { record["appName"] = appName }
         }
         return record
     }
@@ -286,7 +293,7 @@ public final class LeeoFeedbackService {
 
         let record = Self.makeRecord(
             config: config, type: type, message: message, deviceInfo: deviceInfo,
-            contactName: contactName, contactEmail: contactEmail)
+            contactName: contactName, contactEmail: contactEmail, appName: appName)
 
         do {
             _ = try await container.publicCloudDatabase.save(record)
