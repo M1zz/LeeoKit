@@ -47,6 +47,7 @@ public struct LeeoUsageStatsView<Spec: LeeoAppSpec>: View {
                 }
             } else {
                 summarySection
+                if !metricAverages.isEmpty { metricsSection }
                 versionSection
                 platformSection
             }
@@ -87,6 +88,14 @@ public struct LeeoUsageStatsView<Spec: LeeoAppSpec>: View {
         }
     }
 
+    private var metricsSection: some View {
+        Section(L("앱 지표 (설치당 평균)", comment: "App metrics average")) {
+            ForEach(metricAverages, id: \.key) { item in
+                statRow(item.key, Self.format(item.value))
+            }
+        }
+    }
+
     private func statRow(_ label: String, _ value: String) -> some View {
         HStack {
             Text(label).foregroundStyle(theme.text)
@@ -109,6 +118,25 @@ public struct LeeoUsageStatsView<Spec: LeeoAppSpec>: View {
         Dictionary(grouping: snaps) { $0[keyPath: keyPath] }
             .map { Bucket(key: $0.key, count: $0.value.count) }
             .sorted { $0.count > $1.count }
+    }
+
+    private struct MetricAvg: Identifiable { let key: String; let value: Double; var id: String { key } }
+    /// 각 지표 키를, 그 값을 가진 설치들의 평균으로 집계.
+    private var metricAverages: [MetricAvg] {
+        var sums: [String: (total: Double, n: Int)] = [:]
+        for snap in snaps {
+            for (k, v) in snap.metrics {
+                let cur = sums[k] ?? (0, 0)
+                sums[k] = (cur.total + v, cur.n + 1)
+            }
+        }
+        return sums
+            .map { MetricAvg(key: $0.key, value: $0.value.n > 0 ? $0.value.total / Double($0.value.n) : 0) }
+            .sorted { $0.key < $1.key }
+    }
+
+    private static func format(_ v: Double) -> String {
+        v == v.rounded() ? String(Int(v)) : String(format: "%.1f", v)
     }
 
     // MARK: - Load

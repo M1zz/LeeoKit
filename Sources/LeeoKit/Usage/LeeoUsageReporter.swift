@@ -86,7 +86,13 @@ public final class LeeoUsageReporter: @unchecked Sendable {
     /// LeeoEngagement 수치를 읽어 설치당 스냅샷을 갱신한다.
     /// - 같은 설치는 recordName(익명 UUID)이 같아 항상 덮어써진다 → 고유 사용자 수 집계에 적합.
     /// - `minInterval` 이내에 이미 보냈으면 건너뛴다(과도한 쓰기 방지).
-    public func report(engagement: LeeoEngagement = .shared, minInterval: TimeInterval = 12 * 3600) async {
+    /// - Parameter metrics: 앱별 대략 지표(예: ["presentations": 12, "slides": 84]).
+    ///   JSON 한 필드(`metrics`)로 저장돼 스키마 필드를 늘리지 않는다. 통계 뷰어가 평균을 낸다.
+    public func report(
+        engagement: LeeoEngagement = .shared,
+        metrics: [String: Double] = [:],
+        minInterval: TimeInterval = 12 * 3600
+    ) async {
         let now = Date()
         if let last = UserDefaults.standard.object(forKey: lastSnapshotKey) as? Date,
            now.timeIntervalSince(last) < minInterval { return }
@@ -107,6 +113,9 @@ public final class LeeoUsageReporter: @unchecked Sendable {
         record["daysSinceInstall"] = engagement.daysSinceInstall
         record["installDate"] = engagement.installDate
         record["lastActiveAt"] = now
+        if !metrics.isEmpty, let json = Self.encodeMetrics(metrics) {
+            record["metrics"] = json
+        }
 
         do {
             _ = try await database.save(record)
@@ -118,8 +127,18 @@ public final class LeeoUsageReporter: @unchecked Sendable {
     }
 
     /// 앱 시작 시 부담 없이 호출하는 fire-and-forget 래퍼.
-    public func reportInBackground(engagement: LeeoEngagement = .shared) {
-        Task { await report(engagement: engagement) }
+    public func reportInBackground(engagement: LeeoEngagement = .shared, metrics: [String: Double] = [:]) {
+        Task { await report(engagement: engagement, metrics: metrics) }
+    }
+
+    private static func encodeMetrics(_ metrics: [String: Double]) -> String? {
+        guard let data = try? JSONEncoder().encode(metrics) else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+    private static func decodeMetrics(_ json: String?) -> [String: Double] {
+        guard let json, let data = json.data(using: .utf8),
+              let m = try? JSONDecoder().decode([String: Double].self, from: data) else { return [:] }
+        return m
     }
 
     // MARK: - 주요 이벤트 스트림
@@ -161,6 +180,8 @@ public final class LeeoUsageReporter: @unchecked Sendable {
         public let daysSinceInstall: Int
         public let installDate: Date?
         public let lastActiveAt: Date?
+        /// 앱별 대략 지표(발표 수·장표 수 등). 없으면 빈 딕셔너리.
+        public let metrics: [String: Double]
 
         init(_ r: CKRecord) {
             id = r.recordID.recordName
@@ -174,6 +195,7 @@ public final class LeeoUsageReporter: @unchecked Sendable {
             daysSinceInstall = (r["daysSinceInstall"] as? Int) ?? 0
             installDate = r["installDate"] as? Date
             lastActiveAt = r["lastActiveAt"] as? Date
+            metrics = LeeoUsageReporter.decodeMetrics(r["metrics"] as? String)
         }
     }
 
