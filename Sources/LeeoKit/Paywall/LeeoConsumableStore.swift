@@ -44,11 +44,16 @@ public struct LeeoConsumableConfig: Sendable {
     public let cacheSuiteName: String?
     /// 신규 설치에 지급할 최초 무료 잔액 (없으면 0).
     public let initialGrant: Int
+    /// 한 앱에 서로 다른 잔액(예: 코인 원장과 별도 크레딧 원장)이 여럿일 때 구분하는 식별자.
+    /// nil이면 기본 원장. ⚠️ 잔액은 재도출 불가한 실제 값이므로, 배포 후 ledgerID 를 바꾸면 잔액이 분리된다 —
+    /// 상품 ID 로 자동 유도하지 않고 앱이 명시적으로 고정한다.
+    public let ledgerID: String?
 
-    public init(products: [LeeoConsumableProduct], cacheSuiteName: String? = nil, initialGrant: Int = 0) {
+    public init(products: [LeeoConsumableProduct], cacheSuiteName: String? = nil, initialGrant: Int = 0, ledgerID: String? = nil) {
         self.products = products
         self.cacheSuiteName = cacheSuiteName
         self.initialGrant = initialGrant
+        self.ledgerID = ledgerID
     }
 
     var productIDs: [String] { products.map(\.id) }
@@ -68,13 +73,17 @@ public final class LeeoConsumableStore: ObservableObject {
 
     public let config: LeeoConsumableConfig
     private let defaults: UserDefaults
-    private let balanceKey = "leeo.consumable.balance"
-    private let seededKey = "leeo.consumable.seeded"
+    private let balanceKey: String
+    private let seededKey: String
     private var updatesListener: Task<Void, Never>?
 
     public init(config: LeeoConsumableConfig) {
         self.config = config
         self.defaults = config.cacheSuiteName.flatMap { UserDefaults(suiteName: $0) } ?? .standard
+        // 원장 식별자로 키를 분리 — 한 앱에 원장이 여럿이어도 잔액이 섞이지 않는다. (기본 원장은 접미사 없음.)
+        let suffix = config.ledgerID.map { "." + $0 } ?? ""
+        self.balanceKey = "leeo.consumable.balance" + suffix
+        self.seededKey = "leeo.consumable.seeded" + suffix
 
         // 최초 1회 무료 지급.
         if config.initialGrant > 0, !defaults.bool(forKey: seededKey) {

@@ -83,8 +83,11 @@ public final class LeeoStore: ObservableObject {
         self.unlockOverride = unlockOverride
         self.grandfather = grandfather
         self.defaults = config.cacheSuiteName.flatMap { UserDefaults(suiteName: $0) } ?? .standard
-        self.cacheKeyOwned = "leeo.paywall.owned"
-        self.cacheKeyGrandfather = "leeo.paywall.grandfathered"
+        // 캐시 키를 상품 ID 로 네임스페이스화 — 한 앱/한 suite 에 LeeoStore 가 여러 개(구독·팩·프리미엄 등)
+        // 있어도 서로의 캐시를 덮어쓰지 않는다. (이 캐시는 StoreKit 에서 재도출 가능한 값이라 키가 바뀌어도 손실 없음.)
+        let ns = Self.namespace(for: config.productIDs)
+        self.cacheKeyOwned = "leeo.paywall.owned." + ns
+        self.cacheKeyGrandfather = "leeo.paywall.grandfathered." + ns
 
         // 네트워크 응답 전까지는 마지막으로 알던 권한으로 시작해 기능 깜빡임을 막는다.
         if let cached = defaults.array(forKey: cacheKeyOwned) as? [String] {
@@ -217,6 +220,17 @@ public final class LeeoStore: ObservableObject {
     }
 
     // MARK: - 내부
+
+    /// 상품 ID 집합에서 안정적인(실행 간 동일) 짧은 네임스페이스를 만든다 — 캐시 키 충돌 방지용.
+    /// Swift 의 Hasher 는 실행마다 시드가 달라 못 쓰므로 FNV-1a 로 직접 계산한다.
+    nonisolated private static func namespace(for ids: [String]) -> String {
+        let joined = ids.sorted().joined(separator: ",")
+        var hash: UInt64 = 1469598103934665603   // FNV-1a offset basis
+        for byte in joined.utf8 {
+            hash = (hash ^ UInt64(byte)) &* 1099511628211
+        }
+        return String(hash, radix: 36)
+    }
 
     #if canImport(StoreKit)
     /// 서명 검증을 통과한 트랜잭션만 꺼낸다 (변조/미검증은 버림).
