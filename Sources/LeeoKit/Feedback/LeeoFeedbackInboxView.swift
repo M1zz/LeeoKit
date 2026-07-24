@@ -20,7 +20,7 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
     @State private var userRecordName: String?
     @State private var didCopyId = false
     @State private var pendingDelete: LeeoFeedbackService.FeedbackRecord?
-    // 새 피드백 푸시 알림 (CKQuerySubscription — 서버 기준 상태)
+    // 새 피드백 로컬 알림 (백그라운드 새로고침 — 이 기기 기준 상태)
     @State private var notifyEnabled = false
     @State private var notifyLoaded = false
 
@@ -91,7 +91,7 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
                 }
                 .disabled(!notifyLoaded)
             } footer: {
-                Text(L("새 피드백이 접수되면 이 기기로 푸시 알림이 와요. CloudKit admin 역할의 read 권한 설정 후에 동작해요.", comment: "Feedback inbox: push notification footer"))
+                Text(L("새 피드백이 접수되면 이 기기로 로컬 알림이 와요. 실시간은 아니고, iOS 백그라운드 새로고침 주기와 앱을 열 때 확인해요. CloudKit admin 역할의 read 권한 설정 후에 동작해요.", comment: "Feedback inbox: push notification footer"))
                     .font(.body)
             }
 
@@ -304,25 +304,27 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
             userRecordName = await service.currentUserRecordName()
         }
         if !notifyLoaded {
-            notifyEnabled = await service.isNewFeedbackNotificationEnabled()
+            notifyEnabled = service.isLocalNotifyEnabled
             notifyLoaded = true
         }
         do {
             records = try await service.fetchAll()
+            // 인박스를 열어 확인했으니 현재 목록을 '봄' 처리 — 이미 본 피드백으로 다시 알림 안 오게.
+            service.markAllFeedbackSeen(records)
         } catch {
             print("❌ [LeeoFeedbackInboxView.load] \(error)")
             errorMessage = String(format: L("피드백을 불러오지 못했어요: %@", comment: "Feedback inbox load error"), error.localizedDescription)
         }
     }
 
-    /// 새 피드백 푸시 알림 켜기/끄기 — CKQuerySubscription 등록/해제.
+    /// 새 피드백 로컬 알림 켜기/끄기 — 백그라운드 새로고침 예약/취소.
     private func setNotify(_ enabled: Bool) {
         Task {
             do {
                 if enabled {
-                    try await service.enableNewFeedbackNotifications()
+                    try await service.enableLocalNewFeedbackNotifications()
                 } else {
-                    try await service.disableNewFeedbackNotifications()
+                    service.disableLocalNewFeedbackNotifications()
                 }
                 notifyEnabled = enabled
             } catch {

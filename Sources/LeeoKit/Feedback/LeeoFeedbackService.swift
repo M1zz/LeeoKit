@@ -19,6 +19,9 @@ import CloudKit
 import UIKit
 import UserNotifications
 #endif
+#if os(iOS)
+import BackgroundTasks
+#endif
 
 public final class LeeoFeedbackService {
     public let config: LeeoFeedbackConfig
@@ -184,7 +187,7 @@ public final class LeeoFeedbackService {
         print("🗑️ [LeeoFeedbackService.delete] \(recordName) 삭제")
     }
 
-    // MARK: - 새 피드백 푸시 알림 (개발자 기기 전용)
+    // MARK: - 새 피드백 알림: 오류 타입 (로컬/구독 공용)
 
     public enum NotificationError: LocalizedError {
         case permissionDenied(appName: String)
@@ -200,7 +203,15 @@ public final class LeeoFeedbackService {
         }
     }
 
+    // MARK: - (레거시) CloudKit 구독 기반 실시간 푸시
+    //
+    // ⚠️ public DB의 CKQuerySubscription은 **Production 컨테이너에서 생성이 거부**된다
+    //    ("attempting to create a subscription in a production container"). 그래서 아래
+    //    구독 방식은 개발 환경에서만 동작하며, 배포 빌드에서는 쓸 수 없다. 배포 빌드에서는
+    //    아래 "로컬 알림(백그라운드 새로고침)" 방식을 사용한다.
+
     /// 새 피드백 푸시 알림 구독 여부 (서버 기준 — 재설치해도 유지).
+    @available(*, deprecated, message: "Production public DB는 구독 생성을 거부한다. isLocalNotifyEnabled를 사용하라.")
     public func isNewFeedbackNotificationEnabled() async -> Bool {
         let db = CKContainer(identifier: config.containerIdentifier).publicCloudDatabase
         let sub = try? await db.subscription(for: config.subscriptionID)
@@ -209,6 +220,7 @@ public final class LeeoFeedbackService {
 
     /// 새 피드백 푸시 알림 켜기 — 알림 권한 요청 + APNs 등록 + CKQuerySubscription 저장.
     /// ⚠️ 구독이 발화하려면 이 계정이 피드백 레코드를 읽을 수 있어야 한다 (admin 역할 read).
+    @available(*, deprecated, message: "Production public DB는 구독 생성을 거부한다. enableLocalNewFeedbackNotifications()를 사용하라.")
     public func enableNewFeedbackNotifications() async throws {
         #if canImport(UIKit)
         let granted = try await UNUserNotificationCenter.current()
@@ -237,11 +249,157 @@ public final class LeeoFeedbackService {
     }
 
     /// 새 피드백 푸시 알림 끄기 — 구독 삭제.
+    @available(*, deprecated, message: "disableLocalNewFeedbackNotifications()를 사용하라.")
     public func disableNewFeedbackNotifications() async throws {
         let db = CKContainer(identifier: config.containerIdentifier).publicCloudDatabase
         _ = try await db.deleteSubscription(withID: config.subscriptionID)
         print("🔕 [LeeoFeedbackService.disableNewFeedbackNotifications] 구독 해제 완료")
     }
+
+    // MARK: - 새 피드백 로컬 알림 (백그라운드 새로고침 기반)
+    //
+    // 구독(CKQuerySubscription)이 Production public DB에서 막히므로, 서버 푸시 대신
+    // BGAppRefreshTask로 앱을 주기적으로 깨워 새 피드백을 조회하고, 마지막으로 본 시각
+    // 이후 새로 들어온 게 있으면 UNUserNotification(로컬 알림)으로 알린다.
+    //
+    // 실시간은 아니다 — iOS가 사용 패턴에 따라 백그라운드 실행을 스케줄한다. 앱을 열 때
+    // (포그라운드)도 checkForNewFeedbackAndNotify()를 호출해 보완할 수 있다.
+    //
+    // 호스트 앱 설정 (앱별 1회):
+    //  - Info.plist BGTaskSchedulerPermittedIdentifiers 배열에 backgroundRefreshTaskIdentifier 추가
+    //  - Background Modes 사용(Background fetch) — Info.plist UIBackgroundModes에 "fetch"
+    //  - 앱 시작 시 .backgroundTask(.appRefresh(...)) 로 핸들러 등록 후 scheduleBackgroundRefresh() 호출
+
+    /// 백그라운드 새로고침 작업 식별자 — 호스트 앱 Info.plist의
+    /// BGTaskSchedulerPermittedIdentifiers 및 .backgroundTask(.appRefresh(...)) 등록에 이 값을 쓴다.
+    public static let backgroundRefreshTaskIdentifier = "com.leeokit.feedback.refresh"
+
+    /// 로컬 알림 켜짐 여부를 저장할 UserDefaults 키.
+    private var notifyEnabledKey: String {
+        "leeo.feedback.notify.enabled.\(config.containerIdentifier).\(config.recordType).\(config.appIdentifier ?? "-")"
+    }
+
+    /// 마지막으로 확인한(=이미 알림을 보냈거나 인박스에서 본) 최신 피드백 생성 시각 저장 키.
+    private var lastSeenKey: String {
+        "leeo.feedback.notify.lastSeen.\(config.containerIdentifier).\(config.recordType).\(config.appIdentifier ?? "-")"
+    }
+
+    private func loadLastSeenDate() -> Date {
+        let t = UserDefaults.standard.double(forKey: lastSeenKey)
+        return t > 0 ? Date(timeIntervalSince1970: t) : .distantPast
+    }
+
+    private func saveLastSeenDate(_ date: Date) {
+        UserDefaults.standard.set(date.timeIntervalSince1970, forKey: lastSeenKey)
+    }
+
+    /// 새 피드백 로컬 알림 켜짐 여부 (이 기기 기준).
+    public var isLocalNotifyEnabled: Bool {
+        UserDefaults.standard.bool(forKey: notifyEnabledKey)
+    }
+
+    /// 새 피드백 로컬 알림 켜기 — 알림 권한 요청 + 기준 시각을 '지금'으로 저장 + 백그라운드 새로고침 예약.
+    /// 켠 순간 이후에 접수되는 피드백만 알림 대상이 된다(기존 밀린 피드백으로 폭탄 알림 방지).
+    public func enableLocalNewFeedbackNotifications() async throws {
+        #if canImport(UIKit)
+        let granted = try await UNUserNotificationCenter.current()
+            .requestAuthorization(options: [.alert, .sound, .badge])
+        guard granted else { throw NotificationError.permissionDenied(appName: appName) }
+        #endif
+        saveLastSeenDate(Date())
+        UserDefaults.standard.set(true, forKey: notifyEnabledKey)
+        scheduleBackgroundRefresh()
+        print("🔔 [LeeoFeedbackService] 로컬 새 피드백 알림 켜짐")
+    }
+
+    /// 새 피드백 로컬 알림 끄기 — 플래그 해제 + 예약된 백그라운드 작업 취소.
+    public func disableLocalNewFeedbackNotifications() {
+        UserDefaults.standard.set(false, forKey: notifyEnabledKey)
+        #if os(iOS)
+        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: Self.backgroundRefreshTaskIdentifier)
+        #endif
+        print("🔕 [LeeoFeedbackService] 로컬 새 피드백 알림 꺼짐")
+    }
+
+    /// 새 피드백을 조회해 마지막 확인 시각 이후 접수된 게 있으면 로컬 알림을 발송한다.
+    /// 백그라운드 작업 핸들러와 포그라운드 진입 모두에서 호출한다. 반환값은 새로 발견한 건수.
+    /// 알림이 꺼져 있으면 아무 것도 하지 않고 0을 반환한다.
+    @discardableResult
+    public func checkForNewFeedbackAndNotify() async -> Int {
+        guard isLocalNotifyEnabled else { return 0 }
+
+        let records: [FeedbackRecord]
+        do {
+            records = try await fetchAll()
+        } catch {
+            print("⚠️ [LeeoFeedbackService.checkForNewFeedbackAndNotify] 조회 실패: \(error)")
+            return 0
+        }
+
+        let lastSeen = loadLastSeenDate()
+        let fresh = records.filter { rec in
+            guard let created = rec.createdAt else { return false }
+            return created > lastSeen && !rec.isDone
+        }
+        guard !fresh.isEmpty else { return 0 }
+
+        // 기준 시각을 새로 발견한 것들 중 가장 최신으로 올려, 다음 확인 때 중복 알림을 막는다.
+        if let newest = fresh.compactMap(\.createdAt).max() {
+            saveLastSeenDate(newest)
+        }
+        #if canImport(UIKit)
+        await postLocalNotification(count: fresh.count)
+        #endif
+        print("📬 [LeeoFeedbackService.checkForNewFeedbackAndNotify] 새 피드백 \(fresh.count)건 → 로컬 알림")
+        return fresh.count
+    }
+
+    /// 현재 화면에 보이는 피드백을 모두 '확인함'으로 처리 — 인박스 진입 시 호출해
+    /// 이미 본 피드백으로 다시 알림이 오지 않게 한다.
+    public func markAllFeedbackSeen(_ records: [FeedbackRecord]) {
+        guard isLocalNotifyEnabled else { return }
+        if let newest = records.compactMap(\.createdAt).max() {
+            let current = loadLastSeenDate()
+            if newest > current { saveLastSeenDate(newest) }
+        }
+        #if canImport(UIKit)
+        Task { @MainActor in
+            UNUserNotificationCenter.current().setBadgeCount(0)
+        }
+        #endif
+    }
+
+    /// 다음 백그라운드 새로고침을 예약한다 (iOS/Catalyst). 알림이 꺼져 있으면 예약하지 않는다.
+    public func scheduleBackgroundRefresh(earliestAfter seconds: TimeInterval = 3600) {
+        guard isLocalNotifyEnabled else { return }
+        #if os(iOS)
+        let request = BGAppRefreshTaskRequest(identifier: Self.backgroundRefreshTaskIdentifier)
+        request.earliestBeginDate = Date(timeIntervalSinceNow: seconds)
+        do {
+            try BGTaskScheduler.shared.submit(request)
+            print("⏰ [LeeoFeedbackService] 백그라운드 새로고침 예약 (\(Int(seconds))s 후)")
+        } catch {
+            print("⚠️ [LeeoFeedbackService] 백그라운드 새로고침 예약 실패: \(error)")
+        }
+        #endif
+    }
+
+    #if canImport(UIKit)
+    /// 새 피드백 로컬 알림 즉시 발송.
+    private func postLocalNotification(count: Int) async {
+        let content = UNMutableNotificationContent()
+        content.title = L("새 피드백이 도착했어요 📬", comment: "New feedback push title")
+        content.body = count <= 1
+            ? L("사용자가 의견을 남겼어요. 인박스에서 확인해 보세요.", comment: "New feedback push body")
+            : String(format: L("새 피드백 %d건이 접수됐어요. 인박스에서 확인해 보세요.",
+                               comment: "New feedback push body plural"), count)
+        content.sound = .default
+        content.badge = NSNumber(value: count)
+        let request = UNNotificationRequest(
+            identifier: UUID().uuidString, content: content, trigger: nil)
+        try? await UNUserNotificationCenter.current().add(request)
+    }
+    #endif
 
     // MARK: - 제출
 
