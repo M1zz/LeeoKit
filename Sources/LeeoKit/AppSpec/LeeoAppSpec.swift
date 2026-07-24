@@ -29,11 +29,17 @@ public protocol LeeoAppSpec {
     /// App Store 숫자 ID — "리뷰 남기기" 딥링크에 사용. 미지정(nil)이면 시스템 리뷰 요청만 쓴다.
     /// (시스템 평점 프롬프트 `requestReview` 는 ID 없이도 동작한다.)
     static var appStoreID: String? { get }
+
+    /// 인앱 결제(페이월) 설정 — 판매 상품 ID 등. 미지정(nil)이면 페이월 기능을 쓰지 않는 앱.
+    static var paywall: LeeoPaywallConfig? { get }
 }
 
 public extension LeeoAppSpec {
     /// 기본값 — 앱이 지정하지 않으면 딥링크형 "리뷰 남기기"는 숨기고 시스템 요청만 사용.
     static var appStoreID: String? { nil }
+
+    /// 기본값 — 페이월을 쓰지 않는 앱은 지정하지 않아도 된다.
+    static var paywall: LeeoPaywallConfig? { nil }
 }
 
 /// 피드백 시스템의 CloudKit 연결 설정.
