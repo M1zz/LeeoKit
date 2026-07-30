@@ -36,6 +36,49 @@ let thumb = uiImage.constrainedSize(maxDimension: 1024)
 HapticManager.shared.success()
 ```
 
+## 원격 킬스위치 (LeeoRemoteFlags)
+
+심사 없이 문제 기능을 끄는 최소 장치. 피드백·통계와 **같은 CloudKit 컨테이너**를 쓰므로
+새 인프라가 필요 없다.
+
+```swift
+enum MyFlag: String, LeeoRemoteFlag, CaseIterable {
+    case syncEnabled, paywallEnabled
+}
+
+// 앱 시작 시 1회 (App Group 을 주면 키보드·위젯도 같은 값을 읽는다)
+LeeoRemoteFlags(spec: MyAppSpec.self, appGroupSuiteName: "group.com.x.y")
+    .refreshInBackground(MyFlag.self)
+
+// 쓰는 곳 — 네트워크를 타지 않고 즉시 반환
+guard LeeoRemoteFlags.isEnabled(MyFlag.syncEnabled) else { return }
+```
+
+- ⚠️ **조회 실패 = 켬.** 네트워크가 없다고 기능이 꺼지면 킬스위치가 장애 원인이 된다.
+- ⚠️ 갱신은 기본 6시간 쓰로틀 + 백그라운드. **즉시 전파되지 않는다.**
+- Dashboard: 레코드 타입 `RemoteFlags` / recordName `flags_<appIdentifier>` /
+  각 플래그 rawValue 를 **Int64**(1=켬, 0=끔). 필드를 안 만들면 켬으로 동작한다.
+
+## 크래시·행 진단 (LeeoDiagnostics)
+
+MetricKit 진단을 같은 허브에 쌓는다. 외부 SDK 0개 원칙을 유지하면서
+**키보드·위젯 익스텐션의 메모리 종료(jetsam)까지** 잡을 수 있는 게 핵심이다.
+
+```swift
+// 앱 시작 시 1회 — 구독만 하고 즉시 반환(런치 비용 없음)
+LeeoDiagnostics.shared.start(spec: MyAppSpec.self,
+                             isEnabled: { LeeoRemoteFlags.isEnabled(MyFlag.diagnostics) })
+
+// 뷰어(맥 앱 등)에서 조회
+let reports = try await LeeoDiagnosticsReader.fetch(spec: MyAppSpec.self)
+```
+
+- ⚠️ 페이로드는 iOS 가 **하루 한 번꼴로 묶어서** 준다 → 실시간 알림용이 아니다.
+- ⚠️ 시뮬레이터에선 거의 안 온다. macOS/Catalyst 는 자동으로 no-op.
+- 보내는 것: 콜스택·앱 버전·OS·기기 종류. **설치 식별자도 안 붙인다.**
+  App Privacy 는 `CrashData`(미연결·비추적)로 신고할 것.
+- Dashboard: 레코드 타입 `CrashReport` (appId·kind·detail·appVersion·osVersion·deviceType·stack)
+
 ## 앱 계약 (LeeoAppSpec)
 
 앱이 공통으로 가져야 하는 항목을 컴파일 타임에 강제하는 프로토콜.
