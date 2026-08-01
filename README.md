@@ -6,6 +6,11 @@
 > 요약: **로드맵 없는 인프라.** 작업 중인 앱이 필요로 할 때만 그 자리에서 고치고,
 > 안 쓰는 앱은 옛 버전에 핀 고정해 둔다.
 
+**목표는 이 문장이 참이 되는 것이다 — "LeeoKit을 쓰는 앱은 성숙한 서비스다."**
+그래서 LeeoKit은 컴포넌트 모음이 아니라 **계약**이다. 앱마다 매번 다시 고민하던 판단
+(페이월이 필요한가, 약관 링크는 어디에, 크래시는 누가 보나)을 타입으로 묶어두고,
+빠뜨리면 빌드가 실패하거나 프리플라이트가 잡는다.
+
 ## 설치
 
 로컬 (개발/검증):
@@ -89,8 +94,125 @@ enum MyAppSpec: LeeoAppSpec {
     static let appName = "MyApp"
     static let developerEmail = "leeo@kakao.com"
     static let feedback = LeeoFeedbackConfig(containerIdentifier: "iCloud.com.Ysoup.MyApp")
+
+    // 모든 앱의 의무 — 기본값 없음
+    static let legal = LeeoLegalConfig(
+        privacyURL: URL(string: "https://ysoup.io/myapp/privacy")!,
+        supportURL: URL(string: "https://ysoup.io/myapp/support")!)
+
+    // "이 앱에 페이월이 필요한가"의 답 — 기본값 없음
+    static let monetization = LeeoMonetization.free
 }
 ```
+
+필수 5항목(`appName`·`developerEmail`·`feedback`·`legal`·`monetization`)을 채우는 순간
+페이월 필요 여부, 복원 의무, 약관 링크 의무, 설정 화면의 정책 링크 행이 전부 따라온다.
+선택 항목은 `appStoreID`·`capabilities`·`analytics`·`paywall`.
+
+## 부트스트랩 — 계약을 실제로 켜는 한 줄
+
+계약이 잘 채워져 있어도 앱이 호출을 안 하면 아무 일도 일어나지 않는다.
+그 호출들을 한 줄로 묶는다.
+
+```swift
+@main struct MyApp: App {
+    init() { LeeoKit.bootstrap(MyAppSpec.self) }
+    // 원격 킬스위치까지: LeeoKit.bootstrap(MyAppSpec.self, flags: MyFlag.self)
+}
+```
+
+켜지는 것 — 사용량 기록(리뷰 프롬프트의 근거) · 분석 싱크 등록 · 크래시/행 진단 구독 ·
+사용현황 스냅샷 · 원격 플래그 갱신 · DEBUG 프리플라이트 감사.
+전부 실패해도 앱은 정상 동작한다(가용성 우선).
+
+## 수익모델과 게이트 (LeeoMonetization)
+
+**"페이월이 필요한가"를 앱마다 다시 판단하지 않는다.** 모델 하나를 고르면 의무가 따라오고,
+말이 안 되는 조합은 아예 만들 수 없다.
+
+```swift
+static let monetization = LeeoMonetization.freemium(
+    LeeoPurchaseConfig(
+        productIDs: ["com.Ysoup.MyApp.pro"],
+        gate: LeeoGatePolicy(freeLimits: ["memo": 10],   // 무료 10개까지
+                             proOnly: ["export"],         // 내보내기는 프로 전용
+                             warnWhenRemaining: 2,        // 2개 남으면 미리 알림
+                             trial: .days(7))))
+```
+
+| 모델 | 페이월 | 복원 | 약관 |
+|---|---|---|---|
+| `.free` | 없음 (선언 자체가 불가) | — | — |
+| `.paidUpfront` | 없음 | — | — |
+| `.freemium(_)` | 필요 | 필수 | 선택 |
+| `.freemiumSubscription(_)` | 필요 | 필수 | **타입이 강제** |
+| `.paidUpfrontSubscription(_)` | 필요 | 필수 | **타입이 강제** |
+| `.credits(_)` | 크레딧 상점 | — | — |
+
+`LeeoSubscriptionConfig.termsURL`은 옵셔널이 **아니다** — 구독을 판다고 선언하는 순간
+약관 링크 없이는 컴파일되지 않는다. 개인정보 링크는 `legal`에서 자동으로 온다.
+
+게이트 판정은 순수 함수다. 앱이 짜는 코드는 이게 전부:
+
+```swift
+switch store.gate.evaluate("memo", current: memos.count) {
+case .allowed:                 save()
+case .allowedNearLimit(let n): save(); toast("무료 \(n)개 남았어요")
+case .blocked(let reason):     showPaywall(reason)   // reason → 페이월 리드 기능
+}
+```
+
+## 프리플라이트 (LeeoPreflight)
+
+타입으로 못 막는 것을 잡는다. 부트스트랩이 DEBUG에서 자동 실행하고, 테스트에서도 쓴다.
+
+```swift
+func testSpecIsSound() {
+    XCTAssertTrue(LeeoPreflight.audit(MyAppSpec.self).isReleasable)
+}
+```
+
+잡아내는 것(일부) — 유료 상품은 파는데 무료 사용자가 페이월에 닿을 경로가 없음(`gate.noPath`) ·
+`monetization`과 직접 선언한 `paywall`의 모순 · https 아닌 정책 URL · 계정을 만드는데
+삭제 경로 없음 · CloudKit 컨테이너 접두어 오류 · 분석 싱크 없음 · 부트스트랩 미호출.
+
+## 완성도 매니페스트 (LeeoManifest)
+
+포트폴리오 완성도 체크리스트 52항목을 코드 선언으로 옮긴 것.
+지금까지 소스를 grep해서 **추정**하던 것을 앱이 직접 신고한다.
+
+```swift
+static let capabilities = LeeoCapabilities(
+    implemented: [.cloudSync, .backupExport, .darkMode, .automatedTests],
+    notApplicable: [.pushNotifications: "알림이 필요 없는 단발성 유틸리티"])
+```
+
+핵심은 **"안 한 것"과 "안 해도 되는 것"을 섞지 않는 것**이다.
+`.notApplicable`은 이유가 필수이고, 선언하지 않은 항목은 `.unknown`으로 남아
+"아직 판단하지 않았다"를 정직하게 드러낸다. 완성도 %의 분모에서도 빠진다.
+
+피드백·리뷰요청·정책 링크·결제 안정성·App Store 등록처럼 **계약만 보면 아는 항목은
+LeeoKit이 자동으로 채운다** — 앱이 적을 필요가 없다. 앱이 명시한 값이 항상 우선한다.
+
+```swift
+let manifest = LeeoManifest(spec: MyAppSpec.self)
+manifest.completeness        // 42  (판정된 항목 대비 충족률)
+manifest.unknownCount        // 18  (이 숫자가 0이 되면 점검 완료)
+try manifest.jsonString()    // 포트폴리오 탐색기가 읽는 JSON
+manifest.summaryLines        // 콘솔 요약
+```
+
+## 분석 (LeeoAnalytics)
+
+SDK를 넣지 않는다. **이벤트 규약과 발화 지점만** 공용화하고 전송은 앱이 고른다.
+
+```swift
+static let analytics: any LeeoAnalytics = LeeoUsageAnalytics(spec: MyAppSpec.self)
+// 또는 LeeoConsoleAnalytics() / LeeoNoopAnalytics()(기본) / 직접 구현
+```
+
+싱크만 꽂으면 `paywall_shown → purchase_started → purchase_completed` 퍼널이
+앱 코드 한 줄 없이 생긴다. LeeoKit 내부 컴포넌트가 스스로 발화한다.
 
 ## 피드백 시스템
 
@@ -148,16 +270,17 @@ RootView()
 백그라운드 리스너가 자동 반영한다.
 
 ```swift
-// 1) 계약에 상품 구성 (선택 항목 — 페이월 안 쓰는 앱은 생략)
+// 1) 계약에 수익모델 선언 — LeeoPaywallConfig 는 여기서 자동으로 유도된다
 enum MyAppSpec: LeeoAppSpec {
     static let appName = "MyApp"
     static let developerEmail = "leeo@kakao.com"
     static let feedback = LeeoFeedbackConfig(containerIdentifier: "iCloud.com.Ysoup.MyApp")
-    static let paywall = LeeoPaywallConfig(
-        productIDs: ["com.Ysoup.MyApp.pro.monthly", "com.Ysoup.MyApp.pro.yearly"],
-        termsURL: URL(string: "https://ysoup.io/terms"),
-        privacyURL: URL(string: "https://ysoup.io/privacy")
-    )
+    static let legal = LeeoLegalConfig(privacyURL: privacyURL, supportURL: supportURL)
+    static let monetization = LeeoMonetization.freemiumSubscription(
+        LeeoSubscriptionConfig(
+            productIDs: ["com.Ysoup.MyApp.pro.monthly", "com.Ysoup.MyApp.pro.yearly"],
+            termsURL: URL(string: "https://ysoup.io/terms")!,
+            gate: LeeoGatePolicy(proOnly: ["cloudSync"])))
 }
 
 // 2) 페이월을 시트로 — 이 한 줄. 구매/복원 성공 시 자동으로 닫힌다
@@ -176,6 +299,29 @@ WindowGroup { RootView().environmentObject(store) }
 - `entitlementIDs`로 "판매는 안 하지만 권한만 인정할" ID를 따로 지정 가능 (기본: 판매 상품 전체)
 - 다국어(ko/en/ja)는 패키지에 내장 (미번역 키는 한국어로 폴백)
 - 테스트는 Xcode의 `.storekit` Configuration 또는 샌드박스 계정으로 확인
+- `store.gate` 로 "지금 페이월을 띄워야 하나"를 판정한다 (위 [수익모델과 게이트](#수익모델과-게이트-leeomonetization))
+
+## 3.0 마이그레이션
+
+계약에 `legal`·`monetization`이 **필수**로 추가됐다. 기존 앱은 두 줄만 넣으면 된다.
+
+```swift
+// 추가
+static let legal = LeeoLegalConfig(privacyURL: ..., supportURL: ...)
+static let monetization = LeeoMonetization.free   // 또는 .paidUpfront / .freemium(...) ...
+
+// 삭제 — monetization 에서 자동으로 유도된다
+- static let paywall = LeeoPaywallConfig(productIDs: [...], termsURL: ..., privacyURL: ...)
+
+// 앱 시작 지점에 추가 (권장)
+init() { LeeoKit.bootstrap(MyAppSpec.self) }
+```
+
+`paywall`을 지우지 않고 남겨두면 그 값이 계속 우선하지만, `monetization`과 어긋나면
+프리플라이트가 `paywall.contradiction` 오류로 잡는다.
+
+운영 정책 §4에 따라 **한 번에 전 앱을 올리지 않는다.** 각 앱은 자기 버전에 핀 고정해 두고,
+그 앱을 만질 일이 생겼을 때 위 두 줄을 넣으면서 올린다.
 
 ## 개발
 

@@ -59,6 +59,18 @@ public final class LeeoStore: ObservableObject {
 
     public let config: LeeoPaywallConfig
 
+    /// 현재 권한을 반영한 게이트 판정기 — "지금 페이월을 띄워야 하나"의 답을 준다.
+    /// 정책은 계약(`LeeoMonetization`)에서 오고, 권한은 이 스토어가 안다.
+    ///
+    ///     switch store.gate.evaluate("memo", current: memos.count) {
+    ///     case .allowed:                 save()
+    ///     case .allowedNearLimit(let n): save(); toast("무료 \(n)개 남음")
+    ///     case .blocked(let reason):     showPaywall(reason)
+    ///     }
+    public var gate: LeeoGate {
+        LeeoGate(policy: config.gate, hasPro: hasPro)
+    }
+
     /// 앱이 주입하는 언락 정책. true=강제 해제(개발/맥앱), false=강제 잠금(페이월 테스트), nil=정상 판정.
     private let unlockOverride: (@MainActor () -> Bool?)?
     /// 앱이 주입하는 그랜드파더링 판정 (구매가 없을 때 1회 확인, 결과 캐시).
@@ -136,6 +148,7 @@ public final class LeeoStore: ObservableObject {
         guard purchasingProductID == nil else { return false }
         purchasingProductID = product.id
         lastError = nil
+        LeeoAnalyticsCenter.track(.purchaseStarted(productID: product.id))
         defer { purchasingProductID = nil }
         do {
             let result = try await product.purchase()
@@ -143,21 +156,26 @@ public final class LeeoStore: ObservableObject {
             case .success(let verification):
                 guard let transaction = Self.verified(verification) else {
                     lastError = L("구매를 확인하지 못했어요. 잠시 후 다시 시도해 주세요.", comment: "Paywall: unverified purchase")
+                    LeeoAnalyticsCenter.track(.purchaseFailed(productID: product.id, reason: "unverified"))
                     return false
                 }
                 await transaction.finish()
                 await refreshEntitlements()
+                if hasPro { LeeoAnalyticsCenter.track(.purchaseCompleted(productID: product.id)) }
                 return hasPro
             case .userCancelled:
+                LeeoAnalyticsCenter.track(.purchaseFailed(productID: product.id, reason: "cancelled"))
                 return false
             case .pending:
                 lastError = L("구매가 승인 대기 중이에요. 승인되면 자동으로 반영됩니다.", comment: "Paywall: pending purchase")
+                LeeoAnalyticsCenter.track(.purchaseFailed(productID: product.id, reason: "pending"))
                 return false
             @unknown default:
                 return false
             }
         } catch {
             lastError = error.localizedDescription
+            LeeoAnalyticsCenter.track(.purchaseFailed(productID: product.id, reason: "error"))
             return false
         }
         #else
@@ -191,6 +209,7 @@ public final class LeeoStore: ObservableObject {
         }
         grandfatherChecked = false   // 동기화로 영수증이 갱신됐으니 그랜드파더링도 다시 확인
         await refreshEntitlements()
+        LeeoAnalyticsCenter.track(.purchaseRestored(restored: hasPro))
         #endif
     }
 

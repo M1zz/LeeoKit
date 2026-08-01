@@ -18,12 +18,20 @@ import StoreKit
 public struct LeeoSupportSection<Spec: LeeoAppSpec>: View {
     private let showInbox: Bool
     private let emailFallback: ((String, String) -> Bool)?
+    private let showLegalLinks: Bool
 
     /// - Parameters:
     ///   - showInbox: 개발자(마스터 모드) 인박스 행 노출 여부
+    ///   - showLegalLinks: 계약(`Spec.legal`)에 선언된 개인정보·약관·삭제 링크 행 노출 여부.
+    ///     기본 true — 링크가 앱 어딘가에 반드시 있어야 하는데 매번 손으로 넣다 빠뜨리기 때문이다.
     ///   - emailFallback: 앱 자체 메일 컴포저 (LeeoFeedbackView와 동일 규약)
-    public init(showInbox: Bool = false, emailFallback: ((String, String) -> Bool)? = nil) {
+    public init(
+        showInbox: Bool = false,
+        showLegalLinks: Bool = true,
+        emailFallback: ((String, String) -> Bool)? = nil
+    ) {
         self.showInbox = showInbox
+        self.showLegalLinks = showLegalLinks
         self.emailFallback = emailFallback
     }
 
@@ -52,6 +60,14 @@ public struct LeeoSupportSection<Spec: LeeoAppSpec>: View {
             }
         } label: {
             Label(L("리뷰 남기기", comment: "Write a review entry"), systemImage: "star.bubble")
+        }
+        // 계약에 선언된 법적/지원 링크 — 앱이 따로 넣지 않아도 항상 존재한다.
+        if showLegalLinks {
+            ForEach(Spec.legal.displayLinks, id: \.url) { link in
+                Link(destination: link.url) {
+                    Label(link.title, systemImage: "arrow.up.forward.square")
+                }
+            }
         }
         if showInbox || devMode {
             NavigationLink(destination: LeeoFeedbackInboxView<Spec>()) {

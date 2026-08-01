@@ -45,14 +45,20 @@ public struct LeeoPaywallConfig: Sendable {
     /// nil이면 `.standard` 를 쓴다.
     public let cacheSuiteName: String?
 
+    /// 무료 한도·프로 전용 기능 정책 — "언제 페이월을 띄울지"의 선언.
+    /// 보통 `LeeoMonetization` 이 채워 넣는다 (`LeeoStore.gate` 로 판정에 쓰인다).
+    public let gate: LeeoGatePolicy
+
     public init(
         productIDs: [String],
         entitlementIDs: Set<String>? = nil,
         termsURL: URL? = nil,
         privacyURL: URL? = nil,
         autoLoad: Bool = true,
-        cacheSuiteName: String? = nil
+        cacheSuiteName: String? = nil,
+        gate: LeeoGatePolicy = .none
     ) {
+        self.gate = gate
         self.productIDs = productIDs
         self.entitlementIDs = entitlementIDs ?? Set(productIDs)
         self.termsURL = termsURL

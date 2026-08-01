@@ -31,6 +31,8 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
     private let features: [String]
     private let leadIcon: String
     private let onPurchased: (() -> Void)?
+    /// 어떤 계기로 페이월이 떴는지 (분석 이벤트용). 리드 기능이 있으면 그 이름.
+    private let analyticsReason: String?
 
     @StateObject private var store: LeeoStore
     @Environment(\.leeoStyle) private var theme
@@ -61,6 +63,7 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
         self.features = features
         self.leadIcon = leadFeature?.leeoIcon ?? "crown.fill"
         self.onPurchased = onPurchased
+        self.analyticsReason = leadFeature?.leeoTitle
         // config 가 없으면 빈 구성으로라도 안전하게 만든 뒤 안내 문구를 띄운다.
         self.hasConfig = config != nil
         _store = StateObject(wrappedValue: LeeoStore(config: config ?? LeeoPaywallConfig(productIDs: [])))
@@ -81,6 +84,8 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
         .background(theme.bg.ignoresSafeArea())
         .overlay(alignment: .topTrailing) { closeButton }
         .task {
+            // 노출 자체가 퍼널의 시작점 — 앱이 따로 기록할 필요 없다.
+            LeeoAnalyticsCenter.track(.paywallShown(reason: analyticsReason))
             guard hasConfig, store.config.autoLoad else { return }
             await store.loadProducts()
             selectDefault()
