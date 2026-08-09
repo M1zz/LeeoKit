@@ -153,8 +153,12 @@ public final class LeeoUsageReporter: @unchecked Sendable {
     ///   레코드의 `creationDate`는 서버가 "쓴 시각"으로 찍기 때문에, 오프라인이나
     ///   익스텐션에서 벌어진 일을 나중에 몰아 보내면 전부 보낸 날짜로 뭉쳐 버린다.
     ///   그래서 시각을 별도 필드로 함께 남기고, 집계는 이 값을 우선 본다.
-    public func logEvent(_ name: String, occurredAt: Date? = nil) async {
-        guard await iCloudReady() else { return }
+    /// - Returns: 허브에 실제로 저장됐는지. 소급 백필처럼 **보낸 뒤 원본을 지우는** 쪽은
+    ///   이 값을 봐야 한다. iCloud 미로그인이나 네트워크 실패로 못 보낸 기록을
+    ///   보냈다고 치고 지워 버리면 그 사용자의 활동은 영영 복구되지 않는다.
+    @discardableResult
+    public func logEvent(_ name: String, occurredAt: Date? = nil) async -> Bool {
+        guard await iCloudReady() else { return false }
         let record = CKRecord(recordType: Self.eventType)
         if let appId = config.appIdentifier { record["appId"] = appId }
         record["appName"] = appName
@@ -165,8 +169,10 @@ public final class LeeoUsageReporter: @unchecked Sendable {
         record["occurredAt"] = occurredAt ?? Date()
         do {
             _ = try await database.save(record)
+            return true
         } catch {
             print("⚠️ [LeeoUsageReporter.logEvent] '\(name)' 저장 실패: \(error)")
+            return false
         }
     }
 
