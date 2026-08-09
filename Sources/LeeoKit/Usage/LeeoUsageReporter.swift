@@ -41,7 +41,10 @@ public final class LeeoUsageReporter: @unchecked Sendable {
     // MARK: - 익명 설치 ID (PII 아님, 재설치 전까지 고정)
 
     private static let installIDKey = "leeo.usage.installID"
-    private var installID: String {
+
+    /// 이 설치를 가리키는 익명 UUID. 기기·계정과 무관하고, 재설치하면 새로 생긴다.
+    /// 앱이 직접 이벤트 레코드를 만들 때(예: 소급 백필) 같은 설치로 묶으려면 이 값이 필요하다.
+    public var installID: String {
         let d = UserDefaults.standard
         if let s = d.string(forKey: Self.installIDKey) { return s }
         let s = UUID().uuidString
@@ -145,7 +148,12 @@ public final class LeeoUsageReporter: @unchecked Sendable {
 
     /// 의미 있는 행동 1건을 이벤트로 남긴다(예: "merge", "export", "photo_import").
     /// 고빈도 행동은 이벤트로 남기지 말고 LeeoEngagement.registerSignificantEvent()로 카운트만 하자.
-    public func logEvent(_ name: String) async {
+    ///
+    /// - Parameter occurredAt: **행동이 실제로 일어난 시각.** 생략하면 지금이다.
+    ///   레코드의 `creationDate`는 서버가 "쓴 시각"으로 찍기 때문에, 오프라인이나
+    ///   익스텐션에서 벌어진 일을 나중에 몰아 보내면 전부 보낸 날짜로 뭉쳐 버린다.
+    ///   그래서 시각을 별도 필드로 함께 남기고, 집계는 이 값을 우선 본다.
+    public func logEvent(_ name: String, occurredAt: Date? = nil) async {
         guard await iCloudReady() else { return }
         let record = CKRecord(recordType: Self.eventType)
         if let appId = config.appIdentifier { record["appId"] = appId }
@@ -154,6 +162,7 @@ public final class LeeoUsageReporter: @unchecked Sendable {
         record["appVersion"] = Self.appVersion
         record["platform"] = Self.platform
         record["installID"] = installID
+        record["occurredAt"] = occurredAt ?? Date()
         do {
             _ = try await database.save(record)
         } catch {
@@ -161,8 +170,8 @@ public final class LeeoUsageReporter: @unchecked Sendable {
         }
     }
 
-    public func logEventInBackground(_ name: String) {
-        Task { await logEvent(name) }
+    public func logEventInBackground(_ name: String, occurredAt: Date? = nil) {
+        Task { await logEvent(name, occurredAt: occurredAt) }
     }
 
     // MARK: - 조회 (개발자 통계 뷰어용)
