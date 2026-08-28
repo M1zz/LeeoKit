@@ -215,17 +215,34 @@ public final class LeeoUsageReporter: @unchecked Sendable {
     }
 
     /// 전체 설치 스냅샷을 조회한다(허브 모드면 appId로 필터, 최신 활동순 정렬).
+    ///
+    /// 한 번에 다 받지 않는다 — `LeeoCloudPage.size`건씩 커서로 이어 받는다. 서버는
+    /// 한 요청에 400개까지만 돌려주고, 그보다 큰 `resultsLimit`은 조회 자체를 거부하기
+    /// 때문이다(설치 900건에서 통계 화면 전체가 죽었던 이유). 페이지가 올 때마다
+    /// `onPage`로 "지금까지"를 넘기므로 화면은 200건씩 채워지며 자란다.
+    ///
+    /// - Parameters:
+    ///   - limit: 전체 상한(안전장치). 서버로 나가는 요청 크기와는 무관하다.
+    ///   - onProgress: 페이지가 도착할 때마다 그때까지의 스냅샷을 정렬·필터까지 마친 상태로,
+    ///     마지막엔 **멈춘 이유까지** 붙여서 넘긴다. 화면이 "다 받았는지"를 말할 수 있게.
     /// ⚠️ 남의 레코드를 읽으므로 컨테이너 read 권한이 필요하다(피드백 인박스와 동일).
-    public func fetchSnapshots(limit: Int = 1000) async throws -> [UsageSnapshot] {
+    public func fetchSnapshots(limit: Int = 5000,
+                               onProgress: (@MainActor (LeeoCloudProgress<UsageSnapshot>) -> Void)? = nil) async throws -> [UsageSnapshot] {
         let query = CKQuery(recordType: Self.snapshotType, predicate: NSPredicate(value: true))
-        let (results, _) = try await database.records(matching: query, resultsLimit: limit)
-        var snaps = results.compactMap { _, result in
-            (try? result.get()).map(UsageSnapshot.init)
+        let appId = config.appIdentifier
+
+        // 부분 결과도 완성본과 똑같이 보이도록, 페이지마다 같은 손질을 거쳐 넘긴다.
+        let arrange: ([UsageSnapshot]) -> [UsageSnapshot] = { snaps in
+            var out = appId == nil ? snaps : snaps.filter { $0.appId == appId }
+            out.sort { ($0.lastActiveAt ?? .distantPast) > ($1.lastActiveAt ?? .distantPast) }
+            return out
         }
-        if let appId = config.appIdentifier {
-            snaps = snaps.filter { $0.appId == appId }
-        }
-        snaps.sort { ($0.lastActiveAt ?? .distantPast) > ($1.lastActiveAt ?? .distantPast) }
-        return snaps
+
+        let all = try await LeeoCloudPage.collect(
+            query, in: database, limit: limit,
+            transform: { UsageSnapshot($0) },
+            onProgress: onProgress.map { report in { progress in report(progress.mapItems(arrange)) } }
+        )
+        return arrange(all)
     }
 }

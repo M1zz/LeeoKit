@@ -109,11 +109,11 @@ public final class LeeoFeedbackService {
         let container = CKContainer(identifier: config.containerIdentifier)
         let query = Self.makeFetchQuery(config: config)
 
-        let (results, _) = try await container.publicCloudDatabase.records(
-            matching: query, resultsLimit: limit)
-        var records = results.compactMap { _, result in
-            (try? result.get()).map(FeedbackRecord.init)
-        }
+        // 한 요청에 limit을 통째로 요구하지 않는다 — 서버 상한(400)을 넘기면 조회가
+        // 거부된다(LeeoCloudPage 참고). 작게 나눠 커서로 이어 받는다.
+        var records = try await LeeoCloudPage.collect(
+            query, in: container.publicCloudDatabase, limit: limit,
+            transform: { FeedbackRecord($0) })
         if let appId = config.appIdentifier {
             records = records.filter { $0.appId == appId }
         }

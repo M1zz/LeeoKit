@@ -171,21 +171,22 @@ public enum LeeoDiagnosticsReader {
         let query = CKQuery(recordType: LeeoDiagnostics.recordType, predicate: NSPredicate(value: true))
         query.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
 
-        let page = try await database.records(matching: query, resultsLimit: limit)
-        return page.matchResults.compactMap { try? $0.1.get() }
-            .filter { config.appIdentifier == nil || ($0["appId"] as? String) == config.appIdentifier }
-            .map { record in
-                LeeoCrashReport(
-                    id: record.recordID.recordName,
-                    kind: record["kind"] as? String ?? "-",
-                    detail: record["detail"] as? String ?? "-",
-                    appVersion: record["appVersion"] as? String ?? "-",
-                    osVersion: record["osVersion"] as? String ?? "-",
-                    deviceType: record["deviceType"] as? String ?? "-",
-                    stack: record["stack"] as? String ?? "",
-                    createdAt: record.creationDate
-                )
+        // 작게 나눠 커서로 이어 받는다 — 한 요청에 400개를 넘기면 서버가 거부한다.
+        return try await LeeoCloudPage.collect(query, in: database, limit: limit, transform: { record -> LeeoCrashReport? in
+            guard config.appIdentifier == nil || (record["appId"] as? String) == config.appIdentifier else {
+                return nil
             }
+            return LeeoCrashReport(
+                id: record.recordID.recordName,
+                kind: record["kind"] as? String ?? "-",
+                detail: record["detail"] as? String ?? "-",
+                appVersion: record["appVersion"] as? String ?? "-",
+                osVersion: record["osVersion"] as? String ?? "-",
+                deviceType: record["deviceType"] as? String ?? "-",
+                stack: record["stack"] as? String ?? "",
+                createdAt: record.creationDate
+            )
+        })
     }
 
     public static func fetch<Spec: LeeoAppSpec>(spec: Spec.Type, limit: Int = 200) async throws -> [LeeoCrashReport] {

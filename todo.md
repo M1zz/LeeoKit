@@ -1,5 +1,31 @@
 # LeeoKit todo
 
+## 완료: CloudKit 조회를 페이지로 나눠 받기 (v3.3)
+
+> 계기: ClipKeyboard 사용 통계가 설치 900건에서 통째로 죽었다.
+> `Your request contains 900 items which is more than the maximum number of
+> items in a single request (400)` — CloudKit은 한 요청에 400개가 상한인데
+> `fetchSnapshots(limit: 1000)` 이 그걸 한 방에 요구하고 있었다.
+> 데이터가 늘면 언젠가 반드시 터지는 자리였고, 실제로 터졌다.
+
+- [x] `LeeoCloudPage.collect` — 커서로 200건씩 이어 받는 공용 조회.
+      한 요청 크기(`size`)와 전체 상한(`limit`)을 분리해서, 상한을 올려도 요청은 안 커진다
+- [x] 페이지가 도착할 때마다 `onPage`로 "지금까지"를 넘긴다 → 화면이 자라면서 채워진다.
+      900건을 다 받을 때까지 빈 화면을 보고 있지 않아도 된다
+- [x] 중간 페이지가 실패하면 거기까지를 결과로 돌려준다. **첫 페이지부터** 실패했을 때만
+      throw — 권한/스키마 문제는 말해야 하지만, 그 외에는 부분이라도 숫자를 보여주는 게 낫다
+- [x] `LeeoUsageReporter.fetchSnapshots(limit:onPage:)` · `LeeoFeedbackService.fetchAll` ·
+      `LeeoDiagnosticsReader.fetch` 셋 다 같은 방식으로 교체 (뒤 둘은 기본값이 100·200이라
+      아직 안 터졌을 뿐, 같은 지뢰였다)
+- [x] `LeeoCloudProgress` / `LeeoCloudStop` — 데이터와 함께 **어디까지 왔고 왜 멈췄는지**를
+      넘긴다. 나눠 받기 시작하면 화면에 새 의무가 생긴다: 낮은 숫자가 "아직 받는 중"인지
+      "원래 그만큼"인지 "중간에 끊긴 것"인지 사람이 구분할 수 없다. 셋은 할 일이 다르다 —
+      기다리기 / 그대로 믿기 / 다시 받기
+- [x] `LeeoUsageStatsView` — 부분 결과 + 에러를 **함께** 보여준다. 예전엔 에러가 나면
+      받아 둔 숫자까지 화면에서 사라졌다. 받는 중엔 "불러오는 중… N건 (M페이지)",
+      끝나면 "전부 불러왔어요 (9:13 기준)" 또는 상한/중단 사유를 명시
+
+
 ## 완료: 성숙도 계약 레이어 (v3.0)
 
 > 목표: **"LeeoKit을 import했다면 그 앱은 성숙한 서비스다"** 가 참이 되도록,
