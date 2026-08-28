@@ -226,9 +226,20 @@ public final class LeeoUsageReporter: @unchecked Sendable {
     ///   - onProgress: 페이지가 도착할 때마다 그때까지의 스냅샷을 정렬·필터까지 마친 상태로,
     ///     마지막엔 **멈춘 이유까지** 붙여서 넘긴다. 화면이 "다 받았는지"를 말할 수 있게.
     /// ⚠️ 남의 레코드를 읽으므로 컨테이너 read 권한이 필요하다(피드백 인박스와 동일).
+    /// - Parameter changedSince: 이 시각 뒤에 **바뀐** 스냅샷만 받는다(증분).
+    ///   nil 이면 전부 받는다.
+    ///   ⚠️ 스냅샷은 설치마다 한 줄이고 사람이 돌아올 때마다 **덮어써진다.** 그래서
+    ///      기준은 만든 시각이 아니라 고친 시각(`modificationDate`)이다. 만든 시각으로
+    ///      거르면 오래전에 깔고 오늘 다시 온 사람이 통째로 빠진다.
+    ///   ⚠️ 이 걸러내기는 CloudKit 스키마에서 `modificationDate` 가 **Queryable** 일 때만
+    ///      된다. 인덱스가 없으면 조회가 거부되므로, 부르는 쪽에서 실패하면 전체 조회로
+    ///      돌아갈 수 있게 에러를 그대로 던진다.
     public func fetchSnapshots(limit: Int = 5000,
+                               changedSince: Date? = nil,
                                onProgress: (@MainActor (LeeoCloudProgress<UsageSnapshot>) -> Void)? = nil) async throws -> [UsageSnapshot] {
-        let query = CKQuery(recordType: Self.snapshotType, predicate: NSPredicate(value: true))
+        let predicate = changedSince.map { NSPredicate(format: "modificationDate > %@", $0 as NSDate) }
+            ?? NSPredicate(value: true)
+        let query = CKQuery(recordType: Self.snapshotType, predicate: predicate)
         let appId = config.appIdentifier
 
         // 부분 결과도 완성본과 똑같이 보이도록, 페이지마다 같은 손질을 거쳐 넘긴다.
