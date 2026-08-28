@@ -401,6 +401,47 @@ public final class LeeoFeedbackService {
     }
     #endif
 
+    // MARK: - 회신 정보 기억
+
+    //  이 기기에만 남긴다. CloudKit 에도, 앱 그룹에도 올리지 않는다 - 다음번에 다시 타이핑하지
+    //  않게 하려는 것뿐이고, 그 이상의 쓸모가 없는 값이다.
+    //  키는 완료 표시·알림 키와 같은 방식으로 컨테이너·레코드타입·앱ID에 묶는다(허브 공유 대비).
+
+    private var contactNameKey: String {
+        "leeo.feedback.contact.name.\(config.containerIdentifier).\(config.recordType).\(config.appIdentifier ?? "-")"
+    }
+
+    private var contactEmailKey: String {
+        "leeo.feedback.contact.email.\(config.containerIdentifier).\(config.recordType).\(config.appIdentifier ?? "-")"
+    }
+
+    /// 지난번에 남긴 회신 이름. 없으면 빈 문자열.
+    public var rememberedContactName: String {
+        UserDefaults.standard.string(forKey: contactNameKey) ?? ""
+    }
+
+    /// 지난번에 남긴 회신 이메일. 없으면 빈 문자열.
+    public var rememberedContactEmail: String {
+        UserDefaults.standard.string(forKey: contactEmailKey) ?? ""
+    }
+
+    /// 회신 정보를 이 기기에 기억한다.
+    /// ⚠️ 빈 값이면 **지운다.** 사용자가 칸을 비우고 보냈다면 그건 "이제 남기지 않겠다"는 뜻이라,
+    ///    예전 값을 남겨두면 다음번에 지운 이메일이 되살아난 것처럼 보인다.
+    public func rememberContact(name: String, email: String) {
+        let ud = UserDefaults.standard
+        let n = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        let e = email.trimmingCharacters(in: .whitespacesAndNewlines)
+        n.isEmpty ? ud.removeObject(forKey: contactNameKey) : ud.set(n, forKey: contactNameKey)
+        e.isEmpty ? ud.removeObject(forKey: contactEmailKey) : ud.set(e, forKey: contactEmailKey)
+    }
+
+    /// 기억한 회신 정보를 지운다.
+    public func forgetContact() {
+        UserDefaults.standard.removeObject(forKey: contactNameKey)
+        UserDefaults.standard.removeObject(forKey: contactEmailKey)
+    }
+
     // MARK: - 제출
 
     /// 제출용 CKRecord 구성 — 필드 키는 Dashboard 스키마·FeedbackRecord 읽기 모델과 1:1 대응.

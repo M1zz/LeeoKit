@@ -26,6 +26,18 @@
             "state" : "new",
             "value" : "%1$@ · %2$@"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %@"
+          }
         }
       }
     },
@@ -54,6 +66,18 @@
             "state" : "new",
             "value" : "%1$@ · %2$@ · %3$@"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %@ · %@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ · %@ · %@"
+          }
         }
       }
     },
@@ -75,6 +99,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@を楽しくお使いいただけていますか？"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用 %@ 用得还开心吗？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用 %@ 用得還開心嗎？"
           }
         }
       }
@@ -98,6 +134,18 @@
             "state" : "translated",
             "value" : "CloudKit DashboardのadminロールにこのIDを追加すると、アプリで全てのフィードバックを読めます。タップでコピーされます。"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "把这个 ID 加到 CloudKit Dashboard 的 admin 角色里，就能在 App 内读取所有反馈。点按即可复制。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "把這個 ID 加到 CloudKit Dashboard 的 admin 角色裡，就能在 App 內讀取所有意見回饋。點一下即可複製。"
+          }
         }
       }
     },
@@ -119,6 +167,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "iCloudにサインインしていません"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "还没有登录 iCloud"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "還沒有登入 iCloud"
           }
         }
       }
@@ -142,6 +202,18 @@
             "state" : "translated",
             "value" : "メールアプリが設定されていません。mailto:リンクで別のメールアプリを開きますか？"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有设置“邮件”App。要通过 mailto: 链接打开其他邮件 App 吗？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "沒有設定「郵件」App。要透過 mailto: 連結開啟其他郵件 App 嗎？"
+          }
         }
       }
     },
@@ -157,6 +229,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "改善のご提案"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "改进建议"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "改進建議"
           }
         }
       }
@@ -180,6 +264,18 @@
             "state" : "translated",
             "value" : "権限エラーの場合は、CloudKit Dashboardでadminロールにread権限と以下のユーザーIDが登録されているか確認してください。"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "如果是权限错误，请确认 CloudKit Dashboard 里 admin 角色有 read 权限，并且包含下面这个用户 ID。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "如果是權限錯誤，請確認 CloudKit Dashboard 裡 admin 角色有 read 權限，並且包含下面這個使用者 ID。"
+          }
         }
       }
     },
@@ -201,6 +297,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "機能のご提案"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "功能建议"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "功能建議"
           }
         }
       }
@@ -224,6 +332,18 @@
             "state" : "translated",
             "value" : "その他"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "其他"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "其他"
+          }
         }
       }
     },
@@ -245,6 +365,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "あとで"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "以后"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "以後"
           }
         }
       }
@@ -268,21 +400,51 @@
             "state" : "translated",
             "value" : "日付なし"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有日期"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "沒有日期"
+          }
         }
       }
     },
-    "남겨주시면 답변을 드릴 수 있어요." : {
+    "남겨주시면 답변을 드릴 수 있어요. 이 기기에만 저장해 다음에 다시 채워드려요." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "If you leave your contact, we can get back to you."
+            "value" : "If you leave your contact, we can get back to you. Saved on this device only and filled in for you next time."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jika Anda mencantumkan kontak, kami dapat membalas. Disimpan hanya di perangkat ini dan diisi otomatis lain kali."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ご記入いただければ返信いたします。"
+            "value" : "ご記入いただければ返信いたします。この端末にのみ保存し、次回は自動で入力します。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "留下联系方式，我们就能回复你。只存在这台设备上，下次会自动帮你填好。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "留下聯繫方式，我們就能回覆你。只存在這台裝置上，下次會自動幫你填好。"
           }
         }
       }
@@ -306,6 +468,18 @@
             "state" : "translated",
             "value" : "自分のユーザーID"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我的用户 ID"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我的使用者 ID"
+          }
         }
       }
     },
@@ -327,6 +501,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "内容"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "内容"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "內容"
           }
         }
       }
@@ -350,6 +536,18 @@
             "state" : "translated",
             "value" : "内容を入力すると有効になります"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "输入内容后即可使用"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "輸入內容後即可使用"
+          }
         }
       }
     },
@@ -371,6 +569,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "はい、気に入っています 👍"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "好，挺喜欢的 👍"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "好，挺喜歡的 👍"
           }
         }
       }
@@ -394,6 +604,18 @@
             "state" : "translated",
             "value" : "別のメールアプリで開く"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用其他邮件 App 打开"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "用其他郵件 App 開啟"
+          }
         }
       }
     },
@@ -415,6 +637,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "閉じる"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "关闭"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "關閉"
           }
         }
       }
@@ -438,6 +672,18 @@
             "state" : "translated",
             "value" : "レビューを書く"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "写评价"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "寫評價"
+          }
         }
       }
     },
@@ -459,6 +705,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "メールアプリを開けません"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法打开邮件 App"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無法開啟郵件 App"
           }
         }
       }
@@ -482,6 +740,18 @@
             "state" : "translated",
             "value" : "お問い合わせの種類"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "咨询类型"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "咨詢類型"
+          }
         }
       }
     },
@@ -503,6 +773,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "受信したフィードバック %d件"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "收到 %d 条反馈"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "收到 %d 條意見回饋"
           }
         }
       }
@@ -526,6 +808,18 @@
             "state" : "translated",
             "value" : "バグ報告"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "报告问题"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "報告問題"
+          }
         }
       }
     },
@@ -547,6 +841,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "バージョン"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "版本"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "版本"
           }
         }
       }
@@ -570,6 +876,18 @@
             "state" : "translated",
             "value" : "送信"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "发送"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "發送"
+          }
         }
       }
     },
@@ -591,6 +909,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "送信中…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "发送中…"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "發送中…"
           }
         }
       }
@@ -614,6 +944,18 @@
             "state" : "translated",
             "value" : "読み込み中…"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "载入中…"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "載入中…"
+          }
         }
       }
     },
@@ -635,6 +977,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "不便な点やご提案を自由にお書きください"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有什么不便或建议，都可以写下来"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有什麼不便或建議，都可以寫下來"
           }
         }
       }
@@ -658,6 +1012,18 @@
             "state" : "translated",
             "value" : "使い方のお問い合わせ"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用方法咨询"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用方法咨詢"
+          }
         }
       }
     },
@@ -679,6 +1045,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ユーザーからご意見が届きました。受信箱でご確認ください。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有用户留言了。到收件箱看看吧。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有使用者留言了。到收件匣看看吧。"
           }
         }
       }
@@ -702,6 +1080,18 @@
             "state" : "translated",
             "value" : "削除"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "刪除"
+          }
         }
       }
     },
@@ -724,6 +1114,18 @@
             "state" : "translated",
             "value" : "新着フィードバック通知"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新反馈提醒"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新意見回饋提醒"
+          }
         }
       }
     },
@@ -745,6 +1147,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "新しいフィードバックが届きました 📬"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有新反馈了 📬"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有新意見回饋了 📬"
           }
         }
       }
@@ -769,6 +1183,18 @@
             "state" : "translated",
             "value" : "新しいフィードバックが届くとこのデバイスにプッシュ通知が届きます。CloudKit adminロールのread権限設定後に動作します。"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有新反馈时会给这台设备发推送通知。需要先设置好 CloudKit admin 角色的 read 权限。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有新意見回饋時會給這台裝置發推送通知。需要先設定好 CloudKit admin 角色的 read 權限。"
+          }
         }
       }
     },
@@ -790,6 +1216,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "サーバーから完全に削除され、元に戻せません。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "会从服务器上彻底删除，无法撤销。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "會從服務器上徹底刪除，無法復原。"
           }
         }
       }
@@ -813,6 +1251,18 @@
             "state" : "translated",
             "value" : "気になる点があります"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有点不满意"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有點不滿意"
+          }
         }
       }
     },
@@ -835,6 +1285,18 @@
             "state" : "translated",
             "value" : "まだ受信したフィードバックはありません"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "还没有收到反馈"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "還沒有收到意見回饋"
+          }
         }
       }
     },
@@ -851,6 +1313,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "通知がオフになっています。iOSの設定 > %@ > 通知で許可してください。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知权限没打开。请在“iOS 设置 > %@ > 通知”里允许。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通知權限沒開啟。請在「iOS 設定 > %@ > 通知」裡允許。"
           }
         }
       }
@@ -874,6 +1348,18 @@
             "state" : "translated",
             "value" : "どんな機能があるといいですか？\n例）ショートカットをフォルダにまとめる機能が欲しいです。"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你希望有什么功能？\n例）希望能把短语按文件夹归类。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你希望有什麼功能？\n例）希望能把短語按資料夾歸類。"
+          }
         }
       }
     },
@@ -895,6 +1381,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "どの部分が気になりますか？\n例）クリップボード履歴はどこで見られますか？"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你想了解哪方面？\n例）剪贴板历史在哪里看？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你想瞭解哪方面？\n例）剪貼簿歷史在哪裡看？"
           }
         }
       }
@@ -918,6 +1416,18 @@
             "state" : "translated",
             "value" : "どのような状況で問題が発生したか教えてください。\n例）ショートカットを保存するとアプリが終了します。"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请告诉我们问题是在什么情况下发生的。\n例）保存短语时 App 会闪退。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請告訴我們問題是在什麼情況下發生的。\n例）儲存短語時 App 會閃退。"
+          }
         }
       }
     },
@@ -933,6 +1443,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "どんな点が不便でしたか？どう変わればより良いか教えてください。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "哪里让你觉得不方便？也告诉我们怎么改会更好。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "哪裡讓你覺得不方便？也告訴我們怎麼改會更好。"
           }
         }
       }
@@ -956,6 +1478,18 @@
             "state" : "translated",
             "value" : "右にスワイプで完了（この端末にのみ保存）、左にスワイプで削除。削除はCloudKit adminロールの書き込み権限が必要です。"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "右滑标为已处理（只存在这台设备上），左滑删除。删除需要 CloudKit admin 角色有写入权限才会生效。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "右滑標為已處理（只存在這台裝置上），左滑刪除。刪除需要 CloudKit admin 角色有寫入權限才會生效。"
+          }
         }
       }
     },
@@ -977,6 +1511,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "完了"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完成"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完成"
           }
         }
       }
@@ -1000,6 +1546,18 @@
             "state" : "translated",
             "value" : "完了にする"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "标为已处理"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "標為已處理"
+          }
         }
       }
     },
@@ -1021,6 +1579,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "完了を解除"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消已处理"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消已處理"
           }
         }
       }
@@ -1044,6 +1614,18 @@
             "state" : "translated",
             "value" : "完了したフィードバック"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已处理的反馈"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已處理的意見回饋"
+          }
         }
       }
     },
@@ -1065,6 +1647,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "完了した %d件を表示"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "查看 %d 条已处理的反馈"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "查看 %d 條已處理的意見回饋"
           }
         }
       }
@@ -1088,6 +1682,18 @@
             "state" : "translated",
             "value" : "完了したフィードバックはありません"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有已处理的反馈"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "沒有已處理的意見回饋"
+          }
         }
       }
     },
@@ -1109,6 +1715,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ご意見をいただけると、より良いアプリにできます。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "把你的想法告诉我们，这个 App 会变得更好。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "把你的想法告訴我們，這個 App 會變得更好。"
           }
         }
       }
@@ -1132,6 +1750,18 @@
             "state" : "translated",
             "value" : "このフィードバックを削除しますか？"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "要删除这条反馈吗？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "要刪除這條意見回饋嗎？"
+          }
         }
       }
     },
@@ -1147,6 +1777,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "名前"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "姓名"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "姓名"
           }
         }
       }
@@ -1164,6 +1806,18 @@
             "state" : "translated",
             "value" : "お名前（任意）"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "姓名（可选）"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "姓名（可選）"
+          }
         }
       }
     },
@@ -1179,6 +1833,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "メール"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "邮箱"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "信箱"
           }
         }
       }
@@ -1202,6 +1868,18 @@
             "state" : "translated",
             "value" : "自動添付情報"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自动附带的信息"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自動附帶的資訊"
+          }
         }
       }
     },
@@ -1224,6 +1902,18 @@
             "state" : "translated",
             "value" : "自由にご意見をお寄せください。"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有什么想说的都可以写下来。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有什麼想說的都可以寫下來。"
+          }
         }
       }
     },
@@ -1245,6 +1935,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "送信に失敗しました"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "发送失败"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "發送失敗"
           }
         }
       }
@@ -1269,6 +1971,18 @@
             "state" : "translated",
             "value" : "受信 %d件 · 完了 %d件"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "收到 %d 条 · 已处理 %d 条"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "收到 %d 條 · 已處理 %d 條"
+          }
         }
       }
     },
@@ -1290,6 +2004,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "受信したフィードバック"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "收到的反馈"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "收到的意見回饋"
           }
         }
       }
@@ -1313,6 +2039,18 @@
             "state" : "translated",
             "value" : "受信したフィードバック（開発者）"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "收到的反馈（开发者）"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "收到的意見回饋（開發者）"
+          }
         }
       }
     },
@@ -1334,6 +2072,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "処理できませんでした: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没能完成操作：%@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "沒能完成操作：%@"
           }
         }
       }
@@ -1357,6 +2107,18 @@
             "state" : "translated",
             "value" : "キャンセル"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消"
+          }
         }
       }
     },
@@ -1378,6 +2140,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "タップすると開発者に直接送信されます"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "点一下就直接发给开发者"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "點一下就直接發給開發者"
           }
         }
       }
@@ -1401,6 +2175,18 @@
             "state" : "translated",
             "value" : "フィードバックの内容"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "反馈内容"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "意見回饋內容"
+          }
         }
       }
     },
@@ -1422,6 +2208,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "フィードバックを送る"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "发送反馈"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "發送意見回饋"
           }
         }
       }
@@ -1445,6 +2243,18 @@
             "state" : "translated",
             "value" : "フィードバックを送信しました！\n貴重なご意見ありがとうございます 🙏"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "反馈已发送！\n谢谢你宝贵的意见 🙏"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "意見回饋已發送！\n謝謝你寶貴的意見 🙏"
+          }
         }
       }
     },
@@ -1466,6 +2276,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "フィードバックを読み込めませんでした: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没能载入反馈：%@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "沒能載入意見回饋：%@"
           }
         }
       }
@@ -1489,6 +2311,18 @@
             "state" : "translated",
             "value" : "アクティブなフィードバックはありません。すべて完了 🎉"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有待处理的反馈，全都处理完了 🎉"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "沒有待處理的意見回饋，全都處理完了 🎉"
+          }
         }
       }
     },
@@ -1505,6 +2339,18 @@
             "state" : "translated",
             "value" : "返信用メールアドレス（任意）"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "回复用的邮箱（可选）"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "回覆用的信箱（可選）"
+          }
         }
       }
     },
@@ -1520,6 +2366,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "返信先情報"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "回复方式"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "回覆方式"
           }
         }
       }

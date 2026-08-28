@@ -36,7 +36,8 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
     ///   - types: 유형 선택지 구성 (앱별로 다르면 지정, 기본 bug/feature/question/other)
     ///   - initialType: 진입 시 미리 선택할 유형 (넛지에서 특정 유형으로 들어오는 경우 등)
     ///   - showsContactFields: 회신용 이름/이메일 입력 섹션 노출 여부
-    ///   - initialContactName/Email: 회신 정보 초기값 (앱의 프로필 저장소에서 프리필)
+    ///   - initialContactName/Email: 회신 정보 초기값 (앱의 프로필 저장소에서 프리필).
+    ///     비워두면 **지난번에 보낸 값**이 자동으로 채워진다 - 앱이 값을 주면 그쪽이 이긴다.
     public init(
         types: [LeeoFeedbackType] = LeeoFeedbackType.defaultTypes,
         initialType: LeeoFeedbackType? = nil,
@@ -49,8 +50,12 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
         self.showsContactFields = showsContactFields
         self.emailFallback = emailFallback
         self._selectedType = State(initialValue: initialType ?? types.first ?? .bug)
-        self._contactName = State(initialValue: initialContactName)
-        self._contactEmail = State(initialValue: initialContactEmail)
+        // 앱이 프로필을 갖고 있으면 그 값이, 없으면 지난번에 이 기기에서 보낸 값이 채워진다.
+        let remembered = LeeoFeedbackService(spec: Spec.self)
+        self._contactName = State(initialValue: initialContactName.isEmpty
+            ? remembered.rememberedContactName : initialContactName)
+        self._contactEmail = State(initialValue: initialContactEmail.isEmpty
+            ? remembered.rememberedContactEmail : initialContactEmail)
     }
 
     private let deviceInfo: String = {
@@ -237,7 +242,7 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                     .cornerRadius(theme.radiusSm)
             }
 
-            Text(L("남겨주시면 답변을 드릴 수 있어요.", comment: "Contact info footer"))
+            Text(L("남겨주시면 답변을 드릴 수 있어요. 이 기기에만 저장해 다음에 다시 채워드려요.", comment: "Contact info footer"))
                 .font(.caption)
                 .foregroundColor(theme.textMuted)
         }
@@ -387,6 +392,11 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
     }
 
     private func handleSent() {
+        // 보내기에 성공한 값만 기억한다 - 쓰다 만 이메일을 다음번에 들이밀지 않기 위해서다.
+        if showsContactFields {
+            LeeoFeedbackService(spec: Spec.self)
+                .rememberContact(name: contactName, email: contactEmail)
+        }
         withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) { didSend = true }
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) { dismiss() }
     }
