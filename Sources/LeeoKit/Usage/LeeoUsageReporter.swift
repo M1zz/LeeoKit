@@ -198,6 +198,26 @@ public final class LeeoUsageReporter: @unchecked Sendable {
         /// 앱별 대략 지표(발표 수·장표 수 등). 없으면 빈 딕셔너리.
         public let metrics: [String: Double]
 
+        /// 디스크에 적어 둔 것에서 되살릴 때 쓴다(앱이 증분 캐시를 들고 있는 경우).
+        /// CKRecord 없이 만들 길이 없으면 캐시를 화면에 그릴 수 없다.
+        public init(id: String, appId: String?, appVersion: String, platform: String,
+                    osVersion: String, locale: String, launchCount: Int, eventCount: Int,
+                    daysSinceInstall: Int, installDate: Date?, lastActiveAt: Date?,
+                    metrics: [String: Double]) {
+            self.id = id
+            self.appId = appId
+            self.appVersion = appVersion
+            self.platform = platform
+            self.osVersion = osVersion
+            self.locale = locale
+            self.launchCount = launchCount
+            self.eventCount = eventCount
+            self.daysSinceInstall = daysSinceInstall
+            self.installDate = installDate
+            self.lastActiveAt = lastActiveAt
+            self.metrics = metrics
+        }
+
         init(_ r: CKRecord) {
             id = r.recordID.recordName
             appId = r["appId"] as? String
