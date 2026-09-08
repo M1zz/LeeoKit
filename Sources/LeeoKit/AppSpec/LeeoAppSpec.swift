@@ -55,6 +55,10 @@ public protocol LeeoAppSpec {
     /// 분석 이벤트 싱크. 미지정이면 no-op (분석을 안 쓰는 앱도 그대로 동작).
     static var analytics: any LeeoAnalytics { get }
 
+    /// `LeeoFamilyCatalog` 안에서 이 앱을 가리키는 열쇠. 소개 화면이 자기 자신을 빼는 데 쓴다.
+    /// 미지정이면 `appStoreID` 로 카탈로그를 대조한다. 둘 다 없으면 자기 자신도 목록에 남는다.
+    static var familyID: String? { get }
+
     /// 인앱 결제(페이월) 설정. **보통 선언하지 않는다** — `monetization` 에서 자동으로 유도된다.
     /// 직접 선언하면 그 값이 우선하지만, `monetization` 과 어긋나면 Preflight 가 잡아낸다.
     static var paywall: LeeoPaywallConfig? { get }
@@ -63,6 +67,9 @@ public protocol LeeoAppSpec {
 public extension LeeoAppSpec {
     /// 기본값 — 앱이 지정하지 않으면 딥링크형 "리뷰 남기기"는 숨기고 시스템 요청만 사용.
     static var appStoreID: String? { nil }
+
+    /// 기본값. 카탈로그를 `appStoreID` 로 대조한다.
+    static var familyID: String? { nil }
 
     /// 기본값 — 선언하지 않은 항목은 전부 `.unknown`.
     static var capabilities: LeeoCapabilities { .undeclared }

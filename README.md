@@ -301,6 +301,49 @@ WindowGroup { RootView().environmentObject(store) }
 - 테스트는 Xcode의 `.storekit` Configuration 또는 샌드박스 계정으로 확인
 - `store.gate` 로 "지금 페이월을 띄워야 하나"를 판정한다 (위 [수익모델과 게이트](#수익모델과-게이트-leeomonetization))
 
+## 함께 쓰는 앱 (LeeoFamily)
+
+내가 만든 앱들이 **서로를 소개한다.** 목록·문구·이야기는 `LeeoFamilyCatalog` 한 곳에만 있어서,
+앱을 새로 내면 LeeoKit 만 올려도 나머지 앱들이 그 앱을 소개하기 시작한다.
+
+```swift
+// 설정 List/Form 안에 한 줄
+Section {
+    LeeoFamilySettingsRow<MyAppSpec>()
+        .leeoStyle(theme.leeoStyle)   // 앱 룩을 입힐 때
+}
+```
+
+화면이 지키는 것 셋 -
+
+1. **자기 자신은 안 보인다.** 이미 쓰고 있는 앱을 권하면 그건 그냥 광고다.
+   판정은 `LeeoAppSpec.familyID` → 없으면 `appStoreID` 대조. 둘 다 없으면 아무것도 못 뺀다.
+2. **이야기가 먼저, 목록이 나중.** "이런 앱도 있어요"는 아무도 안 누른다. 그래서 화면 맨 위는
+   **지금 쓰는 앱이 등장하는 장면**(`LeeoFamilySynergy`)이고, 앱 카드는 그 아래에 있다.
+   각 이야기는 장면 한 줄 + 앱이 하나씩 들어오는 세 박자 + 무엇이 달라졌는지 한 줄이다.
+3. **못 받는 것은 못 받는다고 말한다.** 아이폰에서 맥 앱 카드는 그렇게 표시되고,
+   지금 기기에서 받을 수 있는 앱이 목록 앞에 선다.
+
+앱 하나는 목적(`purpose`)·대상(`forWhom`)·상황(`moments`)을 갖는다. 기능 나열이 아니라
+"내 상황에 맞나"를 사람이 판단할 근거다.
+
+```swift
+LeeoFamilyApp(id: "rereminder", name: "두번알림", appStoreID: "6752551268",
+              platforms: [.iPhone, .watch], symbol: "bell.badge", tintHex: "5E5CE6",
+              tagline: ..., purpose: ..., forWhom: [...], moments: [...])
+
+LeeoFamilySynergy(id: "apply-day", appIDs: ["rainbow-ios", "clipkeyboard", "rereminder"],
+                  title: ..., scene: ..., beats: [...], payoff: ...)
+```
+
+- ⚠️ `name` 은 **그 언어의 스토어에 실제로 올라간 이름**이다. 한국어 목록만 있는 앱은 어느 언어에서도
+  한국어 이름 그대로 둔다. 옮겨 적으면 사용자가 스토어에서 그 앱을 못 찾는다.
+- ⚠️ `appStoreID` 는 손으로 적는 값이라 오타가 조용히 산다. 새 앱을 넣을 때 실제 ID 를 확인한다:
+  `curl "https://itunes.apple.com/lookup?bundleId=<번들ID>"`
+- 카탈로그의 무결성(죽은 앱 참조·중복 id·어디에도 안 나오는 앱·자기 광고)은
+  `LeeoFamilyTests` 가 지킨다. 앱을 추가하면 테스트가 먼저 알려 준다.
+- 수집하는 것 없음. 누르면 App Store 가 열릴 뿐이다.
+
 ## 3.0 마이그레이션
 
 계약에 `legal`·`monetization`이 **필수**로 추가됐다. 기존 앱은 두 줄만 넣으면 된다.
