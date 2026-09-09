@@ -8,9 +8,19 @@
 //  자기 자신은 목록에서 빠진다. 판정 순서는 `LeeoAppSpec.familyID` → `appStoreID` 대조.
 //  둘 다 없으면 아무것도 못 빼므로, 계약에 `appStoreID` 를 적어 두는 편이 좋다.
 //
-//  ⚠️ `name` 은 **그 언어의 스토어에 실제로 올라간 이름**이다. 한국어 목록만 있는 앱
-//     (욕망의 무지개·무지개 공방)은 어느 언어에서도 한국어 이름 그대로 둔다. 옮겨 적으면
-//     사용자가 스토어에서 그 앱을 못 찾는다.
+//  ⚠️ `name` 은 **그 언어의 스토어에 실제로 올라간 이름**이다. 우리가 지어 부르면
+//     카드에서 본 이름과 스토어에서 만나는 이름이 달라진다. 부제(대시·콜론 뒤)까지
+//     통째로 적는 이유가 그것이다. 짧게 다듬으면 그 순간 다시 어긋난다.
+//
+//     현지화가 없는 언어는 스토어가 한국어 이름을 그대로 보여 준다. 그때는 한국어를
+//     그대로 둔다(무지개 공방은 모든 스토어가, 욕망의 무지개·두번알림은 일본·러시아가
+//     그렇다). 어느 언어에 무엇이 올라가 있는지는 **짐작하지 말고 확인한다**:
+//
+//         curl "https://itunes.apple.com/lookup?id=<앱ID>&country=<kr|us|jp|id|ru|cn|tw>"
+//
+//     스토어 이름이 언어마다 제각각인 앱도 있다(클립키보드 맥: ClipKeyCro · Tap剪贴键盘 ·
+//     短语键盘). 보기 좋게 맞추고 싶으면 여기가 아니라 App Store Connect 에서 고친다.
+//     여기는 스토어를 **비추는** 자리다.
 //  ⚠️ `appStoreID` 는 스토어와의 계약이다. 새 앱을 넣을 때는 실제 ID 를 확인하고 적는다
 //     (`curl "https://itunes.apple.com/lookup?bundleId=<번들ID>"` 로 확인된다).
 //
@@ -50,7 +60,7 @@ public enum LeeoFamilyCatalog {
             ),
             LeeoFamilyApp(
                 id: "clipkeyboard-mac",
-                name: L("클립키보드 for Mac", comment: "Family app name: ClipKeyboard for Mac"),
+                name: L("클립키보드: 빠른 붙여넣기", comment: "Family app name: ClipKeyboard for Mac (store name)"),
                 appStoreID: "6756433372",
                 platforms: [.mac],
                 symbol: "menubar.rectangle",
@@ -74,7 +84,7 @@ public enum LeeoFamilyCatalog {
             ),
             LeeoFamilyApp(
                 id: "rainbow-ios",
-                name: L("욕망의 무지개", comment: "Family app name: Rainbow of Desire (Korean-only listing)"),
+                name: L("욕망의 무지개", comment: "Family app name: Rainbow of Desire (store name)"),
                 appStoreID: "6755280882",
                 platforms: [.iPhone],
                 symbol: "rainbow",
@@ -98,7 +108,7 @@ public enum LeeoFamilyCatalog {
             ),
             LeeoFamilyApp(
                 id: "rainbow-mac",
-                name: L("무지개 공방", comment: "Family app name: Rainbow Workshop (Korean-only listing)"),
+                name: L("무지개 공방", comment: "Family app name: Rainbow Workshop (Korean-only listing, all storefronts)"),
                 appStoreID: "6777737322",
                 platforms: [.mac],
                 symbol: "square.grid.3x3",

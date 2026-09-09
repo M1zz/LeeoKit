@@ -1258,37 +1258,37 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rereminder"
+            "value": "Rereminder - Smart alarm"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rereminder"
+            "value": "Rereminder - Smart alarm"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rereminder"
+            "value": "두번알림"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rereminder"
+            "value": "두번알림"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rereminder"
+            "value": "Rereminder 再提醒"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rereminder"
+            "value": "Rereminder 再提醒"
           }
         }
       }
@@ -3582,13 +3582,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "욕망의 무지개"
+            "value": "Rainbow of Desire"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "욕망의 무지개"
+            "value": "Rainbow of Desire"
           }
         },
         "ja": {
@@ -4807,77 +4807,77 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "ClipKeyboard"
+            "value": "Clip Keyboard - Quick Phrases"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "ClipKeyboard"
+            "value": "Clip Keyboard - Quick Phrases"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "ClipKeyboard"
+            "value": "Clip Keyboard - Quick Phrases"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "ClipKeyboard"
+            "value": "Clip Keyboard - Quick Phrases"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "剪贴键盘"
+            "value": "ClipKeyboard - 快捷短语一键输入"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "剪貼鍵盤"
+            "value": "ClipKeyboard - 快捷短語一鍵輸入"
           }
         }
       }
     },
-    "클립키보드 for Mac": {
+    "클립키보드: 빠른 붙여넣기": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "ClipKeyboard for Mac"
+            "value": "ClipKeyCro"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "ClipKeyboard for Mac"
+            "value": "ClipKeyCro"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "ClipKeyboard for Mac"
+            "value": "클립키보드: 빠른 붙여넣기"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "ClipKeyboard for Mac"
+            "value": "클립키보드: 빠른 붙여넣기"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "剪贴键盘 for Mac"
+            "value": "Tap剪贴键盘"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "剪貼鍵盤 for Mac"
+            "value": "短语键盘"
           }
         }
       }
