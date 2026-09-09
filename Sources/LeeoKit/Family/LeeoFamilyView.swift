@@ -10,6 +10,9 @@
 //    1. **자기 자신은 안 보인다.** 이미 쓰고 있는 앱을 권하면 광고가 된다.
 //    2. **이야기가 먼저, 목록이 나중.** 지금 쓰는 앱이 등장하는 장면부터 보여 준다.
 //    3. **못 받는 것은 못 받는다고 말한다.** 아이폰에서 맥 앱 카드는 그렇게 표시된다.
+//    4. **목록과 상세를 나눈다.** 첫 화면은 한 눈에 훑는 줄만 세우고, 긴 글은 눌러서 본다.
+//       예전에는 이야기가 통째로 펼쳐진 채 쌓여서 첫 화면이 하염없이 길었다. 무엇이
+//       있는지 보려면 끝까지 내려야 했고, 그러느니 아무도 안 내렸다.
 //
 
 import SwiftUI
@@ -54,7 +57,12 @@ public struct LeeoFamilyView<Spec: LeeoAppSpec>: View {
                         note: L("지금 쓰고 계신 앱이 나오는 장면들입니다.",
                                 comment: "Family section note: stories with this app")
                     ) {
-                        ForEach(mine) { LeeoFamilySynergyCard(synergy: $0) }
+                        ForEach(mine) { synergy in
+                            NavigationLink(destination: LeeoFamilySynergyDetailView(synergy: synergy)) {
+                                LeeoFamilySynergyRow(synergy: synergy)
+                            }
+                            .buttonStyle(.plain)
+                        }
                     }
                 }
 
@@ -77,7 +85,12 @@ public struct LeeoFamilyView<Spec: LeeoAppSpec>: View {
                         title: L("다른 조합", comment: "Family section: other combinations"),
                         note: nil
                     ) {
-                        ForEach(rest) { LeeoFamilySynergyCard(synergy: $0) }
+                        ForEach(rest) { synergy in
+                            NavigationLink(destination: LeeoFamilySynergyDetailView(synergy: synergy)) {
+                                LeeoFamilySynergyRow(synergy: synergy)
+                            }
+                            .buttonStyle(.plain)
+                        }
                     }
                 }
 
@@ -188,6 +201,111 @@ public struct LeeoFamilyAppCard: View {
     }
 }
 
+// MARK: - 이야기 줄 (목록)
+
+/// 목록에 세우는 이야기 한 줄. **제목과 장면까지만** 보여 주고 나머지는 눌러서 본다.
+///
+/// 앱 카드(`LeeoFamilyAppCard`)와 같은 모양을 쓴다. 한 화면에 두 가지가 섞여 있는데
+/// 생김새가 다르면 "이건 눌리고 저건 안 눌리나" 를 매번 다시 판단하게 된다.
+public struct LeeoFamilySynergyRow: View {
+    @Environment(\.leeoStyle) private var style
+    let synergy: LeeoFamilySynergy
+
+    public init(synergy: LeeoFamilySynergy) { self.synergy = synergy }
+
+    private var cast: [LeeoFamilyApp] {
+        synergy.appIDs.compactMap { LeeoFamilyCatalog.app(id: $0) }
+    }
+
+    public var body: some View {
+        HStack(alignment: .top, spacing: 14) {
+            // 이야기에는 주인공이 여럿이라 아이콘도 여럿이다. 앱 줄은 하나.
+            // 그 차이가 두 가지를 가르는 유일한 표시다.
+            HStack(spacing: -6) {
+                ForEach(cast) { app in
+                    LeeoFamilyGlyph(symbol: app.symbol, tint: app.tint,
+                                    size: 30, radius: 8)
+                }
+            }
+            .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 5) {
+                Text(synergy.title)
+                    .font(.body).fontWeight(.semibold)
+                    .foregroundStyle(style.text)
+                    .fixedSize(horizontal: false, vertical: true)
+                Text(synergy.scene)
+                    .font(.subheadline)
+                    .foregroundStyle(style.textMuted)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Image(systemName: "chevron.right")
+                .font(.footnote.weight(.semibold))
+                .foregroundStyle(style.textFaint)
+                .padding(.top, 4)
+        }
+        .padding(16)
+        .background(style.surfaceAlt)
+        .clipShape(RoundedRectangle(cornerRadius: style.radiusLg))
+        .contentShape(Rectangle())
+        // 아이콘을 숨겼으므로 나오는 앱 이름은 여기서 읽어 준다.
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(synergy.title), \(synergy.scene)")
+        .accessibilityHint(cast.map(\.name).joined(separator: ", "))
+    }
+}
+
+// MARK: - 이야기 상세
+
+/// 이야기 한 편을 통째로 보여 주는 화면. 줄에서 눌러 들어온다.
+///
+/// 끝에 **나오는 앱들로 건너가는 문**을 둔다. 이야기를 읽고 마음이 움직인 자리가
+/// 바로 여기라, 다시 목록으로 돌아가 그 앱을 찾게 하지 않는다.
+public struct LeeoFamilySynergyDetailView: View {
+    @Environment(\.leeoStyle) private var style
+    let synergy: LeeoFamilySynergy
+
+    public init(synergy: LeeoFamilySynergy) { self.synergy = synergy }
+
+    private var cast: [LeeoFamilyApp] {
+        synergy.appIDs.compactMap { LeeoFamilyCatalog.app(id: $0) }
+    }
+
+    public var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 24) {
+                LeeoFamilySynergyCard(synergy: synergy)
+
+                if !cast.isEmpty {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text(L("이 장면에 나오는 앱", comment: "Family synergy detail: cast"))
+                            .font(.headline)
+                            .foregroundStyle(style.text)
+                        ForEach(cast) { app in
+                            NavigationLink(destination: LeeoFamilyAppDetailView(app: app)) {
+                                LeeoFamilyAppCard(app: app)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 24)
+            .frame(maxWidth: 640, alignment: .leading)
+            .frame(maxWidth: .infinity)
+        }
+        .background(style.bg)
+        .navigationTitle(synergy.title)
+        #if os(iOS)
+        .navigationBarTitleDisplayMode(.inline)
+        #endif
+    }
+}
+
 // MARK: - 이야기 카드
 
 public struct LeeoFamilySynergyCard: View {
@@ -287,7 +405,12 @@ public struct LeeoFamilyAppDetailView: View {
                         Text(L("함께 쓰는 장면", comment: "Family detail: stories"))
                             .font(.headline)
                             .foregroundStyle(style.text)
-                        ForEach(stories) { LeeoFamilySynergyCard(synergy: $0) }
+                        ForEach(stories) { synergy in
+                            NavigationLink(destination: LeeoFamilySynergyDetailView(synergy: synergy)) {
+                                LeeoFamilySynergyRow(synergy: synergy)
+                            }
+                            .buttonStyle(.plain)
+                        }
                     }
                 }
 
