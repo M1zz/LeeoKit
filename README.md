@@ -340,7 +340,11 @@ LeeoFamilySynergy(id: "apply-day", appIDs: ["rainbow-ios", "clipkeyboard", "rere
   한국어 이름 그대로 둔다. 옮겨 적으면 사용자가 스토어에서 그 앱을 못 찾는다.
 - ⚠️ `appStoreID` 는 손으로 적는 값이라 오타가 조용히 산다. 새 앱을 넣을 때 실제 ID 를 확인한다:
   `curl "https://itunes.apple.com/lookup?bundleId=<번들ID>"`
-- 카탈로그의 무결성(죽은 앱 참조·중복 id·어디에도 안 나오는 앱·자기 광고)은
+- ⚠️ 카드에는 **실제 앱 아이콘**이 선다. 각 앱 레포의 AppIcon 원본을 192px PNG 로 줄여
+  `LeeoFamilyIconData` 에 base64 상수로 박아 둔다(리소스 번들을 거치지 않는다).
+  앱을 넣으면 `scripts/embed_family_icons.py` 의 `SOURCES` 에 한 줄 더하고 스크립트를 돌린다.
+  아이콘이 없으면 `symbol`·`tintHex` 로 그린 자리표시로 물러난다.
+- 카탈로그의 무결성(죽은 앱 참조·중복 id·어디에도 안 나오는 앱·자기 광고·빠진 아이콘)은
   `LeeoFamilyTests` 가 지킨다. 앱을 추가하면 테스트가 먼저 알려 준다.
 - 수집하는 것 없음. 누르면 App Store 가 열릴 뿐이다.
 

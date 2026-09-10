@@ -69,7 +69,7 @@ public struct LeeoFamilyApp: Identifiable, Sendable, Equatable {
     public let appStoreID: String
     public let platforms: [LeeoFamilyPlatform]
 
-    /// SF Symbol. 앱 아이콘을 패키지에 싣지 않는 대신 상징 하나로 자리를 잡는다.
+    /// SF Symbol. 아이콘(`iconPNGData`)이 없을 때만 쓰는 자리표시다.
     public let symbol: String
     public let tintHex: String
 
@@ -110,6 +110,13 @@ public struct LeeoFamilyApp: Identifiable, Sendable, Equatable {
 
     public var storeURL: URL? {
         URL(string: "https://apps.apple.com/app/id\(appStoreID)")
+    }
+
+    /// 이 앱의 **실제 앱 아이콘**(PNG). 각 앱 레포의 AppIcon 원본을 줄여
+    /// `LeeoFamilyIconData` 에 상수로 박아 둔 것을 꺼낸다.
+    /// 상징만 그려 두면 카드를 보고 홈 화면이나 스토어에서 그 앱을 알아볼 수 없다.
+    public var iconPNGData: Data? {
+        LeeoFamilyIconData.pngBase64[id].flatMap { Data(base64Encoded: $0) }
     }
 
     /// "아이폰 · 애플워치" 처럼 한 줄로.

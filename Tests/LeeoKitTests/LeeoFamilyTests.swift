@@ -81,6 +81,18 @@ final class LeeoFamilyTests: XCTestCase {
         }
     }
 
+    /// 아이콘이 빠지면 카드가 SF Symbol 자리표시로 조용히 물러난다. 틀려도 화면은 멀쩡해 보이니 여기서 잡는다.
+    func testEveryAppShipsItsAppIcon() {
+        let pngSignature: [UInt8] = [0x89, 0x50, 0x4E, 0x47]
+        for app in LeeoFamilyCatalog.apps {
+            guard let data = app.iconPNGData else {
+                XCTFail("\(app.id): 아이콘이 없다. scripts/embed_family_icons.py 의 SOURCES 에 더하고 다시 돌린다")
+                continue
+            }
+            XCTAssertTrue(data.starts(with: pngSignature), "\(app.id): PNG 가 아니다")
+        }
+    }
+
     // MARK: - 이야기
 
     func testSynergyIDsAreUnique() {

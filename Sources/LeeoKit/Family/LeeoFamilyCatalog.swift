@@ -23,6 +23,9 @@
 //     여기는 스토어를 **비추는** 자리다.
 //  ⚠️ `appStoreID` 는 스토어와의 계약이다. 새 앱을 넣을 때는 실제 ID 를 확인하고 적는다
 //     (`curl "https://itunes.apple.com/lookup?bundleId=<번들ID>"` 로 확인된다).
+//  ⚠️ 앱을 넣으면 **아이콘도 같이 넣는다.** `scripts/embed_family_icons.py` 의 SOURCES 에
+//     그 앱 레포의 AppIcon 원본 경로를 한 줄 더하고 스크립트를 돌리면
+//     `LeeoFamilyIconData` 에 상수로 박힌다. 빠지면 `LeeoFamilyTests` 가 알려 준다.
 //
 
 import Foundation

@@ -114,7 +114,7 @@ public struct LeeoFamilyView<Spec: LeeoAppSpec>: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {
                 ForEach(apps.prefix(4)) { app in
-                    LeeoFamilyGlyph(symbol: app.symbol, tint: app.tint, size: 36, radius: style.radiusSm)
+                    LeeoFamilyIcon(app: app, size: 36)
                 }
             }
             .accessibilityHidden(true)
@@ -175,7 +175,7 @@ public struct LeeoFamilyAppCard: View {
 
     public var body: some View {
         HStack(alignment: .top, spacing: 14) {
-            LeeoFamilyGlyph(symbol: app.symbol, tint: app.tint, size: 44, radius: style.radiusSm)
+            LeeoFamilyIcon(app: app, size: 44)
 
             VStack(alignment: .leading, spacing: 5) {
                 Text(app.name)
@@ -223,8 +223,8 @@ public struct LeeoFamilySynergyRow: View {
             // 그 차이가 두 가지를 가르는 유일한 표시다.
             HStack(spacing: -6) {
                 ForEach(cast) { app in
-                    LeeoFamilyGlyph(symbol: app.symbol, tint: app.tint,
-                                    size: 30, radius: 8)
+                    // 겹쳐 세우므로 바탕색 테를 두른다. 없으면 겹친 자리에서 두 아이콘이 붙어 보인다.
+                    LeeoFamilyIcon(app: app, size: 30, ring: style.surfaceAlt)
                 }
             }
             .accessibilityHidden(true)
@@ -322,7 +322,7 @@ public struct LeeoFamilySynergyCard: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 6) {
                 ForEach(cast) { app in
-                    LeeoFamilyGlyph(symbol: app.symbol, tint: app.tint, size: 26, radius: 7)
+                    LeeoFamilyIcon(app: app, size: 26)
                 }
             }
             .accessibilityHidden(true)
@@ -430,7 +430,7 @@ public struct LeeoFamilyAppDetailView: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 12) {
-            LeeoFamilyGlyph(symbol: app.symbol, tint: app.tint, size: 64, radius: style.radiusLg)
+            LeeoFamilyIcon(app: app, size: 64)
             Text(app.name)
                 .font(.title2).fontWeight(.semibold)
                 .foregroundStyle(style.text)
@@ -534,8 +534,8 @@ public struct LeeoFamilySettingsRow<Spec: LeeoAppSpec>: View {
         if !others.isEmpty {
             NavigationLink(destination: LeeoFamilyView<Spec>()) {
                 HStack(spacing: 12) {
-                    LeeoFamilyGlyph(symbol: "square.stack.3d.up.fill",
-                                    tint: style.accent, size: 32, radius: style.radiusSm)
+                    // 무엇이 들어 있는지 줄에서부터 보이게, 홈 화면 폴더처럼 실제 아이콘을 담는다.
+                    LeeoFamilyIconGrid(apps: others, size: 32)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(L("함께 쓰는 앱", comment: "Family screen title"))
                             .font(.body).fontWeight(.semibold)
@@ -572,6 +572,105 @@ struct LeeoFamilyGlyph: View {
             .accessibilityHidden(true)
     }
 }
+
+/// 스토어에 올라간 실제 앱 아이콘. 파일이 없는 앱만 상징(`LeeoFamilyGlyph`)으로 물러난다.
+///
+/// ⚠️ 모서리는 스타일의 radius 가 아니라 **아이콘 크기에 비례**해 깎는다. 홈 화면 아이콘이
+///    그렇게 생겼고, 앱 룩의 radius 로 깎으면 같은 아이콘이 크기마다 다른 모양이 된다.
+/// ⚠️ 가는 테두리를 두른다. 클립키보드처럼 바탕이 흰 아이콘은 밝은 화면에서 윤곽이 사라진다.
+struct LeeoFamilyIcon: View {
+    let app: LeeoFamilyApp
+    let size: CGFloat
+    /// 아이콘끼리 겹쳐 세울 때 둘레에 두르는 바탕색.
+    var ring: Color? = nil
+
+    private var radius: CGFloat { size * 0.225 }
+    private var ringWidth: CGFloat { ring == nil ? 0 : 1.5 }
+
+    var body: some View {
+        Group {
+            if let image = LeeoFamilyIconStore.image(for: app) {
+                image
+                    .resizable()
+                    .interpolation(.high)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: size, height: size)
+                    .clipShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: radius, style: .continuous)
+                            .strokeBorder(Color.primary.opacity(0.12), lineWidth: 0.5)
+                    )
+            } else {
+                LeeoFamilyGlyph(symbol: app.symbol, tint: app.tint, size: size, radius: radius)
+            }
+        }
+        .padding(ringWidth)
+        .background {
+            if let ring {
+                RoundedRectangle(cornerRadius: radius + ringWidth, style: .continuous).fill(ring)
+            }
+        }
+        .accessibilityHidden(true)
+    }
+}
+
+/// 설정 줄에 세우는 작은 아이콘 묶음. 홈 화면 폴더처럼 네 개까지 두 줄로 담는다.
+struct LeeoFamilyIconGrid: View {
+    @Environment(\.leeoStyle) private var style
+    let apps: [LeeoFamilyApp]
+    let size: CGFloat
+
+    private var gap: CGFloat { size * 0.1 }
+    private var cell: CGFloat { (size - gap * 3) / 2 }
+
+    var body: some View {
+        RoundedRectangle(cornerRadius: size * 0.225, style: .continuous)
+            .fill(style.surfaceAlt)
+            .frame(width: size, height: size)
+            .overlay(
+                VStack(spacing: gap) {
+                    HStack(spacing: gap) { slot(0); slot(1) }
+                    HStack(spacing: gap) { slot(2); slot(3) }
+                }
+            )
+            .accessibilityHidden(true)
+    }
+
+    @ViewBuilder
+    private func slot(_ index: Int) -> some View {
+        if index < apps.count {
+            LeeoFamilyIcon(app: apps[index], size: cell)
+        } else {
+            Color.clear.frame(width: cell, height: cell)
+        }
+    }
+}
+
+/// 아이콘 파일을 한 번만 읽는다. 목록을 굴릴 때마다 PNG 를 디스크에서 다시 풀지 않도록.
+enum LeeoFamilyIconStore {
+    private static let cache = NSCache<NSString, LeeoFamilyPlatformImage>()
+
+    static func image(for app: LeeoFamilyApp) -> Image? {
+        let key = app.id as NSString
+        if let hit = cache.object(forKey: key) { return Image(familyIcon: hit) }
+        guard let data = app.iconPNGData,
+              let loaded = LeeoFamilyPlatformImage(data: data) else { return nil }
+        cache.setObject(loaded, forKey: key)
+        return Image(familyIcon: loaded)
+    }
+}
+
+#if canImport(UIKit)
+typealias LeeoFamilyPlatformImage = UIImage
+private extension Image {
+    init(familyIcon: UIImage) { self.init(uiImage: familyIcon) }
+}
+#elseif canImport(AppKit)
+typealias LeeoFamilyPlatformImage = NSImage
+private extension Image {
+    init(familyIcon: NSImage) { self.init(nsImage: familyIcon) }
+}
+#endif
 
 struct LeeoFamilyPlatformLine: View {
     @Environment(\.leeoStyle) private var style
