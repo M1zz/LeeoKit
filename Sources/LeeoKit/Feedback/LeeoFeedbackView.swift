@@ -11,13 +11,25 @@
 //
 
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+import PhotosUI
+#endif
 
 public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
     @Environment(\.leeoStyle) private var theme
     @Environment(\.dismiss) private var dismiss
 
     @State private var selectedType: LeeoFeedbackType
+    /// 칸을 나눠 받은 답. 열쇠는 `LeeoFeedbackPrompt.id` (번역해도 안 바뀐다).
+    @State private var answers: [String: String] = [:]
+    /// 나눠 묻지 않는 유형의 자유 입력이자, 나눠 묻는 유형의 덧붙임.
     @State private var message: String = ""
+    #if canImport(UIKit)
+    /// 증상 사진. 최대 `maxScreenshots` 장.
+    @State private var screenshots: [LeeoFeedbackShot] = []
+    @State private var pickerItems: [PhotosPickerItem] = []
+    #endif
     @State private var contactName: String
     @State private var contactEmail: String
     @State private var showMailFallback = false
@@ -74,7 +86,11 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     typeSelector
+                    guidedFields
                     messageEditor
+                    #if canImport(UIKit)
+                    if acceptsScreenshots { screenshotPicker }
+                    #endif
                     if showsContactFields { contactFields }
                     deviceInfoCard
                     sendButton
@@ -113,6 +129,7 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                     recipient: Spec.developerEmail,
                     subject: selectedType.emailSubject(appName: Spec.appName),
                     body: buildEmailBody(),
+                    attachments: screenshotData,
                     onFinish: {
                         showMailComposer = false
                         handleSent()
@@ -168,11 +185,172 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
         .accessibilityLabel(type.localizedName)
     }
 
+    // MARK: - 나눠 묻는 칸
+
+    /// 유형이 정한 질문들(`LeeoFeedbackType.prompts`). 없으면 아무것도 안 그린다.
+    ///
+    /// ⚠️ 유형을 바꿔도 적어 둔 답은 지우지 않는다. 버그로 적다가 제안으로 옮겼을 때
+    ///    글이 사라지면 그 자리에서 창을 닫는다. 조립할 때 지금 유형의 칸만 읽으므로
+    ///    남아 있는 답이 섞여 나가지도 않는다(`LeeoFeedbackComposer.compose`).
+    @ViewBuilder
+    private var guidedFields: some View {
+        if !selectedType.prompts.isEmpty {
+            VStack(alignment: .leading, spacing: 16) {
+                ForEach(selectedType.prompts) { prompt in
+                    promptField(prompt)
+                }
+            }
+        }
+    }
+
+    private func promptField(_ prompt: LeeoFeedbackPrompt) -> some View {
+        let binding = Binding(
+            get: { answers[prompt.id] ?? "" },
+            set: { answers[prompt.id] = $0 }
+        )
+        return VStack(alignment: .leading, spacing: 8) {
+            Text(prompt.label)
+                .font(.body)
+                .fontWeight(.semibold)
+                .foregroundColor(theme.text)
+
+            if prompt.isMultiline {
+                ZStack(alignment: .topLeading) {
+                    TextEditor(text: binding)
+                        .font(.body)
+                        .frame(minHeight: 84)
+                        .padding(10)
+                        .background(theme.surfaceAlt)
+                        .cornerRadius(theme.radiusSm)
+                        .scrollContentBackground(.hidden)
+                    if binding.wrappedValue.isEmpty {
+                        Text(prompt.placeholder)
+                            .font(.body)
+                            .foregroundColor(theme.textMuted)
+                            .padding(.horizontal, 14)
+                            .padding(.vertical, 18)
+                            .allowsHitTesting(false)
+                    }
+                }
+            } else {
+                TextField(prompt.placeholder, text: binding)
+                    .font(.body)
+                    .padding(12)
+                    .background(theme.surfaceAlt)
+                    .cornerRadius(theme.radiusSm)
+            }
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(prompt.label)
+    }
+
+    // MARK: - 증상 사진
+
+    #if canImport(UIKit)
+    /// 이 앱이 사진을 받기로 했는가. Dashboard 에 사진 필드를 배포한 앱만 켠다.
+    private var acceptsScreenshots: Bool {
+        Spec.feedback.acceptsScreenshots && selectedType.invitesScreenshot
+    }
+
+    /// 사진은 셋까지. 레코드의 사진 필드 수와 같은 값이다.
+    private static var maxScreenshots: Int { 3 }
+
+    private var screenshotPicker: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(L("증상 사진 (선택)", comment: "Screenshot section label"))
+                .font(.body)
+                .fontWeight(.semibold)
+                .foregroundColor(theme.text)
+
+            Text(L("화면 한 장이 글보다 빠릅니다. 스크린샷을 붙여 주시면 훨씬 정확하게 고칠 수 있어요.",
+                   comment: "Screenshot section hint"))
+                .font(.caption)
+                .foregroundColor(theme.textMuted)
+                .fixedSize(horizontal: false, vertical: true)
+
+            if !screenshots.isEmpty {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 10) {
+                        ForEach(screenshots) { shot in
+                            shotThumbnail(shot)
+                        }
+                    }
+                    .padding(.vertical, 2)
+                }
+            }
+
+            if screenshots.count < Self.maxScreenshots {
+                PhotosPicker(
+                    selection: $pickerItems,
+                    maxSelectionCount: Self.maxScreenshots - screenshots.count,
+                    matching: .images,
+                    photoLibrary: .shared()
+                ) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "photo.badge.plus")
+                        Text(L("사진 붙이기", comment: "Attach screenshot button"))
+                    }
+                    .font(.body)
+                    .padding(.vertical, 12)
+                    .frame(maxWidth: .infinity)
+                    .background(theme.surfaceAlt)
+                    .foregroundColor(theme.text)
+                    .cornerRadius(theme.radiusSm)
+                }
+                .onChange(of: pickerItems) { _, items in
+                    guard !items.isEmpty else { return }
+                    Task { await loadPicked(items) }
+                }
+            }
+        }
+    }
+
+    private func shotThumbnail(_ shot: LeeoFeedbackShot) -> some View {
+        Image(uiImage: shot.image)
+            .resizable()
+            .scaledToFill()
+            .frame(width: 72, height: 72)
+            .clipShape(RoundedRectangle(cornerRadius: theme.radiusSm))
+            .overlay(alignment: .topTrailing) {
+                Button {
+                    screenshots.removeAll { $0.id == shot.id }
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.body)
+                        .foregroundStyle(.white, .black.opacity(0.5))
+                        .padding(3)
+                }
+                .accessibilityLabel(L("이 사진 떼기", comment: "Remove attached screenshot"))
+            }
+            .accessibilityLabel(L("붙인 사진", comment: "Attached screenshot a11y label"))
+    }
+
+    /// 고른 사진을 **줄여서** 들고 있는다. 원본 그대로 올리면 한 장이 몇 MB 라
+    /// CloudKit 저장이 느려지고, 받는 쪽에서 볼 때도 원본이 필요하지 않다.
+    private func loadPicked(_ items: [PhotosPickerItem]) async {
+        var loaded: [LeeoFeedbackShot] = []
+        for item in items {
+            guard let data = try? await item.loadTransferable(type: Data.self),
+                  let image = UIImage(data: data),
+                  let small = image.constrainedSize(maxDimension: 1400),
+                  let jpeg = small.jpegData(compressionQuality: 0.7) else { continue }
+            loaded.append(LeeoFeedbackShot(image: small, jpeg: jpeg))
+        }
+        await MainActor.run {
+            let room = Self.maxScreenshots - screenshots.count
+            screenshots.append(contentsOf: loaded.prefix(max(room, 0)))
+            pickerItems = []
+        }
+    }
+    #endif
+
     // MARK: - Message Editor
 
     private var messageEditor: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(L("내용", comment: "Feedback message label"))
+            Text(selectedType.prompts.isEmpty
+                 ? L("내용", comment: "Feedback message label")
+                 : L("덧붙일 말 (선택)", comment: "Feedback extra note label"))
                 .font(.body)
                 .fontWeight(.semibold)
                 .foregroundColor(theme.text)
@@ -201,6 +379,10 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
     }
 
     private var placeholderText: String {
+        // 칸을 나눠 물은 유형에서는 이 칸이 덧붙임이다. 같은 예시를 두 번 내밀지 않는다.
+        if !selectedType.prompts.isEmpty {
+            return L("더 하실 말씀이 있으면 적어 주세요.", comment: "Extra note placeholder")
+        }
         switch selectedType {
         case .bug:
             return L("어떤 상황에서 문제가 발생했는지 알려주세요.\n예) 단축어를 저장할 때 앱이 종료됩니다.", comment: "Bug report placeholder")
@@ -270,7 +452,8 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
     // MARK: - Send Button
 
     private var sendButton: some View {
-        let isDisabled = message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || isSending
+        let isDisabled = !LeeoFeedbackComposer.canSend(
+            type: selectedType, answers: answers, note: message) || isSending
         return Button(action: sendFeedback) {
             HStack(spacing: 8) {
                 if isSending {
@@ -293,7 +476,7 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
         .disabled(isDisabled)
         .accessibilityLabel(L("피드백 보내기", comment: "Send feedback a11y label"))
         .accessibilityHint(isDisabled
-            ? L("내용을 입력하면 활성화됩니다", comment: "Send button disabled hint")
+            ? L("빈 칸을 채우면 활성화됩니다", comment: "Send button disabled hint v2")
             : L("탭하면 개발자에게 바로 전송됩니다", comment: "Send button enabled hint"))
     }
 
@@ -327,10 +510,11 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
             do {
                 try await LeeoFeedbackService(spec: Spec.self).submit(
                     type: selectedType.rawValue,
-                    message: message,
+                    message: composedMessage,
                     deviceInfo: deviceInfo,
                     contactName: contactName.trimmingCharacters(in: .whitespacesAndNewlines),
-                    contactEmail: contactEmail.trimmingCharacters(in: .whitespacesAndNewlines)
+                    contactEmail: contactEmail.trimmingCharacters(in: .whitespacesAndNewlines),
+                    screenshots: screenshotData
                 )
                 await MainActor.run {
                     isSending = false
@@ -370,8 +554,22 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
         #endif
     }
 
+    /// 나눠 받은 답을 보낼 글 하나로 조립한 것. CloudKit·메일·mailto 가 같은 글을 쓴다.
+    private var composedMessage: String {
+        LeeoFeedbackComposer.compose(type: selectedType, answers: answers, note: message)
+    }
+
+    /// 붙인 사진의 JPEG. 사진을 안 받는 앱에서는 늘 빈 배열이다.
+    private var screenshotData: [Data] {
+        #if canImport(UIKit)
+        return Spec.feedback.acceptsScreenshots ? screenshots.map(\.jpeg) : []
+        #else
+        return []
+        #endif
+    }
+
     private func buildEmailBody() -> String {
-        var lines = [message, "", "---", deviceInfo]
+        var lines = [composedMessage, "", "---", deviceInfo]
         let name = contactName.trimmingCharacters(in: .whitespacesAndNewlines)
         let email = contactEmail.trimmingCharacters(in: .whitespacesAndNewlines)
         if !name.isEmpty { lines.append("\(L("이름", comment: "Contact name label")): \(name)") }
@@ -379,9 +577,18 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
         return lines.joined(separator: "\n")
     }
 
+    /// 사진은 mailto 로 보낼 수 없다. 붙였는데 조용히 빠지면 보낸 사람은 갔다고 믿는다.
+    private var mailtoBody: String {
+        let shots = screenshotData.count
+        guard shots > 0 else { return buildEmailBody() }
+        let note = String(format: L("사진 %d장을 붙이셨는데 이 경로로는 함께 보낼 수 없어요. 메일에 직접 첨부해 주세요.",
+                                    comment: "mailto cannot attach screenshots note"), shots)
+        return buildEmailBody() + "\n\n" + note
+    }
+
     private func openMailtoURL() {
         let subject = selectedType.emailSubject(appName: Spec.appName)
-        let raw = "mailto:\(Spec.developerEmail)?subject=\(subject)&body=\(buildEmailBody())"
+        let raw = "mailto:\(Spec.developerEmail)?subject=\(subject)&body=\(mailtoBody)"
         guard let encoded = raw.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let url = URL(string: encoded) else { return }
         #if os(iOS)

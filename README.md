@@ -238,6 +238,38 @@ LeeoFeedbackInboxView<MyAppSpec>()     // 개발자 인박스
 - 여러 앱이 컨테이너 하나를 공유하는 피드백 허브는 `LeeoFeedbackConfig(appIdentifier:)`로 지원
   (Production 스키마에 appId 필드 배포 필요)
 
+### 무엇을 묻는가 (v3.9)
+
+한 줄만 오는 피드백("왜 오늘은 미리 준비된 답변을 만들 수 없나요?")은 재현할 수가 없다.
+그래서 유형마다 칸을 나눠 묻는다. 답은 꼬리표를 붙여 **한 글로 조립**해 기존 `message`
+필드에 담으므로, 받는 화면·메일 폴백·스키마는 그대로다(`LeeoFeedbackComposer`).
+
+| 유형 | 묻는 것 |
+| --- | --- |
+| 버그 신고 | 언제·무엇을 하다가(필수) · 어떤 일이 일어났는지(필수) · 원래 기대한 결과(선택) |
+| 기능 제안 | 어떤 기능(필수) · 어떤 상황에서 쓸 것 같은지(필수) |
+| 개선 제안 | 어떤 점이 불편했는지(필수) · 그때 무엇을 하고 있었는지(필수) |
+| 사용 방법 문의 · 기타 | 예전처럼 자유 입력 하나 |
+
+필수 칸이 비면 보내기가 잠긴다. 유형을 옮겨 다녀도 적어 둔 답은 지워지지 않고,
+보낼 때는 **그 유형의 칸만** 나간다.
+
+### 증상 사진 (v3.9, 앱이 켜야 동작)
+
+```swift
+static let feedback = LeeoFeedbackConfig(
+    containerIdentifier: "iCloud.com.example.MyApp",
+    acceptsScreenshots: true   // 기본 false
+)
+```
+
+- 버그·개선 제안에서만 사진 칸이 뜬다. 최대 3장, 긴 변 1400px JPEG 로 줄여 올린다
+- 인박스가 썸네일로 보여 준다(`FeedbackRecord.screenshotURLs`)
+- 메일 폴백은 첨부로 함께 가고, mailto 폴백은 못 보내므로 본문에 그 사실을 적는다
+- ⚠️ **켜기 전에** Dashboard 에 `screenshot1` · `screenshot2` · `screenshot3` (Asset) 필드를
+  만들고 Production 으로 배포할 것. 없는 필드로 저장하면 레코드가 통째로 거부된다
+  (사진을 안 붙인 제출은 그 필드를 쓰지 않으므로 켜 두어도 예전 스키마에서 깨지지 않는다)
+
 ## 리뷰 요청 · 만족도 프롬프트
 
 좋은 인상일 때만 App Store 리뷰를 유도하고, 불편한 사용자는 별점 대신 피드백으로 흡수한다.

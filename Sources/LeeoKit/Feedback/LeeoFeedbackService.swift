@@ -72,6 +72,8 @@ public final class LeeoFeedbackService {
         public let createdAt: Date?
         /// 처리 상태 — "done"이면 완료 (개발자가 인박스에서 표시)
         public var status: String?
+        /// 사용자가 붙인 증상 사진 (`screenshot1`~`screenshot3`). 없으면 빈 배열.
+        public let screenshotURLs: [URL]
 
         public var isDone: Bool { status == "done" }
 
@@ -89,7 +91,13 @@ public final class LeeoFeedbackService {
             self.appName = record["appName"] as? String ?? ""
             self.createdAt = record.creationDate
             self.status = record["status"] as? String
+            self.screenshotURLs = Self.screenshotFieldKeys.compactMap {
+                (record[$0] as? CKAsset)?.fileURL
+            }
         }
+
+        /// 사진 필드 이름. 저장하는 쪽(`makeRecord`)과 **같은 목록**을 봐야 한다.
+        static let screenshotFieldKeys = ["screenshot1", "screenshot2", "screenshot3"]
     }
 
     /// 인박스 조회 쿼리 — TRUEPREDICATE라 Production에 recordName Queryable 인덱스가,
@@ -449,7 +457,8 @@ public final class LeeoFeedbackService {
     /// 해당 필드가 없는 기존 Production 스키마(클립키보드 등)와의 호환 유지.
     public static func makeRecord(
         config: LeeoFeedbackConfig, type: String, message: String, deviceInfo: String,
-        contactName: String = "", contactEmail: String = "", appName: String = ""
+        contactName: String = "", contactEmail: String = "", appName: String = "",
+        screenshots: [URL] = []
     ) -> CKRecord {
         let record = CKRecord(recordType: config.recordType)
         record["type"] = type
@@ -473,13 +482,22 @@ public final class LeeoFeedbackService {
             record["appId"] = appId
             if !appName.isEmpty { record["appName"] = appName }
         }
+        // 사진은 **앱이 받기로 한 경우에만** 쓴다(`acceptsScreenshots`). 필드가 배포되지
+        // 않은 스키마에 쓰면 Production 에서 레코드가 통째로 거부된다.
+        if config.acceptsScreenshots {
+            for (index, url) in screenshots.prefix(FeedbackRecord.screenshotFieldKeys.count).enumerated() {
+                record[FeedbackRecord.screenshotFieldKeys[index]] = CKAsset(fileURL: url)
+            }
+        }
         return record
     }
 
     /// 피드백을 Public DB에 제출한다. 실패 시 throw — 호출부에서 이메일 폴백 처리.
+    /// - Parameter screenshots: 증상 사진의 JPEG 데이터. `acceptsScreenshots` 가 꺼져 있으면 버린다.
     public func submit(
         type: String, message: String, deviceInfo: String,
-        contactName: String = "", contactEmail: String = ""
+        contactName: String = "", contactEmail: String = "",
+        screenshots: [Data] = []
     ) async throws {
         let container = CKContainer(identifier: config.containerIdentifier)
 
@@ -490,17 +508,43 @@ public final class LeeoFeedbackService {
             throw FeedbackError.iCloudUnavailable
         }
 
+        // CKAsset 은 파일만 받는다. 보내고 나면 지운다 - 남겨 두면 앱 캐시에 사진이 쌓인다.
+        let shotURLs = config.acceptsScreenshots ? Self.writeTemporary(screenshots) : []
+        defer { for url in shotURLs { try? FileManager.default.removeItem(at: url) } }
+
         let record = Self.makeRecord(
             config: config, type: type, message: message, deviceInfo: deviceInfo,
-            contactName: contactName, contactEmail: contactEmail, appName: appName)
+            contactName: contactName, contactEmail: contactEmail, appName: appName,
+            screenshots: shotURLs)
 
         do {
             _ = try await container.publicCloudDatabase.save(record)
-            print("✅ [LeeoFeedbackService.submit] 피드백 제출 완료 (type=\(type))")
+            print("✅ [LeeoFeedbackService.submit] 피드백 제출 완료 (type=\(type), 사진 \(shotURLs.count)장)")
         } catch {
             print("❌ [LeeoFeedbackService.submit] 제출 실패: \(error)")
             throw FeedbackError.saveFailed(error)
         }
+    }
+}
+
+// MARK: - 사진을 파일로
+
+extension LeeoFeedbackService {
+    /// JPEG 데이터를 임시 파일로 떨어뜨린다. 쓰지 못한 것은 조용히 건너뛴다
+    /// (사진 한 장 때문에 피드백 자체가 안 가는 것이 더 나쁘다).
+    static func writeTemporary(_ shots: [Data]) -> [URL] {
+        let dir = FileManager.default.temporaryDirectory
+        var urls: [URL] = []
+        for data in shots {
+            let url = dir.appendingPathComponent("leeo-feedback-\(UUID().uuidString).jpg")
+            do {
+                try data.write(to: url, options: .atomic)
+                urls.append(url)
+            } catch {
+                print("⚠️ [LeeoFeedbackService] 사진을 임시 파일로 쓰지 못했다: \(error)")
+            }
+        }
+        return urls
     }
 }
 

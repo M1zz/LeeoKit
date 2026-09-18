@@ -257,6 +257,17 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
                 .foregroundColor(record.isDone ? theme.textMuted : theme.text)
                 .textSelection(.enabled)
 
+            // 증상 사진 (붙인 경우에만). 글로 적기 어려운 것이 여기 담겨 온다.
+            if !record.screenshotURLs.isEmpty {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(record.screenshotURLs, id: \.self) { url in
+                            screenshotThumbnail(url)
+                        }
+                    }
+                }
+            }
+
             // 회신 정보 (사용자가 남긴 경우에만)
             if !record.contactName.isEmpty || !record.contactEmail.isEmpty {
                 HStack(spacing: 8) {
@@ -284,6 +295,31 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
                 .foregroundColor(theme.textFaint)
         }
         .padding(.vertical, 4)
+    }
+
+    /// 사진 한 장. CloudKit 이 파일로 내려 주므로 그 파일을 그대로 읽는다.
+    /// ⚠️ 못 읽으면 자리만 비운다. 사진 하나 때문에 목록이 안 그려지면 안 된다.
+    @ViewBuilder
+    private func screenshotThumbnail(_ url: URL) -> some View {
+        #if canImport(UIKit)
+        if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 96, height: 96)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .accessibilityLabel(L("증상 사진", comment: "Inbox: attached screenshot"))
+        }
+        #else
+        if let image = NSImage(contentsOf: url) {
+            Image(nsImage: image)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 96, height: 96)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .accessibilityLabel(L("증상 사진", comment: "Inbox: attached screenshot"))
+        }
+        #endif
     }
 
     private func copyToPasteboard(_ string: String) {

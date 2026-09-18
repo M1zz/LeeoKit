@@ -103,15 +103,25 @@ public struct LeeoFeedbackConfig: Sendable {
     /// ⚠️ nil → 값 전환 시 Production 스키마에 appId 필드 배포가 선행되어야 한다.
     public let appIdentifier: String?
 
+    /// 증상 사진을 함께 받을지. **기본은 안 받는다.**
+    ///
+    /// ⚠️ 켜기 전에 Dashboard 에 `screenshot1` · `screenshot2` · `screenshot3` (Asset) 필드를
+    ///    만들고 Production 으로 배포해야 한다. 없는 필드로 저장하면 Production 에서
+    ///    레코드가 통째로 거부되고, 그러면 피드백이 아예 안 들어온다.
+    ///    (사진을 안 붙인 제출은 그 필드를 쓰지 않으므로, 켜 두어도 예전 스키마에서 깨지지 않는다)
+    public let acceptsScreenshots: Bool
+
     public init(
         containerIdentifier: String,
         recordType: String = "Feedback",
         subscriptionID: String = "feedback-new-v1",
-        appIdentifier: String? = nil
+        appIdentifier: String? = nil,
+        acceptsScreenshots: Bool = false
     ) {
         self.containerIdentifier = containerIdentifier
         self.recordType = recordType
         self.subscriptionID = subscriptionID
         self.appIdentifier = appIdentifier
+        self.acceptsScreenshots = acceptsScreenshots
     }
 }

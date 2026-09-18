@@ -15,6 +15,8 @@ struct LeeoMailComposer: UIViewControllerRepresentable {
     let recipient: String
     let subject: String
     let body: String
+    /// 증상 사진의 JPEG. 메일 컴포저는 첨부를 받으므로 그대로 붙인다.
+    var attachments: [Data] = []
     let onFinish: () -> Void
 
     /// 이 기기에서 Mail 컴포저를 띄울 수 있는지.
@@ -26,6 +28,9 @@ struct LeeoMailComposer: UIViewControllerRepresentable {
         vc.setToRecipients([recipient])
         vc.setSubject(subject)
         vc.setMessageBody(body, isHTML: false)
+        for (index, data) in attachments.enumerated() {
+            vc.addAttachmentData(data, mimeType: "image/jpeg", fileName: "screenshot\(index + 1).jpg")
+        }
         return vc
     }
 
