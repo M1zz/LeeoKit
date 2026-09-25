@@ -111,7 +111,7 @@ public enum LeeoFamilyCatalog {
             ),
             LeeoFamilyApp(
                 id: "rainbow-mac",
-                name: L("무지개 공방", comment: "Family app name: Rainbow Workshop (Korean-only listing, all storefronts)"),
+                name: L("무지개 공방", comment: "Family app name: Rainbow Craft (store name outside Korea: 'Rainbow Craft: Week Planner')"),
                 appStoreID: "6777737322",
                 platforms: [.mac],
                 symbol: "square.grid.3x3",
@@ -265,11 +265,23 @@ public enum LeeoFamilyCatalog {
         return apps.first { $0.appStoreID == storeID }?.id
     }
 
-    /// 자기 자신을 뺀 나머지. 지금 기기에서 받을 수 있는 앱이 앞에 선다.
+    /// 자기 자신을 뺀 나머지. 앱이 앞세운 짝(`familyFeatured`)이 맨 앞, 그다음은
+    /// 지금 기기에서 받을 수 있는 앱이 앞에 선다.
     public static func others<Spec: LeeoAppSpec>(for spec: Spec.Type) -> [LeeoFamilyApp] {
+        let featured = featured(for: spec)
         let me = currentAppID(spec)
-        let rest = apps.filter { $0.id != me }
-        return rest.filter(\.runsOnThisDevice) + rest.filter { !$0.runsOnThisDevice }
+        let rest = apps.filter { $0.id != me && !featured.contains($0) }
+        return featured + rest.filter(\.runsOnThisDevice) + rest.filter { !$0.runsOnThisDevice }
+    }
+
+    /// 이 앱이 가장 먼저 권하는 앱들. 카탈로그에 없는 id와 자기 자신은 조용히 빠진다.
+    public static func featured<Spec: LeeoAppSpec>(for spec: Spec.Type) -> [LeeoFamilyApp] {
+        let me = currentAppID(spec)
+        var seen = Set<String>()
+        return Spec.familyFeatured.compactMap { id in
+            guard id != me, seen.insert(id).inserted else { return nil }
+            return app(id: id)
+        }
     }
 
     /// 이 앱이 등장하는 이야기. 화면 맨 위에 서는 것들이다.

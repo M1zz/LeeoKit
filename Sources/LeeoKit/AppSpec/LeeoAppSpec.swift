@@ -59,6 +59,11 @@ public protocol LeeoAppSpec {
     /// 미지정이면 `appStoreID` 로 카탈로그를 대조한다. 둘 다 없으면 자기 자신도 목록에 남는다.
     static var familyID: String? { get }
 
+    /// 이 앱에서 **가장 먼저** 권할 앱들의 카탈로그 id, 권할 순서대로.
+    /// 두 앱이 한 짝으로 만들어졌을 때(아이폰 앱 ↔ 맥 앱) 짝을 목록 맨 앞에, 따로 세운다.
+    /// 미지정이면 비어 있고, 목록은 "지금 기기에서 받을 수 있는 앱이 앞" 순서 그대로다.
+    static var familyFeatured: [String] { get }
+
     /// 인앱 결제(페이월) 설정. **보통 선언하지 않는다** — `monetization` 에서 자동으로 유도된다.
     /// 직접 선언하면 그 값이 우선하지만, `monetization` 과 어긋나면 Preflight 가 잡아낸다.
     static var paywall: LeeoPaywallConfig? { get }
@@ -70,6 +75,9 @@ public extension LeeoAppSpec {
 
     /// 기본값. 카탈로그를 `appStoreID` 로 대조한다.
     static var familyID: String? { nil }
+
+    /// 기본값 — 따로 앞세우는 앱 없음.
+    static var familyFeatured: [String] { [] }
 
     /// 기본값 — 선언하지 않은 항목은 전부 `.unknown`.
     static var capabilities: LeeoCapabilities { .undeclared }

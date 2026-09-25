@@ -44,6 +44,18 @@ private enum PinnedSpec: LeeoAppSpec {
     static let familyID: String? = "rereminder"
 }
 
+/// 짝(맥 앱)을 앞세운 아이폰 앱. 짝이 아이폰에서 못 받는 앱이어도 맨 앞에 서야 한다.
+/// 자기 자신·없는 id·중복은 조용히 빠져야 한다.
+private enum PairedSpec: LeeoAppSpec {
+    static let appName = "Rainbow"
+    static let developerEmail = "leeo@kakao.com"
+    static let feedback = LeeoFeedbackConfig(containerIdentifier: "iCloud.com.Ysoup.Rainbow")
+    static let legal = LeeoLegalConfig(privacyURL: privacy, supportURL: support)
+    static let monetization = LeeoMonetization.free
+    static let familyID: String? = "rainbow-ios"
+    static let familyFeatured = ["rainbow-mac", "rainbow-ios", "no-such-app", "rainbow-mac"]
+}
+
 final class LeeoFamilyTests: XCTestCase {
 
     // MARK: - 카탈로그 무결성
@@ -160,5 +172,24 @@ final class LeeoFamilyTests: XCTestCase {
         let others = LeeoFamilyCatalog.others(for: ClipSpec.self)
         let flags = others.map(\.runsOnThisDevice)
         XCTAssertEqual(flags, flags.sorted(by: { $0 && !$1 }), "설치 가능한 앱이 뒤로 밀렸다")
+    }
+
+    // MARK: - 앞세운 짝
+
+    func testFeaturedDropsSelfUnknownAndDuplicates() {
+        XCTAssertEqual(LeeoFamilyCatalog.featured(for: PairedSpec.self).map(\.id), ["rainbow-mac"])
+    }
+
+    /// 짝은 기기에서 받을 수 있는지와 상관없이 맨 앞이고, 한 번만 나온다.
+    func testOthersPutFeaturedFirst() {
+        let others = LeeoFamilyCatalog.others(for: PairedSpec.self)
+        XCTAssertEqual(others.first?.id, "rainbow-mac")
+        XCTAssertEqual(others.filter { $0.id == "rainbow-mac" }.count, 1)
+        XCTAssertFalse(others.contains { $0.id == "rainbow-ios" }, "자기 자신을 자기가 광고한다")
+        XCTAssertEqual(others.count, LeeoFamilyCatalog.apps.count - 1)
+    }
+
+    func testNoFeaturedByDefault() {
+        XCTAssertTrue(LeeoFamilyCatalog.featured(for: ClipSpec.self).isEmpty)
     }
 }

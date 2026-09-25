@@ -2128,37 +2128,37 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "무지개 공방"
+            "value": "Rainbow Craft"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "무지개 공방"
+            "value": "Rainbow Craft"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "무지개 공방"
+            "value": "Rainbow Craft"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "무지개 공방"
+            "value": "Rainbow Craft"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "무지개 공방"
+            "value": "Rainbow Craft"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "무지개 공방"
+            "value": "Rainbow Craft"
           }
         },
         "ko": {
@@ -7806,6 +7806,98 @@
           "stringUnit": {
             "state": "translated",
             "value": "사진 %d장을 붙이셨는데 이 경로로는 함께 보낼 수 없어요. 메일에 직접 첨부해 주세요."
+          }
+        }
+      }
+    },
+    "이 앱과 짝인 앱": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 앱과 짝인 앱"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Made to pair with this app"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このアプリと対になるアプリ"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "与本应用配套的应用"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "與本 App 配套的 App"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pasangan aplikasi ini"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Парное приложение"
+          }
+        }
+      }
+    },
+    "같은 목록을 나눠 쓰도록 함께 만든 앱입니다.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "같은 목록을 나눠 쓰도록 함께 만든 앱입니다."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Built together to share the same list."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同じリストを分け合って使うために一緒に作られたアプリです。"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "为共用同一份清单而一同打造的应用。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "為共用同一份清單而一同打造的 App。"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dibuat bersama untuk berbagi daftar yang sama."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сделано вместе, чтобы делить один и тот же список."
           }
         }
       }

@@ -28,6 +28,8 @@ public struct LeeoFamilyView<Spec: LeeoAppSpec>: View {
     @Environment(\.leeoStyle) private var style
 
     private let apps: [LeeoFamilyApp]
+    /// 이 앱이 앞세운 짝 (→ `LeeoAppSpec.familyFeatured`). `apps` 에는 들어 있지 않다.
+    private let featured: [LeeoFamilyApp]
     private let mine: [LeeoFamilySynergy]
     private let rest: [LeeoFamilySynergy]
 
@@ -35,7 +37,9 @@ public struct LeeoFamilyView<Spec: LeeoAppSpec>: View {
     ///   - apps: 목록을 직접 넘기고 싶을 때 (기본값은 카탈로그에서 자기 자신을 뺀 것).
     ///   - synergies: 이야기를 직접 넘기고 싶을 때.
     public init(apps: [LeeoFamilyApp]? = nil, synergies: [LeeoFamilySynergy]? = nil) {
-        self.apps = apps ?? LeeoFamilyCatalog.others(for: Spec.self)
+        let featured = apps == nil ? LeeoFamilyCatalog.featured(for: Spec.self) : []
+        self.featured = featured
+        self.apps = (apps ?? LeeoFamilyCatalog.others(for: Spec.self)).filter { !featured.contains($0) }
         if let synergies {
             let me = LeeoFamilyCatalog.currentAppID(Spec.self)
             self.mine = synergies.filter { $0.involves(me) }
@@ -50,6 +54,22 @@ public struct LeeoFamilyView<Spec: LeeoAppSpec>: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
                 hero
+
+                // 짝은 이야기보다도 먼저 선다. 이 앱을 쓰는 사람에게 가장 먼저 필요한 다른 앱이다.
+                if !featured.isEmpty {
+                    section(
+                        title: L("이 앱과 짝인 앱", comment: "Family section: featured partner apps"),
+                        note: L("같은 목록을 나눠 쓰도록 함께 만든 앱입니다.",
+                                comment: "Family section note: featured partner apps")
+                    ) {
+                        ForEach(featured) { app in
+                            NavigationLink(destination: LeeoFamilyAppDetailView(app: app)) {
+                                LeeoFamilyAppCard(app: app)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                }
 
                 if !mine.isEmpty {
                     section(
@@ -113,7 +133,7 @@ public struct LeeoFamilyView<Spec: LeeoAppSpec>: View {
     private var hero: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {
-                ForEach(apps.prefix(4)) { app in
+                ForEach((featured + apps).prefix(4)) { app in
                     LeeoFamilyIcon(app: app, size: 36)
                 }
             }
