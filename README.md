@@ -329,7 +329,7 @@ WindowGroup { RootView().environmentObject(store) }
 - 화면은 `.leeoStyle(...)`로 앱 테마 룩 주입 (없으면 시스템 색)
 - 구독 상품은 가격 옆에 "월/년" 기간이 자동 표기, 상품 카드 순서 = `productIDs` 순서
 - `entitlementIDs`로 "판매는 안 하지만 권한만 인정할" ID를 따로 지정 가능 (기본: 판매 상품 전체)
-- 다국어(ko/en/ja)는 패키지에 내장 (미번역 키는 한국어로 폴백)
+- 다국어는 패키지에 내장 (패키지에 없는 언어의 기기는 영어로 떨어진다 → [다국어](#다국어))
 - 테스트는 Xcode의 `.storekit` Configuration 또는 샌드박스 계정으로 확인
 - `store.gate` 로 "지금 페이월을 띄워야 하나"를 판정한다 (위 [수익모델과 게이트](#수익모델과-게이트-leeomonetization))
 
@@ -379,6 +379,18 @@ LeeoFamilySynergy(id: "apply-day", appIDs: ["rainbow-ios", "clipkeyboard", "rere
 - 카탈로그의 무결성(죽은 앱 참조·중복 id·어디에도 안 나오는 앱·자기 광고·빠진 아이콘)은
   `LeeoFamilyTests` 가 지킨다. 앱을 추가하면 테스트가 먼저 알려 준다.
 - 수집하는 것 없음. 누르면 App Store 가 열릴 뿐이다.
+
+## 다국어
+
+원문은 한국어(카탈로그 `sourceLanguage = ko`)이고 en·ja·zh-Hans·zh-Hant·id·ru 번역을 담는다.
+
+- **기본 언어는 en이다** (`defaultLocalization`, v3.10). 기기 언어가 패키지에 없는 언어면
+  (독일어 등) 영어로 떨어진다. 전에는 ko여서 외국 사용자에게 한국어가 떴다.
+- ⚠️ 그래서 카탈로그에 **ko 값을 명시**해 둬야 한다. 원문 언어라도 값이 없으면 ko.lproj가
+  안 생기고, 그러면 한국어 사용자가 영어를 본다. 문자열을 넣은 뒤 한 번 돌린다:
+  `python3 scripts/fill-source-ko.py` — 빠뜨리면 `LocalizationFallbackTests`가 잡는다.
+- ⚠️ 번역이 빠진 줄은 그 언어의 사용자에게 **한국어 키 그대로** 보인다 (ru·id는 아직 몇 줄 빠져 있다).
+- 앱도 같은 모양이면 같은 세 가지(개발 지역 en · `CFBundleLocalizations` · 카탈로그 ko 값)가 필요하다.
 
 ## 3.0 마이그레이션
 

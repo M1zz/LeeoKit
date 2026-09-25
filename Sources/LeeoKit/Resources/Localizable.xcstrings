@@ -112,6 +112,12 @@
             "state": "translated",
             "value": "用 %@ 用得還開心嗎？"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@를 즐겁게 쓰고 계신가요?"
+          }
         }
       }
     },
@@ -151,6 +157,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "空出五分鐘，卻不知道先做什麼時"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5분이 비었는데 무엇부터 할지 모를 때"
           }
         }
       }
@@ -192,6 +204,12 @@
             "state": "translated",
             "value": "在 App Store 中查看"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store 에서 보기"
+          }
         }
       }
     },
@@ -225,6 +243,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "把這個 ID 加到 CloudKit Dashboard 的 admin 角色裡，就能在 App 內讀取所有意見回饋。點一下即可複製。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CloudKit Dashboard의 admin 역할에 이 ID를 추가하면 앱에서 모든 피드백을 읽을 수 있어요. 탭하면 복사됩니다."
           }
         }
       }
@@ -260,6 +284,12 @@
             "state": "translated",
             "value": "沒有設定「郵件」App。要透過 mailto: 連結開啟其他郵件 App 嗎？"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mail 앱이 설정되어 있지 않습니다. mailto: 링크로 다른 메일 앱을 열겠습니까?"
+          }
         }
       }
     },
@@ -293,6 +323,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "還沒有登入 iCloud"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud에 로그인되어 있지 않아요"
           }
         }
       }
@@ -334,6 +370,12 @@
             "state": "translated",
             "value": "用同一個 iCloud 的兩個應用，看到的是同一批待辦。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "같은 iCloud 를 쓰는 두 앱은 같은 할 일을 봅니다."
+          }
         }
       }
     },
@@ -373,6 +415,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "一天要發好幾次相同回覆的人"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "같은 답장을 하루에도 몇 번씩 보내는 사람"
           }
         }
       }
@@ -414,6 +462,12 @@
             "state": "translated",
             "value": "同樣的句子不用再寫一遍，截止也不會錯過。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "같은 문장을 다시 쓰지 않고, 마감을 놓치지 않습니다."
+          }
         }
       }
     },
@@ -454,6 +508,12 @@
             "state": "translated",
             "value": "都是同一個人做的應用。彼此有重疊的地方，放在一起，一天就接得上。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "같은 사람이 만든 앱들입니다. 겹치는 자리가 있어서, 붙여 두면 하루가 이어집니다."
+          }
         }
       }
     },
@@ -481,6 +541,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "改進建議"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "개선 제안"
           }
         }
       }
@@ -522,6 +588,12 @@
             "state": "translated",
             "value": "越重疊越濃的一周，和現在就能動手的那件事"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "겹칠수록 진해지는 한 주, 지금 집을 수 있는 일"
+          }
         }
       }
     },
@@ -561,6 +633,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "簽約或搬家這種要反復寫號碼和地址的日子。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "계약이나 이사처럼 번호와 주소를 여러 번 적어 내는 날."
           }
         }
       }
@@ -602,6 +680,12 @@
             "state": "translated",
             "value": "把帳號、地址、問候語這些每次都要重打的句子存起來，在任何應用裡都能直接從鍵盤貼上。複製過的內容會自己分好類堆在那裡。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "계좌번호, 주소, 인사말처럼 매번 다시 치는 문장을 모아 두고 어느 앱에서든 키보드에서 바로 붙여넣습니다. 복사한 것은 스스로 갈래를 나눠 쌓입니다."
+          }
         }
       }
     },
@@ -642,6 +726,12 @@
             "state": "translated",
             "value": "每次都要翻找帳號或地址的人"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "계좌번호나 주소를 매번 찾아 헤매는 사람"
+          }
         }
       }
     },
@@ -675,6 +765,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "如果是權限錯誤，請確認 CloudKit Dashboard 裡 admin 角色有 read 權限，並且包含下面這個使用者 ID。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "권한 오류라면 CloudKit Dashboard에서 admin 역할에 read 권한과 아래 사용자 ID를 등록했는지 확인하세요."
           }
         }
       }
@@ -710,6 +806,12 @@
             "state": "translated",
             "value": "功能建議"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기능 제안"
+          }
         }
       }
     },
@@ -743,6 +845,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "其他"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기타"
           }
         }
       }
@@ -784,6 +892,12 @@
             "state": "translated",
             "value": "結束之前會再響一次的計時器"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "끝나기 전에 한 번 더 울리는 타이머"
+          }
         }
       }
     },
@@ -817,6 +931,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "以後"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "나중에"
           }
         }
       }
@@ -852,6 +972,12 @@
             "state": "translated",
             "value": "沒有日期"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "날짜 없음"
+          }
         }
       }
     },
@@ -885,6 +1011,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "留下聯繫方式，我們就能回覆你。只存在這台裝置上，下次會自動幫你填好。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "남겨주시면 답변을 드릴 수 있어요. 이 기기에만 저장해 다음에 다시 채워드려요."
           }
         }
       }
@@ -920,6 +1052,12 @@
             "state": "translated",
             "value": "我的使用者 ID"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "내 사용자 ID"
+          }
         }
       }
     },
@@ -953,6 +1091,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "內容"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "내용"
           }
         }
       }
@@ -988,6 +1132,12 @@
             "state": "translated",
             "value": "輸入內容後即可使用"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "내용을 입력하면 활성화됩니다"
+          }
         }
       }
     },
@@ -1022,6 +1172,12 @@
             "state": "translated",
             "value": "好，挺喜歡的 👍"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "네, 좋아요 👍"
+          }
         }
       }
     },
@@ -1055,6 +1211,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "用其他郵件 App 開啟"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다른 메일 앱으로 열기"
           }
         }
       }
@@ -1096,6 +1258,12 @@
             "state": "translated",
             "value": "其他應用"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다른 앱"
+          }
         }
       }
     },
@@ -1135,6 +1303,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "其他組合"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다른 조합"
           }
         }
       }
@@ -1176,6 +1350,12 @@
             "state": "translated",
             "value": "掂量下周還能不能再加一個約時"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다음 주에 약속을 하나 더 넣어도 되는지 가늠할 때"
+          }
         }
       }
     },
@@ -1209,6 +1389,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "關閉"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "닫기"
           }
         }
       }
@@ -1250,6 +1436,12 @@
             "state": "translated",
             "value": "為需要整塊時間的事留出時間的一天。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "덩어리로 해야 하는 일에 시간을 떼어 둔 날."
+          }
         }
       }
     },
@@ -1289,6 +1481,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "Rereminder 再提醒"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "두번알림"
           }
         }
       }
@@ -1330,6 +1528,12 @@
             "state": "translated",
             "value": "用 Rereminder 計一個小時，結束前十分鐘收到收尾的信號。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "두번알림으로 한 시간을 재고, 끝나기 10분 전에 마무리 신호를 받습니다."
+          }
         }
       }
     },
@@ -1370,6 +1574,12 @@
             "state": "translated",
             "value": "留出的時間不會被敲成碎片。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "떼어 둔 시간이 조각으로 부서지지 않습니다."
+          }
         }
       }
     },
@@ -1403,6 +1613,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "寫評價"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "리뷰 남기기"
           }
         }
       }
@@ -1444,6 +1660,12 @@
             "state": "translated",
             "value": "曾經臨到截止才發現而手忙腳亂的人"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "마감 직전에야 알아차려 곤란했던 사람"
+          }
         }
       }
     },
@@ -1483,6 +1705,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "有截止的地方交給 Rereminder。提前三十分鐘和五分鐘各響一次。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "마감이 있는 곳은 두번알림에 걸어 둡니다. 30분 전과 5분 전에 한 번 더 울립니다."
           }
         }
       }
@@ -1524,6 +1752,12 @@
             "state": "translated",
             "value": "Mac"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "맥"
+          }
         }
       }
     },
@@ -1563,6 +1797,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "坐到 Mac 前的早晨"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "맥 앞에 앉은 아침"
           }
         }
       }
@@ -1604,6 +1844,12 @@
             "state": "translated",
             "value": "在 Mac 上寫郵件，卻需要存在手機裡的那句話時"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "맥에서 메일을 쓰다 폰에 저장해 둔 문구가 필요할 때"
+          }
         }
       }
     },
@@ -1643,6 +1889,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "開啟 Mac、把今天的活兒安排好的三十分鐘。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "맥을 켜고 오늘 할 일을 앉히는 삼십 분."
           }
         }
       }
@@ -1684,6 +1936,12 @@
             "state": "translated",
             "value": "在菜單欄點一下，Mac 上也是同樣的句子"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "메뉴바에서 한 번, 맥에서도 같은 문장"
+          }
         }
       }
     },
@@ -1717,6 +1975,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "無法開啟郵件 App"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "메일 앱을 열 수 없습니다"
           }
         }
       }
@@ -1758,6 +2022,12 @@
             "state": "translated",
             "value": "郵件和文檔工作都在 Mac 上完成的人"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "메일과 문서 작업이 맥에서 끝나는 사람"
+          }
         }
       }
     },
@@ -1797,6 +2067,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "郵件和文檔裡要用的句子，從菜單欄的剪貼鍵盤用快速鍵取出。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "메일과 문서에 들어갈 문장은 메뉴바의 클립키보드에서 단축키로 꺼냅니다."
           }
         }
       }
@@ -1838,6 +2114,12 @@
             "state": "translated",
             "value": "這是做什麼的應用"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "무엇을 하는 앱인가"
+          }
         }
       }
     },
@@ -1874,6 +2156,12 @@
           }
         },
         "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "무지개 공방"
+          }
+        },
+        "ko": {
           "stringUnit": {
             "state": "translated",
             "value": "무지개 공방"
@@ -1918,6 +2206,12 @@
             "state": "translated",
             "value": "在 무지개 공방 裡，把今天要做的事拖進當天那一列。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "무지개 공방에서 오늘 요일 칸에 할 일을 끌어다 놓습니다."
+          }
         }
       }
     },
@@ -1958,6 +2252,12 @@
             "state": "translated",
             "value": "客服回覆、投遞申請、預訂確認這類句子不斷重複的事"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "문의 답변, 지원서, 예약 확인처럼 문장이 반복되는 일"
+          }
         }
       }
     },
@@ -1991,6 +2291,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "咨詢類型"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "문의 유형"
           }
         }
       }
@@ -2032,6 +2338,12 @@
             "state": "translated",
             "value": "在外面用手機把待辦拆成步驟。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "밖에서는 폰으로 할 일을 단계로 쪼갭니다."
+          }
         }
       }
     },
@@ -2065,6 +2377,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "收到 %d 條意見回饋"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "받은 피드백 %d건"
           }
         }
       }
@@ -2106,6 +2424,12 @@
             "state": "translated",
             "value": "演講或考試這類需要分配剩餘時間的場合"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "발표나 시험처럼 남은 시간을 배분해야 할 때"
+          }
         }
       }
     },
@@ -2139,6 +2463,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "報告問題"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "버그 신고"
           }
         }
       }
@@ -2174,6 +2504,12 @@
             "state": "translated",
             "value": "版本"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "버전"
+          }
         }
       }
     },
@@ -2208,6 +2544,12 @@
             "state": "translated",
             "value": "發送"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "보내기"
+          }
         }
       }
     },
@@ -2241,6 +2583,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "發送中…"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "보내는 중…"
           }
         }
       }
@@ -2282,6 +2630,12 @@
             "state": "translated",
             "value": "複製過的帳號和地址，剪貼鍵盤會分好類留著。不用再翻找。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "복사한 계좌번호와 주소는 클립키보드가 갈래를 나눠 쌓아 둡니다. 다시 찾아 헤맬 일이 없습니다."
+          }
         }
       }
     },
@@ -2322,6 +2676,12 @@
             "state": "translated",
             "value": "剛複製過的內容，過一會兒又要用的時候"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "복사해 둔 것을 조금 뒤에 다시 찾아야 할 때"
+          }
         }
       }
     },
@@ -2355,6 +2715,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "載入中…"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "불러오는 중…"
           }
         }
       }
@@ -2390,6 +2756,12 @@
             "state": "translated",
             "value": "有什麼不便或建議，都可以寫下來"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "불편하신 점이나 제안 사항을 자유롭게 적어주세요"
+          }
         }
       }
     },
@@ -2423,6 +2795,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "使用方法咨詢"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "사용 방법 문의"
           }
         }
       }
@@ -2458,6 +2836,12 @@
             "state": "translated",
             "value": "有使用者留言了。到收件匣看看吧。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "사용자가 의견을 남겼어요. 인박스에서 확인해 보세요."
+          }
         }
       }
     },
@@ -2491,6 +2875,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "刪除"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "삭제"
           }
         }
       }
@@ -2532,6 +2922,12 @@
             "state": "translated",
             "value": "對方答應確認的時間點，交給 Rereminder。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "상대가 확인해 주기로 한 시각은 두번알림에 겁니다."
+          }
         }
       }
     },
@@ -2565,6 +2961,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "新意見回饋提醒"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "새 피드백 알림"
           }
         }
       }
@@ -2600,6 +3002,12 @@
             "state": "translated",
             "value": "有新意見回饋了 📬"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "새 피드백이 도착했어요 📬"
+          }
         }
       }
     },
@@ -2634,6 +3042,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "有新意見回饋時會給這台裝置發推送通知。需要先設定好 CloudKit admin 角色的 read 權限。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "새 피드백이 접수되면 이 기기로 푸시 알림이 와요. CloudKit admin 역할의 read 권한 설정 후에 동작해요."
           }
         }
       }
@@ -2675,6 +3089,12 @@
             "state": "translated",
             "value": "檔案來回的下午"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "서류가 오가는 오후"
+          }
         }
       }
     },
@@ -2708,6 +3128,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "會從服務器上徹底刪除，無法復原。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "서버에서 완전히 삭제되며 되돌릴 수 없어요."
           }
         }
       }
@@ -2749,6 +3175,12 @@
             "state": "translated",
             "value": "不想把手從鍵盤上移開就完成貼上時"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "손을 키보드에서 떼지 않고 붙여넣고 싶을 때"
+          }
         }
       }
     },
@@ -2789,6 +3221,12 @@
             "state": "translated",
             "value": "掐著時間工作的人"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "시간을 재며 일하는 사람"
+          }
         }
       }
     },
@@ -2822,6 +3260,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "有點不滿意"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "아쉬운 점이 있어요"
           }
         }
       }
@@ -2863,6 +3307,12 @@
             "state": "translated",
             "value": "iPad"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "아이패드"
+          }
         }
       }
     },
@@ -2902,6 +3352,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "iPhone"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "아이폰"
           }
         }
       }
@@ -2943,6 +3399,12 @@
             "state": "translated",
             "value": "在 iPhone 上攢下的句子會透過 iCloud 跟到 Mac。用菜單欄圖標或全域快速鍵，在任何應用裡都能取出來貼上。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "아이폰에서 모은 문장이 iCloud 로 맥에 따라옵니다. 메뉴바 아이콘이나 전역 단축키로 어느 앱에서든 꺼내 붙여넣습니다."
+          }
         }
       }
     },
@@ -2977,6 +3439,12 @@
             "state": "translated",
             "value": "還沒有收到意見回饋"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "아직 접수된 피드백이 없어요"
+          }
         }
       }
     },
@@ -3005,6 +3473,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "通知權限沒開啟。請在「iOS 設定 > %@ > 通知」裡允許。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "알림 권한이 꺼져 있어요. iOS 설정 > %@ > 알림에서 허용해 주세요."
           }
         }
       }
@@ -3046,6 +3520,12 @@
             "state": "translated",
             "value": "Apple Watch"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "애플워치"
+          }
         }
       }
     },
@@ -3086,6 +3566,12 @@
             "state": "translated",
             "value": "它會在約定時間之前先響，於是你不是等著的那一方，而是先聯繫的那一方。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "약속한 시간보다 먼저 울리니, 기다리는 쪽이 아니라 먼저 연락하는 쪽이 됩니다."
+          }
         }
       }
     },
@@ -3119,6 +3605,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "你希望有什麼功能？\n例）希望能把短語按資料夾歸類。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "어떤 기능이 있으면 좋겠나요?\n예) 단축어를 폴더로 묶는 기능이 필요해요."
           }
         }
       }
@@ -3154,6 +3646,12 @@
             "state": "translated",
             "value": "你想瞭解哪方面？\n例）剪貼簿歷史在哪裡看？"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "어떤 부분이 궁금하신가요?\n예) 클립보드 히스토리는 어떻게 보나요?"
+          }
         }
       }
     },
@@ -3188,6 +3686,12 @@
             "state": "translated",
             "value": "請告訴我們問題是在什麼情況下發生的。\n例）儲存短語時 App 會閃退。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "어떤 상황에서 문제가 발생했는지 알려주세요.\n예) 단축어를 저장할 때 앱이 종료됩니다."
+          }
         }
       }
     },
@@ -3215,6 +3719,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "哪裡讓你覺得不方便？也告訴我們怎麼改會更好。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "어떤 점이 불편하셨나요? 어떻게 바뀌면 더 좋을지 알려주세요."
           }
         }
       }
@@ -3256,6 +3766,12 @@
             "state": "translated",
             "value": "想提前知道哪天會忙起來的人"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "언제 바빠지는지 미리 알고 싶은 사람"
+          }
         }
       }
     },
@@ -3295,6 +3811,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "這裡不收集任何東西。只有你點了，App Store 才會開啟。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "여기서 아무것도 수집하지 않습니다. 눌러야만 App Store 가 열립니다."
           }
         }
       }
@@ -3336,6 +3858,12 @@
             "state": "translated",
             "value": "要往十個地方投遞差不多材料的一天。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "열 군데에 비슷한 서류를 넣어야 하는 하루."
+          }
         }
       }
     },
@@ -3369,6 +3897,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "右滑標為已處理（只存在這台裝置上），左滑刪除。刪除需要 CloudKit admin 角色有寫入權限才會生效。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "오른쪽으로 밀면 완료 표시(이 기기에만 저장돼요), 왼쪽으로 밀면 삭제. 삭제는 CloudKit admin 역할에 쓰기 권한이 있어야 반영돼요."
           }
         }
       }
@@ -3404,6 +3938,12 @@
             "state": "translated",
             "value": "完成"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "완료"
+          }
         }
       }
     },
@@ -3437,6 +3977,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "標為已處理"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "완료 표시"
           }
         }
       }
@@ -3472,6 +4018,12 @@
             "state": "translated",
             "value": "取消已處理"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "완료 해제"
+          }
         }
       }
     },
@@ -3505,6 +4057,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "已處理的意見回饋"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "완료된 피드백"
           }
         }
       }
@@ -3540,6 +4098,12 @@
             "state": "translated",
             "value": "查看 %d 條已處理的意見回饋"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "완료된 피드백 %d건 모아보기"
+          }
         }
       }
     },
@@ -3573,6 +4137,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "沒有已處理的意見回饋"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "완료된 피드백이 없어요"
           }
         }
       }
@@ -3610,6 +4180,12 @@
           }
         },
         "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "욕망의 무지개"
+          }
+        },
+        "ko": {
           "stringUnit": {
             "state": "translated",
             "value": "욕망의 무지개"
@@ -3654,6 +4230,12 @@
             "state": "translated",
             "value": "욕망의 무지개 把投申請拆成步驟。貼上自我介紹這一步，仍然是五分鐘的碎片。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "욕망의 무지개가 '지원서 넣기'를 단계로 쪼갭니다. 자기소개를 붙여넣는 일은 5분 조각으로 남습니다."
+          }
         }
       }
     },
@@ -3693,6 +4275,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "욕망의 무지개 會先告訴你，這件事是整塊，不是碎片。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "욕망의 무지개가 이 일은 조각이 아니라 덩어리라고 먼저 말해 줍니다."
           }
         }
       }
@@ -3734,6 +4322,12 @@
             "state": "translated",
             "value": "運動和學習這類分段使用的時間"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "운동과 공부처럼 구간을 나눠 쓰는 시간"
+          }
         }
       }
     },
@@ -3767,6 +4361,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "把你的想法告訴我們，這個 App 會變得更好。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "의견을 들려주시면 더 좋은 앱으로 만들 수 있어요."
           }
         }
       }
@@ -3808,6 +4408,12 @@
             "state": "translated",
             "value": "這台裝置裝不了。只會開啟商店頁面。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 기기에서는 설치할 수 없습니다. 스토어 페이지만 열립니다."
+          }
         }
       }
     },
@@ -3848,6 +4454,12 @@
             "state": "translated",
             "value": "這個場景裡出現的應用"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 장면에 나오는 앱"
+          }
         }
       }
     },
@@ -3881,6 +4493,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "要刪除這條意見回饋嗎？"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 피드백을 삭제할까요?"
           }
         }
       }
@@ -3922,6 +4540,12 @@
             "state": "translated",
             "value": "適合這樣的人"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이런 분에게"
+          }
         }
       }
     },
@@ -3961,6 +4585,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "這些時候好用"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이럴 때 좋아요"
           }
         }
       }
@@ -4002,6 +4632,12 @@
             "state": "translated",
             "value": "它們這樣連起來"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이렇게 이어집니다"
+          }
         }
       }
     },
@@ -4029,6 +4665,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "姓名"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이름"
           }
         }
       }
@@ -4058,6 +4700,12 @@
             "state": "translated",
             "value": "姓名（可選）"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이름 (선택)"
+          }
         }
       }
     },
@@ -4085,6 +4733,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "信箱"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이메일"
           }
         }
       }
@@ -4126,6 +4780,12 @@
             "state": "translated",
             "value": "星期天晚上，提前把下一周安排好時"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "일요일 저녁, 다음 한 주를 미리 앉혀 둘 때"
+          }
         }
       }
     },
@@ -4166,6 +4826,12 @@
             "state": "translated",
             "value": "用顏色顯示日程的密度，並把待辦分成五分鐘能做完的碎片和需要留出時間的整塊。小工具只遞給你現在就能動手的那一件。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "일정의 밀도를 색으로 보여 주고, 할 일을 5분에 끝낼 조각과 시간을 떼어 둬야 할 덩어리로 갈라 줍니다. 위젯은 지금 당장 집을 수 있는 것 하나만 내밉니다."
+          }
         }
       }
     },
@@ -4200,6 +4866,12 @@
             "state": "translated",
             "value": "自動附帶的資訊"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "자동 첨부 정보"
+          }
         }
       }
     },
@@ -4233,6 +4905,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "有什麼想說的都可以寫下來。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "자유롭게 의견을 남겨주세요."
           }
         }
       }
@@ -4274,6 +4952,12 @@
             "state": "translated",
             "value": "常用的句子，直接從鍵盤取出"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "자주 쓰는 문장을 키보드에서 바로 꺼낸다"
+          }
         }
       }
     },
@@ -4314,6 +4998,12 @@
             "state": "translated",
             "value": "記下的東西不會丟，約好的時間也不會過。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "적어 둔 것을 잃지 않고, 약속한 시각을 넘기지 않습니다."
+          }
         }
       }
     },
@@ -4347,6 +5037,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "發送失敗"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "전송에 실패했어요"
           }
         }
       }
@@ -4383,6 +5079,12 @@
             "state": "translated",
             "value": "收到 %d 條 · 已處理 %d 條"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "접수 %d건 · 완료 %d건"
+          }
         }
       }
     },
@@ -4417,6 +5119,12 @@
             "state": "translated",
             "value": "收到的意見回饋"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "접수된 피드백"
+          }
         }
       }
     },
@@ -4450,6 +5158,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "收到的意見回饋（開發者）"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "접수된 피드백 (개발자)"
           }
         }
       }
@@ -4491,6 +5205,12 @@
             "state": "translated",
             "value": "結束前十分鐘、五分鐘，你想要的時點都會先提醒。鎖定螢幕和 Apple Watch 上一直看得到剩餘時間。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "종료 10분 전, 5분 전처럼 원하는 시점마다 미리 알립니다. 잠금 화면과 애플워치에서 남은 시간이 계속 보입니다."
+          }
         }
       }
     },
@@ -4530,6 +5250,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "習慣先按周做計劃再行動的人"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "주 단위로 계획을 세워 두고 움직이는 사람"
           }
         }
       }
@@ -4571,6 +5297,12 @@
             "state": "translated",
             "value": "中途進來的問詢，用剪貼鍵盤裡設好的回覆短短帶過。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "중간에 들어온 문의는 클립키보드에 정해 둔 답장으로 짧게 끊습니다."
+          }
         }
       }
     },
@@ -4610,6 +5342,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "這些場景裡，都有你正在用的這個應用。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "지금 쓰고 계신 앱이 나오는 장면들입니다."
           }
         }
       }
@@ -4651,6 +5389,12 @@
             "state": "translated",
             "value": "投申請的那天"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "지원서를 넣는 날"
+          }
         }
       }
     },
@@ -4690,6 +5434,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "拆的地方和排的地方不同，清單卻只有一份。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "쪼개는 곳과 앉히는 곳이 달라도 목록은 하나입니다."
           }
         }
       }
@@ -4731,6 +5481,12 @@
             "state": "translated",
             "value": "坐到桌前，就在 Mac 上把這些步驟放進星期和時段裡。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "책상에 앉으면 맥에서 그 단계들을 요일과 시간대에 앉힙니다."
+          }
         }
       }
     },
@@ -4765,6 +5521,12 @@
             "state": "translated",
             "value": "沒能完成操作：%@"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "처리하지 못했어요: %@"
+          }
         }
       }
     },
@@ -4798,6 +5560,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "取消"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "취소"
           }
         }
       }
@@ -4839,6 +5607,12 @@
             "state": "translated",
             "value": "ClipKeyboard - 快捷短語一鍵輸入"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "클립키보드"
+          }
         }
       }
     },
@@ -4879,6 +5653,12 @@
             "state": "translated",
             "value": "短语键盘"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "클립키보드: 빠른 붙여넣기"
+          }
         }
       }
     },
@@ -4912,6 +5692,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "點一下就直接發給開發者"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "탭하면 개발자에게 바로 전송됩니다"
           }
         }
       }
@@ -4953,6 +5739,12 @@
             "state": "translated",
             "value": "在手機和 Mac 之間來回、用同一批句子的人"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "폰과 맥을 오가며 같은 문장을 쓰는 사람"
+          }
         }
       }
     },
@@ -4992,6 +5784,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "手機上攢的在 Mac 上用，手機上拆的在 Mac 上排。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "폰에서 모은 것을 맥에서 쓰고, 폰에서 쪼갠 것을 맥에서 짭니다."
           }
         }
       }
@@ -5033,6 +5831,12 @@
             "state": "translated",
             "value": "手機上存的東西原樣都在，不必再抄一遍。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "폰에서 저장한 것이 그대로 있으니 다시 옮겨 적을 일이 없습니다."
+          }
         }
       }
     },
@@ -5072,6 +5876,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "手機上拆開，Mac 上排布"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "폰에서 쪼개고 맥에서 짠다"
           }
         }
       }
@@ -5113,6 +5923,12 @@
             "state": "translated",
             "value": "想把手機上拆好的待辦放到大螢幕上排布的人"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "폰에서 쪼갠 할 일을 큰 화면에서 배치하고 싶은 사람"
+          }
         }
       }
     },
@@ -5146,6 +5962,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "意見回饋內容"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "피드백 내용"
           }
         }
       }
@@ -5181,6 +6003,12 @@
             "state": "translated",
             "value": "發送意見回饋"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "피드백 보내기"
+          }
         }
       }
     },
@@ -5215,6 +6043,12 @@
             "state": "translated",
             "value": "意見回饋已發送！\n謝謝你寶貴的意見 🙏"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "피드백을 보냈습니다!\n소중한 의견 감사합니다 🙏"
+          }
         }
       }
     },
@@ -5248,6 +6082,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "沒能載入意見回饋：%@"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "피드백을 불러오지 못했어요: %@"
           }
         }
       }
@@ -5289,6 +6129,12 @@
             "state": "translated",
             "value": "守住一個小時的方法"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "한 시간을 지켜 두는 법"
+          }
         }
       }
     },
@@ -5328,6 +6174,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "用星期和時段編排一周的工作台"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "한 주를 요일과 시간대로 짜는 작업대"
           }
         }
       }
@@ -5369,6 +6221,12 @@
             "state": "translated",
             "value": "一邊改動的地方，另一邊很快也會出現。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "한쪽에서 고친 자리는 다른 쪽에도 곧 나타납니다."
+          }
         }
       }
     },
@@ -5408,6 +6266,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "待辦越長越提不起勁的人"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "할 일 목록이 길어질수록 손이 안 가는 사람"
           }
         }
       }
@@ -5449,6 +6313,12 @@
             "state": "translated",
             "value": "把待辦拖到星期格子上，就成了計劃塊。先鋪好睡眠、吃飯這類固定作息，再把工作放進剩下的位置。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "할 일을 요일 격자에 끌어다 놓아 계획 블록으로 만듭니다. 수면과 식사 같은 고정 루틴을 먼저 깔고, 남은 자리에 일을 앉힙니다."
+          }
         }
       }
     },
@@ -5488,6 +6358,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "一起用的應用"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "함께 쓰는 앱"
           }
         }
       }
@@ -5529,6 +6405,12 @@
             "state": "translated",
             "value": "一起使用的場景"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "함께 쓰는 장면"
+          }
         }
       }
     },
@@ -5569,6 +6451,12 @@
             "state": "translated",
             "value": "比起單獨用，連起來用時"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "혼자 쓰기보다, 이어 쓸 때"
+          }
         }
       }
     },
@@ -5602,6 +6490,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "沒有待處理的意見回饋，全都處理完了 🎉"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "활성 피드백이 없어요. 모두 완료했어요 🎉"
           }
         }
       }
@@ -5643,6 +6537,12 @@
             "state": "translated",
             "value": "只有公司名不同的自我介紹，用剪貼鍵盤的範本做一次，之後從鍵盤取出。"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "회사 이름만 바뀌는 자기소개는 클립키보드 템플릿으로 한 번만 만들어 두고 키보드에서 꺼냅니다."
+          }
         }
       }
     },
@@ -5671,6 +6571,12 @@
             "state": "translated",
             "value": "回覆用的信箱（可選）"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "회신 받을 이메일 (선택)"
+          }
         }
       }
     },
@@ -5698,6 +6604,12 @@
           "stringUnit": {
             "state": "translated",
             "value": "回覆方式"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "회신 정보"
           }
         }
       }
@@ -5739,6 +6651,12 @@
             "state": "translated",
             "value": "在會議和截止之間尋找剩餘時間時"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "회의와 마감 사이에 남은 시간을 찾을 때"
+          }
         }
       }
     },
@@ -5778,6 +6696,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "When did it happen, and what were you doing?"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "언제, 무엇을 하다가 그랬나요?"
           }
         }
       }
@@ -5819,6 +6743,12 @@
             "state": "needs_review",
             "value": "e.g. This morning, saving an item in the list"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "예) 오늘 아침, 목록에서 항목을 저장하려던 중"
+          }
         }
       }
     },
@@ -5858,6 +6788,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "What happened?"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "어떤 일이 일어났나요?"
           }
         }
       }
@@ -5899,6 +6835,12 @@
             "state": "needs_review",
             "value": "e.g. The app closed. When I reopen it, what I was typing is gone."
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "예) 앱이 그대로 닫혔어요. 다시 열면 적던 것이 사라져 있어요."
+          }
         }
       }
     },
@@ -5938,6 +6880,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "What did you expect instead? (optional)"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "원래는 어떻게 되어야 했나요? (선택)"
           }
         }
       }
@@ -5979,6 +6927,12 @@
             "state": "needs_review",
             "value": "e.g. What I typed should still be there."
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "예) 적던 것이 그대로 남아 있어야 해요."
+          }
         }
       }
     },
@@ -6018,6 +6972,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "What feature would you like?"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "어떤 기능이 있으면 좋겠나요?"
           }
         }
       }
@@ -6059,6 +7019,12 @@
             "state": "needs_review",
             "value": "e.g. I want to group items into folders."
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "예) 항목을 폴더로 묶고 싶어요."
+          }
         }
       }
     },
@@ -6098,6 +7064,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "When would you use it?"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "어떤 상황에서 쓰실 것 같나요?"
           }
         }
       }
@@ -6139,6 +7111,12 @@
             "state": "needs_review",
             "value": "e.g. Work and home items are mixed, and I want to see only one side."
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "예) 일과 집에서 쓰는 것이 섞여서, 필요한 쪽만 보고 싶어요."
+          }
         }
       }
     },
@@ -6178,6 +7156,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "What felt inconvenient?"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "어떤 점이 불편하셨나요?"
           }
         }
       }
@@ -6219,6 +7203,12 @@
             "state": "needs_review",
             "value": "e.g. Once there are many items, finding one takes a while."
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "예) 항목이 많아지면 찾는 데 시간이 걸려요."
+          }
         }
       }
     },
@@ -6258,6 +7248,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "What were you doing at the time?"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "그때 무엇을 하고 계셨나요?"
           }
         }
       }
@@ -6299,6 +7295,12 @@
             "state": "needs_review",
             "value": "e.g. When I had to find one in a hurry while out."
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "예) 밖에서 급하게 하나를 찾아야 했을 때요."
+          }
         }
       }
     },
@@ -6338,6 +7340,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "More"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "덧붙임"
           }
         }
       }
@@ -6379,6 +7387,12 @@
             "state": "needs_review",
             "value": "Anything else (optional)"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "덧붙일 말 (선택)"
+          }
         }
       }
     },
@@ -6418,6 +7432,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Add anything else you would like to tell us."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "더 하실 말씀이 있으면 적어 주세요."
           }
         }
       }
@@ -6459,6 +7479,12 @@
             "state": "needs_review",
             "value": "Screenshot (optional)"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "증상 사진 (선택)"
+          }
         }
       }
     },
@@ -6498,6 +7524,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "One screenshot says more than a paragraph. Attaching one helps us fix it accurately."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "화면 한 장이 글보다 빠릅니다. 스크린샷을 붙여 주시면 훨씬 정확하게 고칠 수 있어요."
           }
         }
       }
@@ -6539,6 +7571,12 @@
             "state": "needs_review",
             "value": "Attach photo"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "사진 붙이기"
+          }
         }
       }
     },
@@ -6578,6 +7616,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Remove this photo"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 사진 떼기"
           }
         }
       }
@@ -6619,6 +7663,12 @@
             "state": "needs_review",
             "value": "Attached photo"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "붙인 사진"
+          }
         }
       }
     },
@@ -6658,6 +7708,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "Screenshot"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "증상 사진"
           }
         }
       }
@@ -6699,6 +7755,12 @@
             "state": "needs_review",
             "value": "Fill in the fields to enable"
           }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "빈 칸을 채우면 활성화됩니다"
+          }
         }
       }
     },
@@ -6738,6 +7800,12 @@
           "stringUnit": {
             "state": "needs_review",
             "value": "You attached %d photo(s), but this path cannot send them. Please attach them in the mail app."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "사진 %d장을 붙이셨는데 이 경로로는 함께 보낼 수 없어요. 메일에 직접 첨부해 주세요."
           }
         }
       }
