@@ -205,7 +205,9 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
                 if store.purchasingProductID != nil {
                     ProgressView().tint(.white)
                 } else {
-                    Text(L("구독 시작하기", comment: "Paywall: purchase CTA"))
+                    Text(isSubscription(selectedProduct)
+                         ? L("구독 시작하기", comment: "Paywall: purchase CTA (subscription)")
+                         : L("구매하기", comment: "Paywall: purchase CTA (one-time)"))
                         .font(.headline)
                 }
             }
@@ -233,8 +235,13 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
             .tint(theme.accent)
             .disabled(store.isRestoring)
 
-            Text(L("결제는 App Store 계정으로 청구됩니다. 구독은 언제든지 App Store 설정에서 관리·해지할 수 있어요.",
-                    comment: "Paywall: billing disclaimer"))
+            // 구독 안내는 구독 상품을 팔 때만. 평생 상품만 파는 앱에 "해지할 수 있어요"를
+            // 띄우면 구독인 줄 알고 망설이게 되고, 사실과도 다르다.
+            Text(sellsSubscription
+                 ? L("결제는 App Store 계정으로 청구됩니다. 구독은 언제든지 App Store 설정에서 관리·해지할 수 있어요.",
+                     comment: "Paywall: billing disclaimer (subscription)")
+                 : L("결제는 App Store 계정으로 청구됩니다.",
+                     comment: "Paywall: billing disclaimer (one-time)"))
                 .font(.caption2)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(theme.textFaint)
@@ -276,6 +283,19 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
 
     private var selectedProduct: Product? {
         store.products.first { $0.id == selectedProductID }
+    }
+
+    /// 불러온 상품 중 자동 갱신 구독이 하나라도 있는지.
+    private var sellsSubscription: Bool {
+        store.products.contains { isSubscription($0) }
+    }
+
+    private func isSubscription(_ product: Product?) -> Bool {
+        #if canImport(StoreKit)
+        return product?.subscription != nil
+        #else
+        return false
+        #endif
     }
 
     private func selectDefault() {
