@@ -84,6 +84,50 @@ let reports = try await LeeoDiagnosticsReader.fetch(spec: MyAppSpec.self)
   App Privacy 는 `CrashData`(미연결·비추적)로 신고할 것.
 - Dashboard: 레코드 타입 `CrashReport` (appId·kind·detail·appVersion·osVersion·deviceType·stack)
 
+## 크래시 루프 가드 (LeeoCrashLoopGuard)
+
+켤 때마다 같은 자리에서 죽는 일을 알아채고 다음 실행을 **세이프 모드**로 연다.
+**앱 익스텐션(키보드·공유·위젯)에서 쓸 수 있게** 만든 것이다(Foundation 만 쓴다).
+계기: ClipKeyboard 키보드 익스텐션이 뜰 때마다 죽었고, 본 앱의 런치 가드는 익스텐션을
+지켜 주지 못해 사용자는 재설치 전까지 키보드를 못 썼다.
+
+```swift
+// 키보드 익스텐션. App Group 에 두면 본 앱이 기록을 읽어 허브로 보낼 수 있다.
+let crashGuard = LeeoCrashLoopGuard(name: "keyboard", defaults: appGroupDefaults)
+
+override func viewDidLoad() {
+    super.viewDidLoad()
+    if crashGuard.beginLaunch() { showMinimalKeyboard(); return }   // true = 세이프 모드
+    showFullKeyboard()
+}
+override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    crashGuard.markLaunchSucceededAfterSurvivalDelay()   // 기본 3초 살아 있으면 성공
+}
+override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    crashGuard.markLaunchSucceeded()   // 스스로 닫은 것은 죽은 것이 아니다
+}
+
+// 본 앱 (사용자가 앱을 열 때): 익스텐션이 몇 번 못 떴는지 허브로
+let keyboardGuard = LeeoCrashLoopGuard(name: "keyboard", defaults: appGroupDefaults)
+Task { await keyboardGuard.reportIncompleteLaunches(to: LeeoUsageReporter(spec: MySpec.self)) }
+```
+
+- 연속 `threshold`(기본 2)회 끝나지 못하면 세이프 모드. 한 번은 메모리 초과 같은 사고일 수 있다.
+- 세이프 모드에서 무사히 뜨면 횟수가 0 으로 돌아가고, **그다음 실행은 평소대로** 연다.
+  이번 프로세스의 `isInSafeMode` 는 끝까지 true (화면을 도중에 바꾸지 않는다).
+- 같은 프로세스 안에서 `beginLaunch()` 를 다시 불러도(키보드는 뷰 컨트롤러를 여러 번 만든다) 세지 않는다.
+- 허브 이벤트: `launch_incomplete:<name>` (한 번 보고에 최대 3건). 익스텐션에서 CloudKit 은
+  전체 접근·iCloud 권한이 따로 필요하므로 **보통 본 앱이 보낸다.** 자기 통계 경로로 보내려면
+  `takeUnreportedIncompleteLaunches()` 로 숫자만 가져간다.
+- 판정은 `LeeoCrashLoopPolicy` (순수 함수)에 있어 저장소 없이 시험한다.
+- `reset()`: 설정의 "기록 초기화"나 테스트용.
+
+LeeoKit 전체가 `APPLICATION_EXTENSION_API_ONLY=YES` 로 컴파일된다(v3.12 부터).
+`UIApplication.shared` 를 쓰는 `LeeoReviewRequest.openWriteReview` 와 폐기 예정인
+`enableNewFeedbackNotifications` 만 익스텐션에서 부를 수 없게 표시돼 있다.
+
 ## 앱 계약 (LeeoAppSpec)
 
 앱이 공통으로 가져야 하는 항목을 컴파일 타임에 강제하는 프로토콜.
@@ -124,6 +168,26 @@ enum MyAppSpec: LeeoAppSpec {
 켜지는 것 — 사용량 기록(리뷰 프롬프트의 근거) · 분석 싱크 등록 · 크래시/행 진단 구독 ·
 사용현황 스냅샷 · 원격 플래그 갱신 · DEBUG 프리플라이트 감사.
 전부 실패해도 앱은 정상 동작한다(가용성 우선).
+
+## 사용 통계: 하루 한 번 app_open (v3.12)
+
+허브의 DAU·잔존·버전별 안정성 카드는 "그날 `app_open` 이 있었는가"로 센다. 예전엔 앱이 직접
+보내야 해서 안 보내는 앱은 드문 이벤트가 있던 날만 잡혔다. 이제 **앱 코드 없이** 나간다.
+
+- `LeeoKit.bootstrap` 을 쓰는 앱: 사용 통계가 켜지는 조건(분석 싱크 있음 + `usageReporting`)에서
+  앱이 앞으로 올 때마다(`didBecomeActive`) 오늘 몫을 확인한다. 앱 `init()` 에서는 보내지 않는다
+  (백그라운드 실행에서도 불리는 자리라, 연 적 없는 날이 "연 날"로 찍힌다).
+- `report()` 를 직접 부르는 앱: `report()` 가 스냅샷 쓰로틀과 상관없이 오늘 몫을 함께 보낸다.
+  그러니 `report()` 는 화면에 올라올 때만 부를 것. 며칠씩 켜 두는 앱이면
+  `observeAppActivation()` 도 한 번 걸어 두면 날이 바뀐 뒤 돌아온 순간이 잡힌다.
+- **하루 한 번 관문 하나.** 앱이 `logEvent("app_open")` 을 따로 불러도 같은 도장
+  (리포터의 defaults, `leeo.usage.lastAppOpenAt.<컨테이너>.<appId>`)을 지나므로 두 번 세지 않는다.
+  앱 쪽에 있던 자체 쓰로틀은 그대로 둬도 된다(관문이 둘이면 덜 나갈 수는 있어도 더 나가지 않는다).
+- 날짜 경계는 24시간 간격이 아니라 **달력 날짜**다. 보내기 전에 도장을 찍고, 실패하면 되돌려 다음 활성화에 다시 시도한다.
+- 다른 이벤트처럼 `appVersion` 이 실린다.
+- 끄기: Spec 에 `static let sendsDailyAppOpen = false` (또는 `LeeoUsageReporter(config:appName:sendsDailyAppOpen:)`).
+  사용자 동의 스위치가 있는 앱은 지금처럼 켜져 있을 때만 `report()` 를 부르면 그대로 지켜진다.
+- 판정은 `LeeoUsageReporter.shouldSendDailyAppOpen(lastSent:now:calendar:)` (순수 함수).
 
 ## 수익모델과 게이트 (LeeoMonetization)
 

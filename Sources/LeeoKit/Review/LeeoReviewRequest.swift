@@ -94,10 +94,19 @@ public enum LeeoReviewRequest {
         engagement.markPromptedVersion(promptID, appVersion)
     }
 
+    /// App Store 리뷰 작성 페이지 주소. SwiftUI 에서는 `@Environment(\.openURL)` 로 열면
+    /// 앱 익스텐션에서도 컴파일된다.
+    public static func writeReviewURL(appStoreID: String) -> URL? {
+        URL(string: "https://apps.apple.com/app/id\(appStoreID)?action=write-review")
+    }
+
     /// App Store 리뷰 작성 페이지를 직접 연다 ("리뷰 남기기" 버튼용). appStoreID 필요.
+    /// `UIApplication.shared` 를 쓰므로 앱 익스텐션에서는 부를 수 없다(`writeReviewURL` 을 쓸 것).
     @MainActor
+    @available(iOSApplicationExtension, unavailable)
+    @available(macCatalystApplicationExtension, unavailable)
     public static func openWriteReview(appStoreID: String) {
-        guard let url = URL(string: "https://apps.apple.com/app/id\(appStoreID)?action=write-review") else { return }
+        guard let url = writeReviewURL(appStoreID: appStoreID) else { return }
         #if canImport(UIKit)
         UIApplication.shared.open(url)
         #elseif canImport(AppKit)

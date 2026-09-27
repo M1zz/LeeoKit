@@ -1,5 +1,24 @@
 # LeeoKit todo
 
+## 완료: 하루 한 번 app_open 과 익스텐션용 크래시 루프 가드 (v3.12 예정, 태그 전)
+
+> 계기 1: 허브의 DAU·잔존과 곧 붙일 버전별 안정성 카드가 `app_open` 으로 "그날 왔다"를 센다.
+> ClipKeyboard·WeekBlocks·ScheduleDensity 는 직접 보내고 있었지만 BurningParchment·
+> FootprintDiary·SkyDex·SlideSnap 은 한 번도 안 보냈다.
+> 계기 2: ClipKeyboard 키보드 익스텐션이 뜰 때마다 죽었다. 본 앱의 LaunchGuard 는
+> 익스텐션을 지켜 주지 못했고, 사용자는 재설치 전까지 갇혀 있었다.
+
+- [x] `LeeoUsageReporter`: `report()` 와 활성화 감시(`observeAppActivation`)가 `app_open` 을
+      하루 한 번 보낸다. `logEvent("app_open")` 수동 호출도 같은 도장을 지나 두 번 세지 않는다
+- [x] 부트스트랩은 `init()` 에서 보내지 않고 활성화 알림에 맡긴다(백그라운드 실행 오집계 방지)
+- [x] 끄는 손잡이 `LeeoAppSpec.sendsDailyAppOpen` (기본 켬) / 리포터 생성자 인자
+- [x] `LeeoCrashLoopGuard` + `LeeoCrashLoopPolicy`(순수 함수), `launch_incomplete:<name>` 보고
+- [x] 패키지 전체가 `APPLICATION_EXTENSION_API_ONLY=YES` 로 컴파일되게 (`openURL` 환경값으로 교체,
+      `openWriteReview` · `enableNewFeedbackNotifications` 는 익스텐션에서 unavailable 표시)
+- [x] 테스트 21개 추가 (전체 119개 통과, macOS `swift test` · iOS 시뮬레이터)
+- [ ] 태그(v3.12.0) 뒤: ClipKeyboard 키보드 익스텐션에 가드 적용, 본 앱에서 보고
+- [ ] 태그 뒤: 앱별 자체 `app_open` 쓰로틀은 급하지 않다. 그 앱을 만질 때 걷어낸다
+
 ## 완료: CloudKit 조회를 페이지로 나눠 받기 (v3.3)
 
 > 계기: ClipKeyboard 사용 통계가 설치 900건에서 통째로 죽었다.

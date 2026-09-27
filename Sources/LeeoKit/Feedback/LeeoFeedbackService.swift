@@ -229,6 +229,8 @@ public final class LeeoFeedbackService {
     /// 새 피드백 푸시 알림 켜기 — 알림 권한 요청 + APNs 등록 + CKQuerySubscription 저장.
     /// ⚠️ 구독이 발화하려면 이 계정이 피드백 레코드를 읽을 수 있어야 한다 (admin 역할 read).
     @available(*, deprecated, message: "Production public DB는 구독 생성을 거부한다. enableLocalNewFeedbackNotifications()를 사용하라.")
+    @available(iOSApplicationExtension, unavailable)
+    @available(macCatalystApplicationExtension, unavailable)
     public func enableNewFeedbackNotifications() async throws {
         #if canImport(UIKit)
         let granted = try await UNUserNotificationCenter.current()

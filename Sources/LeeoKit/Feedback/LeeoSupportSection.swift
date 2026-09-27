@@ -36,6 +36,7 @@ public struct LeeoSupportSection<Spec: LeeoAppSpec>: View {
     }
 
     @Environment(\.requestReview) private var requestReview
+    @Environment(\.openURL) private var openURL
     /// 개발자 모드 — 앱 버전을 7번 탭하면 토글. 켜지면 접수된 피드백(인박스)이 보인다.
     @AppStorage("dev.masterMode") private var devMode = false
 
@@ -52,8 +53,8 @@ public struct LeeoSupportSection<Spec: LeeoAppSpec>: View {
         }
         // 리뷰 남기기 — appStoreID 가 있으면 작성 페이지로, 없으면 시스템 평점 프롬프트
         Button {
-            if let id = Spec.appStoreID {
-                LeeoReviewRequest.openWriteReview(appStoreID: id)
+            if let id = Spec.appStoreID, let url = LeeoReviewRequest.writeReviewURL(appStoreID: id) {
+                openURL(url)
             } else {
                 LeeoReviewRequest.markRequested()
                 requestReview()

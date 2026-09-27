@@ -402,6 +402,8 @@ public struct LeeoFamilySynergyCard: View {
 
 public struct LeeoFamilyAppDetailView: View {
     @Environment(\.leeoStyle) private var style
+    /// `UIApplication.shared` 대신 쓴다. 앱 익스텐션에서도 컴파일되게 (APPLICATION_EXTENSION_API_ONLY).
+    @Environment(\.openURL) private var openURL
     let app: LeeoFamilyApp
 
     public init(app: LeeoFamilyApp) { self.app = app }
@@ -532,11 +534,7 @@ public struct LeeoFamilyAppDetailView: View {
     private func open() {
         guard let url = app.storeURL else { return }
         HapticManager.shared.light()
-        #if canImport(UIKit)
-        UIApplication.shared.open(url)
-        #elseif canImport(AppKit)
-        NSWorkspace.shared.open(url)
-        #endif
+        openURL(url)
     }
 }
 

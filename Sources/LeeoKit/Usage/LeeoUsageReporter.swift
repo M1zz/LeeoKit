@@ -16,26 +16,53 @@
 //      // 주요 행동 뒤
 //      LeeoUsageReporter(spec: MyAppSpec.self).logEventInBackground("merge")
 //
+//  `app_open` 은 앱이 보내지 않아도 된다 (v3.12). `report()` 를 부르거나
+//  `LeeoKit.bootstrap` 을 쓰면 하루 한 번 알아서 나간다. 앱이 직접 보내도 같은 관문을
+//  지나므로 하루 두 번 세지 않는다. 자세한 것은 아래 "하루 한 번 app_open" 절.
+//
 
 import Foundation
 import CloudKit
+#if canImport(UIKit)
+import UIKit
+#elseif canImport(AppKit)
+import AppKit
+#endif
 
 public final class LeeoUsageReporter: @unchecked Sendable {
     public let config: LeeoFeedbackConfig
     private let appName: String
 
+    /// `report()` 와 앱 활성화 감시가 `app_open` 을 하루 한 번 알아서 보낼지.
+    /// 꺼도 앱이 직접 보내는 `app_open` 은 여전히 하루 한 번 관문을 지난다.
+    public let sendsDailyAppOpen: Bool
+
+    /// 설치 ID·쓰로틀 도장이 사는 곳. 기본은 `.standard`.
+    /// 테스트가 표준 저장소를 더럽히지 않게 바꿔 끼울 수 있게만 열어 둔다.
+    private let defaults: UserDefaults
+
     /// CloudKit 레코드 타입 이름.
     public static let snapshotType = "UsageSnapshot"
     public static let eventType = "UsageEvent"
 
-    public init(config: LeeoFeedbackConfig, appName: String) {
+    /// 허브가 "그날 앱을 열었다"로 읽는 이벤트 이름. 모든 앱이 같은 말을 써야 허브가 알아본다.
+    public static let appOpenEvent = "app_open"
+
+    /// - Parameter sendsDailyAppOpen: `app_open` 자동 전송 여부. 기본 켬.
+    public init(config: LeeoFeedbackConfig, appName: String,
+                sendsDailyAppOpen: Bool = true,
+                defaults: UserDefaults = .standard) {
         self.config = config
         self.appName = appName
+        self.sendsDailyAppOpen = sendsDailyAppOpen
+        self.defaults = defaults
     }
 
     /// Spec 기반 편의 생성자 — 앱에서는 이걸 쓰면 된다(피드백과 같은 컨테이너·appId 재사용).
+    /// `app_open` 자동 전송은 `Spec.sendsDailyAppOpen` 을 따른다.
     public convenience init<Spec: LeeoAppSpec>(spec: Spec.Type) {
-        self.init(config: Spec.feedback, appName: Spec.appName)
+        self.init(config: Spec.feedback, appName: Spec.appName,
+                  sendsDailyAppOpen: Spec.sendsDailyAppOpen)
     }
 
     // MARK: - 익명 설치 ID (PII 아님, 재설치 전까지 고정)
@@ -45,7 +72,7 @@ public final class LeeoUsageReporter: @unchecked Sendable {
     /// 이 설치를 가리키는 익명 UUID. 기기·계정과 무관하고, 재설치하면 새로 생긴다.
     /// 앱이 직접 이벤트 레코드를 만들 때(예: 소급 백필) 같은 설치로 묶으려면 이 값이 필요하다.
     public var installID: String {
-        let d = UserDefaults.standard
+        let d = defaults
         if let s = d.string(forKey: Self.installIDKey) { return s }
         let s = UUID().uuidString
         d.set(s, forKey: Self.installIDKey)
@@ -54,6 +81,11 @@ public final class LeeoUsageReporter: @unchecked Sendable {
 
     private var lastSnapshotKey: String {
         "leeo.usage.lastSnapshotAt.\(config.containerIdentifier).\(config.appIdentifier ?? "-")"
+    }
+
+    /// 마지막으로 `app_open` 을 보낸(보내려고 잡은) 시각. 컨테이너·앱마다 따로 둔다.
+    var lastAppOpenKey: String {
+        "leeo.usage.lastAppOpenAt.\(config.containerIdentifier).\(config.appIdentifier ?? "-")"
     }
 
     // MARK: - 환경값
@@ -91,13 +123,34 @@ public final class LeeoUsageReporter: @unchecked Sendable {
     /// - `minInterval` 이내에 이미 보냈으면 건너뛴다(과도한 쓰기 방지).
     /// - Parameter metrics: 앱별 대략 지표(예: ["presentations": 12, "slides": 84]).
     ///   JSON 한 필드(`metrics`)로 저장돼 스키마 필드를 늘리지 않는다. 통계 뷰어가 평균을 낸다.
+    ///
+    /// `sendsDailyAppOpen` 이 켜져 있으면 스냅샷 쓰로틀과 **상관없이** 오늘 몫의 `app_open` 도
+    /// 함께 보낸다(하루 한 번). `report()` 는 앱이 화면에 올라올 때 부르는 자리이므로
+    /// "그날 앱을 열었다"의 가장 흔한 신호다. 앱이 아무 이벤트도 안 보내는 날에도 허브의
+    /// DAU·잔존에 잡히게 하려는 것이다.
+    /// ⚠️ 그래서 백그라운드 작업 안에서는 부르지 말 것. 연 적 없는 날이 "연 날"로 찍힌다.
     public func report(
         engagement: LeeoEngagement = .shared,
         metrics: [String: Double] = [:],
         minInterval: TimeInterval = 12 * 3600
     ) async {
+        await report(engagement: engagement, metrics: metrics, minInterval: minInterval,
+                     includeDailyAppOpen: sendsDailyAppOpen)
+    }
+
+    /// 부트스트랩은 앱 `init()` 에서 부르고, 그 시점은 백그라운드 실행일 수도 있다.
+    /// 그래서 부트스트랩만은 `app_open` 을 여기서 빼고 활성화 알림(`observeAppActivation`)에 맡긴다.
+    func report(
+        engagement: LeeoEngagement,
+        metrics: [String: Double],
+        minInterval: TimeInterval,
+        includeDailyAppOpen: Bool
+    ) async {
+        if includeDailyAppOpen {
+            await logDailyAppOpenIfNeeded()
+        }
         let now = Date()
-        if let last = UserDefaults.standard.object(forKey: lastSnapshotKey) as? Date,
+        if let last = defaults.object(forKey: lastSnapshotKey) as? Date,
            now.timeIntervalSince(last) < minInterval { return }
         guard await iCloudReady() else { return }
 
@@ -122,7 +175,7 @@ public final class LeeoUsageReporter: @unchecked Sendable {
 
         do {
             _ = try await database.save(record)
-            UserDefaults.standard.set(now, forKey: lastSnapshotKey)
+            defaults.set(now, forKey: lastSnapshotKey)
             print("📈 [LeeoUsageReporter] 스냅샷 갱신 완료")
         } catch {
             print("⚠️ [LeeoUsageReporter.report] 스냅샷 저장 실패: \(error)")
@@ -156,8 +209,19 @@ public final class LeeoUsageReporter: @unchecked Sendable {
     /// - Returns: 허브에 실제로 저장됐는지. 소급 백필처럼 **보낸 뒤 원본을 지우는** 쪽은
     ///   이 값을 봐야 한다. iCloud 미로그인이나 네트워크 실패로 못 보낸 기록을
     ///   보냈다고 치고 지워 버리면 그 사용자의 활동은 영영 복구되지 않는다.
+    ///
+    /// ⚠️ 이름이 `app_open` 이면 하루 한 번 관문을 지난다(자동 전송과 같은 도장).
+    ///    오늘 이미 나갔으면 보내지 않고 true 를 돌려준다. 자세한 것은 `logDailyAppOpenIfNeeded`.
     @discardableResult
     public func logEvent(_ name: String, occurredAt: Date? = nil) async -> Bool {
+        if name == Self.appOpenEvent {
+            return await logDailyAppOpen(occurredAt: occurredAt, now: Date())
+        }
+        return await send(name, occurredAt: occurredAt)
+    }
+
+    /// 관문 없이 곧장 보낸다. 모든 이벤트가 결국 여기로 온다.
+    private func send(_ name: String, occurredAt: Date?) async -> Bool {
         guard await iCloudReady() else { return false }
         let record = CKRecord(recordType: Self.eventType)
         if let appId = config.appIdentifier { record["appId"] = appId }
@@ -178,6 +242,118 @@ public final class LeeoUsageReporter: @unchecked Sendable {
 
     public func logEventInBackground(_ name: String, occurredAt: Date? = nil) {
         Task { await logEvent(name, occurredAt: occurredAt) }
+    }
+
+    // MARK: - 하루 한 번 app_open
+
+    /// `app_open` 도장을 찍고 푸는 일을 한 줄로 세운다. 리포터는 쓰고 버리는 값이라
+    /// (앱마다 `LeeoUsageReporter(spec:)` 를 그때그때 만든다) 인스턴스 락으로는 못 막는다.
+    private static let appOpenLock = NSLock()
+
+    /// 오늘 `app_open` 을 보내야 하는가. **순수 함수** (시각·달력을 밖에서 넣는다).
+    ///
+    /// 24시간 간격이 아니라 **달력 날짜**로 자른다. 허브는 "그날 이벤트가 하나라도
+    /// 있었는가"로 DAU·잔존을 세기 때문에, 밤 11시와 다음 날 아침 8시는 둘 다 보내야 하고
+    /// 새벽 2시와 오후 2시는 한 번이면 된다.
+    /// 마지막 도장이 미래 날짜(시계를 되돌린 기기)여도 "다른 날"이므로 보낸다. 하루
+    /// 한 건 더 나가는 쪽이, 시계가 따라잡을 때까지 며칠을 통째로 잃는 쪽보다 낫다.
+    public static func shouldSendDailyAppOpen(lastSent: Date?, now: Date,
+                                              calendar: Calendar = .current) -> Bool {
+        guard let lastSent else { return true }
+        return !calendar.isDate(lastSent, inSameDayAs: now)
+    }
+
+    /// 오늘 몫을 잡는다. 잡았으면 도장을 먼저 찍고 true.
+    ///
+    /// 보내기 **전에** 찍는 이유: 콜드 런치에서는 `report()` 와 활성화 알림, 앱의 수동 호출이
+    /// 거의 동시에 들어온다. 보낸 뒤에 찍으면 셋 다 관문을 통과해 같은 날 세 건이 된다.
+    /// 대신 전송이 실패하면 `releaseDailyAppOpen` 으로 되돌려 다음 활성화에 다시 시도한다.
+    func claimDailyAppOpen(now: Date, calendar: Calendar = .current) -> (claimed: Bool, previous: Date?) {
+        Self.appOpenLock.lock(); defer { Self.appOpenLock.unlock() }
+        let last = defaults.object(forKey: lastAppOpenKey) as? Date
+        guard Self.shouldSendDailyAppOpen(lastSent: last, now: now, calendar: calendar) else {
+            return (false, last)
+        }
+        defaults.set(now, forKey: lastAppOpenKey)
+        return (true, last)
+    }
+
+    /// 잡아 둔 오늘 몫을 되돌린다. 그 사이 다른 호출이 새 도장을 찍었으면 건드리지 않는다.
+    func releaseDailyAppOpen(claimedAt now: Date, previous: Date?) {
+        Self.appOpenLock.lock(); defer { Self.appOpenLock.unlock() }
+        guard (defaults.object(forKey: lastAppOpenKey) as? Date) == now else { return }
+        if let previous {
+            defaults.set(previous, forKey: lastAppOpenKey)
+        } else {
+            defaults.removeObject(forKey: lastAppOpenKey)
+        }
+    }
+
+    /// 오늘 아직 안 보냈으면 `app_open` 을 보낸다. 앱이 직접 부를 일은 거의 없다
+    /// (`report()` 와 `LeeoKit.bootstrap` 이 부른다). `sendsDailyAppOpen` 이 꺼져 있으면 아무것도 안 한다.
+    ///
+    /// 앱이 `logEvent("app_open")` 을 따로 불러도 **같은 도장**을 보므로 하루 두 건이 되지 않는다.
+    /// 앱 쪽에 이미 있는 하루 한 번 쓰로틀(각자 다른 키)은 그대로 두어도 된다: 관문이 둘이면
+    /// 더 적게 나갈 수는 있어도 더 많이 나가지는 않는다.
+    /// - Returns: 오늘 몫이 허브에 있는지(이번에 보냈거나 이미 보냈으면 true).
+    @discardableResult
+    public func logDailyAppOpenIfNeeded() async -> Bool {
+        guard sendsDailyAppOpen else { return false }
+        return await logDailyAppOpen(occurredAt: nil, now: Date())
+    }
+
+    public func logDailyAppOpenIfNeededInBackground() {
+        Task { await logDailyAppOpenIfNeeded() }
+    }
+
+    /// 관문은 언제나 **지금**의 날짜로 판정한다. 지난 날짜의 `occurredAt` 으로 `app_open` 을
+    /// 보내는 소급은 그대로 기록되지만 오늘 몫으로 친다(그런 호출을 하는 앱은 아직 없다).
+    private func logDailyAppOpen(occurredAt: Date?, now: Date) async -> Bool {
+        let claim = claimDailyAppOpen(now: now)
+        guard claim.claimed else { return true }
+        let sent = await send(Self.appOpenEvent, occurredAt: occurredAt)
+        if !sent {
+            releaseDailyAppOpen(claimedAt: now, previous: claim.previous)
+        }
+        return sent
+    }
+
+    // MARK: - 앱 활성화 감시
+
+    private static let observerLock = NSLock()
+    nonisolated(unsafe) private static var observers: [String: NSObjectProtocol] = [:]
+
+    /// 앱이 앞으로 올 때마다 오늘 몫의 `app_open` 을 확인한다. 같은 컨테이너·앱에는 한 번만 걸린다.
+    ///
+    /// 왜 필요한가: 사람들은 앱을 며칠씩 종료하지 않는다. 런치 때만 보내면 그 며칠이
+    /// 허브에서 통째로 빈 날이 된다. 활성화 알림은 날이 바뀐 뒤 돌아온 순간을 잡는다.
+    /// 콜드 런치의 첫 활성화도 이 알림으로 오므로, 앱 `init()` 에서 걸어 두면 런치도 함께 잡힌다.
+    ///
+    /// `LeeoKit.bootstrap` 이 사용 통계를 켤 때 대신 부른다. 직접 쓰는 앱은 사용자가 통계를
+    /// 끌 수 있다면 켜져 있을 때만 부를 것(걸어 둔 감시는 이 프로세스가 끝날 때까지 산다).
+    /// `sendsDailyAppOpen` 이 꺼져 있으면 걸지 않는다.
+    ///
+    /// 익스텐션에서 불러도 컴파일·실행에 문제는 없다(`UIApplication.shared` 를 쓰지 않는다).
+    /// 다만 익스텐션에는 이 알림이 오지 않으므로 아무 일도 일어나지 않는다.
+    public func observeAppActivation() {
+        guard sendsDailyAppOpen else { return }
+        #if canImport(UIKit)
+        let name = UIApplication.didBecomeActiveNotification
+        #elseif canImport(AppKit)
+        let name = NSApplication.didBecomeActiveNotification
+        #else
+        return
+        #endif
+        #if canImport(UIKit) || canImport(AppKit)
+        let key = lastAppOpenKey
+        Self.observerLock.lock(); defer { Self.observerLock.unlock() }
+        guard Self.observers[key] == nil else { return }
+        Self.observers[key] = NotificationCenter.default.addObserver(
+            forName: name, object: nil, queue: nil
+        ) { [self] _ in
+            self.logDailyAppOpenIfNeededInBackground()
+        }
+        #endif
     }
 
     // MARK: - 조회 (개발자 통계 뷰어용)

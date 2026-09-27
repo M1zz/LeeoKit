@@ -64,6 +64,11 @@ public protocol LeeoAppSpec {
     /// 미지정이면 비어 있고, 목록은 "지금 기기에서 받을 수 있는 앱이 앞" 순서 그대로다.
     static var familyFeatured: [String] { get }
 
+    /// 사용 통계가 켜진 앱에서 LeeoKit 이 `app_open` 을 **하루 한 번** 알아서 보낼지.
+    /// 미지정이면 켬(true). 허브의 DAU·잔존·버전별 안정성 카드가 이 이벤트로 "그날 왔다"를 센다.
+    /// 끄는 경우는 드물다: 앱이 스스로 다른 기준(예: 백그라운드 실행 제외 규칙)으로 보내야 할 때뿐.
+    static var sendsDailyAppOpen: Bool { get }
+
     /// 인앱 결제(페이월) 설정. **보통 선언하지 않는다** — `monetization` 에서 자동으로 유도된다.
     /// 직접 선언하면 그 값이 우선하지만, `monetization` 과 어긋나면 Preflight 가 잡아낸다.
     static var paywall: LeeoPaywallConfig? { get }
@@ -78,6 +83,9 @@ public extension LeeoAppSpec {
 
     /// 기본값 — 따로 앞세우는 앱 없음.
     static var familyFeatured: [String] { [] }
+
+    /// 기본값 - 하루 한 번 `app_open` 을 LeeoKit 이 보낸다.
+    static var sendsDailyAppOpen: Bool { true }
 
     /// 기본값 — 선언하지 않은 항목은 전부 `.unknown`.
     static var capabilities: LeeoCapabilities { .undeclared }

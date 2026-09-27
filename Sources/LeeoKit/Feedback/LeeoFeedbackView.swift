@@ -19,6 +19,8 @@ import PhotosUI
 public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
     @Environment(\.leeoStyle) private var theme
     @Environment(\.dismiss) private var dismiss
+    /// `UIApplication.shared` 대신 쓴다. 앱 익스텐션에서도 컴파일되게 (APPLICATION_EXTENSION_API_ONLY).
+    @Environment(\.openURL) private var openURL
 
     @State private var selectedType: LeeoFeedbackType
     /// 칸을 나눠 받은 답. 열쇠는 `LeeoFeedbackPrompt.id` (번역해도 안 바뀐다).
@@ -591,11 +593,7 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
         let raw = "mailto:\(Spec.developerEmail)?subject=\(subject)&body=\(mailtoBody)"
         guard let encoded = raw.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let url = URL(string: encoded) else { return }
-        #if os(iOS)
-        UIApplication.shared.open(url)
-        #elseif os(macOS)
-        NSWorkspace.shared.open(url)
-        #endif
+        openURL(url)
     }
 
     private func handleSent() {

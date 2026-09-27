@@ -22,6 +22,7 @@
 //    2. 분석 싱크 등록   → 페이월 노출·구매 전환 퍼널
 //    3. 크래시 진단 구독 → MetricKit → 피드백 허브와 같은 컨테이너
 //    4. 사용현황 스냅샷  → CloudKit (분석 싱크가 꽂혀 있을 때만)
+//       + 하루 한 번 app_open (앱이 앞으로 올 때, 같은 조건)
 //    5. 원격 플래그 갱신 → 캐시 (읽기는 언제나 네트워크 없이)
 //    6. 프리플라이트 감사 → DEBUG 콘솔에만
 //
@@ -86,8 +87,16 @@ public enum LeeoKit {
         }
 
         // 4. 사용현황 스냅샷 — 분석을 켠 앱만. 안 켠 앱에 네트워크 비용을 물리지 않는다.
+        //    `app_open` (하루 한 번) 은 스냅샷과 같은 조건으로 켠다. 다만 여기서 곧장 보내지 않고
+        //    활성화 알림에 맡긴다: 앱 `init()` 은 백그라운드 실행에서도 불리므로, 여기서 보내면
+        //    사용자가 연 적 없는 날이 "연 날"로 찍힌다. 끄려면 Spec 에 `sendsDailyAppOpen = false`.
         if usageReporting, !(Spec.analytics is LeeoNoopAnalytics) {
-            LeeoUsageReporter(spec: spec).reportInBackground(engagement: engagement)
+            let reporter = LeeoUsageReporter(spec: spec)
+            Task {
+                await reporter.report(engagement: engagement, metrics: [:],
+                                      minInterval: 12 * 3600, includeDailyAppOpen: false)
+            }
+            reporter.observeAppActivation()
             mutate { $0.usageReporting = true }
         }
 
