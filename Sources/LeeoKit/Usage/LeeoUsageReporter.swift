@@ -128,7 +128,7 @@ public final class LeeoUsageReporter: @unchecked Sendable {
     /// 함께 보낸다(하루 한 번). `report()` 는 앱이 화면에 올라올 때 부르는 자리이므로
     /// "그날 앱을 열었다"의 가장 흔한 신호다. 앱이 아무 이벤트도 안 보내는 날에도 허브의
     /// DAU·잔존에 잡히게 하려는 것이다.
-    /// ⚠️ 그래서 백그라운드 작업 안에서는 부르지 말 것. 연 적 없는 날이 "연 날"로 찍힌다.
+    /// 백그라운드 실행에서 불리면 `app_open` 은 보내지 않고, 앱이 앞으로 올 때로 미룬다.
     public func report(
         engagement: LeeoEngagement = .shared,
         metrics: [String: Double] = [:],
@@ -147,7 +147,14 @@ public final class LeeoUsageReporter: @unchecked Sendable {
         includeDailyAppOpen: Bool
     ) async {
         if includeDailyAppOpen {
-            await logDailyAppOpenIfNeeded()
+            // ⚠️ 백그라운드 실행(백그라운드 새로고침 · 조용한 푸시)에서도 이 길을 부르는 앱이 있다
+            //    (클립키보드는 프로세스가 뜰 때마다 부른다). 그때 보내면 연 적 없는 날이
+            //    "연 날"로 찍힌다. 앞에 떠 있을 때만 지금 보내고, 아니면 다음에 앞으로 올 때
+            //    (`observeAppActivation`) 보낸다.
+            observeAppActivation()
+            if await Self.isAppInForeground() {
+                await logDailyAppOpenIfNeeded()
+            }
         }
         let now = Date()
         if let last = defaults.object(forKey: lastSnapshotKey) as? Date,
@@ -319,6 +326,23 @@ public final class LeeoUsageReporter: @unchecked Sendable {
     }
 
     // MARK: - 앱 활성화 감시
+
+    /// 앱이 지금 앞에 떠 있는가(활성 · 막 뜨는 중). 백그라운드 실행이면 false.
+    ///
+    /// 익스텐션에서는 `UIApplication.shared` 를 쓸 수 없어서 이름으로 찾는다. 익스텐션에는
+    /// 공유 앱 객체가 없으므로 nil 이 오고, 그때는 false(익스텐션은 "앱을 연 날"이 아니다).
+    static func isAppInForeground() async -> Bool {
+        #if canImport(UIKit)
+        return await MainActor.run {
+            guard let app = UIApplication.value(forKey: "sharedApplication") as? UIApplication else {
+                return false
+            }
+            return app.applicationState != .background
+        }
+        #else
+        return true
+        #endif
+    }
 
     private static let observerLock = NSLock()
     nonisolated(unsafe) private static var observers: [String: NSObjectProtocol] = [:]
