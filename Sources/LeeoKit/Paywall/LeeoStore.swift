@@ -142,16 +142,35 @@ public final class LeeoStore: ObservableObject {
     // MARK: - 구매 / 복원
 
     /// 상품을 구매한다. 성공(권한 획득)하면 true.
+    ///
+    /// ⚠️ SwiftUI 화면에서는 `purchase(_:using:)`에 `@Environment(\.purchase)`를 넘길 것.
+    ///    이 판은 결제 시트를 띄울 창을 StoreKit이 짐작하게 두는데, 창이 여럿일 수 있는
+    ///    아이패드에서는 그 짐작이 빗나가 결제가 오류로 끝난다 (심사에서 2.1(b)로 거절됨).
     @discardableResult
     public func purchase(_ product: Product) async -> Bool {
         #if canImport(StoreKit)
+        return await purchase(product) { try await $0.purchase() }
+        #else
+        return false
+        #endif
+    }
+
+    #if canImport(StoreKit)
+    /// 상품을 구매한다 — 결제 시트를 **어느 창에 띄울지 아는 쪽**이 실제 구매를 맡는다.
+    ///
+    /// SwiftUI: `@Environment(\.purchase) var purchaseAction` 를 잡고
+    /// `store.purchase(product) { try await purchaseAction($0) }` 로 부른다.
+    /// 성공·취소·승인 대기·실패의 갈래와 퍼널 이벤트는 `purchase(_:)`와 같다.
+    @discardableResult
+    public func purchase(_ product: Product,
+                         using action: (Product) async throws -> Product.PurchaseResult) async -> Bool {
         guard purchasingProductID == nil else { return false }
         purchasingProductID = product.id
         lastError = nil
         LeeoAnalyticsCenter.track(.purchaseStarted(productID: product.id))
         defer { purchasingProductID = nil }
         do {
-            let result = try await product.purchase()
+            let result = try await action(product)
             switch result {
             case .success(let verification):
                 guard let transaction = Self.verified(verification) else {
@@ -178,10 +197,8 @@ public final class LeeoStore: ObservableObject {
             LeeoAnalyticsCenter.track(.purchaseFailed(productID: product.id, reason: "error"))
             return false
         }
-        #else
-        return false
-        #endif
     }
+    #endif
 
     /// 첫 상품(보통 대표 상품)을 구매하는 편의 메서드. 상품이 없으면 먼저 로드한다.
     @discardableResult
