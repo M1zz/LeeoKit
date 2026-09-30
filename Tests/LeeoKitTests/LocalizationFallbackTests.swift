@@ -1,7 +1,8 @@
 import XCTest
 @testable import LeeoKit
 
-/// 기기 언어가 패키지에 없는 언어(독일어 등)면 영어로, 한국어면 한국어로 떨어져야 한다.
+/// 기기 언어가 패키지에 없는 언어(네덜란드어 등)면 영어로, 한국어면 한국어로 떨어져야 한다.
+/// ⚠️ 예시 언어는 **패키지에 없는 것**이어야 한다 — 독일어로 쓰다가 독일어 번역이 들어오며 깨졌다.
 ///
 /// 원문이 ko 인 카탈로그에서 defaultLocalization 을 en 으로 두면, ko 값을 명시하지 않는 한
 /// ko.lproj 가 안 생겨 한국어 사용자가 영어를 본다 (→ scripts/fill-source-ko.py).
@@ -15,8 +16,16 @@ final class LocalizationFallbackTests: XCTestCase {
     }
 
     func testUnsupportedLanguageFallsBackToEnglish() {
-        let picked = Bundle.preferredLocalizations(from: bundle.localizations, forPreferences: ["de"])
+        XCTAssertFalse(bundle.localizations.contains("nl"), "nl 이 들어왔으면 없는 언어로 예시를 바꿀 것")
+        let picked = Bundle.preferredLocalizations(from: bundle.localizations, forPreferences: ["nl"])
         XCTAssertEqual(picked.first, "en")
+    }
+
+    func testAddedEuropeanLanguagesArePicked() {
+        for lang in ["de", "fr", "es", "pt-BR", "it"] {
+            let picked = Bundle.preferredLocalizations(from: bundle.localizations, forPreferences: [lang])
+            XCTAssertEqual(picked.first, lang, "\(lang).lproj 가 패키지에 없다")
+        }
     }
 
     func testKoreanStaysKorean() {
