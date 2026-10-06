@@ -57,6 +57,24 @@
             "value": "%1$@ · %2$@"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -122,6 +140,24 @@
           }
         },
         "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@ · %3$@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@ · %3$@"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@ · %3$@"
+          }
+        },
+        "vi": {
           "stringUnit": {
             "state": "translated",
             "value": "%1$@ · %2$@ · %3$@"
@@ -195,6 +231,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Você está gostando do %@?"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вам нравится %@?"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คุณชอบใช้ %@ ไหม"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn có thích dùng %@ không?"
           }
         },
         "zh-Hans": {
@@ -273,6 +327,18 @@
             "value": "Когда освободились пять минут, а с чего начать, непонятно"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เมื่อมีเวลาว่าง 5 นาทีแต่ไม่รู้จะเริ่มอะไรก่อน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khi có năm phút rảnh mà không biết bắt đầu từ đâu"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -349,6 +415,18 @@
             "value": "Открыть в App Store"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ดูใน App Store"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem trên App Store"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -417,6 +495,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Adicione este ID à função admin no CloudKit Dashboard para ler todo o feedback no app. Toque para copiar."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Добавьте этот ID в роль admin в CloudKit Dashboard, чтобы читать все отзывы в приложении. Нажмите, чтобы скопировать."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เพิ่ม ID นี้ในบทบาท admin ของ CloudKit Dashboard เพื่ออ่านความคิดเห็นทั้งหมดในแอป แตะเพื่อคัดลอก"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thêm ID này vào vai trò admin trong CloudKit Dashboard để đọc mọi góp ý trong ứng dụng. Chạm để sao chép."
           }
         },
         "zh-Hans": {
@@ -489,6 +585,24 @@
             "value": "O Mail não está configurado. Quer abrir outro app de e-mail pelo link mailto:?"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Приложение «Почта» не настроено. Открыть другое почтовое приложение по ссылке mailto:?"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ยังไม่ได้ตั้งค่าแอป Mail ต้องการเปิดแอปเมลอื่นผ่านลิงก์ mailto: ไหม"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ứng dụng Mail chưa được thiết lập. Bạn có muốn mở ứng dụng mail khác qua liên kết mailto: không?"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -557,6 +671,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Você não está conectado ao iCloud"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вход в iCloud не выполнен"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คุณยังไม่ได้ลงชื่อเข้าใช้ iCloud"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn chưa đăng nhập iCloud"
           }
         },
         "zh-Hans": {
@@ -635,6 +767,18 @@
             "value": "Два приложения на одном iCloud видят одни и те же дела."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "สองแอปที่ใช้ iCloud เดียวกันจะเห็นงานเดียวกัน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hai ứng dụng dùng chung iCloud sẽ thấy cùng danh sách việc cần làm."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -709,6 +853,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Тем, кто по нескольку раз в день отправляет один и тот же ответ"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คนที่ส่งข้อความตอบกลับเดิมๆ หลายครั้งต่อวัน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Người gửi cùng một câu trả lời nhiều lần mỗi ngày"
           }
         },
         "zh-Hans": {
@@ -787,6 +943,18 @@
             "value": "Одни и те же фразы не приходится писать заново, а срок не проходит мимо."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ไม่ต้องพิมพ์ประโยคเดิมซ้ำ และไม่พลาดกำหนดส่ง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không phải gõ lại cùng một câu, không lỡ hạn chót."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -863,6 +1031,18 @@
             "value": "Это приложения одного автора. У них есть общие места, и если держать их рядом, день не рвётся."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แอปเหล่านี้สร้างโดยผู้พัฒนาคนเดียวกัน มีส่วนที่ทับซ้อนกัน ใช้คู่กันแล้ววันของคุณจะต่อเนื่อง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đây là các ứng dụng của cùng một nhà phát triển. Chúng giao nhau ở nhiều chỗ, nên dùng cạnh nhau giúp cả ngày liền mạch."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -925,6 +1105,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sugestão de melhoria"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Предложение по улучшению"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ข้อเสนอแนะเพื่อการปรับปรุง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đề xuất cải thiện"
           }
         },
         "zh-Hans": {
@@ -1003,6 +1201,18 @@
             "value": "Неделя, что темнеет там, где дела накладываются, и одно дело, за которое можно взяться сейчас"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "สัปดาห์ที่เข้มข้นขึ้นตรงที่ทับซ้อน และงานที่หยิบทำได้ตอนนี้"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Một tuần đậm dần ở những chỗ chồng lên nhau, và một việc bạn có thể làm ngay"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1077,6 +1287,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "День, когда номера и адреса выписываешь снова и снова: договор, переезд."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "วันที่ต้องกรอกหมายเลขและที่อยู่ซ้ำหลายครั้ง เช่น ทำสัญญาหรือย้ายบ้าน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Một ngày phải viết đi viết lại số và địa chỉ, như khi ký hợp đồng hay chuyển nhà."
           }
         },
         "zh-Hans": {
@@ -1155,6 +1377,18 @@
             "value": "Соберите фразы, которые набираете снова и снова: номера счетов, адреса, приветствия, и вставляйте их с клавиатуры в любом приложении. Скопированное само раскладывается по видам."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เก็บประโยคที่ต้องพิมพ์ซ้ำทุกครั้ง เช่น เลขบัญชี ที่อยู่ คำทักทาย แล้ววางจากแป้นพิมพ์ได้ทันทีในทุกแอป สิ่งที่คัดลอกจะถูกจัดหมวดหมู่ให้เอง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lưu những câu bạn gõ lại mỗi lần như số tài khoản, địa chỉ, lời chào, rồi dán ngay từ bàn phím trong mọi ứng dụng. Những gì bạn sao chép sẽ tự được phân loại."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1231,6 +1465,18 @@
             "value": "Тем, кто каждый раз ищет номер счёта или адрес"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คนที่ต้องค้นหาเลขบัญชีหรือที่อยู่ทุกครั้ง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Người lần nào cũng phải đi tìm số tài khoản hay địa chỉ"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1299,6 +1545,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Se for um erro de permissão, confira se a função admin no CloudKit Dashboard tem permissão de leitura e inclui o seu ID de usuário abaixo."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Если это ошибка доступа, проверьте в CloudKit Dashboard, что у роли admin есть право read и добавлен ваш ID пользователя ниже."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "หากเป็นข้อผิดพลาดด้านสิทธิ์ ให้ตรวจสอบว่าบทบาท admin ใน CloudKit Dashboard มีสิทธิ์ read และมี ID ผู้ใช้ด้านล่างแล้ว"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nếu đây là lỗi quyền, hãy kiểm tra vai trò admin trong CloudKit Dashboard đã có quyền read và đã thêm ID người dùng bên dưới."
           }
         },
         "zh-Hans": {
@@ -1371,6 +1635,24 @@
             "value": "Sugestão de recurso"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Предложить функцию"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ขอฟีเจอร์"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đề xuất tính năng"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1439,6 +1721,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Outro"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Другое"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "อื่นๆ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khác"
           }
         },
         "zh-Hans": {
@@ -1517,6 +1817,18 @@
             "value": "Таймер, который звонит ещё раз до конца"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ตัวจับเวลาที่ดังอีกครั้งก่อนหมดเวลา"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bộ hẹn giờ reo thêm một lần trước khi kết thúc"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1585,6 +1897,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mais tarde"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Позже"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ภายหลัง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để sau"
           }
         },
         "zh-Hans": {
@@ -1657,6 +1987,24 @@
             "value": "Sem data"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Без даты"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ไม่มีวันที่"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không có ngày"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1725,6 +2073,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Se você deixar um contato, podemos responder. Fica salvo só neste dispositivo e é preenchido para você da próxima vez."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Оставьте контакт, и мы сможем вам ответить. Он хранится только на этом устройстве и подставится в следующий раз."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "หากฝากข้อมูลติดต่อไว้ เราจะตอบกลับได้ ข้อมูลจะบันทึกไว้ในอุปกรณ์นี้เท่านั้นและกรอกให้ในครั้งถัดไป"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nếu bạn để lại thông tin, chúng tôi có thể trả lời bạn. Chỉ lưu trên thiết bị này và tự điền lại lần sau."
           }
         },
         "zh-Hans": {
@@ -1797,6 +2163,24 @@
             "value": "Meu ID de usuário"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Мой ID пользователя"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ID ผู้ใช้ของฉัน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ID người dùng của tôi"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -1865,6 +2249,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Conteúdo"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Содержание"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เนื้อหา"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nội dung"
           }
         },
         "zh-Hans": {
@@ -1937,6 +2339,24 @@
             "value": "Escreva algo para ativar"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Станет доступно после ввода текста"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "กรอกเนื้อหาเพื่อเปิดใช้งาน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhập nội dung để bật"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2007,6 +2427,24 @@
             "value": "Sim, estou gostando 👍"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Да, нравится 👍"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ชอบมาก 👍"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Có, tôi thích 👍"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2075,6 +2513,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Abrir com outro app de e-mail"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Открыть в другом почтовом приложении"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เปิดด้วยแอปเมลอื่น"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mở bằng ứng dụng mail khác"
           }
         },
         "zh-Hans": {
@@ -2153,6 +2609,18 @@
             "value": "Другие приложения"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แอปอื่นๆ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ứng dụng khác"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2227,6 +2695,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Другие сочетания"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "การจับคู่อื่นๆ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kết hợp khác"
           }
         },
         "zh-Hans": {
@@ -2305,6 +2785,18 @@
             "value": "Когда прикидываете, влезет ли на следующей неделе ещё одна встреча"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เมื่อกำลังดูว่าสัปดาห์หน้ายังเพิ่มนัดได้อีกไหม"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khi bạn cân nhắc tuần sau còn chỗ cho thêm một cuộc hẹn không"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2373,6 +2865,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fechar"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Закрыть"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ปิด"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đóng"
           }
         },
         "zh-Hans": {
@@ -2451,6 +2961,18 @@
             "value": "День, где время отложено под работу, которая идёт только целым куском."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "วันที่กันเวลาไว้สำหรับงานที่ต้องทำต่อเนื่องเป็นก้อน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Một ngày dành riêng thời gian cho việc chỉ làm được trong một khối liền."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2525,6 +3047,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "두번알림"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rereminder - Smart alarm"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rereminder - Smart alarm"
           }
         },
         "zh-Hans": {
@@ -2603,6 +3137,18 @@
             "value": "Rereminder отмеряет час и за десять минут до конца подаёт знак закругляться."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rereminder จับเวลาหนึ่งชั่วโมง และส่งสัญญาณให้ปิดงานก่อนหมดเวลา 10 นาที"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rereminder đo một tiếng và báo bạn kết thúc mười phút trước khi hết giờ."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2679,6 +3225,18 @@
             "value": "Отложенный час не рассыпается на куски."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เวลาที่กันไว้จะไม่แตกเป็นชิ้นเล็กๆ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khoảng thời gian bạn dành riêng không bị vỡ vụn."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2747,6 +3305,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Escrever uma avaliação"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Написать отзыв"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เขียนรีวิว"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Viết đánh giá"
           }
         },
         "zh-Hans": {
@@ -2825,6 +3401,18 @@
             "value": "Тем, кто уже попадал впросак, заметив срок слишком поздно"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คนที่เคยลำบากเพราะเพิ่งรู้ตัวตอนใกล้กำหนดส่ง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Người từng bối rối vì đến sát hạn chót mới nhận ra"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2901,6 +3489,18 @@
             "value": "Всё, у чего есть срок, уходит в Rereminder. Он звонит ещё раз за тридцать минут и за пять."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "งานที่มีกำหนดส่งให้ตั้งไว้ใน Rereminder จะดังอีกครั้งก่อน 30 นาทีและก่อน 5 นาที"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Việc nào có hạn chót thì đặt vào Rereminder. Nó reo thêm lần nữa trước ba mươi phút và trước năm phút."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -2972,6 +3572,18 @@
           }
         },
         "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac"
+          }
+        },
+        "vi": {
           "stringUnit": {
             "state": "translated",
             "value": "Mac"
@@ -3053,6 +3665,18 @@
             "value": "Утро за Mac"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เช้าที่นั่งหน้า Mac"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buổi sáng bên Mac"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -3127,6 +3751,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Когда пишете письмо на Mac, а нужная фраза сохранена на телефоне"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เมื่อเขียนเมลบน Mac แล้วต้องใช้ข้อความที่บันทึกไว้ในโทรศัพท์"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khi đang viết mail trên Mac và cần câu đã lưu trên điện thoại"
           }
         },
         "zh-Hans": {
@@ -3205,6 +3841,18 @@
             "value": "Полчаса, за которые вы включаете Mac и рассаживаете сегодняшние дела."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "สามสิบนาทีที่เปิด Mac แล้ววางงานของวันนี้"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ba mươi phút bật Mac lên và sắp xếp việc hôm nay."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -3281,6 +3929,18 @@
             "value": "Одно нажатие в строке меню, те же фразы на Mac"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คลิกเดียวที่แถบเมนู ใช้ประโยคเดียวกันบน Mac"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Một lần nhấp trên thanh menu, cùng những câu ấy trên Mac"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -3349,6 +4009,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Não é possível abrir o app de e-mail"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не удаётся открыть почтовое приложение"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เปิดแอปเมลไม่ได้"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không thể mở ứng dụng Mail"
           }
         },
         "zh-Hans": {
@@ -3427,6 +4105,18 @@
             "value": "Тем, у кого почта и документы живут на Mac"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คนที่ทำงานเมลและเอกสารบน Mac"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Người làm mail và tài liệu trên Mac"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -3501,6 +4191,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Фразы для писем и документов достаются по сочетанию клавиш из ClipKeyboard в строке меню."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ประโยคสำหรับเมลและเอกสาร เรียกออกมาจาก ClipKeyboard ในแถบเมนูด้วยปุ่มลัด"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Những câu cho mail và tài liệu được lấy ra từ ClipKeyboard trên thanh menu bằng phím tắt."
           }
         },
         "zh-Hans": {
@@ -3579,6 +4281,18 @@
             "value": "Что делает приложение"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แอปนี้ทำอะไร"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ứng dụng làm gì"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -3650,6 +4364,18 @@
           }
         },
         "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rainbow Craft"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rainbow Craft"
+          }
+        },
+        "vi": {
           "stringUnit": {
             "state": "translated",
             "value": "Rainbow Craft"
@@ -3731,6 +4457,18 @@
             "value": "В 무지개 공방 вы перетаскиваете дела в колонку сегодняшнего дня."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ใน Rainbow Craft ลากงานของวันนี้ไปวางในช่องของวันนั้น"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trong Rainbow Craft, bạn kéo việc hôm nay vào cột của ngày."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -3807,6 +4545,18 @@
             "value": "Ответы на обращения, заявки, подтверждения брони: работа, где фразы повторяются"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "งานที่ประโยคซ้ำกันบ่อย เช่น ตอบคำถาม ใบสมัคร ยืนยันการจอง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trả lời câu hỏi, đơn ứng tuyển, xác nhận đặt chỗ: những việc lặp lại cùng câu chữ"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -3875,6 +4625,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tipo"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тема обращения"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ประเภท"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loại"
           }
         },
         "zh-Hans": {
@@ -3953,6 +4721,18 @@
             "value": "На улице вы разбиваете дела на шаги на телефоне."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เมื่ออยู่ข้างนอก แบ่งงานเป็นขั้นตอนบนโทรศัพท์"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khi ra ngoài, bạn chia việc thành các bước trên điện thoại."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -4021,6 +4801,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "%d feedbacks recebidos"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Получено отзывов: %d"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ได้รับความคิดเห็น %d รายการ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã nhận %d góp ý"
           }
         },
         "zh-Hans": {
@@ -4099,6 +4897,18 @@
             "value": "Когда нужно распределить оставшееся время: доклад, экзамен"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เมื่อต้องแบ่งเวลาที่เหลือ เช่น การนำเสนอหรือการสอบ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khi phải chia thời gian còn lại, như buổi thuyết trình hay kỳ thi"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -4167,6 +4977,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Relatar bug"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сообщить об ошибке"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "รายงานข้อผิดพลาด"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Báo lỗi"
           }
         },
         "zh-Hans": {
@@ -4239,6 +5067,24 @@
             "value": "Versão"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Версия"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เวอร์ชัน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phiên bản"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -4309,6 +5155,24 @@
             "value": "Enviar"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отправить"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ส่ง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gửi"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -4377,6 +5241,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Enviando…"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отправка…"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "กำลังส่ง…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang gửi…"
           }
         },
         "zh-Hans": {
@@ -4455,6 +5337,18 @@
             "value": "Скопированные номера счетов и адреса ClipKeyboard раскладывает по видам и хранит. Искать больше не нужно."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ClipKeyboard จัดหมวดหมู่และเก็บเลขบัญชีกับที่อยู่ที่คุณคัดลอกไว้ ไม่ต้องค้นหาอีก"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ClipKeyboard phân loại và giữ lại số tài khoản và địa chỉ bạn đã sao chép. Không phải đi tìm lại nữa."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -4531,6 +5425,18 @@
             "value": "Когда нужно то, что вы скопировали чуть раньше"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เมื่อต้องหาสิ่งที่เพิ่งคัดลอกไว้เมื่อครู่"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khi cần lại thứ vừa sao chép lúc nãy"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -4599,6 +5505,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Carregando…"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Загрузка…"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "กำลังโหลด…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang tải…"
           }
         },
         "zh-Hans": {
@@ -4671,6 +5595,24 @@
             "value": "Fique à vontade para descrever o problema ou a sugestão"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Опишите, что вам неудобно, или поделитесь предложением"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เล่าปัญหาหรือข้อเสนอแนะของคุณได้ตามสบาย"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hãy thoải mái mô tả vấn đề hoặc đề xuất của bạn"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -4739,6 +5681,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Dúvida de uso"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вопрос об использовании"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "สอบถามวิธีใช้"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hỏi cách sử dụng"
           }
         },
         "zh-Hans": {
@@ -4811,6 +5771,24 @@
             "value": "Um usuário deixou um feedback. Confira na sua caixa de entrada."
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пользователь оставил отзыв. Посмотрите его во входящих."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "มีผู้ใช้ส่งความคิดเห็นมา ตรวจสอบได้ในกล่องข้อความ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Một người dùng đã gửi góp ý. Hãy xem trong hộp thư."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -4879,6 +5857,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Apagar"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Удалить"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ลบ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xóa"
           }
         },
         "zh-Hans": {
@@ -4957,6 +5953,18 @@
             "value": "Час, к которому вторая сторона обещала ответить, уходит в Rereminder."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เวลาที่อีกฝ่ายสัญญาว่าจะยืนยัน ให้ตั้งไว้ใน Rereminder"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thời điểm bên kia hứa xác nhận thì đặt vào Rereminder."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -5025,6 +6033,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Alertas de novo feedback"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Уведомления о новых отзывах"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "การแจ้งเตือนความคิดเห็นใหม่"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thông báo góp ý mới"
           }
         },
         "zh-Hans": {
@@ -5097,6 +6123,24 @@
             "value": "Chegou um novo feedback 📬"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пришёл новый отзыв 📬"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "มีความคิดเห็นใหม่ 📬"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Có góp ý mới 📬"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -5166,6 +6210,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Receba uma notificação push neste dispositivo quando chegar um novo feedback. Funciona depois de configurar a permissão de leitura da função admin no CloudKit."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Когда приходит новый отзыв, на это устройство приходит push-уведомление. Работает после настройки права read для роли admin в CloudKit."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "รับการแจ้งเตือนแบบพุชบนอุปกรณ์นี้เมื่อมีความคิดเห็นใหม่ ใช้งานได้หลังตั้งค่าสิทธิ์ read ของบทบาท admin ใน CloudKit"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhận thông báo đẩy trên thiết bị này khi có góp ý mới. Hoạt động sau khi thiết lập quyền read cho vai trò admin của CloudKit."
           }
         },
         "zh-Hans": {
@@ -5244,6 +6306,18 @@
             "value": "День бумаг"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "บ่ายที่มีเอกสารรับส่งไปมา"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buổi chiều với giấy tờ"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -5312,6 +6386,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Será apagado definitivamente do servidor e não poderá ser desfeito."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отзыв будет удалён с сервера навсегда. Это действие нельзя отменить."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "จะถูกลบออกจากเซิร์ฟเวอร์อย่างถาวรและเลิกทำไม่ได้"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Góp ý sẽ bị xóa vĩnh viễn khỏi máy chủ và không thể hoàn tác."
           }
         },
         "zh-Hans": {
@@ -5390,6 +6482,18 @@
             "value": "Когда не хочется убирать руки с клавиатуры"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เมื่อต้องการวางโดยไม่ละมือจากแป้นพิมพ์"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khi bạn muốn dán mà không rời tay khỏi bàn phím"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -5466,6 +6570,18 @@
             "value": "Тем, кто работает по часам"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คนที่ทำงานแข่งกับเวลา"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Người làm việc theo đồng hồ"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -5534,6 +6650,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Algo poderia ser melhor"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Есть что улучшить"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "มีบางอย่างที่ยังไม่ดี"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Có điều chưa ổn"
           }
         },
         "zh-Hans": {
@@ -5607,6 +6741,18 @@
           }
         },
         "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPad"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPad"
+          }
+        },
+        "vi": {
           "stringUnit": {
             "state": "translated",
             "value": "iPad"
@@ -5688,6 +6834,18 @@
             "value": "iPhone"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -5764,6 +6922,18 @@
             "value": "Фразы, собранные на iPhone, приходят на Mac через iCloud. Достаньте их из значка в строке меню или по глобальному сочетанию клавиш в любом приложении."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ประโยคที่เก็บไว้บน iPhone จะตามไปที่ Mac ผ่าน iCloud เรียกออกมาวางได้ในทุกแอปจากไอคอนแถบเมนูหรือปุ่มลัดส่วนกลาง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Những câu bạn lưu trên iPhone theo bạn sang Mac qua iCloud. Lấy ra từ biểu tượng trên thanh menu hoặc phím tắt toàn cục trong mọi ứng dụng."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -5834,6 +7004,24 @@
             "value": "Nenhum feedback recebido ainda"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отзывов пока нет"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ยังไม่มีความคิดเห็นเข้ามา"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa nhận được góp ý nào"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -5897,6 +7085,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "As notificações estão desativadas. Permita em Ajustes do iOS > %@ > Notificações."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Уведомления выключены. Разрешите их в Настройках iOS > %@ > Уведомления."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "การแจ้งเตือนปิดอยู่ โปรดอนุญาตใน การตั้งค่า iOS > %@ > การแจ้งเตือน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thông báo đang tắt. Hãy cho phép trong Cài đặt iOS > %@ > Thông báo."
           }
         },
         "zh-Hans": {
@@ -5970,6 +7176,18 @@
           }
         },
         "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Watch"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Watch"
+          }
+        },
+        "vi": {
           "stringUnit": {
             "state": "translated",
             "value": "Apple Watch"
@@ -6051,6 +7269,18 @@
             "value": "Он звонит раньше обещанного часа, и первым выходит на связь уже не собеседник, а вы."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ดังก่อนเวลานัด คุณจึงเป็นฝ่ายติดต่อก่อน ไม่ใช่ฝ่ายรอ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nó reo trước giờ hẹn, nên bạn là người chủ động liên lạc trước thay vì người phải chờ."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -6119,6 +7349,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Que recurso você gostaria de ter?\nEx.: Quero agrupar os atalhos em pastas."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Какая функция вам нужна?\nНапример: хочу группировать фразы по папкам."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "อยากได้ฟีเจอร์อะไร\nเช่น อยากจัดข้อความด่วนเป็นโฟลเดอร์"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn muốn có tính năng gì?\nVí dụ: Tôi muốn nhóm cụm từ vào thư mục."
           }
         },
         "zh-Hans": {
@@ -6191,6 +7439,24 @@
             "value": "O que você gostaria de saber?\nEx.: Como vejo o histórico da área de transferência?"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Что вы хотели бы узнать?\nНапример: как посмотреть историю буфера обмена?"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "อยากทราบเรื่องอะไร\nเช่น ดูประวัติคลิปบอร์ดได้อย่างไร"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn muốn biết điều gì?\nVí dụ: Làm sao xem lịch sử bảng tạm?"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -6261,6 +7527,24 @@
             "value": "Conte quando o problema acontece.\nEx.: O app fecha quando salvo um atalho."
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Расскажите, когда возникает проблема.\nНапример: приложение закрывается при сохранении фразы."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "บอกเราว่าปัญหาเกิดขึ้นตอนไหน\nเช่น แอปปิดตัวเมื่อบันทึกข้อความด่วน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hãy cho chúng tôi biết sự cố xảy ra khi nào.\nVí dụ: Ứng dụng thoát khi tôi lưu cụm từ."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -6323,6 +7607,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "O que foi incômodo? Conte como poderia ficar melhor."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Что было неудобно? Расскажите, как сделать лучше."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ไม่สะดวกตรงไหน บอกเราว่าควรปรับอย่างไรให้ดีขึ้น"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Điều gì khiến bạn thấy bất tiện? Hãy cho chúng tôi biết nên thay đổi thế nào."
           }
         },
         "zh-Hans": {
@@ -6401,6 +7703,18 @@
             "value": "Тем, кто хочет заранее знать, когда станет плотно"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คนที่อยากรู้ล่วงหน้าว่าจะยุ่งเมื่อไร"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Người muốn biết trước khi nào sẽ bận"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -6475,6 +7789,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Здесь ничего не собирается. App Store откроется, только если нажать."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ที่นี่ไม่มีการเก็บข้อมูลใดๆ App Store จะเปิดเมื่อคุณแตะเท่านั้น"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không thu thập gì ở đây. App Store chỉ mở khi bạn chạm."
           }
         },
         "zh-Hans": {
@@ -6553,6 +7879,18 @@
             "value": "День, когда почти одинаковые бумаги уходят в десять мест."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "วันที่ต้องส่งเอกสารคล้ายๆ กันไปสิบแห่ง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Một ngày gửi hồ sơ gần giống nhau đến mười nơi."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -6621,6 +7959,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deslize para a direita para marcar como concluído (salvo só neste dispositivo) e para a esquerda para apagar. Apagar exige permissão de escrita na função admin do CloudKit."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Смахните вправо, чтобы отметить как выполненное (хранится только на этом устройстве), влево, чтобы удалить. Для удаления у роли admin в CloudKit должно быть право write."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ปัดขวาเพื่อทำเครื่องหมายว่าเสร็จ (บันทึกในอุปกรณ์นี้เท่านั้น) ปัดซ้ายเพื่อลบ การลบต้องมีสิทธิ์ write ในบทบาท admin ของ CloudKit"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vuốt sang phải để đánh dấu xong (chỉ lưu trên thiết bị này), vuốt sang trái để xóa. Xóa cần quyền write cho vai trò admin của CloudKit."
           }
         },
         "zh-Hans": {
@@ -6693,6 +8049,24 @@
             "value": "OK"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Готово"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เสร็จสิ้น"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xong"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -6761,6 +8135,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Marcar como concluído"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отметить выполненным"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ทำเครื่องหมายว่าเสร็จ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đánh dấu xong"
           }
         },
         "zh-Hans": {
@@ -6833,6 +8225,24 @@
             "value": "Desmarcar concluído"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Снять отметку"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เลิกทำเครื่องหมายว่าเสร็จ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bỏ đánh dấu xong"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -6901,6 +8311,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Feedback concluído"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выполненные отзывы"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ความคิดเห็นที่เสร็จแล้ว"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Góp ý đã xong"
           }
         },
         "zh-Hans": {
@@ -6973,6 +8401,24 @@
             "value": "Ver %d concluídos"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выполненные отзывы: %d"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ดูที่เสร็จแล้ว %d รายการ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem %d góp ý đã xong"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -7041,6 +8487,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nenhum feedback concluído"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выполненных отзывов нет"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ไม่มีความคิดเห็นที่เสร็จแล้ว"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không có góp ý đã xong"
           }
         },
         "zh-Hans": {
@@ -7119,6 +8583,18 @@
             "value": "욕망의 무지개"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rainbow of Desire"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rainbow of Desire"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -7193,6 +8669,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "욕망의 무지개 разбивает подачу заявки на шаги. Вставить рассказ о себе остаётся кусочком на пять минут."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rainbow of Desire แบ่งการส่งใบสมัครเป็นขั้นตอน การวางประวัติแนะนำตัวจะเหลือเป็นชิ้นงาน 5 นาที"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rainbow of Desire chia việc gửi đơn ứng tuyển thành các bước. Việc dán phần giới thiệu bản thân chỉ là một mảnh năm phút."
           }
         },
         "zh-Hans": {
@@ -7271,6 +8759,18 @@
             "value": "욕망의 무지개 сразу говорит, что это блок, а не кусочек."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rainbow of Desire บอกคุณก่อนว่างานนี้เป็นก้อนใหญ่ ไม่ใช่ชิ้นเล็ก"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rainbow of Desire cho bạn biết ngay rằng việc này là một khối, không phải một mảnh."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -7347,6 +8847,18 @@
             "value": "Время, которое делится на отрезки: тренировка, учёба"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เวลาที่แบ่งใช้เป็นช่วงๆ เช่น ออกกำลังกายและเรียนหนังสือ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thời gian chia thành từng đoạn, như tập luyện và học tập"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -7415,6 +8927,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Seu feedback nos ajuda a melhorar o app."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ваш отзыв поможет сделать приложение лучше."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ความคิดเห็นของคุณช่วยให้เราพัฒนาแอปให้ดีขึ้น"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Góp ý của bạn giúp chúng tôi làm ứng dụng tốt hơn."
           }
         },
         "zh-Hans": {
@@ -7493,6 +9023,18 @@
             "value": "На этом устройстве установить нельзя. Откроется только страница в магазине."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ติดตั้งในอุปกรณ์นี้ไม่ได้ จะเปิดเฉพาะหน้า Store เท่านั้น"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không thể cài đặt trên thiết bị này. Chỉ mở trang cửa hàng."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -7569,6 +9111,18 @@
             "value": "Приложения в этой сцене"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แอปในฉากนี้"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ứng dụng trong cảnh này"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -7637,6 +9191,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Apagar este feedback?"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Удалить этот отзыв?"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ลบความคิดเห็นนี้ไหม"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xóa góp ý này?"
           }
         },
         "zh-Hans": {
@@ -7715,6 +9287,18 @@
             "value": "Кому подойдёт"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เหมาะกับใคร"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dành cho ai"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -7789,6 +9373,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Когда пригодится"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เหมาะกับช่วงไหน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lúc nên dùng"
           }
         },
         "zh-Hans": {
@@ -7867,6 +9463,18 @@
             "value": "Вот как они связаны"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ใช้ต่อกันอย่างไร"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cách chúng kết nối"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -7929,6 +9537,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nome"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Имя"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ชื่อ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tên"
           }
         },
         "zh-Hans": {
@@ -7995,6 +9621,24 @@
             "value": "Nome (opcional)"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Имя (необязательно)"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ชื่อ (ไม่บังคับ)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tên (không bắt buộc)"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -8057,6 +9701,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "E-mail"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "E-mail"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "อีเมล"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Email"
           }
         },
         "zh-Hans": {
@@ -8135,6 +9797,18 @@
             "value": "В воскресенье вечером, когда заранее рассаживаете будущую неделю"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เย็นวันอาทิตย์ เมื่อวางแผนสัปดาห์หน้าไว้ล่วงหน้า"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tối Chủ nhật, khi bạn sắp xếp trước tuần tới"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -8211,6 +9885,18 @@
             "value": "Плотность расписания показана цветом, а дела разделены на кусочки по пять минут и на блоки, под которые нужно освободить время. Виджет протягивает только одно дело, за которое можно взяться прямо сейчас."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แสดงความหนาแน่นของตารางด้วยสี และแบ่งงานเป็นชิ้นที่เสร็จใน 5 นาทีกับก้อนที่ต้องกันเวลาไว้ วิดเจ็ตจะแสดงเพียงงานเดียวที่หยิบทำได้ทันที"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ứng dụng thể hiện mật độ lịch bằng màu sắc, và chia việc thành những mảnh xong trong năm phút và những khối cần dành riêng thời gian. Tiện ích chỉ đưa ra một việc bạn có thể làm ngay."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -8281,6 +9967,24 @@
             "value": "Informações anexadas automaticamente"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Автоматически прилагаемые данные"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ข้อมูลที่แนบอัตโนมัติ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thông tin tự động đính kèm"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -8349,6 +10053,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deixe o feedback que quiser."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Оставьте любой отзыв."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ฝากความคิดเห็นได้ตามสบาย"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hãy thoải mái để lại góp ý."
           }
         },
         "zh-Hans": {
@@ -8427,6 +10149,18 @@
             "value": "Часто набираемые фразы, прямо с клавиатуры"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เรียกประโยคที่ใช้บ่อยออกมาจากแป้นพิมพ์ได้ทันที"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lấy ngay từ bàn phím những câu bạn gõ đi gõ lại"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -8503,6 +10237,18 @@
             "value": "Записанное не теряется, а обещанный час не проходит."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ไม่ทำสิ่งที่จดไว้หาย และไม่เลยเวลาที่สัญญาไว้"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không mất những gì đã ghi, không trễ giờ đã hẹn."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -8571,6 +10317,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Falha no envio"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не удалось отправить"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ส่งไม่สำเร็จ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gửi không thành công"
           }
         },
         "zh-Hans": {
@@ -8644,6 +10408,24 @@
             "value": "%d recebidos · %d concluídos"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Получено: %d · Выполнено: %d"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ได้รับ %d · เสร็จ %d"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã nhận %d · Đã xong %d"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -8714,6 +10496,24 @@
             "value": "Feedback recebido"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Полученные отзывы"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ความคิดเห็นที่ได้รับ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Góp ý đã nhận"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -8782,6 +10582,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Feedback recebido (desenvolvedor)"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Полученные отзывы (разработчик)"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ความคิดเห็นที่ได้รับ (ผู้พัฒนา)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Góp ý đã nhận (Nhà phát triển)"
           }
         },
         "zh-Hans": {
@@ -8860,6 +10678,18 @@
             "value": "Он предупредит в те моменты, что вы выбрали: за десять минут до конца, за пять. Оставшееся время видно на заблокированном экране и на Apple Watch."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เตือนล่วงหน้าตามเวลาที่คุณเลือก เช่น ก่อนหมดเวลา 10 นาทีหรือ 5 นาที เวลาที่เหลือแสดงตลอดบนหน้าจอล็อกและ Apple Watch"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Báo trước vào những thời điểm bạn chọn, như mười phút hay năm phút trước khi kết thúc. Thời gian còn lại luôn hiện trên màn hình khóa và Apple Watch."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -8934,6 +10764,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Тем, кто сначала планирует неделю, а потом действует"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คนที่วางแผนเป็นรายสัปดาห์ก่อนลงมือ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Người lên kế hoạch theo tuần trước khi bắt tay vào làm"
           }
         },
         "zh-Hans": {
@@ -9012,6 +10854,18 @@
             "value": "Вопросы, пришедшие посреди часа, закрываются заготовленным ответом из ClipKeyboard."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คำถามที่เข้ามากลางคัน ตอบสั้นๆ ด้วยข้อความที่ตั้งไว้ใน ClipKeyboard"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Câu hỏi đến giữa chừng được trả lời gọn bằng câu soạn sẵn trong ClipKeyboard."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -9086,6 +10940,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Сцены, в которых появляется приложение, которым вы пользуетесь."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ฉากที่แอปที่คุณกำลังใช้ปรากฏอยู่"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Những cảnh có ứng dụng bạn đang dùng."
           }
         },
         "zh-Hans": {
@@ -9164,6 +11030,18 @@
             "value": "День, когда рассылаете заявки"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "วันที่ส่งใบสมัคร"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ngày gửi đơn ứng tuyển"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -9238,6 +11116,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Место, где разбиваешь, и место, где раскладываешь, разные, а список один."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แม้จะแบ่งงานกับวางงานคนละที่ แต่รายการมีเพียงหนึ่งเดียว"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nơi chia việc và nơi sắp xếp khác nhau, nhưng danh sách chỉ có một."
           }
         },
         "zh-Hans": {
@@ -9316,6 +11206,18 @@
             "value": "За столом Mac рассаживает эти шаги по дням и часам."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เมื่อนั่งที่โต๊ะ จัดขั้นตอนเหล่านั้นลงวันและช่วงเวลาบน Mac"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tại bàn làm việc, Mac sắp các bước ấy vào ngày và khung giờ."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -9386,6 +11288,24 @@
             "value": "Não foi possível concluir a ação: %@"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не удалось выполнить действие: %@"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ทำรายการไม่สำเร็จ: %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không thể thực hiện: %@"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -9454,6 +11374,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cancelar"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отменить"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ยกเลิก"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hủy"
           }
         },
         "zh-Hans": {
@@ -9527,6 +11465,18 @@
           }
         },
         "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clip Keyboard - Quick Phrases"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clip Keyboard - Quick Phrases"
+          }
+        },
+        "vi": {
           "stringUnit": {
             "state": "translated",
             "value": "Clip Keyboard - Quick Phrases"
@@ -9608,6 +11558,18 @@
             "value": "클립키보드: 빠른 붙여넣기"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ClipKeyCro"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ClipKeyCro"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -9676,6 +11638,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Toque para enviar direto ao desenvolvedor"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нажмите, чтобы отправить разработчику напрямую"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แตะเพื่อส่งถึงผู้พัฒนาโดยตรง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chạm để gửi thẳng cho nhà phát triển"
           }
         },
         "zh-Hans": {
@@ -9754,6 +11734,18 @@
             "value": "Тем, кто пользуется одними фразами и на телефоне, и на Mac"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คนที่ใช้ประโยคเดียวกันทั้งบนโทรศัพท์และ Mac"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Người dùng cùng những câu trên cả điện thoại và Mac"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -9828,6 +11820,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Собранное на телефоне идёт в дело на Mac, а разбитое на телефоне раскладывается на Mac."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "สิ่งที่เก็บบนโทรศัพท์นำไปใช้บน Mac และสิ่งที่แบ่งบนโทรศัพท์นำไปจัดบน Mac"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Những gì gom trên điện thoại được dùng trên Mac, những gì chia trên điện thoại được sắp xếp trên Mac."
           }
         },
         "zh-Hans": {
@@ -9906,6 +11910,18 @@
             "value": "Сохранённое на телефоне уже здесь, переписывать заново нечего."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "สิ่งที่บันทึกบนโทรศัพท์อยู่ครบ จึงไม่ต้องพิมพ์ซ้ำ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Những gì đã lưu trên điện thoại vẫn còn nguyên, nên không phải chép lại."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -9980,6 +11996,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Разбить на телефоне, разложить на Mac"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แบ่งบนโทรศัพท์ จัดบน Mac"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia trên điện thoại, sắp xếp trên Mac"
           }
         },
         "zh-Hans": {
@@ -10058,6 +12086,18 @@
             "value": "Тем, кто хочет разложить на большом экране дела, разбитые на телефоне"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คนที่อยากจัดงานที่แบ่งไว้บนโทรศัพท์บนหน้าจอใหญ่"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Người muốn sắp xếp trên màn hình lớn những việc đã chia trên điện thoại"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -10126,6 +12166,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Conteúdo do feedback"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Текст отзыва"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เนื้อหาความคิดเห็น"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nội dung góp ý"
           }
         },
         "zh-Hans": {
@@ -10198,6 +12256,24 @@
             "value": "Enviar feedback"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отправить отзыв"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ส่งความคิดเห็น"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gửi góp ý"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -10268,6 +12344,24 @@
             "value": "Feedback enviado!\nObrigado pela sua contribuição 🙏"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отзыв отправлен!\nСпасибо за ваше мнение 🙏"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ส่งความคิดเห็นแล้ว\nขอบคุณสำหรับความคิดเห็น 🙏"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã gửi góp ý!\nCảm ơn ý kiến quý báu của bạn 🙏"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -10336,6 +12430,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Não foi possível carregar o feedback: %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не удалось загрузить отзывы: %@"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "โหลดความคิดเห็นไม่สำเร็จ: %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không thể tải góp ý: %@"
           }
         },
         "zh-Hans": {
@@ -10414,6 +12526,18 @@
             "value": "Как удержать час"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "วิธีรักษาเวลาหนึ่งชั่วโมง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cách giữ trọn một tiếng"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -10488,6 +12612,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Верстак, где неделя собирается по дням и часам"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "โต๊ะทำงานสำหรับจัดสัปดาห์ตามวันและช่วงเวลา"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bàn làm việc để sắp xếp một tuần theo ngày và khung giờ"
           }
         },
         "zh-Hans": {
@@ -10566,6 +12702,18 @@
             "value": "Изменённое на одной стороне вскоре появляется на другой."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "สิ่งที่แก้ฝั่งหนึ่งจะปรากฏอีกฝั่งในไม่ช้า"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chỗ bạn sửa ở một bên sẽ sớm hiện ở bên kia."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -10640,6 +12788,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Тем, у кого руки опускаются, когда список дел растёт"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คนที่ยิ่งรายการงานยาวยิ่งไม่อยากเริ่ม"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Người càng ngại bắt tay khi danh sách việc càng dài"
           }
         },
         "zh-Hans": {
@@ -10718,6 +12878,18 @@
             "value": "Перетащите дело на сетку дня, и оно станет блоком плана. Сначала уложите постоянное: сон, еду, а работу посадите в то, что осталось."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ลากงานลงตารางรายวันให้เป็นบล็อกแผนงาน วางกิจวัตรประจำ เช่น การนอนและมื้ออาหารก่อน แล้วจัดงานลงในช่องที่เหลือ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kéo việc vào lưới ngày để biến thành khối kế hoạch. Đặt các thói quen cố định như ngủ và ăn trước, rồi xếp công việc vào chỗ còn lại."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -10792,6 +12964,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Приложения, что работают вместе"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แอปที่ใช้ร่วมกัน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ứng dụng dùng cùng nhau"
           }
         },
         "zh-Hans": {
@@ -10870,6 +13054,18 @@
             "value": "Сцены, где они работают вместе"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ฉากที่ใช้ร่วมกัน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Những cảnh nên dùng"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -10946,6 +13142,18 @@
             "value": "Вместе лучше, чем поодиночке"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ใช้ต่อกันดีกว่าใช้เดี่ยว"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dùng nối tiếp tốt hơn dùng riêng lẻ"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -11014,6 +13222,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nenhum feedback ativo. Tudo concluído 🎉"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Активных отзывов нет. Всё выполнено 🎉"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ไม่มีความคิดเห็นค้างอยู่ เสร็จหมดแล้ว 🎉"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không có góp ý nào đang chờ. Đã xong hết 🎉"
           }
         },
         "zh-Hans": {
@@ -11092,6 +13318,18 @@
             "value": "Рассказ о себе, где меняется только название компании, один раз становится шаблоном ClipKeyboard и потом достаётся с клавиатуры."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ประวัติแนะนำตัวที่เปลี่ยนแค่ชื่อบริษัท สร้างเป็นเทมเพลตใน ClipKeyboard ครั้งเดียว แล้วเรียกจากแป้นพิมพ์"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phần giới thiệu bản thân chỉ đổi tên công ty được tạo một lần thành mẫu ClipKeyboard, rồi lấy ra từ bàn phím."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -11156,6 +13394,24 @@
             "value": "E-mail para resposta (opcional)"
           }
         },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "E-mail для ответа (необязательно)"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "อีเมลสำหรับตอบกลับ (ไม่บังคับ)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Email nhận phản hồi (không bắt buộc)"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -11218,6 +13474,24 @@
           "stringUnit": {
             "state": "translated",
             "value": "Contato para resposta"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Контакт для ответа"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ข้อมูลติดต่อกลับ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thông tin liên hệ"
           }
         },
         "zh-Hans": {
@@ -11296,6 +13570,18 @@
             "value": "Когда ищете время, оставшееся между встречами и сроками"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เมื่อต้องหาเวลาว่างระหว่างประชุมและกำหนดส่ง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khi tìm khoảng thời gian còn lại giữa các cuộc họp và hạn chót"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -11370,6 +13656,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Когда это случилось и что вы делали?"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เกิดขึ้นเมื่อไร ขณะทำอะไรอยู่"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chuyện xảy ra khi nào, và lúc đó bạn đang làm gì?"
           }
         },
         "zh-Hans": {
@@ -11448,6 +13746,18 @@
             "value": "Напр.: сегодня утром, при сохранении записи в списке"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เช่น เช้านี้ ตอนกำลังบันทึกรายการในลิสต์"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ví dụ: Sáng nay, khi đang lưu một mục trong danh sách"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -11522,6 +13832,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Что произошло?"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เกิดอะไรขึ้น"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chuyện gì đã xảy ra?"
           }
         },
         "zh-Hans": {
@@ -11600,6 +13922,18 @@
             "value": "Напр.: приложение закрылось. При повторном открытии введённое пропало."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เช่น แอปปิดไปเอง เปิดใหม่แล้วสิ่งที่พิมพ์ไว้หายไป"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ví dụ: Ứng dụng tự đóng. Khi mở lại, nội dung đang gõ đã mất."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -11674,6 +14008,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Чего вы ожидали? (необязательно)"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ควรจะเป็นอย่างไร (ไม่บังคับ)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lẽ ra phải như thế nào? (không bắt buộc)"
           }
         },
         "zh-Hans": {
@@ -11752,6 +14098,18 @@
             "value": "Напр.: введённое должно было сохраниться."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เช่น สิ่งที่พิมพ์ไว้ควรยังอยู่"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ví dụ: Nội dung đang gõ lẽ ra vẫn còn đó."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -11826,6 +14184,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Какую функцию вы хотели бы?"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "อยากได้ฟีเจอร์อะไร"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn muốn có tính năng gì?"
           }
         },
         "zh-Hans": {
@@ -11904,6 +14274,18 @@
             "value": "Напр.: хочу группировать записи в папки."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เช่น อยากจัดรายการเป็นโฟลเดอร์"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ví dụ: Tôi muốn nhóm các mục vào thư mục."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -11978,6 +14360,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "В какой ситуации вы бы этим пользовались?"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คิดว่าจะใช้ในสถานการณ์ไหน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn sẽ dùng nó trong tình huống nào?"
           }
         },
         "zh-Hans": {
@@ -12056,6 +14450,18 @@
             "value": "Напр.: рабочее и домашнее смешано, хочу видеть только нужное."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เช่น รายการเรื่องงานกับเรื่องบ้านปนกัน อยากดูเฉพาะฝั่งที่ต้องการ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ví dụ: Mục cho công việc và ở nhà bị lẫn lộn, tôi chỉ muốn xem một bên."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -12130,6 +14536,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Что было неудобно?"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ไม่สะดวกตรงไหน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Điều gì khiến bạn thấy bất tiện?"
           }
         },
         "zh-Hans": {
@@ -12208,6 +14626,18 @@
             "value": "Напр.: когда записей много, поиск занимает время."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เช่น พอมีรายการเยอะ ต้องใช้เวลาหานาน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ví dụ: Khi có nhiều mục, tìm một mục mất khá lâu."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -12282,6 +14712,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Что вы делали в тот момент?"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ตอนนั้นกำลังทำอะไรอยู่"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lúc đó bạn đang làm gì?"
           }
         },
         "zh-Hans": {
@@ -12360,6 +14802,18 @@
             "value": "Напр.: когда срочно искал одну запись на ходу."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เช่น ตอนอยู่ข้างนอกแล้วต้องรีบหารายการหนึ่ง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ví dụ: Khi đang ở ngoài và cần tìm gấp một mục."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -12434,6 +14888,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Дополнение"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เพิ่มเติม"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thêm"
           }
         },
         "zh-Hans": {
@@ -12512,6 +14978,18 @@
             "value": "Что-то ещё (необязательно)"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ข้อความเพิ่มเติม (ไม่บังคับ)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Điều muốn nói thêm (không bắt buộc)"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -12586,6 +15064,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Напишите, если хотите добавить что-то ещё."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "หากมีอะไรอยากบอกเพิ่ม เขียนไว้ได้เลย"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hãy ghi lại nếu bạn còn điều gì muốn nói."
           }
         },
         "zh-Hans": {
@@ -12664,6 +15154,18 @@
             "value": "Скриншот (необязательно)"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ภาพหน้าจอ (ไม่บังคับ)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ảnh sự cố (không bắt buộc)"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -12738,6 +15240,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Один скриншот скажет больше, чем абзац. С ним мы исправим точнее."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ภาพหน้าจอเดียวบอกได้มากกว่าข้อความ การแนบภาพช่วยให้เราแก้ไขได้แม่นยำขึ้นมาก"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Một ảnh màn hình nói được nhiều hơn một đoạn văn. Đính kèm ảnh giúp chúng tôi sửa chính xác hơn."
           }
         },
         "zh-Hans": {
@@ -12816,6 +15330,18 @@
             "value": "Прикрепить фото"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แนบรูปภาพ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đính kèm ảnh"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -12890,6 +15416,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Убрать это фото"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เอารูปนี้ออก"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gỡ ảnh này"
           }
         },
         "zh-Hans": {
@@ -12968,6 +15506,18 @@
             "value": "Прикреплённое фото"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "รูปที่แนบ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ảnh đã đính kèm"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -13042,6 +15592,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Скриншот"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ภาพหน้าจอ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ảnh sự cố"
           }
         },
         "zh-Hans": {
@@ -13120,6 +15682,18 @@
             "value": "Заполните поля, чтобы отправить"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "กรอกช่องที่ว่างเพื่อเปิดใช้งาน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Điền các ô để bật"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -13194,6 +15768,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Вы прикрепили %d фото, но этим способом их не отправить. Приложите их в почте."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คุณแนบรูป %d รูป แต่ช่องทางนี้ส่งรูปไปด้วยไม่ได้ โปรดแนบในแอปเมลเอง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn đã đính kèm %d ảnh nhưng cách gửi này không gửi kèm được. Hãy đính kèm trực tiếp trong ứng dụng mail."
           }
         },
         "zh-Hans": {
@@ -13272,6 +15858,18 @@
             "value": "Парное приложение"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แอปที่สร้างมาคู่กับแอปนี้"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ứng dụng đi cặp với ứng dụng này"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -13346,6 +15944,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Сделано вместе, чтобы делить один и тот же список."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "สร้างมาด้วยกันเพื่อใช้รายการเดียวกัน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Được làm cùng nhau để dùng chung một danh sách."
           }
         },
         "zh-Hans": {
@@ -13424,6 +16034,18 @@
             "value": "%@ Премиум"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ พรีเมียม"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ Premium"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -13498,6 +16120,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Откройте все функции."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ปลดล็อกทุกฟีเจอร์"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mở khóa mọi tính năng."
           }
         },
         "zh-Hans": {
@@ -13576,6 +16210,18 @@
             "value": "Товары для продажи не настроены."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ยังไม่ได้ตั้งค่าสินค้าสำหรับขาย"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa có sản phẩm nào được thiết lập để bán."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -13650,6 +16296,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Загрузка…"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "กำลังโหลด…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang tải…"
           }
         },
         "zh-Hans": {
@@ -13728,6 +16386,18 @@
             "value": "Не удалось загрузить товары."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "โหลดสินค้าไม่สำเร็จ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không thể tải sản phẩm."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -13802,6 +16472,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Повторить"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ลองอีกครั้ง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thử lại"
           }
         },
         "zh-Hans": {
@@ -13880,6 +16562,18 @@
             "value": "Оформить подписку"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "สมัครสมาชิก"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đăng ký"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -13954,6 +16648,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Купить"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ซื้อ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mua"
           }
         },
         "zh-Hans": {
@@ -14032,6 +16738,18 @@
             "value": "Восстановить покупку"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "กู้คืนการซื้อ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khôi phục giao dịch mua"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -14106,6 +16824,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Оплата списывается с вашей учётной записи App Store. Подпиской можно управлять или отменить её в любое время в настройках App Store."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "การชำระเงินจะเรียกเก็บจากบัญชี App Store ของคุณ คุณจัดการหรือยกเลิกการสมัครสมาชิกได้ทุกเมื่อในการตั้งค่า App Store"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khoản thanh toán sẽ được tính vào tài khoản App Store của bạn. Bạn có thể quản lý hoặc hủy gói đăng ký bất cứ lúc nào trong cài đặt App Store."
           }
         },
         "zh-Hans": {
@@ -14184,6 +16914,18 @@
             "value": "Оплата списывается с вашей учётной записи App Store."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "การชำระเงินจะเรียกเก็บจากบัญชี App Store ของคุณ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khoản thanh toán sẽ được tính vào tài khoản App Store của bạn."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -14258,6 +17000,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Условия использования"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ข้อกำหนดการใช้งาน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Điều khoản sử dụng"
           }
         },
         "zh-Hans": {
@@ -14336,6 +17090,18 @@
             "value": "Политика конфиденциальности"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "นโยบายความเป็นส่วนตัว"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chính sách quyền riêng tư"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -14410,6 +17176,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "день"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "วัน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ngày"
           }
         },
         "zh-Hans": {
@@ -14488,6 +17266,18 @@
             "value": "%d дн."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d วัน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d ngày"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -14562,6 +17352,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "неделя"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "สัปดาห์"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tuần"
           }
         },
         "zh-Hans": {
@@ -14640,6 +17442,18 @@
             "value": "%d нед."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d สัปดาห์"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d tuần"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -14714,6 +17528,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "месяц"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เดือน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "tháng"
           }
         },
         "zh-Hans": {
@@ -14792,6 +17618,18 @@
             "value": "%d мес."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d เดือน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d tháng"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -14866,6 +17704,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "год"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ปี"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "năm"
           }
         },
         "zh-Hans": {
@@ -14944,6 +17794,18 @@
             "value": "%d г."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d ปี"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d năm"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -15018,6 +17880,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Сейчас нет доступных товаров."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ไม่พบสินค้าที่วางขายในขณะนี้"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hiện chưa có sản phẩm nào được bán."
           }
         },
         "zh-Hans": {
@@ -15096,6 +17970,18 @@
             "value": "Не удалось подтвердить покупку. Попробуйте ещё раз чуть позже."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ยืนยันการซื้อไม่สำเร็จ โปรดลองอีกครั้งในอีกสักครู่"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không thể xác minh giao dịch mua. Vui lòng thử lại sau giây lát."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -15170,6 +18056,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Покупка ожидает одобрения. Она применится автоматически после подтверждения."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "การซื้อกำลังรอการอนุมัติ จะมีผลโดยอัตโนมัติเมื่อได้รับอนุมัติ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giao dịch mua đang chờ phê duyệt. Sẽ tự động áp dụng khi được phê duyệt."
           }
         },
         "zh-Hans": {
@@ -15248,6 +18146,18 @@
             "value": "В бесплатной версии доступно до %d."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เวอร์ชันฟรีใช้ได้สูงสุด %d รายการ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bản miễn phí cho phép dùng tối đa %d."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -15322,6 +18232,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Это функция Pro."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "นี่คือฟีเจอร์ Pro"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đây là tính năng Pro."
           }
         },
         "zh-Hans": {
@@ -15400,6 +18322,18 @@
             "value": "Ответ разработчика"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "การตอบกลับจากผู้พัฒนา"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phản hồi từ nhà phát triển"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -15474,6 +18408,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ответ"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ตอบกลับ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phản hồi"
           }
         },
         "zh-Hans": {
@@ -15552,6 +18498,18 @@
             "value": "Не удалось отправить ответ. Проверьте, что тип записи ответа развёрнут в Production."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ส่งการตอบกลับไม่สำเร็จ ตรวจสอบว่าได้ deploy ประเภทเรคคอร์ดการตอบกลับไปที่ Production แล้ว"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không thể gửi phản hồi. Hãy kiểm tra loại bản ghi phản hồi đã được triển khai lên Production chưa."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -15626,6 +18584,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Приложите снимок экрана, который хотите изменить, и мы сразу поймём, о чём речь."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แนบภาพหน้าจอที่อยากให้เปลี่ยน เพื่อให้เราเห็นได้ทันทีว่าหมายถึงตรงไหน"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đính kèm ảnh màn hình bạn muốn thay đổi để chúng tôi hiểu ngay bạn đang nói về chỗ nào."
           }
         },
         "zh-Hans": {
@@ -15704,6 +18674,18 @@
             "value": "Полученный отзыв"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ความคิดเห็นที่ได้รับ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Góp ý đã nhận"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -15778,6 +18760,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Отображается как есть в приложении отправителя: Настройки > Отправленные отзывы. Дойдёт даже без e-mail."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แสดงตามนี้ในแอปของผู้ส่ง ที่ การตั้งค่า > ความคิดเห็นที่ส่งแล้ว ส่งถึงได้แม้ไม่มีอีเมล"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hiển thị nguyên văn trong ứng dụng của người gửi tại Cài đặt > Góp ý đã gửi. Vẫn đến được người gửi dù không có email."
           }
         },
         "zh-Hans": {
@@ -15856,6 +18850,18 @@
             "value": "Отправленные отзывы"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ความคิดเห็นที่ส่งแล้ว"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Góp ý đã gửi"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -15930,6 +18936,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "%d снимк(а/ов) не отправлено: сервер не смог их принять"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "รูป %d รูปถูกตัดออกเพราะเซิร์ฟเวอร์รับไม่ได้"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d ảnh bị bỏ qua vì máy chủ không nhận được"
           }
         },
         "zh-Hans": {
@@ -16008,6 +19026,18 @@
             "value": "Новый ответ"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "การตอบกลับใหม่"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phản hồi mới"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -16082,6 +19112,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Новых ответов: %d"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "การตอบกลับใหม่ %d รายการ"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d phản hồi mới"
           }
         },
         "zh-Hans": {
@@ -16160,6 +19202,18 @@
             "value": "Ответа пока нет. Разработчик лично читает каждый отзыв."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ยังไม่มีการตอบกลับ ผู้พัฒนาอ่านทุกความคิดเห็นด้วยตัวเอง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa có phản hồi. Nhà phát triển tự đọc mọi góp ý."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -16234,6 +19288,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Напр.: каждый раз копирую из другого приложения."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เช่น คัดลอกมาจากแอปอื่นทุกครั้ง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ví dụ: Lần nào tôi cũng sao chép từ ứng dụng khác."
           }
         },
         "zh-Hans": {
@@ -16312,6 +19378,18 @@
             "value": "Отправленные отзывы хранятся здесь, сюда же приходят ответы."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ความคิดเห็นที่ส่งจะเก็บไว้ที่นี่ และการตอบกลับก็จะมาที่นี่"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Góp ý bạn gửi được lưu ở đây, và phản hồi cũng sẽ đến đây."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -16386,6 +19464,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "С этого устройства отзывы не отправлялись"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "คุณยังไม่ได้ส่งความคิดเห็นจากอุปกรณ์นี้"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn chưa gửi góp ý nào từ thiết bị này"
           }
         },
         "zh-Hans": {
@@ -16464,6 +19554,18 @@
             "value": "Даже без e-mail ответы можно прочитать в Настройках > Отправленные отзывы. E-mail хранится только на этом устройстве и подставится в следующий раз."
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แม้ไม่มีอีเมล คุณก็อ่านการตอบกลับได้ที่ การตั้งค่า > ความคิดเห็นที่ส่งแล้ว อีเมลจะบันทึกไว้ในอุปกรณ์นี้เท่านั้นเพื่อกรอกให้ในครั้งถัดไป"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dù không có email, bạn vẫn đọc được phản hồi trong Cài đặt > Góp ý đã gửi. Email chỉ được lưu trên thiết bị này để tự điền lần sau."
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -16540,6 +19642,18 @@
             "value": "Как вы обходитесь сейчас? (необязательно)"
           }
         },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ตอนนี้คุณทำอย่างไรอยู่ (ไม่บังคับ)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hiện tại bạn đang làm thế nào? (không bắt buộc)"
+          }
+        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -16614,6 +19728,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Снимок экрана для примера (необязательно)"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ภาพหน้าจออ้างอิง (ไม่บังคับ)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ảnh màn hình tham khảo (không bắt buộc)"
           }
         },
         "zh-Hans": {
