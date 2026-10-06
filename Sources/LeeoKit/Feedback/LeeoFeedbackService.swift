@@ -496,11 +496,17 @@ public final class LeeoFeedbackService {
 
     /// 피드백을 Public DB에 제출한다. 실패 시 throw — 호출부에서 이메일 폴백 처리.
     /// - Parameter screenshots: 증상 사진의 JPEG 데이터. `acceptsScreenshots` 가 꺼져 있으면 버린다.
+    /// - Returns: 저장된 레코드의 recordName. 답장을 찾을 열쇠라 이 기기 장부에도 적는다.
+    ///
+    /// ⚠️ 사진을 붙인 저장이 실패하면 **사진을 빼고 한 번 더** 보낸다. 사진 필드가 Production 에
+    ///    아직 배포되지 않았으면 레코드가 통째로 거부되는데, 그 때문에 글까지 못 가는 것이 더 나쁘다.
+    ///    빠진 사진은 자동 첨부 정보에 적어 두어 받는 쪽이 안다.
+    @discardableResult
     public func submit(
         type: String, message: String, deviceInfo: String,
         contactName: String = "", contactEmail: String = "",
         screenshots: [Data] = []
-    ) async throws {
+    ) async throws -> String {
         let container = CKContainer(identifier: config.containerIdentifier)
 
         // Public DB 쓰기도 iCloud 로그인이 필요하다.
@@ -520,12 +526,73 @@ public final class LeeoFeedbackService {
             screenshots: shotURLs)
 
         do {
-            _ = try await container.publicCloudDatabase.save(record)
+            let saved = try await container.publicCloudDatabase.save(record)
             print("✅ [LeeoFeedbackService.submit] 피드백 제출 완료 (type=\(type), 사진 \(shotURLs.count)장)")
+            recordSent(id: saved.recordID.recordName, type: type, message: message)
+            return saved.recordID.recordName
+        } catch where !shotURLs.isEmpty {
+            print("⚠️ [LeeoFeedbackService.submit] 사진과 함께 저장 실패 → 사진 빼고 다시: \(error)")
+            let note = String(format: L("사진 %d장은 서버가 받지 못해 빠졌어요", comment: "Feedback: screenshots dropped on retry (auto-attached info)"),
+                              shotURLs.count)
+            let retry = Self.makeRecord(
+                config: config, type: type, message: message, deviceInfo: deviceInfo + "\n" + note,
+                contactName: contactName, contactEmail: contactEmail, appName: appName)
+            do {
+                let saved = try await container.publicCloudDatabase.save(retry)
+                recordSent(id: saved.recordID.recordName, type: type, message: message)
+                return saved.recordID.recordName
+            } catch {
+                print("❌ [LeeoFeedbackService.submit] 사진 없이도 실패: \(error)")
+                throw FeedbackError.saveFailed(error)
+            }
         } catch {
             print("❌ [LeeoFeedbackService.submit] 제출 실패: \(error)")
             throw FeedbackError.saveFailed(error)
         }
+    }
+
+    // MARK: - 자동 첨부 정보
+
+    /// 자동 첨부 정보의 첫 줄: `App 5.1.7 (21) | iPhone17,2 | iOS 26.1`.
+    ///
+    /// ⚠️ 기기는 `UIDevice.model`("iPhone") 이 아니라 **기종 식별자**를 쓴다. "iPhone" 만으로는
+    ///    화면 크기도 칩도 알 수 없어서 재현할 기기를 고를 수 없었다.
+    /// ⚠️ 빌드 번호를 함께 적는다. 같은 버전을 여러 빌드로 올리는 날이 있다.
+    public static func baseDeviceInfo(bundle: Bundle = .main) -> String {
+        let version = bundle.infoDictionary?["CFBundleShortVersionString"] as? String ?? "-"
+        let build = bundle.infoDictionary?["CFBundleVersion"] as? String
+        let app = build.map { "App \(version) (\($0))" } ?? "App \(version)"
+        #if os(iOS)
+        let device = UIDevice.current
+        return "\(app) | \(hardwareIdentifier()) | \(device.systemName) \(device.systemVersion)"
+        #else
+        let os = ProcessInfo.processInfo.operatingSystemVersion
+        return "\(app) | \(hardwareIdentifier()) | macOS \(os.majorVersion).\(os.minorVersion)"
+        #endif
+    }
+
+    /// 앱이 준 줄(보낸 곳, Pro 여부 등)을 첫 줄 아래에 붙인다. 빈 줄은 버린다.
+    ///
+    /// ⚠️ 레코드의 기존 `deviceInfo` 필드 하나에 담는다. 필드를 새로 만들면 앱마다 Production
+    ///    스키마를 다시 배포해야 하고, 배포 전에 저장하면 레코드가 통째로 거부된다.
+    public static func composeDeviceInfo(base: String, extra: [String]) -> String {
+        let lines = extra
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .filter { !$0.isEmpty }
+        return ([base] + lines).joined(separator: "\n")
+    }
+
+    /// `iPhone17,2` 같은 기종 식별자. 시뮬레이터에서는 흉내 내는 기종을 돌려준다.
+    static func hardwareIdentifier() -> String {
+        if let simulated = ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"] {
+            return simulated
+        }
+        var info = utsname()
+        uname(&info)
+        let machine = withUnsafeBytes(of: &info.machine) { raw in
+            String(decoding: raw.prefix(while: { $0 != 0 }), as: UTF8.self)
+        }
+        return machine.isEmpty ? "-" : machine
     }
 }
 

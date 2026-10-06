@@ -127,17 +127,26 @@ public struct LeeoFeedbackConfig: Sendable {
     ///    (사진을 안 붙인 제출은 그 필드를 쓰지 않으므로, 켜 두어도 예전 스키마에서 깨지지 않는다)
     public let acceptsScreenshots: Bool
 
+    /// 개발자 답장을 담는 레코드 타입. 피드백 한 건에 답장 하나, 이름은 `reply-<피드백 recordName>`.
+    ///
+    /// ⚠️ Dashboard 에서 이 타입을 만들고(필드: `feedbackID` · `message` · `appId`, 모두 String)
+    ///    Security Roles 의 World 에 **Read** 를 주고 Production 으로 배포해야 사용자가 답장을 읽는다.
+    ///    배포 전에는 답장 조회가 조용히 빈 결과를 낸다(앱이 깨지지 않는다).
+    public let replyRecordType: String
+
     public init(
         containerIdentifier: String,
         recordType: String = "Feedback",
         subscriptionID: String = "feedback-new-v1",
         appIdentifier: String? = nil,
-        acceptsScreenshots: Bool = false
+        acceptsScreenshots: Bool = false,
+        replyRecordType: String = "FeedbackReply"
     ) {
         self.containerIdentifier = containerIdentifier
         self.recordType = recordType
         self.subscriptionID = subscriptionID
         self.appIdentifier = appIdentifier
         self.acceptsScreenshots = acceptsScreenshots
+        self.replyRecordType = replyRecordType
     }
 }

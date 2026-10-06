@@ -451,6 +451,31 @@ LeeoFamilySynergy(id: "apply-day", appIDs: ["rainbow-ios", "clipkeyboard", "rere
   `LeeoFamilyTests` 가 지킨다. 앱을 추가하면 테스트가 먼저 알려 준다.
 - 수집하는 것 없음. 누르면 App Store 가 열릴 뿐이다.
 
+## 의견 답장 (v3.15)
+
+회신 이메일은 대개 비어 온다. 그래도 개발자가 되물을 수 있게, 보낸 의견에 답장을 단다.
+
+- 보내면 recordName 이 이 기기 장부에 남는다(`LeeoFeedbackService.sentFeedback`).
+- 개발자는 인박스에서 밀어서 답장하거나 `sendReply(toFeedback:message:)` 를 부른다.
+  답장 레코드 이름은 `reply-<피드백 recordName>` 이라 앱이 ID 로 바로 읽는다(쿼리·인덱스 없음).
+- 사용자는 설정의 `LeeoSentFeedbackRow<Spec>()` (안 읽은 답장 배지) → `LeeoFeedbackRepliesView` 에서 읽는다.
+  `LeeoSupportSection` 에는 이미 들어 있다.
+
+Dashboard 에서 앱(컨테이너)마다 한 번:
+
+1. 레코드 타입 `FeedbackReply` (필드 `feedbackID` · `message` · `appId`, 모두 String)
+2. Security Roles 의 World 에 Read
+3. Production 배포
+
+배포 전에는 답장 읽기가 조용히 빈 결과다. 의견 보내기는 영향이 없다.
+
+함께 바뀐 것:
+
+- `LeeoFeedbackView(extraInfo:)`: 자동 첨부 정보에 앱이 줄을 덧붙인다(보낸 곳, 상태). 기존 `deviceInfo` 필드에 담으므로 스키마를 건드리지 않는다.
+- 자동 첨부 첫 줄이 `App 5.1.7 (21) | iPhone17,2 | iOS 26.1` (빌드 번호 · 기종 식별자).
+- 기능 제안도 사진을 받고(`acceptsScreenshots` 를 켠 앱), 세 번째 선택 질문 "지금은 어떻게 하고 계세요?" 가 붙는다.
+- 사진과 함께 저장이 실패하면 사진만 빼고 한 번 더 보낸다. 사진 필드가 배포되지 않아도 글은 간다.
+
 ## 다국어
 
 원문은 한국어(카탈로그 `sourceLanguage = ko`)이고 en·ja·zh-Hans·zh-Hant·id·ru 번역을 담는다.

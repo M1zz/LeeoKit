@@ -20,6 +20,8 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
     @State private var userRecordName: String?
     @State private var didCopyId = false
     @State private var pendingDelete: LeeoFeedbackService.FeedbackRecord?
+    /// 답장을 쓰는 중인 피드백.
+    @State private var replyTarget: LeeoFeedbackService.FeedbackRecord?
     // 새 피드백 로컬 알림 (백그라운드 새로고침 — 이 기기 기준 상태)
     @State private var notifyEnabled = false
     @State private var notifyLoaded = false
@@ -144,6 +146,13 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
                                     } label: {
                                         Label(L("삭제", comment: "Delete"), systemImage: "trash")
                                     }
+                                    Button {
+                                        replyTarget = record
+                                    } label: {
+                                        Label(L("답장", comment: "Feedback inbox: reply"),
+                                              systemImage: "arrowshape.turn.up.left")
+                                    }
+                                    .tint(theme.accent)
                                 }
                         }
                     }
@@ -206,6 +215,10 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
         #endif
         .refreshable { await load() }
         .task { await load() }
+        .sheet(item: $replyTarget) { record in
+            LeeoFeedbackReplyComposer(record: record, service: service)
+                .leeoStyle(theme)
+        }
         .alert(
             L("이 피드백을 삭제할까요?", comment: "Feedback inbox delete confirm title"),
             isPresented: Binding(
@@ -426,6 +439,13 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
                                     } label: {
                                         Label(L("삭제", comment: "Delete"), systemImage: "trash")
                                     }
+                                    Button {
+                                        replyTarget = record
+                                    } label: {
+                                        Label(L("답장", comment: "Feedback inbox: reply"),
+                                              systemImage: "arrowshape.turn.up.left")
+                                    }
+                                    .tint(theme.accent)
                                 }
                         }
                     } header: {
@@ -452,6 +472,91 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
             Button(L("취소", comment: "Cancel"), role: .cancel) { pendingDelete = nil }
         } message: {
             Text(L("서버에서 완전히 삭제되며 되돌릴 수 없어요.", comment: "Feedback inbox delete confirm message"))
+        }
+    }
+}
+
+// MARK: - 답장 쓰기 (개발자)
+
+/// 피드백 한 건에 답장을 쓴다. 이미 쓴 답장이 있으면 불러와 고친다.
+///
+/// ⚠️ 답장은 사용자의 "보낸 의견" 화면에 **그대로** 보인다. 이메일처럼 인사부터 쓰지 않아도
+///    되지만, 사용자가 받는 글이라는 것을 잊지 않게 원문을 위에 함께 둔다.
+struct LeeoFeedbackReplyComposer: View {
+    @Environment(\.leeoStyle) private var theme
+    @Environment(\.dismiss) private var dismiss
+
+    let record: LeeoFeedbackService.FeedbackRecord
+    let service: LeeoFeedbackService
+
+    @State private var text = ""
+    @State private var isSending = false
+    @State private var errorMessage: String?
+
+    private var trimmed: String { text.trimmingCharacters(in: .whitespacesAndNewlines) }
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section(L("받은 의견", comment: "Reply composer: original feedback")) {
+                    Text(record.message)
+                        .font(.body)
+                        .foregroundColor(theme.textMuted)
+                        .textSelection(.enabled)
+                }
+                Section {
+                    TextEditor(text: $text)
+                        .font(.body)
+                        .frame(minHeight: 160)
+                } header: {
+                    Text(L("답장", comment: "Feedback inbox: reply"))
+                } footer: {
+                    Text(L("보낸 사람의 앱 설정 > 보낸 의견에 그대로 보여요. 이메일이 없어도 닿아요.", comment: "Reply composer footer"))
+                        .font(.body)
+                }
+                if let errorMessage {
+                    Section {
+                        Label(errorMessage, systemImage: "xmark.circle.fill")
+                            .font(.body)
+                            .foregroundColor(.red)
+                    }
+                }
+            }
+            .navigationTitle(L("답장", comment: "Feedback inbox: reply"))
+            #if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(L("닫기", comment: "Close")) { dismiss() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(L("보내기", comment: "Send feedback button")) { send() }
+                        .disabled(trimmed.isEmpty || isSending)
+                }
+            }
+            .task {
+                if text.isEmpty, let existing = await service.fetchReply(forFeedback: record.id) {
+                    text = existing
+                }
+            }
+        }
+    }
+
+    private func send() {
+        isSending = true
+        errorMessage = nil
+        Task {
+            do {
+                try await service.sendReply(toFeedback: record.id, message: trimmed)
+                await MainActor.run { dismiss() }
+            } catch {
+                await MainActor.run {
+                    isSending = false
+                    errorMessage = L("답장을 보내지 못했어요. 답장 레코드 타입이 Production 에 배포됐는지 확인하세요.",
+                                     comment: "Reply composer: send failed")
+                }
+            }
         }
     }
 }

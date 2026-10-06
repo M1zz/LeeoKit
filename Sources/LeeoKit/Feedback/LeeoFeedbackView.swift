@@ -41,6 +41,8 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
 
     private let types: [LeeoFeedbackType]
     private let showsContactFields: Bool
+    /// 앱이 붙이는 자동 첨부 줄들(보낸 곳, Pro 여부 등). 사용자에게 그대로 보인다.
+    private let extraInfo: [String]
 
     /// 앱 자체 메일 컴포저가 있으면 주입 — (제목, 본문)을 받아 처리했으면 true.
     /// nil이거나 false를 반환하면 mailto: 링크로 폴백한다.
@@ -52,16 +54,21 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
     ///   - showsContactFields: 회신용 이름/이메일 입력 섹션 노출 여부
     ///   - initialContactName/Email: 회신 정보 초기값 (앱의 프로필 저장소에서 프리필).
     ///     비워두면 **지난번에 보낸 값**이 자동으로 채워진다 - 앱이 값을 주면 그쪽이 이긴다.
+    ///   - extraInfo: 자동 첨부 정보에 덧붙일 줄들. 어느 화면에서 열었는지, 앱의 상태 같은 것.
+    ///     ⚠️ 사용자가 적은 내용(단축어 본문 등)은 넣지 않는다. 이 칸은 보내기 전에 사용자에게
+    ///        그대로 보이지만, 묻지 않고 붙는 정보라 개인 내용이 섞이면 안 된다.
     public init(
         types: [LeeoFeedbackType] = LeeoFeedbackType.defaultTypes,
         initialType: LeeoFeedbackType? = nil,
         showsContactFields: Bool = false,
         initialContactName: String = "",
         initialContactEmail: String = "",
+        extraInfo: [String] = [],
         emailFallback: ((String, String) -> Bool)? = nil
     ) {
         self.types = types
         self.showsContactFields = showsContactFields
+        self.extraInfo = extraInfo
         self.emailFallback = emailFallback
         self._selectedType = State(initialValue: initialType ?? types.first ?? .bug)
         // 앱이 프로필을 갖고 있으면 그 값이, 없으면 지난번에 이 기기에서 보낸 값이 채워진다.
@@ -72,16 +79,11 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
             ? remembered.rememberedContactEmail : initialContactEmail)
     }
 
-    private let deviceInfo: String = {
-        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "-"
-        #if os(iOS)
-        let device = UIDevice.current
-        return "App \(version) | \(device.model) | \(device.systemName) \(device.systemVersion)"
-        #else
-        let os = ProcessInfo.processInfo.operatingSystemVersion
-        return "App \(version) | macOS \(os.majorVersion).\(os.minorVersion)"
-        #endif
-    }()
+    /// 자동 첨부 정보. 첫 줄은 앱·기종·OS, 그 아래는 앱이 준 줄들(`extraInfo`).
+    private var deviceInfo: String {
+        LeeoFeedbackService.composeDeviceInfo(base: LeeoFeedbackService.baseDeviceInfo(),
+                                              extra: extraInfo)
+    }
 
     public var body: some View {
         NavigationStack {
@@ -259,14 +261,13 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
 
     private var screenshotPicker: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(L("증상 사진 (선택)", comment: "Screenshot section label"))
+            Text(selectedType.screenshotLabel)
                 .font(.body)
                 .fontWeight(.semibold)
                 .foregroundColor(theme.text)
 
-            Text(L("화면 한 장이 글보다 빠릅니다. 스크린샷을 붙여 주시면 훨씬 정확하게 고칠 수 있어요.",
-                   comment: "Screenshot section hint"))
-                .font(.caption)
+            Text(selectedType.screenshotHint)
+                .font(.body)
                 .foregroundColor(theme.textMuted)
                 .fixedSize(horizontal: false, vertical: true)
 
@@ -426,8 +427,8 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                     .cornerRadius(theme.radiusSm)
             }
 
-            Text(L("남겨주시면 답변을 드릴 수 있어요. 이 기기에만 저장해 다음에 다시 채워드려요.", comment: "Contact info footer"))
-                .font(.caption)
+            Text(L("이메일이 없어도 답장은 설정의 보낸 의견에서 볼 수 있어요. 이메일은 이 기기에만 저장해 다음에 다시 채워드려요.", comment: "Contact info footer v2"))
+                .font(.body)
                 .foregroundColor(theme.textMuted)
         }
     }

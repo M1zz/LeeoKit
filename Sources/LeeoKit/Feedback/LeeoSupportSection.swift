@@ -51,6 +51,7 @@ public struct LeeoSupportSection<Spec: LeeoAppSpec>: View {
             Label(L("피드백 보내기", comment: "Feedback view title"),
                   systemImage: "envelope.badge")
         }
+        LeeoSentFeedbackRow<Spec>()
         // 리뷰 남기기 — appStoreID 가 있으면 작성 페이지로, 없으면 시스템 평점 프롬프트
         Button {
             if let id = Spec.appStoreID, let url = LeeoReviewRequest.writeReviewURL(appStoreID: id) {

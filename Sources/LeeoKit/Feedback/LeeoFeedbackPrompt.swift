@@ -84,7 +84,15 @@ public extension LeeoFeedbackType {
                     label: L("어떤 상황에서 쓰실 것 같나요?", comment: "Feature prompt: use case"),
                     placeholder: L("예) 일과 집에서 쓰는 것이 섞여서, 필요한 쪽만 보고 싶어요.",
                                    comment: "Feature prompt placeholder: use case"),
-                    isRequired: true, isMultiline: true)
+                    isRequired: true, isMultiline: true),
+                // 지금 어떻게 버티고 있는지가 불편의 크기를 말한다. "다른 앱에서 매번 복사해 와요" 와
+                // "가끔 아쉬워요" 는 같은 요청이라도 급한 정도가 다르다. 선택이다.
+                LeeoFeedbackPrompt(
+                    id: "workaround",
+                    label: L("지금은 어떻게 하고 계세요? (선택)", comment: "Feature prompt: current workaround"),
+                    placeholder: L("예) 매번 다른 앱에서 복사해 와요.",
+                                   comment: "Feature prompt placeholder: current workaround"),
+                    isRequired: false, isMultiline: true)
             ]
         case .improvement:
             return [
@@ -108,10 +116,34 @@ public extension LeeoFeedbackType {
     }
 
     /// 사진을 함께 받으면 좋은 유형인가. 증상은 글보다 화면 한 장이 빠르다.
+    ///
+    /// ⚠️ 제안도 받는다. "빈칸을 세로로" 같은 요청은 **어느 화면의 무엇**인지가 글로는 잘 안 닿는다.
+    ///    화면 한 장이면 묻지 않아도 된다.
     var invitesScreenshot: Bool {
         switch self {
-        case .bug, .improvement: return true
-        case .feature, .question, .other: return false
+        case .bug, .improvement, .feature: return true
+        case .question, .other: return false
+        }
+    }
+
+    /// 사진 칸의 이름과 안내. 버그는 증상이고, 제안은 "이 화면의 여기" 다.
+    var screenshotLabel: String {
+        switch self {
+        case .feature, .improvement:
+            return L("참고 화면 (선택)", comment: "Screenshot section label: feature")
+        default:
+            return L("증상 사진 (선택)", comment: "Screenshot section label")
+        }
+    }
+
+    var screenshotHint: String {
+        switch self {
+        case .feature, .improvement:
+            return L("바꾸고 싶은 화면을 찍어 붙여 주시면 어디를 말씀하시는지 바로 알 수 있어요.",
+                     comment: "Screenshot section hint: feature")
+        default:
+            return L("화면 한 장이 글보다 빠릅니다. 스크린샷을 붙여 주시면 훨씬 정확하게 고칠 수 있어요.",
+                     comment: "Screenshot section hint")
         }
     }
 }

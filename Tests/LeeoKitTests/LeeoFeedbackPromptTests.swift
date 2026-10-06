@@ -67,6 +67,8 @@ final class LeeoFeedbackPromptTests: XCTestCase {
         XCTAssertTrue(LeeoFeedbackType.bug.invitesScreenshot)
         XCTAssertTrue(LeeoFeedbackType.improvement.invitesScreenshot)
         XCTAssertFalse(LeeoFeedbackType.question.invitesScreenshot)
+        // 제안도 화면 한 장이 "어디의 무엇" 을 말해 준다.
+        XCTAssertTrue(LeeoFeedbackType.feature.invitesScreenshot)
     }
 
     /// 사진 필드는 앱이 받기로 한 경우에만 쓴다. 안 그러면 Production 에서 레코드가 거부된다.
