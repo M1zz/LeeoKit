@@ -25,6 +25,8 @@
 //
 //  CloudKit Dashboard 준비 (1회)
 //      레코드 타입 `CrashReport` — 필드: appId·kind·detail·appVersion·osVersion·deviceType·stack
+//      (3.17 부터) occurredAt·buildNumber·exceptionType·exceptionCode·signal — 클립키보드가 먼저 써서
+//      허브 스키마에는 이미 있다. 새 컨테이너라면 Production 배포 전에 한 번 확인할 것.
 //      (앱을 한 번 크래시시키면 자동 생성된다) → Production 배포
 //
 
@@ -42,6 +44,14 @@ public struct LeeoCrashReport: Identifiable, Sendable {
     public let deviceType: String
     public let stack: String
     public let createdAt: Date?
+    /// 아래는 3.17 에서 늘린 것 — 옛 레코드에는 없다.
+    /// 크래시가 **난** 시각 (createdAt 은 MetricKit 이 배달한 때라 하루까지 늦다)
+    public var occurredAt: Date? = nil
+    /// 죽은 빌드 (`MXMetaData.applicationBuildVersion`). appVersion 은 **전송 시점에 깔린** 버전이다.
+    public var buildNumber: String? = nil
+    public var exceptionType: String? = nil
+    public var exceptionCode: String? = nil
+    public var signal: String? = nil
 }
 
 #if canImport(MetricKit) && os(iOS) && !targetEnvironment(macCatalyst)
@@ -54,8 +64,9 @@ public final class LeeoDiagnostics: NSObject, MXMetricManagerSubscriber {
     public static let recordType = "CrashReport"
     /// 한 페이로드에서 올리는 최대 건수 — 공개 DB 쓰기 폭주 방지.
     private static let maxReportsPerPayload = 5
-    /// 콜스택 문자열 상한 — CloudKit 레코드 비대화 방지.
-    private static let maxStackLength = 4000
+    /// 콜스택 문자열 상한 — CloudKit 레코드 비대화 방지. 한 줄짜리 프레임이라 200프레임쯤 들어간다.
+    /// (3.16 까지는 들여쓴 JSON 을 4000자에서 잘라 13프레임만 남았다 — `LeeoCrashStack` 머리말)
+    private static let maxStackLength = LeeoCrashStack.defaultMaxLength
 
     private var config: LeeoFeedbackConfig?
     /// 수집을 원격으로 끌 수 있게 하는 훅. nil 이면 항상 수집.
@@ -78,25 +89,38 @@ public final class LeeoDiagnostics: NSObject, MXMetricManagerSubscriber {
 
         var reports: [Pending] = []
         for payload in payloads {
+            // 크래시가 **난** 시각. 레코드 생성 시각은 배달 시각이라 하루까지 늦다.
+            let occurredAt = payload.timeStampEnd
+
             reports += payload.crashDiagnostics?.prefix(Self.maxReportsPerPayload).map {
                 Pending(kind: "crash", detail: $0.terminationReason ?? "-",
                         stack: Self.stackString($0.callStackTree),
                         osVersion: $0.metaData.osVersion,
-                        deviceType: $0.metaData.deviceType)
+                        deviceType: $0.metaData.deviceType,
+                        buildNumber: $0.metaData.applicationBuildVersion,
+                        occurredAt: occurredAt,
+                        // 종료 사유 한 줄로는 SIGSEGV 와 워치독이 안 갈린다
+                        exceptionType: $0.exceptionType?.stringValue,
+                        exceptionCode: $0.exceptionCode?.stringValue,
+                        signal: $0.signal?.stringValue)
             } ?? []
 
             reports += payload.hangDiagnostics?.prefix(Self.maxReportsPerPayload).map {
                 Pending(kind: "hang", detail: "\($0.hangDuration.value)\($0.hangDuration.unit.symbol)",
                         stack: Self.stackString($0.callStackTree),
                         osVersion: $0.metaData.osVersion,
-                        deviceType: $0.metaData.deviceType)
+                        deviceType: $0.metaData.deviceType,
+                        buildNumber: $0.metaData.applicationBuildVersion,
+                        occurredAt: occurredAt)
             } ?? []
 
             reports += payload.diskWriteExceptionDiagnostics?.prefix(Self.maxReportsPerPayload).map {
                 Pending(kind: "disk_write", detail: "\($0.totalWritesCaused.value)\($0.totalWritesCaused.unit.symbol)",
                         stack: Self.stackString($0.callStackTree),
                         osVersion: $0.metaData.osVersion,
-                        deviceType: $0.metaData.deviceType)
+                        deviceType: $0.metaData.deviceType,
+                        buildNumber: $0.metaData.applicationBuildVersion,
+                        occurredAt: occurredAt)
             } ?? []
         }
 
@@ -118,11 +142,17 @@ public final class LeeoDiagnostics: NSObject, MXMetricManagerSubscriber {
         let stack: String
         let osVersion: String
         let deviceType: String
+        let buildNumber: String
+        let occurredAt: Date
+        /// 크래시에만 있다. 멈춤·디스크쓰기는 nil.
+        var exceptionType: String? = nil
+        var exceptionCode: String? = nil
+        var signal: String? = nil
     }
 
+    /// 죽은 자리부터 한 줄에 한 프레임 — `LeeoCrashStack` 머리말 참고.
     private static func stackString(_ tree: MXCallStackTree) -> String {
-        let text = String(data: tree.jsonRepresentation(), encoding: .utf8) ?? "-"
-        return String(text.prefix(maxStackLength))
+        LeeoCrashStack.text(fromJSON: tree.jsonRepresentation(), maxLength: maxStackLength)
     }
 
     private static func upload(_ reports: [Pending], config: LeeoFeedbackConfig) async {
@@ -138,6 +168,12 @@ public final class LeeoDiagnostics: NSObject, MXMetricManagerSubscriber {
             record["osVersion"] = report.osVersion
             record["deviceType"] = report.deviceType
             record["stack"] = report.stack
+            // 3.17 에서 늘린 것 — 읽는 쪽은 옛 레코드에 없을 수 있다고 보고 다룬다
+            record["occurredAt"] = report.occurredAt
+            record["buildNumber"] = report.buildNumber
+            if let exceptionType = report.exceptionType { record["exceptionType"] = exceptionType }
+            if let exceptionCode = report.exceptionCode { record["exceptionCode"] = exceptionCode }
+            if let signal = report.signal { record["signal"] = signal }
             // 진단 전송 실패로 앱이 시끄러워질 이유는 없다 — 조용히 넘어간다.
             _ = try? await database.save(record)
         }
@@ -176,7 +212,7 @@ public enum LeeoDiagnosticsReader {
             guard config.appIdentifier == nil || (record["appId"] as? String) == config.appIdentifier else {
                 return nil
             }
-            return LeeoCrashReport(
+            var report = LeeoCrashReport(
                 id: record.recordID.recordName,
                 kind: record["kind"] as? String ?? "-",
                 detail: record["detail"] as? String ?? "-",
@@ -186,6 +222,12 @@ public enum LeeoDiagnosticsReader {
                 stack: record["stack"] as? String ?? "",
                 createdAt: record.creationDate
             )
+            report.occurredAt = record["occurredAt"] as? Date
+            report.buildNumber = record["buildNumber"] as? String
+            report.exceptionType = record["exceptionType"] as? String
+            report.exceptionCode = record["exceptionCode"] as? String
+            report.signal = record["signal"] as? String
+            return report
         })
     }
 
