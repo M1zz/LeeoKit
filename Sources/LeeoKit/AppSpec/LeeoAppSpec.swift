@@ -28,8 +28,16 @@
 import Foundation
 
 public protocol LeeoAppSpec {
-    /// 사용자에게 노출되는 앱 이름 (메일 제목, 알림 문구 등에 사용)
+    /// 앱을 가리키는 **식별 이름**. 피드백·사용 기록(CloudKit 레코드의 `appName`), 메일 제목, 로그,
+    /// 매니페스트가 이 값으로 앱을 묶는다 — 바꾸면 지난 기록과 갈라진다.
+    /// 화면에 보이는 이름은 `displayName` 이다 (언어마다 다를 수 있다).
     static var appName: String { get }
+
+    /// 화면에 보이는 앱 이름 — 만족도 질문, 페이월 제목, "설정 > (앱 이름) > 알림" 안내에 쓴다.
+    /// 기본값은 기기 언어로 현지화된 홈 화면 이름(`CFBundleDisplayName` → `CFBundleName`,
+    /// 현지화된 InfoPlist.strings 먼저)이고, 둘 다 없으면 `appName`.
+    /// iOS 설정 앱에 보이는 이름과 같아야 하므로 보통은 덮어쓰지 않는다.
+    static var displayName: String { get }
 
     /// 피드백 이메일 폴백 수신 주소
     static var developerEmail: String { get }
@@ -75,6 +83,9 @@ public protocol LeeoAppSpec {
 }
 
 public extension LeeoAppSpec {
+    /// 기본값 — 현지화된 번들 표시 이름, 없으면 `appName`.
+    static var displayName: String { LeeoAppDisplayName.resolve(fallback: appName) }
+
     /// 기본값 — 앱이 지정하지 않으면 딥링크형 "리뷰 남기기"는 숨기고 시스템 요청만 사용.
     static var appStoreID: String? { nil }
 
@@ -101,6 +112,22 @@ public extension LeeoAppSpec {
 
     /// 소비성 결제 구성 (크레딧 모델에만 존재).
     static var consumable: LeeoConsumableConfig? { monetization.consumableConfig }
+}
+
+/// 번들에서 화면용 앱 이름을 찾는다. 현지화 값 → 기본 Info.plist 값, 각각 표시 이름 → 번들 이름 순.
+enum LeeoAppDisplayName {
+    static func resolve(in bundle: Bundle = .main, fallback: String) -> String {
+        let keys = ["CFBundleDisplayName", "CFBundleName"]
+        for dict in [bundle.localizedInfoDictionary, bundle.infoDictionary] {
+            for key in keys {
+                if let name = dict?[key] as? String,
+                   !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    return name
+                }
+            }
+        }
+        return fallback
+    }
 }
 
 /// 피드백 시스템의 CloudKit 연결 설정.

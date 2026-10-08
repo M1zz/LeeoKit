@@ -151,7 +151,13 @@ enum MyAppSpec: LeeoAppSpec {
 
 필수 5항목(`appName`·`developerEmail`·`feedback`·`legal`·`monetization`)을 채우는 순간
 페이월 필요 여부, 복원 의무, 약관 링크 의무, 설정 화면의 정책 링크 행이 전부 따라온다.
-선택 항목은 `appStoreID`·`capabilities`·`analytics`·`paywall`.
+선택 항목은 `appStoreID`·`capabilities`·`analytics`·`paywall`·`displayName`.
+
+- `appName` 은 **식별 이름**이다 — 피드백·사용 기록(CloudKit `appName`), 메일 제목, 로그, 매니페스트가 이 값으로 묶인다.
+  바꾸면 지난 기록과 갈라지니 언어마다 바꾸지 않는다.
+- 화면에 보이는 이름은 `displayName`(v3.16.2) — 만족도 질문, 페이월 제목, "설정 > (앱 이름) > 알림" 안내가 쓴다.
+  기본값은 현지화된 `CFBundleDisplayName` → `CFBundleName` → `appName`. 그래서 앱의 InfoPlist(.xcstrings)에
+  `CFBundleDisplayName` 을 언어별로 넣어 두면 따로 할 일이 없다. 없으면 모든 언어에 같은 이름이 보인다.
 
 ## 부트스트랩 — 계약을 실제로 켜는 한 줄
 
@@ -478,14 +484,18 @@ Dashboard 에서 앱(컨테이너)마다 한 번:
 
 ## 다국어
 
-원문은 한국어(카탈로그 `sourceLanguage = ko`)이고 en·ja·zh-Hans·zh-Hant·id·ru 번역을 담는다.
+원문은 한국어(카탈로그 `sourceLanguage = ko`)이고 22개 언어 번역을 담는다
+(en · de · es · fr · it · pt-BR · ja · zh-Hans · zh-Hant · ru · id · th · vi · cs · da · el · fi · nb · nl · pl · sv · tr).
 
 - **기본 언어는 en이다** (`defaultLocalization`, v3.10). 기기 언어가 패키지에 없는 언어면
   (독일어 등) 영어로 떨어진다. 전에는 ko여서 외국 사용자에게 한국어가 떴다.
 - ⚠️ 그래서 카탈로그에 **ko 값을 명시**해 둬야 한다. 원문 언어라도 값이 없으면 ko.lproj가
   안 생기고, 그러면 한국어 사용자가 영어를 본다. 문자열을 넣은 뒤 한 번 돌린다:
   `python3 scripts/fill-source-ko.py` — 빠뜨리면 `LocalizationFallbackTests`가 잡는다.
-- ⚠️ 번역이 빠진 줄은 그 언어의 사용자에게 **한국어 키 그대로** 보인다 (ru·id는 아직 몇 줄 빠져 있다).
+- ⚠️ 번역이 빠진 줄은 그 언어의 사용자에게 **한국어 키 그대로** 보인다 (iOS 는 다른 언어로 대신하지 않는다).
+  문자열·언어를 넣은 뒤 `python3 scripts/check-l10n.py` — 언어별 빈칸 · ko 외 한글 · 포맷 지정자 불일치를 세고, 0 이 아니면 실패한다.
+- 앱 이름(교차 홍보 카드)은 그 언어의 **스토어 이름**을 쓴다. 한국어 이름을 다른 언어 값에 남기지 않는다.
+- 숫자가 붙는 줄(`%d일` 등)은 cs·pl 처럼 꼴이 여럿인 언어에서 복수형(variations)으로 넣는다.
 - 앱도 같은 모양이면 같은 세 가지(개발 지역 en · `CFBundleLocalizations` · 카탈로그 ko 값)가 필요하다.
 
 ## 3.0 마이그레이션

@@ -35,7 +35,7 @@ private struct LeeoReviewGateModifier<Spec: LeeoAppSpec>: ViewModifier {
     func body(content: Content) -> some View {
         content
             .confirmationDialog(
-                String(format: L("%@를 즐겁게 쓰고 계신가요?", comment: "Satisfaction prompt title"), Spec.appName),
+                String(format: L("%@를 즐겁게 쓰고 계신가요?", comment: "Satisfaction prompt title"), Spec.displayName),
                 isPresented: $isPresented,
                 titleVisibility: .visible
             ) {

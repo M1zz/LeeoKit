@@ -57,7 +57,7 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
     ) {
         // 리드 기능이 있으면 "방금 부딪힌 그 기능"을 팔도록 헤더/문구를 맞춘다.
         self.title = title ?? leadFeature?.leeoTitle
-            ?? String(format: L("%@ 프리미엄", comment: "Paywall default title"), Spec.appName)
+            ?? String(format: L("%@ 프리미엄", comment: "Paywall default title"), Spec.displayName)
         self.subtitle = subtitle ?? leadFeature?.leeoDetail
             ?? L("모든 기능을 잠금 해제하세요.", comment: "Paywall default subtitle")
         self.features = features

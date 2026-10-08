@@ -26,15 +26,23 @@ import BackgroundTasks
 public final class LeeoFeedbackService {
     public let config: LeeoFeedbackConfig
     private let appName: String
+    /// 사용자에게 보이는 이름 — 알림 권한 안내("설정 > 이름 > 알림")에만 쓴다. 레코드에는 `appName`.
+    private let displayName: String
 
-    public init(config: LeeoFeedbackConfig, appName: String) {
+    public convenience init(config: LeeoFeedbackConfig, appName: String) {
+        self.init(config: config, appName: appName,
+                  displayName: LeeoAppDisplayName.resolve(fallback: appName))
+    }
+
+    public init(config: LeeoFeedbackConfig, appName: String, displayName: String) {
         self.config = config
         self.appName = appName
+        self.displayName = displayName
     }
 
     /// Spec 기반 편의 생성자 — 앱에서는 이걸 쓰면 된다.
     public convenience init<Spec: LeeoAppSpec>(spec: Spec.Type) {
-        self.init(config: Spec.feedback, appName: Spec.appName)
+        self.init(config: Spec.feedback, appName: Spec.appName, displayName: Spec.displayName)
     }
 
     public enum FeedbackError: LocalizedError {
@@ -198,6 +206,7 @@ public final class LeeoFeedbackService {
     // MARK: - 새 피드백 알림: 오류 타입 (로컬/구독 공용)
 
     public enum NotificationError: LocalizedError {
+        /// `appName` 은 iOS 설정 앱에 보이는 이름(`LeeoAppSpec.displayName`)이다 — 레이블은 호환을 위해 그대로 둔다.
         case permissionDenied(appName: String)
 
         public var errorDescription: String? {
@@ -235,7 +244,7 @@ public final class LeeoFeedbackService {
         #if canImport(UIKit)
         let granted = try await UNUserNotificationCenter.current()
             .requestAuthorization(options: [.alert, .sound])
-        guard granted else { throw NotificationError.permissionDenied(appName: appName) }
+        guard granted else { throw NotificationError.permissionDenied(appName: displayName) }
         await MainActor.run {
             UIApplication.shared.registerForRemoteNotifications()
         }
@@ -314,7 +323,7 @@ public final class LeeoFeedbackService {
         #if canImport(UIKit)
         let granted = try await UNUserNotificationCenter.current()
             .requestAuthorization(options: [.alert, .sound, .badge])
-        guard granted else { throw NotificationError.permissionDenied(appName: appName) }
+        guard granted else { throw NotificationError.permissionDenied(appName: displayName) }
         #endif
         saveLastSeenDate(Date())
         UserDefaults.standard.set(true, forKey: notifyEnabledKey)
