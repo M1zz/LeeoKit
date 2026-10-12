@@ -157,29 +157,48 @@ public extension LeeoFeedbackType {
 ///    꼬리표를 붙여 한 글로 만들면 받는 화면도, 메일 폴백도 고칠 것이 없다.
 public enum LeeoFeedbackComposer {
 
+    /// 지금 물을 칸. 버그를 분류까지 골랐으면 그 분류의 칸이고, 아니면 유형의 칸이다.
+    public static func prompts(type: LeeoFeedbackType,
+                               category: LeeoBugCategory?) -> [LeeoFeedbackPrompt] {
+        if type == .bug, let category { return category.prompts }
+        return type.prompts
+    }
+
     /// 답이 비어 있는 필수 칸들. 보내기를 잠글지 여기서 정한다.
     public static func missingRequired(type: LeeoFeedbackType,
+                                       category: LeeoBugCategory? = nil,
                                        answers: [String: String]) -> [LeeoFeedbackPrompt] {
-        type.prompts.filter { prompt in
+        prompts(type: type, category: category).filter { prompt in
             guard prompt.isRequired else { return false }
             return trimmed(answers[prompt.id]).isEmpty
         }
     }
 
     /// 칸을 나눠 묻지 않는 유형(궁금한 것·기타)은 자유 입력만 있으면 된다.
+    ///
+    /// - Parameter requiresCategory: 버그 분류를 보여 주는 화면이면 true. 분류를 안 고른 버그는
+    ///   보내지 않는다 - 분류가 정해져야 무엇을 물을지, 무엇을 붙일지가 정해진다.
     public static func canSend(type: LeeoFeedbackType,
-                              answers: [String: String],
-                              note: String) -> Bool {
-        if type.prompts.isEmpty { return !trimmed(note).isEmpty }
-        return missingRequired(type: type, answers: answers).isEmpty
+                               category: LeeoBugCategory? = nil,
+                               requiresCategory: Bool = false,
+                               answers: [String: String],
+                               note: String) -> Bool {
+        if type == .bug, requiresCategory, category == nil { return false }
+        let asked = prompts(type: type, category: category)
+        if asked.isEmpty { return !trimmed(note).isEmpty }
+        return missingRequired(type: type, category: category, answers: answers).isEmpty
     }
 
-    /// 보낼 글. 꼬리표 + 답을 빈 줄로 띄워 잇고, 자유 입력은 맨 뒤에 붙인다.
+    /// 보낼 글. (분류) + 꼬리표 + 답을 빈 줄로 띄워 잇고, 자유 입력은 맨 뒤에 붙인다.
     public static func compose(type: LeeoFeedbackType,
+                               category: LeeoBugCategory? = nil,
                                answers: [String: String],
                                note: String) -> String {
         var blocks: [String] = []
-        for prompt in type.prompts {
+        if type == .bug, let category {
+            blocks.append("\(L("문제 종류", comment: "Composed feedback: bug category label"))\n\(category.localizedName)")
+        }
+        for prompt in prompts(type: type, category: category) {
             let answer = trimmed(answers[prompt.id])
             guard !answer.isEmpty else { continue }
             blocks.append("\(prompt.label)\n\(answer)")
@@ -193,6 +212,11 @@ public enum LeeoFeedbackComposer {
             }
         }
         return blocks.joined(separator: "\n\n")
+    }
+
+    /// 자동 첨부 정보에 싣는 분류 줄. 번역하지 않는다 - 허브가 이 글자로 거른다.
+    public static func categoryLine(_ category: LeeoBugCategory) -> String {
+        "category: \(category.rawValue)"
     }
 
     private static func trimmed(_ value: String?) -> String {

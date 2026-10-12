@@ -23,6 +23,11 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
     @Environment(\.openURL) private var openURL
 
     @State private var selectedType: LeeoFeedbackType
+    /// 버그의 분류. 고르기 전에는 nil 이고, 분류를 보여 주는 화면에서는 고르기 전까지 못 보낸다.
+    @State private var selectedCategory: LeeoBugCategory?
+    /// 고른 분류의 진단 줄들(`LeeoBugProbe`) + 앱이 분류마다 붙인 줄들.
+    @State private var categoryLines: [String] = []
+    @State private var isProbing = false
     /// 칸을 나눠 받은 답. 열쇠는 `LeeoFeedbackPrompt.id` (번역해도 안 바뀐다).
     @State private var answers: [String: String] = [:]
     /// 나눠 묻지 않는 유형의 자유 입력이자, 나눠 묻는 유형의 덧붙임.
@@ -43,6 +48,10 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
     private let showsContactFields: Bool
     /// 앱이 붙이는 자동 첨부 줄들(보낸 곳, Pro 여부 등). 사용자에게 그대로 보인다.
     private let extraInfo: [String]
+    /// 버그 신고에서 고르게 할 분류. 비어 있으면 분류 없이 예전처럼 묻는다.
+    private let bugCategories: [LeeoBugCategory]
+    /// 분류를 고르면 앱이 덧붙일 줄들. 결제 분류에서 앱만 아는 권한 상태(체험 · 예전 무료 혜택 등)를 싣는 자리다.
+    private let categoryInfo: ((LeeoBugCategory) async -> [String])?
 
     /// 앱 자체 메일 컴포저가 있으면 주입 — (제목, 본문)을 받아 처리했으면 true.
     /// nil이거나 false를 반환하면 mailto: 링크로 폴백한다.
@@ -57,6 +66,9 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
     ///   - extraInfo: 자동 첨부 정보에 덧붙일 줄들. 어느 화면에서 열었는지, 앱의 상태 같은 것.
     ///     ⚠️ 사용자가 적은 내용(단축어 본문 등)은 넣지 않는다. 이 칸은 보내기 전에 사용자에게
     ///        그대로 보이지만, 묻지 않고 붙는 정보라 개인 내용이 섞이면 안 된다.
+    ///   - bugCategories: 버그 신고의 분류. nil 이면 Spec 을 보고 고른다(`LeeoBugCategory.defaults`).
+    ///     빈 배열이면 분류를 묻지 않는다.
+    ///   - categoryInfo: 분류를 고를 때 앱이 덧붙일 줄들(`extraInfo` 와 같은 규칙).
     public init(
         types: [LeeoFeedbackType] = LeeoFeedbackType.defaultTypes,
         initialType: LeeoFeedbackType? = nil,
@@ -64,11 +76,15 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
         initialContactName: String = "",
         initialContactEmail: String = "",
         extraInfo: [String] = [],
+        bugCategories: [LeeoBugCategory]? = nil,
+        categoryInfo: ((LeeoBugCategory) async -> [String])? = nil,
         emailFallback: ((String, String) -> Bool)? = nil
     ) {
         self.types = types
         self.showsContactFields = showsContactFields
         self.extraInfo = extraInfo
+        self.bugCategories = bugCategories ?? LeeoBugCategory.defaults(for: Spec.self)
+        self.categoryInfo = categoryInfo
         self.emailFallback = emailFallback
         self._selectedType = State(initialValue: initialType ?? types.first ?? .bug)
         // 앱이 프로필을 갖고 있으면 그 값이, 없으면 지난번에 이 기기에서 보낸 값이 채워진다.
@@ -79,10 +95,31 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
             ? remembered.rememberedContactEmail : initialContactEmail)
     }
 
-    /// 자동 첨부 정보. 첫 줄은 앱·기종·OS, 그 아래는 앱이 준 줄들(`extraInfo`).
+    /// 자동 첨부 정보. 첫 줄은 앱·기종·OS, 그 아래는 앱이 준 줄들(`extraInfo`),
+    /// 버그 분류를 골랐으면 그 분류 줄과 진단 줄들.
     private var deviceInfo: String {
         LeeoFeedbackService.composeDeviceInfo(base: LeeoFeedbackService.baseDeviceInfo(),
-                                              extra: extraInfo)
+                                              extra: extraInfo + activeCategoryLines)
+    }
+
+    /// 분류를 묻는 화면인가. 버그를 골랐고, 이 앱에 분류가 있을 때.
+    private var showsCategories: Bool {
+        selectedType == .bug && !bugCategories.isEmpty
+    }
+
+    /// 지금 유효한 분류. 버그가 아닌 유형으로 옮겼으면 고른 분류를 쓰지 않는다(지우지도 않는다).
+    private var activeCategory: LeeoBugCategory? {
+        showsCategories ? selectedCategory : nil
+    }
+
+    private var activeCategoryLines: [String] {
+        guard let category = activeCategory else { return [] }
+        return [LeeoFeedbackComposer.categoryLine(category)] + categoryLines
+    }
+
+    /// 지금 물을 칸.
+    private var activePrompts: [LeeoFeedbackPrompt] {
+        LeeoFeedbackComposer.prompts(type: selectedType, category: activeCategory)
     }
 
     public var body: some View {
@@ -90,6 +127,8 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     typeSelector
+                    if showsCategories { categorySelector }
+                    if let caution = activeCategory?.caution { cautionCard(caution) }
                     guidedFields
                     messageEditor
                     #if canImport(UIKit)
@@ -189,6 +228,102 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
         .accessibilityLabel(type.localizedName)
     }
 
+    // MARK: - 버그 분류
+
+    private var categorySelector: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(L("어떤 문제인가요?", comment: "Bug category picker label"))
+                .font(.body)
+                .fontWeight(.semibold)
+                .foregroundColor(theme.text)
+
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+                ForEach(bugCategories, id: \.self) { category in
+                    categoryChip(category)
+                }
+            }
+        }
+    }
+
+    private func categoryChip(_ category: LeeoBugCategory) -> some View {
+        let isSelected = selectedCategory == category
+        return Button {
+            withAnimation(.easeInOut(duration: 0.15)) { selectedCategory = category }
+            collectDiagnostics(for: category)
+        } label: {
+            HStack(alignment: .firstTextBaseline, spacing: 6) {
+                Image(systemName: category.icon)
+                    .font(.body)
+                    .accessibilityHidden(true)
+                Text(category.localizedName)
+                    .font(.body)
+                    .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: 0)
+            }
+            .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+            .padding(.vertical, 8)
+            .padding(.horizontal, 10)
+            .background(isSelected ? theme.accent : theme.surfaceAlt)
+            .foregroundColor(isSelected ? .white : theme.text)
+            .cornerRadius(theme.radiusSm)
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+        .accessibilityLabel(category.localizedName)
+    }
+
+    private func cautionCard(_ text: String) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 8) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundColor(.orange)
+                .accessibilityHidden(true)
+            Text(text)
+                .font(.body)
+                .foregroundColor(theme.text)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.orange.opacity(0.12))
+        .cornerRadius(theme.radiusSm)
+    }
+
+    /// 부탁하는 사진마다 무엇을, 어디서 찍는지. 찍는 법을 모르면 사용자는 앱 화면을 찍어 보낸다.
+    private func attachmentGuide(_ wanted: [LeeoBugAttachment]) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            ForEach(wanted) { item in
+                VStack(alignment: .leading, spacing: 4) {
+                    Label(item.title, systemImage: "camera.viewfinder")
+                        .font(.body)
+                        .fontWeight(.medium)
+                        .foregroundColor(theme.text)
+                    Text(item.howTo)
+                        .font(.body)
+                        .foregroundColor(theme.textMuted)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+        }
+    }
+
+    /// 고른 분류의 진단을 모은다. 분류를 바꾸면 앞의 결과는 버린다(늦게 끝난 앞 분류가 덮어쓰지 않게).
+    private func collectDiagnostics(for category: LeeoBugCategory) {
+        categoryLines = []
+        isProbing = true
+        let container = Spec.feedback.containerIdentifier
+        let appLines = categoryInfo
+        Task {
+            var lines = await LeeoBugProbe.collect(category.probes, container: container)
+            if let appLines { lines += await appLines(category) }
+            await MainActor.run {
+                guard selectedCategory == category else { return }
+                categoryLines = lines
+                isProbing = false
+            }
+        }
+    }
+
     // MARK: - 나눠 묻는 칸
 
     /// 유형이 정한 질문들(`LeeoFeedbackType.prompts`). 없으면 아무것도 안 그린다.
@@ -198,9 +333,9 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
     ///    남아 있는 답이 섞여 나가지도 않는다(`LeeoFeedbackComposer.compose`).
     @ViewBuilder
     private var guidedFields: some View {
-        if !selectedType.prompts.isEmpty {
+        if !activePrompts.isEmpty {
             VStack(alignment: .leading, spacing: 16) {
-                ForEach(selectedType.prompts) { prompt in
+                ForEach(activePrompts) { prompt in
                     promptField(prompt)
                 }
             }
@@ -266,10 +401,14 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                 .fontWeight(.semibold)
                 .foregroundColor(theme.text)
 
-            Text(selectedType.screenshotHint)
-                .font(.body)
-                .foregroundColor(theme.textMuted)
-                .fixedSize(horizontal: false, vertical: true)
+            if let wanted = activeCategory?.attachments, !wanted.isEmpty {
+                attachmentGuide(wanted)
+            } else {
+                Text(selectedType.screenshotHint)
+                    .font(.body)
+                    .foregroundColor(theme.textMuted)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
 
             if !screenshots.isEmpty {
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -351,7 +490,7 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
 
     private var messageEditor: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(selectedType.prompts.isEmpty
+            Text(activePrompts.isEmpty
                  ? L("내용", comment: "Feedback message label")
                  : L("덧붙일 말 (선택)", comment: "Feedback extra note label"))
                 .font(.body)
@@ -383,7 +522,7 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
 
     private var placeholderText: String {
         // 칸을 나눠 물은 유형에서는 이 칸이 덧붙임이다. 같은 예시를 두 번 내밀지 않는다.
-        if !selectedType.prompts.isEmpty {
+        if !activePrompts.isEmpty {
             return L("더 하실 말씀이 있으면 적어 주세요.", comment: "Extra note placeholder")
         }
         switch selectedType {
@@ -442,6 +581,15 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                 .fontWeight(.semibold)
                 .foregroundColor(theme.textMuted)
 
+            if isProbing {
+                HStack(spacing: 8) {
+                    ProgressView()
+                    Text(L("진단 정보를 모으는 중…", comment: "Collecting diagnostics for bug report"))
+                        .font(.body)
+                        .foregroundColor(theme.textMuted)
+                }
+            }
+
             Text(deviceInfo)
                 .font(.body)
                 .foregroundColor(theme.textMuted)
@@ -456,7 +604,8 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
 
     private var sendButton: some View {
         let isDisabled = !LeeoFeedbackComposer.canSend(
-            type: selectedType, answers: answers, note: message) || isSending
+            type: selectedType, category: activeCategory, requiresCategory: showsCategories,
+            answers: answers, note: message) || isSending
         return Button(action: sendFeedback) {
             HStack(spacing: 8) {
                 if isSending {
@@ -559,7 +708,8 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
 
     /// 나눠 받은 답을 보낼 글 하나로 조립한 것. CloudKit·메일·mailto 가 같은 글을 쓴다.
     private var composedMessage: String {
-        LeeoFeedbackComposer.compose(type: selectedType, answers: answers, note: message)
+        LeeoFeedbackComposer.compose(type: selectedType, category: activeCategory,
+                                     answers: answers, note: message)
     }
 
     /// 붙인 사진의 JPEG. 사진을 안 받는 앱에서는 늘 빈 배열이다.
