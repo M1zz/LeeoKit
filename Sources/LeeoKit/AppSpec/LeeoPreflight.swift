@@ -132,6 +132,16 @@ public enum LeeoPreflight {
             }
         }
 
+        // MARK: 로드맵
+
+        let roadmapIDs = Spec.roadmap.map(\.id)
+        if Set(roadmapIDs).count != roadmapIDs.count {
+            issues.append(.init(.warning, "roadmap.duplicateID", "로드맵에 같은 id 가 두 번 있습니다. 한 항목은 한 줄이어야 합니다."))
+        }
+        if Spec.roadmap.contains(where: { $0.title.trimmingCharacters(in: .whitespaces).isEmpty }) {
+            issues.append(.init(.error, "roadmap.emptyTitle", "로드맵에 이름이 빈 항목이 있습니다."))
+        }
+
         // MARK: 게이트 — 팔 물건은 있는데 살 이유가 없는 상태
 
         if money.hasFreeTier, money.requiresPaywall, !money.gate.hasAnyGate {

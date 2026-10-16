@@ -77,6 +77,10 @@ public protocol LeeoAppSpec {
     /// 끄는 경우는 드물다: 앱이 스스로 다른 기준(예: 백그라운드 실행 제외 규칙)으로 보내야 할 때뿐.
     static var sendsDailyAppOpen: Bool { get }
 
+    /// 앞으로 만들 것(로드맵). 설정의 "앞으로 만들 기능" 화면(`LeeoRoadmapView`)이 보여 준다.
+    /// 개발하다 "다음에" 가 생기면 여기에 한 줄을 더한다. 미지정이면 비어 있다.
+    static var roadmap: [LeeoRoadmapItem] { get }
+
     /// 인앱 결제(페이월) 설정. **보통 선언하지 않는다** — `monetization` 에서 자동으로 유도된다.
     /// 직접 선언하면 그 값이 우선하지만, `monetization` 과 어긋나면 Preflight 가 잡아낸다.
     static var paywall: LeeoPaywallConfig? { get }
@@ -94,6 +98,9 @@ public extension LeeoAppSpec {
 
     /// 기본값 — 따로 앞세우는 앱 없음.
     static var familyFeatured: [String] { [] }
+
+    /// 기본값 - 로드맵 없음.
+    static var roadmap: [LeeoRoadmapItem] { [] }
 
     /// 기본값 - 하루 한 번 `app_open` 을 LeeoKit 이 보낸다.
     static var sendsDailyAppOpen: Bool { true }

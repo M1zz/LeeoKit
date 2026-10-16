@@ -47,9 +47,13 @@ public final class LeeoTipJar: ObservableObject {
     @Published public var justTipped = false
     @Published public private(set) var lastError: String?
 
-    private let defaults: UserDefaults
+    let defaults: UserDefaults
     private let countKey: String
     private let seenKey: String
+    private let lastTipKey: String
+    let askSeenKey: String
+    let askLastKey: String
+    let askLatersKey: String
 
     public init(config: LeeoTipJarConfig, defaults: UserDefaults = .standard) {
         self.config = config
@@ -57,6 +61,10 @@ public final class LeeoTipJar: ObservableObject {
         let ns = config.productIDs.first ?? "tip"
         countKey = "leeo.tips.count." + ns
         seenKey = "leeo.tips.seen." + ns
+        lastTipKey = "leeo.tips.last." + ns
+        askSeenKey = "leeo.tips.ask.seen." + ns
+        askLastKey = "leeo.tips.ask.last." + ns
+        askLatersKey = "leeo.tips.ask.laters." + ns
         tipCount = defaults.integer(forKey: countKey)
     }
 
@@ -72,18 +80,22 @@ public final class LeeoTipJar: ObservableObject {
     /// 한 번이라도 냈는가.
     public var hasTipped: Bool { tipCount > 0 }
 
+    /// 마지막으로 낸 때. 낸 사람에게는 한동안 다시 부탁하지 않는다(`LeeoTipAskPolicy`).
+    public var lastTipAt: Date? { defaults.object(forKey: lastTipKey) as? Date }
+
     // MARK: 기록
 
     /// 결제 하나를 센다. 같은 결제를 두 번 세지 않는다(구매 응답과 `Transaction.updates` 가 같은 결제를 줄 수 있다).
     /// - Returns: 처음 본 결제면 true.
     @discardableResult
-    func record(transactionID: String) -> Bool {
+    func record(transactionID: String, at date: Date = Date()) -> Bool {
         var seen = defaults.stringArray(forKey: seenKey) ?? []
         guard !seen.contains(transactionID) else { return false }
         seen.append(transactionID)
         defaults.set(Array(seen.suffix(100)), forKey: seenKey)
         tipCount += 1
         defaults.set(tipCount, forKey: countKey)
+        defaults.set(date, forKey: lastTipKey)
         return true
     }
 

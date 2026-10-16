@@ -75,4 +75,36 @@ final class LeeoTipJarTests: XCTestCase {
         let codes = Set(LeeoPreflight.audit(TipSellsProSpec.self).map(\.code))
         XCTAssertTrue(codes.contains("tip.sellsPro"))
     }
+
+    func test_부탁은_드물게_한다() {
+        let day: TimeInterval = 24 * 60 * 60
+        let now = Date()
+        let big = LeeoTipMoment(id: "saved.5h", message: "5시간")
+        let small = LeeoTipMoment(id: "saved.1h", message: "1시간")
+        func pick(seen: Set<String> = [], asked: Date? = nil, tipped: Date? = nil, laters: Int = 0) -> String? {
+            LeeoTipAskPolicy.pick(reached: [big, small], seen: seen, lastAskedAt: asked, lastTipAt: tipped,
+                                  laters: laters, now: now)?.id
+        }
+        XCTAssertEqual(pick(), "saved.5h", "인상적인 것부터")
+        XCTAssertEqual(pick(seen: ["saved.5h"]), "saved.1h")
+        XCTAssertNil(pick(seen: ["saved.5h", "saved.1h"]), "같은 순간은 한 번만")
+        XCTAssertNil(pick(asked: now.addingTimeInterval(-59 * day)), "물은 뒤 60일은 쉰다")
+        XCTAssertNotNil(pick(asked: now.addingTimeInterval(-61 * day)))
+        XCTAssertNil(pick(tipped: now.addingTimeInterval(-179 * day)), "낸 사람에게는 180일 묻지 않는다")
+        XCTAssertNil(pick(laters: 3), "'다음에' 세 번이면 끝")
+    }
+
+    func test_보여_준_카드는_함께_넘은_작은_순간까지_쓴다() {
+        let (defaults, suite) = makeDefaults()
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let jar = LeeoTipJar(config: LeeoTipJarConfig(productIDs: tipIDs), defaults: defaults)
+        let reached = [LeeoTipMoment(id: "saved.5h", message: ""), LeeoTipMoment(id: "saved.1h", message: "")]
+        jar.markAsked(covering: reached)
+        XCTAssertEqual(jar.askSeen, ["saved.5h", "saved.1h"])
+        XCTAssertNotNil(jar.lastAskedAt)
+        jar.declineAsk(); jar.declineAsk()
+        XCTAssertEqual(jar.askLaters, 2)
+        jar.record(transactionID: "9")
+        XCTAssertNotNil(jar.lastTipAt)
+    }
 }
