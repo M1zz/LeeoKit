@@ -197,7 +197,10 @@ public final class LeeoConsumableStore: ObservableObject {
 
     private func creditUnfinished(_ transaction: Transaction) async {
         let grant = config.grants(for: transaction.productID)
-        if grant > 0 { credit(grant) }
+        // 모르는 상품은 끝내지 않는다. 선물 상품(`LeeoGiftStore`)처럼 주인이 따로 있는 결제를
+        // 여기서 끝내 버리면, 그 주인이 코드를 만들기도 전에 결제가 사라진다.
+        guard grant > 0 else { return }
+        credit(grant)
         await transaction.finish()
     }
     #else

@@ -49,6 +49,9 @@ public struct LeeoPaywallConfig: Sendable {
     /// 보통 `LeeoMonetization` 이 채워 넣는다 (`LeeoStore.gate` 로 판정에 쓰인다).
     public let gate: LeeoGatePolicy
 
+    /// Pro 선물하기 (`LeeoGiftConfig`). nil 이면 선물 기능이 없다.
+    public let gift: LeeoGiftConfig?
+
     public init(
         productIDs: [String],
         entitlementIDs: Set<String>? = nil,
@@ -56,9 +59,11 @@ public struct LeeoPaywallConfig: Sendable {
         privacyURL: URL? = nil,
         autoLoad: Bool = true,
         cacheSuiteName: String? = nil,
-        gate: LeeoGatePolicy = .none
+        gate: LeeoGatePolicy = .none,
+        gift: LeeoGiftConfig? = nil
     ) {
         self.gate = gate
+        self.gift = gift
         self.productIDs = productIDs
         self.entitlementIDs = entitlementIDs ?? Set(productIDs)
         self.termsURL = termsURL

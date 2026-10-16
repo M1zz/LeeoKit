@@ -98,6 +98,23 @@ public enum LeeoPreflight {
                 "entitlementIDs 가 판매 상품과 하나도 겹치지 않습니다. 오타를 의심하세요."))
         }
 
+        // MARK: 선물하기
+
+        if let actual, let gift = actual.gift {
+            if !actual.entitlementIDs.contains(gift.grantsProductID) {
+                issues.append(.init(.error, "gift.grantsNothing",
+                    "선물이 여는 상품(\(gift.grantsProductID))이 entitlementIDs 에 없습니다. 선물을 받아도 아무것도 안 열립니다."))
+            }
+            if actual.productIDs.contains(gift.productID) || actual.entitlementIDs.contains(gift.productID) {
+                issues.append(.init(.error, "gift.sellsPro",
+                    "선물 상품(\(gift.productID))이 productIDs/entitlementIDs 에 들어 있습니다. 선물을 산 사람 자신이 Pro 가 되고, 결제가 코드 없이 끝납니다."))
+            }
+            if !gift.containerIdentifier.hasPrefix("iCloud.") {
+                issues.append(.init(.error, "gift.badContainer",
+                    "선물 컨테이너 식별자는 iCloud. 으로 시작해야 합니다: \(gift.containerIdentifier)"))
+            }
+        }
+
         // MARK: 게이트 — 팔 물건은 있는데 살 이유가 없는 상태
 
         if money.hasFreeTier, money.requiresPaywall, !money.gate.hasAnyGate {

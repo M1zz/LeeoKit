@@ -153,19 +153,23 @@ public struct LeeoPurchaseConfig: Sendable {
     public let cacheSuiteName: String?
     /// 첫 진입 시 상품 자동 로드 여부.
     public let autoLoad: Bool
+    /// Pro 선물하기. nil 이면 선물 기능이 없다 (`LeeoGiftConfig`).
+    public let gift: LeeoGiftConfig?
 
     public init(
         productIDs: [String],
         entitlementIDs: Set<String>? = nil,
         gate: LeeoGatePolicy = .none,
         cacheSuiteName: String? = nil,
-        autoLoad: Bool = true
+        autoLoad: Bool = true,
+        gift: LeeoGiftConfig? = nil
     ) {
         self.productIDs = productIDs
         self.entitlementIDs = entitlementIDs ?? Set(productIDs)
         self.gate = gate
         self.cacheSuiteName = cacheSuiteName
         self.autoLoad = autoLoad
+        self.gift = gift
     }
 }
 
@@ -189,6 +193,8 @@ public struct LeeoSubscriptionConfig: Sendable {
     public let cacheSuiteName: String?
     /// 첫 진입 시 상품 자동 로드 여부.
     public let autoLoad: Bool
+    /// Pro 선물하기. nil 이면 선물 기능이 없다 (`LeeoGiftConfig`).
+    public let gift: LeeoGiftConfig?
 
     public init(
         productIDs: [String],
@@ -196,7 +202,8 @@ public struct LeeoSubscriptionConfig: Sendable {
         entitlementIDs: Set<String>? = nil,
         gate: LeeoGatePolicy = .none,
         cacheSuiteName: String? = nil,
-        autoLoad: Bool = true
+        autoLoad: Bool = true,
+        gift: LeeoGiftConfig? = nil
     ) {
         self.productIDs = productIDs
         self.termsURL = termsURL
@@ -204,6 +211,7 @@ public struct LeeoSubscriptionConfig: Sendable {
         self.gate = gate
         self.cacheSuiteName = cacheSuiteName
         self.autoLoad = autoLoad
+        self.gift = gift
     }
 }
 
@@ -227,7 +235,8 @@ public extension LeeoMonetization {
                 privacyURL: legal.privacyURL,
                 autoLoad: c.autoLoad,
                 cacheSuiteName: c.cacheSuiteName,
-                gate: c.gate
+                gate: c.gate,
+                gift: c.gift
             )
 
         case .paidUpfrontSubscription(let c), .freemiumSubscription(let c):
@@ -238,7 +247,8 @@ public extension LeeoMonetization {
                 privacyURL: legal.privacyURL,
                 autoLoad: c.autoLoad,
                 cacheSuiteName: c.cacheSuiteName,
-                gate: c.gate
+                gate: c.gate,
+                gift: c.gift
             )
 
         case .credits:

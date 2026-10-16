@@ -32,7 +32,12 @@ public final class LeeoStore: ObservableObject {
     @Published public private(set) var products: [Product] = []
 
     /// 현재 유효한 권한을 가진 상품 ID 집합 (환불/만료/취소는 제외).
+    /// 받은 선물이 있으면 그 선물이 여는 상품 ID(`LeeoGiftConfig.grantsProductID`)도 들어 있다.
+    /// 그래서 앱은 산 것과 받은 것을 가리지 않고 이 집합 하나로 판정하면 된다.
     @Published public private(set) var purchasedProductIDs: Set<String> = []
+
+    /// StoreKit 이 말하는 권한만 (선물 제외). 캐시에는 이것만 적는다.
+    private var storeKitOwned: Set<String> = []
 
     /// 상품 로딩 중 여부.
     @Published public private(set) var isLoadingProducts = false
@@ -58,6 +63,12 @@ public final class LeeoStore: ObservableObject {
     }
 
     public let config: LeeoPaywallConfig
+
+    /// Pro 선물하기 엔진 (`config.gift` 가 있을 때만). 받은 선물은 `purchasedProductIDs` 에 합쳐진다.
+    public let gift: LeeoGiftStore?
+
+    /// 받은 선물로 Pro 가 열려 있는가 (산 것은 아니다).
+    public var isGifted: Bool { gift?.redeemed != nil }
 
     /// 현재 권한을 반영한 게이트 판정기 — "지금 페이월을 띄워야 하나"의 답을 준다.
     /// 정책은 계약(`LeeoMonetization`)에서 오고, 권한은 이 스토어가 안다.
@@ -94,22 +105,45 @@ public final class LeeoStore: ObservableObject {
         self.config = config
         self.unlockOverride = unlockOverride
         self.grandfather = grandfather
-        self.defaults = config.cacheSuiteName.flatMap { UserDefaults(suiteName: $0) } ?? .standard
+        let defaults = config.cacheSuiteName.flatMap { UserDefaults(suiteName: $0) } ?? .standard
+        self.defaults = defaults
         // 캐시 키를 상품 ID 로 네임스페이스화 — 한 앱/한 suite 에 LeeoStore 가 여러 개(구독·팩·프리미엄 등)
         // 있어도 서로의 캐시를 덮어쓰지 않는다. (이 캐시는 StoreKit 에서 재도출 가능한 값이라 키가 바뀌어도 손실 없음.)
         let ns = Self.namespace(for: config.productIDs)
         self.cacheKeyOwned = "leeo.paywall.owned." + ns
         self.cacheKeyGrandfather = "leeo.paywall.grandfathered." + ns
 
+        // 받은 선물도 같은 suite 에 둔다 (확장 · 위젯이 같은 Pro 를 본다).
+        self.gift = config.gift.map { LeeoGiftStore(config: $0, defaults: defaults) }
+
         // 네트워크 응답 전까지는 마지막으로 알던 권한으로 시작해 기능 깜빡임을 막는다.
         if let cached = defaults.array(forKey: cacheKeyOwned) as? [String] {
-            purchasedProductIDs = Set(cached)
+            storeKitOwned = Set(cached)
         }
         isGrandfathered = defaults.bool(forKey: cacheKeyGrandfather)
+        applyOwned()
+
+        if let gift {
+            // 이미 산 사람은 선물을 받지 않는다 (코드를 다른 사람에게 넘기게 둔다).
+            gift.alreadyEntitled = { [weak self] in
+                guard let self else { return false }
+                return self.isGrandfathered || !self.storeKitOwned.isDisjoint(with: self.config.entitlementIDs)
+            }
+            gift.onChange = { [weak self] in self?.applyOwned() }
+        }
 
         // 앱 실행 중 발생하는 트랜잭션 갱신(다른 기기 구매·환불·가족 공유)을 항상 반영.
-        updatesListener = Self.makeListener(store: self)
-        Task { await refreshEntitlements() }
+        updatesListener = Self.makeListener(store: self, giftProductID: config.gift?.productID)
+        Task {
+            await refreshEntitlements()
+            #if canImport(StoreKit)
+            if let gift {
+                await gift.loadProduct()
+                await gift.resumePending()   // 결제는 됐는데 코드를 못 만든 선물
+            }
+            #endif
+            await gift?.refresh()
+        }
     }
 
     deinit { updatesListener?.cancel() }
@@ -226,6 +260,7 @@ public final class LeeoStore: ObservableObject {
         }
         grandfatherChecked = false   // 동기화로 영수증이 갱신됐으니 그랜드파더링도 다시 확인
         await refreshEntitlements()
+        await gift?.refresh()          // 다른 기기에서 받은 선물도 다시 찾는다
         LeeoAnalyticsCenter.track(.purchaseRestored(restored: hasPro))
         #endif
     }
@@ -240,7 +275,8 @@ public final class LeeoStore: ObservableObject {
             guard let transaction = Self.verified(result) else { continue }
             if transaction.revocationDate == nil { owned.insert(transaction.productID) }
         }
-        purchasedProductIDs = owned
+        storeKitOwned = owned
+        applyOwned()
 
         // 실제 구매가 없을 때만 그랜드파더링을 (앱 정책에 따라) 1회 확인한다.
         let entitledNow = !owned.isDisjoint(with: config.entitlementIDs)
@@ -256,6 +292,18 @@ public final class LeeoStore: ObservableObject {
     }
 
     // MARK: - 내부
+
+    /// StoreKit 권한 + 받은 선물.
+    private func applyOwned() {
+        let merged = storeKitOwned.union(gift?.grantedProductIDs ?? [])
+        if merged != purchasedProductIDs { purchasedProductIDs = merged }
+    }
+
+    #if canImport(StoreKit)
+    private func handleGift(_ update: VerificationResult<Transaction>) async {
+        await gift?.handle(update: update)
+    }
+    #endif
 
     /// 상품 ID 집합에서 안정적인(실행 간 동일) 짧은 네임스페이스를 만든다 — 캐시 키 충돌 방지용.
     /// Swift 의 Hasher 는 실행마다 시드가 달라 못 쓰므로 FNV-1a 로 직접 계산한다.
@@ -278,16 +326,21 @@ public final class LeeoStore: ObservableObject {
     }
 
     /// 앱 생존 기간 동안 트랜잭션 갱신을 수신해 권한을 반영하는 리스너.
-    private static func makeListener(store: LeeoStore) -> Task<Void, Never> {
+    private static func makeListener(store: LeeoStore, giftProductID: String?) -> Task<Void, Never> {
         Task.detached {
             for await update in Transaction.updates {
                 guard let transaction = verified(update) else { continue }
+                // 선물 결제는 코드를 올린 뒤에 끝내야 한다. 여기서 끝내면 돈만 받고 코드가 없다.
+                if transaction.productID == giftProductID {
+                    await store.handleGift(update)
+                    continue
+                }
                 await transaction.finish()
                 await store.refreshEntitlements()
             }
         }
     }
     #else
-    private static func makeListener(store: LeeoStore) -> Task<Void, Never> { Task {} }
+    private static func makeListener(store: LeeoStore, giftProductID: String?) -> Task<Void, Never> { Task {} }
     #endif
 }
