@@ -107,4 +107,15 @@ final class LeeoTipJarTests: XCTestCase {
         jar.record(transactionID: "9")
         XCTAssertNotNil(jar.lastTipAt)
     }
+
+    func test_상품이_하나씩_나와도_칸_이름은_계약의_자리를_따른다() {
+        let (defaults, suite) = makeDefaults()
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let jar = LeeoTipJar(config: LeeoTipJarConfig(productIDs: tipIDs), defaults: defaults)
+        // small · medium 만 나와 있을 때 (불러온 순서 0, 1)
+        XCTAssertEqual(jar.tier(for: tipIDs[0], fallbackIndex: 0).size, .small)
+        XCTAssertEqual(jar.tier(for: tipIDs[1], fallbackIndex: 1).size, .medium, "medium 이 '큰 것' 이름을 달면 안 된다")
+        // large 만 따로 나와 있을 때
+        XCTAssertEqual(jar.tier(for: tipIDs[2], fallbackIndex: 0).size, .large)
+    }
 }

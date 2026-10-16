@@ -77,6 +77,15 @@ public final class LeeoTipJar: ObservableObject {
         #endif
     }
 
+    /// 이 상품의 칸 이름. 계약(`config.productIDs`)의 자리로 정한다. 계약에 없는 상품이면 불러온 순서로.
+    func tier(for productID: String, fallbackIndex: Int) -> LeeoTipTier {
+        let order = config.productIDs
+        guard let index = order.firstIndex(of: productID) else {
+            return LeeoTipTier(index: fallbackIndex, of: max(order.count, fallbackIndex + 1))
+        }
+        return LeeoTipTier(index: index, of: order.count)
+    }
+
     /// 한 번이라도 냈는가.
     public var hasTipped: Bool { tipCount > 0 }
 

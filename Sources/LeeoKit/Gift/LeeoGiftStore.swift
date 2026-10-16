@@ -133,6 +133,8 @@ public final class LeeoGiftStore: ObservableObject {
     private let defaults: UserDefaults
     private let bundleID: String
     private var pendingCodes: [String: String] = [:]   // 결제 번호 → 코드
+    /// 문의에 붙일 미완료 선물(`supportLines`).
+    var pendingSupportCodes: [String: String] { pendingCodes }
 
     private var keySent: String { "leeo.gift.sent." + config.productID }
     private var keyRedeemed: String { "leeo.gift.redeemed." + config.productID }
@@ -475,6 +477,11 @@ public final class LeeoGiftStore: ObservableObject {
         } catch let error as CKError where error.code == .serverRecordChanged {
             let existing: CKRecord
             if let server = error.serverRecord { existing = server } else { existing = try await db.record(for: record.recordID) }
+            guard isOurs(existing) else { throw LeeoGiftError.alreadyUsed }
+        } catch let error as CKError where error.code == .permissionFailure {
+            // 남이 만든 같은 이름의 기록에 쓰려 하면 공개 DB 는 "충돌" 대신 "권한 없음" 으로 거절하기도 한다.
+            // 이미 있으면 그건 "이미 쓴 코드" 다. 없는데 권한이 없다면 진짜 권한 문제다.
+            guard let existing = try? await db.record(for: record.recordID) else { throw error }
             guard isOurs(existing) else { throw LeeoGiftError.alreadyUsed }
         }
     }

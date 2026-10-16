@@ -52,13 +52,18 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
     private let showsRedeemLink: Bool
     /// 미리보기 가격. 있으면 상품을 기다리지 않고 이 값으로 단추를 그리며, 눌러도 결제하지 않는다.
     private let previewPrice: String?
+    /// 선물이 안 될 때 문의 창을 연다(`LeeoGiftSupport`). nil 이면 문의 줄이 없다.
+    private let onContactSupport: (() -> Void)?
 
     /// - Parameter showsRedeemLink: 아래에 "선물받은 코드가 있나요?" 링크를 둘지.
     ///   앱이 설정에 코드 입력 행을 따로 두면 false (화면 안에서 또 밀어 넣지 않게).
-    public init(gift: LeeoGiftStore, showsRedeemLink: Bool = true) {
+    /// - Parameter onContactSupport: 선물이 안 될 때 결제 내용과 함께 문의하게 할 창을 연다.
+    ///   앱은 `LeeoFeedbackView(initialType: .bug, initialCategory: .purchase, extraInfo: gift.supportLines)` 를 띄운다.
+    public init(gift: LeeoGiftStore, showsRedeemLink: Bool = true, onContactSupport: (() -> Void)? = nil) {
         self.gift = gift
         self.showsRedeemLink = showsRedeemLink
         self.previewPrice = nil
+        self.onContactSupport = onContactSupport
     }
 
     /// **결제하지 않는** 미리보기. 인앱 상품 심사 이미지 · SwiftUI 미리보기처럼 StoreKit 상품이 없는 곳에서
@@ -67,6 +72,7 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
         self.gift = gift
         self.showsRedeemLink = false
         self.previewPrice = previewPrice
+        self.onContactSupport = nil
     }
 
     public var body: some View {
@@ -91,6 +97,9 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
                         .multilineTextAlignment(.center)
                 }
                 pendingNotice
+                if let onContactSupport {
+                    LeeoGiftSupportRow(gift: gift, onContact: onContactSupport)
+                }
                 sentList
                 if showsRedeemLink {
                     NavigationLink {

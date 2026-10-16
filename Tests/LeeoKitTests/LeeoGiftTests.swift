@@ -205,3 +205,26 @@ final class LeeoGiftConfigTests: XCTestCase {
         XCTAssertEqual(store.grantedProductIDs, ["com.a.pro"])
     }
 }
+
+@MainActor
+final class LeeoGiftSupportTests: XCTestCase {
+    func test_문의에는_결제_번호와_코드가_붙고_서명_원문은_붙지_않는다() throws {
+        let suite = "leeo.test.giftsupport.\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let config = LeeoGiftConfig(productID: "com.a.gift", grantsProductID: "com.a.pro", containerIdentifier: "iCloud.com.a")
+
+        let empty = LeeoGiftStore(config: config, defaults: defaults)
+        XCTAssertEqual(empty.supportLines, ["gift.none"])
+        XCTAssertFalse(empty.needsSupport)
+
+        let sent = LeeoSentGift(code: "7KQ2M9XA", transactionID: "2000000123", createdAt: Date(), isRedeemed: false)
+        defaults.set(try JSONEncoder().encode([sent]), forKey: "leeo.gift.sent.com.a.gift")
+        let store = LeeoGiftStore(config: config, defaults: defaults)
+        let lines = store.supportLines.joined(separator: "\n")
+        XCTAssertTrue(lines.contains("7KQ2-M9XA"))
+        XCTAssertTrue(lines.contains("tx=2000000123"))
+        XCTAssertTrue(lines.contains("redeemed=no"))
+        XCTAssertFalse(lines.contains("jws"))
+    }
+}

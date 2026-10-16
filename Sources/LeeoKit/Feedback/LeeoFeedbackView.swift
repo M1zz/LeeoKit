@@ -69,6 +69,7 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
     ///   - bugCategories: 버그 신고의 분류. nil 이면 Spec 을 보고 고른다(`LeeoBugCategory.defaults`).
     ///     빈 배열이면 분류를 묻지 않는다.
     ///   - categoryInfo: 분류를 고를 때 앱이 덧붙일 줄들(`extraInfo` 와 같은 규칙).
+    ///   - initialCategory: 미리 고를 버그 분류. 결제 문제처럼 어디서 왔는지 분명할 때(예: 선물 화면의 문의).
     public init(
         types: [LeeoFeedbackType] = LeeoFeedbackType.defaultTypes,
         initialType: LeeoFeedbackType? = nil,
@@ -78,8 +79,10 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
         extraInfo: [String] = [],
         bugCategories: [LeeoBugCategory]? = nil,
         categoryInfo: ((LeeoBugCategory) async -> [String])? = nil,
+        initialCategory: LeeoBugCategory? = nil,
         emailFallback: ((String, String) -> Bool)? = nil
     ) {
+        self._selectedCategory = State(initialValue: initialCategory)
         self.types = types
         self.showsContactFields = showsContactFields
         self.extraInfo = extraInfo
@@ -127,7 +130,15 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     typeSelector
-                    if showsCategories { categorySelector }
+                    if showsCategories {
+                        categorySelector
+                            .task {
+                                // 미리 고른 분류는 진단도 미리 모은다(눌러서 고른 것과 같게).
+                                if let category = selectedCategory, categoryLines.isEmpty, !isProbing {
+                                    collectDiagnostics(for: category)
+                                }
+                            }
+                    }
                     if let caution = activeCategory?.caution { cautionCard(caution) }
                     guidedFields
                     messageEditor

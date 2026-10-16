@@ -51589,6 +51589,432 @@
           }
         }
       }
+    },
+    "선물이 잘 안 되나요?": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dárek nefunguje?"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Virker gaven ikke?"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geschenk klappt nicht?"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Δεν λειτουργεί το δώρο;"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gift not working?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿El regalo no funciona?"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eikö lahja toimi?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le cadeau ne fonctionne pas ?"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hadiah tidak berhasil?"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il regalo non funziona?"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ギフトがうまくいかない？"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "선물이 잘 안 되나요?"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fungerer ikke gaven?"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Werkt het cadeau niet?"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prezent nie działa?"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O presente não funcionou?"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Подарок не работает?"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fungerar inte gåvan?"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ของขวัญใช้งานไม่ได้ใช่ไหม"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hediye çalışmıyor mu?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quà không hoạt động?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "礼物没成功？"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "禮物沒成功？"
+          }
+        }
+      }
+    },
+    "아직 다듬는 중인 기능이에요. 결제했는데 코드가 나오지 않았거나 받지 못했다면, 결제 내용과 함께 알려 주세요. 확인해서 꼭 해결해 드릴게요.": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tato funkce se ještě dolaďuje. Pokud jste zaplatili, ale kód se neobjevil nebo ho nešlo uplatnit, napište nám s údaji o nákupu a vyřešíme to."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Denne funktion bliver stadig finpudset. Hvis du har betalt, men ingen kode dukkede op, eller den ikke kunne indløses, så skriv til os med købsoplysningerne, så løser vi det."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Funktion wird noch verfeinert. Wenn du bezahlt hast, aber kein Code erschienen ist oder er nicht eingelöst werden konnte, schreib uns mit den Kaufdetails, und wir lösen das."
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Αυτή η λειτουργία βελτιώνεται ακόμα. Αν πλήρωσες αλλά δεν εμφανίστηκε κωδικός ή δεν εξαργυρώθηκε, γράψε μας με τα στοιχεία της αγοράς και θα το λύσουμε."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This feature is still being polished. If you paid but no code appeared, or the code didn't work, tell us with your purchase details and we'll make it right."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta función todavía se está puliendo. Si pagaste y no apareció el código, o no se pudo canjear, escríbenos con los datos de la compra y lo resolveremos."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tätä ominaisuutta hiotaan vielä. Jos maksoit, mutta koodia ei tullut tai sitä ei voinut lunastaa, kerro meille ostotietojen kanssa, niin korjaamme asian."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cette fonctionnalité est encore en cours de finition. Si vous avez payé mais qu'aucun code n'est apparu, ou qu'il n'a pas pu être utilisé, écrivez-nous avec les détails de l'achat et nous réglerons le problème."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fitur ini masih disempurnakan. Jika Anda sudah membayar tetapi kode tidak muncul, atau tidak bisa ditukar, beri tahu kami beserta detail pembelian dan kami akan menyelesaikannya."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Questa funzione è ancora in fase di rifinitura. Se hai pagato ma il codice non è comparso, o non è stato possibile riscattarlo, scrivici con i dettagli dell'acquisto e lo risolveremo."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "まだ磨いている途中の機能です。支払ったのにコードが出ない、または受け取れない場合は、支払い内容と一緒にお知らせください。確認して必ず解決します。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "아직 다듬는 중인 기능이에요. 결제했는데 코드가 나오지 않았거나 받지 못했다면, 결제 내용과 함께 알려 주세요. 확인해서 꼭 해결해 드릴게요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Denne funksjonen finpusses fortsatt. Hvis du har betalt, men ingen kode dukket opp, eller den ikke kunne løses inn, skriv til oss med kjøpsdetaljene, så løser vi det."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deze functie wordt nog bijgeschaafd. Heb je betaald maar verscheen er geen code, of kon die niet worden ingewisseld? Laat het ons weten met je aankoopgegevens, dan lossen we het op."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ta funkcja jest jeszcze dopracowywana. Jeśli zapłacono, a kod się nie pojawił lub nie dało się go odebrać, napisz do nas z danymi zakupu, a rozwiążemy to."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este recurso ainda está sendo aprimorado. Se você pagou e o código não apareceu, ou não deu para resgatar, fale com a gente com os dados da compra e vamos resolver."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Эта функция ещё дорабатывается. Если вы оплатили, но код не появился или его не удалось активировать, напишите нам с данными покупки, и мы всё исправим."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Den här funktionen finslipas fortfarande. Om du har betalat men ingen kod visades, eller om den inte gick att lösa in, skriv till oss med köpuppgifterna så löser vi det."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ฟีเจอร์นี้ยังอยู่ระหว่างปรับปรุง หากชำระเงินแล้วแต่ไม่มีรหัส หรือรับไม่ได้ โปรดแจ้งเราพร้อมรายละเอียดการชำระเงิน เราจะแก้ไขให้แน่นอน"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu özellik hâlâ geliştiriliyor. Ödeme yaptığınız hâlde kod görünmediyse ya da kullanılamadıysa, satın alma bilgileriyle bize yazın, çözelim."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tính năng này vẫn đang được hoàn thiện. Nếu bạn đã thanh toán nhưng không thấy mã, hoặc không nhận được, hãy báo cho chúng tôi kèm thông tin thanh toán, chúng tôi sẽ xử lý."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这个功能还在打磨中。如果付款后没有出现兑换码，或者无法领取，请连同付款信息告诉我们，我们一定会帮你解决。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "這個功能還在打磨中。如果付款後沒有出現兌換碼，或者無法領取，請連同付款資訊告訴我們，我們一定會幫你解決。"
+          }
+        }
+      }
+    },
+    "결제 내용과 함께 문의하기": {
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Napsat s údaji o nákupu"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kontakt os med købsoplysninger"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mit Kaufdetails kontaktieren"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Επικοινωνία με στοιχεία αγοράς"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contact Us with Purchase Details"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escribir con los datos de compra"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ota yhteyttä ostotietojen kanssa"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nous contacter avec l'achat"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hubungi Kami dengan Detail Pembelian"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contattaci con i dettagli"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "支払い内容と一緒に問い合わせる"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "결제 내용과 함께 문의하기"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kontakt oss med kjøpsdetaljer"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contact met aankoopgegevens"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Napisz z danymi zakupu"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Falar com os dados da compra"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Написать с данными покупки"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kontakta oss med köpuppgifter"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ติดต่อพร้อมรายละเอียดการชำระเงิน"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Satın Alma Bilgileriyle Yazın"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liên hệ kèm thông tin thanh toán"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "附上付款信息联系我们"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "附上付款資訊聯絡我們"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

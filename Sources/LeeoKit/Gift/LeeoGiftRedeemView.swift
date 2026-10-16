@@ -13,10 +13,15 @@ public struct LeeoGiftRedeemView<Spec: LeeoAppSpec>: View {
     @State private var input: String
     @FocusState private var focused: Bool
 
-    /// - Parameter code: 링크로 들어왔을 때 미리 채울 코드.
-    public init(gift: LeeoGiftStore, code: String = "") {
+    private let onContactSupport: (() -> Void)?
+
+    /// - Parameters:
+    ///   - code: 링크로 들어왔을 때 미리 채울 코드.
+    ///   - onContactSupport: 받기가 안 될 때 문의 창을 연다(`LeeoGiftSupport`). nil 이면 문의 줄이 없다.
+    public init(gift: LeeoGiftStore, code: String = "", onContactSupport: (() -> Void)? = nil) {
         self.gift = gift
         _input = State(initialValue: code)
+        self.onContactSupport = onContactSupport
     }
 
     public var body: some View {
@@ -34,6 +39,9 @@ public struct LeeoGiftRedeemView<Spec: LeeoAppSpec>: View {
                     done
                 } else {
                     form
+                }
+                if let onContactSupport {
+                    LeeoGiftSupportRow(gift: gift, onContact: onContactSupport)
                 }
             }
             .padding(20)

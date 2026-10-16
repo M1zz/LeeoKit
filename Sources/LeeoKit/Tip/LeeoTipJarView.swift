@@ -147,7 +147,7 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
         } else {
             VStack(spacing: 10) {
                 ForEach(Array(tipJar.products.enumerated()), id: \.element.id) { index, product in
-                    tierRow(tier: LeeoTipTier(index: index, of: tipJar.products.count), price: product.displayPrice) {
+                    tierRow(tier: tipJar.tier(for: product.id, fallbackIndex: index), price: product.displayPrice) {
                         Task { await tipJar.purchase(product, using: { try await purchaseAction($0) }) }
                     }
                 }
@@ -168,13 +168,20 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
                     .font(.body.weight(.semibold))
                     .foregroundStyle(theme.text)
                     .multilineTextAlignment(.leading)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.85)
                 Spacer(minLength: 8)
+                // ⚠️ 가격은 **한 줄**이다. 자리가 모자라면 이름 쪽이 줄을 바꾸거나 작아진다.
+                //    (가격이 두 줄로 꺾이면 "₩1," / "100" 처럼 읽혀 얼마인지 헷갈린다)
                 Text(price)
                     .font(.body.weight(.semibold).monospacedDigit())
                     .foregroundStyle(.white)
+                    .lineLimit(1)
+                    .fixedSize(horizontal: true, vertical: false)
                     .padding(.horizontal, 14)
                     .padding(.vertical, 8)
                     .background(Capsule().fill(theme.accent))
+                    .layoutPriority(1)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
@@ -190,7 +197,10 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
 // MARK: - 단계
 
 /// 팁 한 칸의 이름과 그림. 상품 이름은 App Store Connect 에서 언어마다 따로 적어야 해서 쓰지 않고,
-/// **순서**로 이름을 붙인다(작은 것 · 중간 · 큰 것). 칸이 둘이면 작은 것과 큰 것만 쓴다.
+/// **계약에 적은 순서**로 이름을 붙인다(작은 것 · 중간 · 큰 것). 계약에 둘이면 작은 것과 큰 것만 쓴다.
+///
+/// ⚠️ 불러온 상품 수가 아니라 **계약의 자리**로 정한다(`LeeoTipJar.tier(for:)`). 상품은 한 번에 하나씩 출시될 수 있다.
+///    small · medium 만 나와 있을 때 불러온 수(2)로 정하면 medium 이 "큰 것" 이름을 단다.
 struct LeeoTipTier: Equatable {
     enum Size: Equatable { case small, medium, large }
     let size: Size
