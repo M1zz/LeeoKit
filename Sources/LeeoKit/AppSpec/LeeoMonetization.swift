@@ -155,6 +155,8 @@ public struct LeeoPurchaseConfig: Sendable {
     public let autoLoad: Bool
     /// Pro 선물하기. nil 이면 선물 기능이 없다 (`LeeoGiftConfig`).
     public let gift: LeeoGiftConfig?
+    /// 팁(응원). nil 이면 없다 (`LeeoTipJarConfig`).
+    public let tipJar: LeeoTipJarConfig?
 
     public init(
         productIDs: [String],
@@ -162,7 +164,8 @@ public struct LeeoPurchaseConfig: Sendable {
         gate: LeeoGatePolicy = .none,
         cacheSuiteName: String? = nil,
         autoLoad: Bool = true,
-        gift: LeeoGiftConfig? = nil
+        gift: LeeoGiftConfig? = nil,
+        tipJar: LeeoTipJarConfig? = nil
     ) {
         self.productIDs = productIDs
         self.entitlementIDs = entitlementIDs ?? Set(productIDs)
@@ -170,6 +173,7 @@ public struct LeeoPurchaseConfig: Sendable {
         self.cacheSuiteName = cacheSuiteName
         self.autoLoad = autoLoad
         self.gift = gift
+        self.tipJar = tipJar
     }
 }
 
@@ -195,6 +199,8 @@ public struct LeeoSubscriptionConfig: Sendable {
     public let autoLoad: Bool
     /// Pro 선물하기. nil 이면 선물 기능이 없다 (`LeeoGiftConfig`).
     public let gift: LeeoGiftConfig?
+    /// 팁(응원). nil 이면 없다 (`LeeoTipJarConfig`).
+    public let tipJar: LeeoTipJarConfig?
 
     public init(
         productIDs: [String],
@@ -203,7 +209,8 @@ public struct LeeoSubscriptionConfig: Sendable {
         gate: LeeoGatePolicy = .none,
         cacheSuiteName: String? = nil,
         autoLoad: Bool = true,
-        gift: LeeoGiftConfig? = nil
+        gift: LeeoGiftConfig? = nil,
+        tipJar: LeeoTipJarConfig? = nil
     ) {
         self.productIDs = productIDs
         self.termsURL = termsURL
@@ -212,6 +219,7 @@ public struct LeeoSubscriptionConfig: Sendable {
         self.cacheSuiteName = cacheSuiteName
         self.autoLoad = autoLoad
         self.gift = gift
+        self.tipJar = tipJar
     }
 }
 
@@ -236,7 +244,8 @@ public extension LeeoMonetization {
                 autoLoad: c.autoLoad,
                 cacheSuiteName: c.cacheSuiteName,
                 gate: c.gate,
-                gift: c.gift
+                gift: c.gift,
+                tipJar: c.tipJar
             )
 
         case .paidUpfrontSubscription(let c), .freemiumSubscription(let c):
@@ -248,7 +257,8 @@ public extension LeeoMonetization {
                 autoLoad: c.autoLoad,
                 cacheSuiteName: c.cacheSuiteName,
                 gate: c.gate,
-                gift: c.gift
+                gift: c.gift,
+                tipJar: c.tipJar
             )
 
         case .credits:

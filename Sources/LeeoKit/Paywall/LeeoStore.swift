@@ -67,6 +67,9 @@ public final class LeeoStore: ObservableObject {
     /// Pro 선물하기 엔진 (`config.gift` 가 있을 때만). 받은 선물은 `purchasedProductIDs` 에 합쳐진다.
     public let gift: LeeoGiftStore?
 
+    /// 팁(응원) 엔진 (`config.tipJar` 가 있을 때만). 권한과 상관없다.
+    public let tipJar: LeeoTipJar?
+
     /// 받은 선물로 Pro 가 열려 있는가 (산 것은 아니다).
     public var isGifted: Bool { gift?.redeemed != nil }
 
@@ -115,6 +118,7 @@ public final class LeeoStore: ObservableObject {
 
         // 받은 선물도 같은 suite 에 둔다 (확장 · 위젯이 같은 Pro 를 본다).
         self.gift = config.gift.map { LeeoGiftStore(config: $0, defaults: defaults) }
+        self.tipJar = config.tipJar.map { LeeoTipJar(config: $0, defaults: defaults) }
 
         // 네트워크 응답 전까지는 마지막으로 알던 권한으로 시작해 기능 깜빡임을 막는다.
         if let cached = defaults.array(forKey: cacheKeyOwned) as? [String] {
@@ -133,13 +137,18 @@ public final class LeeoStore: ObservableObject {
         }
 
         // 앱 실행 중 발생하는 트랜잭션 갱신(다른 기기 구매·환불·가족 공유)을 항상 반영.
-        updatesListener = Self.makeListener(store: self, giftProductID: config.gift?.productID)
+        updatesListener = Self.makeListener(store: self, giftProductID: config.gift?.productID,
+                                            tipProductIDs: Set(config.tipJar?.productIDs ?? []))
         Task {
             await refreshEntitlements()
             #if canImport(StoreKit)
             if let gift {
                 await gift.loadProduct()
                 await gift.resumePending()   // 결제는 됐는데 코드를 못 만든 선물
+            }
+            if let tipJar {
+                await tipJar.loadProducts()  // 설정의 '응원하기' 줄은 상품이 있어야 선다
+                await tipJar.resumePending()
             }
             #endif
             await gift?.refresh()
@@ -303,6 +312,10 @@ public final class LeeoStore: ObservableObject {
     private func handleGift(_ update: VerificationResult<Transaction>) async {
         await gift?.handle(update: update)
     }
+
+    private func handleTip(_ update: VerificationResult<Transaction>) async {
+        await tipJar?.handle(update: update)
+    }
     #endif
 
     /// 상품 ID 집합에서 안정적인(실행 간 동일) 짧은 네임스페이스를 만든다 — 캐시 키 충돌 방지용.
@@ -326,7 +339,8 @@ public final class LeeoStore: ObservableObject {
     }
 
     /// 앱 생존 기간 동안 트랜잭션 갱신을 수신해 권한을 반영하는 리스너.
-    private static func makeListener(store: LeeoStore, giftProductID: String?) -> Task<Void, Never> {
+    private static func makeListener(store: LeeoStore, giftProductID: String?,
+                                     tipProductIDs: Set<String>) -> Task<Void, Never> {
         Task.detached {
             for await update in Transaction.updates {
                 guard let transaction = verified(update) else { continue }
@@ -335,12 +349,18 @@ public final class LeeoStore: ObservableObject {
                     await store.handleGift(update)
                     continue
                 }
+                // 팁은 권한이 아니다. 세고 끝낸다(권한을 다시 읽을 일이 없다).
+                if tipProductIDs.contains(transaction.productID) {
+                    await store.handleTip(update)
+                    continue
+                }
                 await transaction.finish()
                 await store.refreshEntitlements()
             }
         }
     }
     #else
-    private static func makeListener(store: LeeoStore, giftProductID: String?) -> Task<Void, Never> { Task {} }
+    private static func makeListener(store: LeeoStore, giftProductID: String?,
+                                     tipProductIDs: Set<String>) -> Task<Void, Never> { Task {} }
     #endif
 }

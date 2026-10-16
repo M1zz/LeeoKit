@@ -115,6 +115,23 @@ public enum LeeoPreflight {
             }
         }
 
+        // MARK: 팁(응원)
+
+        if let actual, let tip = actual.tipJar {
+            if tip.productIDs.isEmpty {
+                issues.append(.init(.error, "tip.noProducts", "팁 구성에 상품이 없습니다. 응원하기 화면이 비어 보입니다."))
+            }
+            let sold = Set(actual.productIDs).union(actual.entitlementIDs)
+            if !sold.isDisjoint(with: tip.productIDs) {
+                issues.append(.init(.error, "tip.sellsPro",
+                    "팁 상품이 productIDs/entitlementIDs 에 들어 있습니다. 팁을 낸 사람이 Pro 가 됩니다."))
+            }
+            if let gift = actual.gift, tip.productIDs.contains(gift.productID) {
+                issues.append(.init(.error, "tip.isGift",
+                    "선물 상품(\(gift.productID))이 팁에도 들어 있습니다. 선물 결제가 코드 없이 끝납니다."))
+            }
+        }
+
         // MARK: 게이트 — 팔 물건은 있는데 살 이유가 없는 상태
 
         if money.hasFreeTier, money.requiresPaywall, !money.gate.hasAnyGate {

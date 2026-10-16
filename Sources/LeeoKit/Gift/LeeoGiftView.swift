@@ -50,12 +50,23 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
     /// 방금 산 선물. 있으면 사는 자리 대신 코드와 보내기가 선다.
     @State private var justSent: LeeoSentGift?
     private let showsRedeemLink: Bool
+    /// 미리보기 가격. 있으면 상품을 기다리지 않고 이 값으로 단추를 그리며, 눌러도 결제하지 않는다.
+    private let previewPrice: String?
 
     /// - Parameter showsRedeemLink: 아래에 "선물받은 코드가 있나요?" 링크를 둘지.
     ///   앱이 설정에 코드 입력 행을 따로 두면 false (화면 안에서 또 밀어 넣지 않게).
     public init(gift: LeeoGiftStore, showsRedeemLink: Bool = true) {
         self.gift = gift
         self.showsRedeemLink = showsRedeemLink
+        self.previewPrice = nil
+    }
+
+    /// **결제하지 않는** 미리보기. 인앱 상품 심사 이미지 · SwiftUI 미리보기처럼 StoreKit 상품이 없는 곳에서
+    /// 화면을 그대로 그린다. 단추는 주어진 가격을 보여 주기만 한다.
+    public init(previewPrice: String, gift: LeeoGiftStore) {
+        self.gift = gift
+        self.showsRedeemLink = false
+        self.previewPrice = previewPrice
     }
 
     public var body: some View {
@@ -98,6 +109,7 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
         .background(theme.bg.ignoresSafeArea())
         .navigationTitle(LeeoGiftText.sendEntry)
         .task {
+            guard previewPrice == nil else { return }
             #if canImport(StoreKit)
             await gift.loadProduct()
             await gift.resumePending()
@@ -164,6 +176,26 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
 
     @ViewBuilder
     private var buyButton: some View {
+        if let previewPrice {
+            buyLabel(price: previewPrice)
+        } else {
+            storeBuyButton
+        }
+    }
+
+    private func buyLabel(price: String) -> some View {
+        HStack {
+            if gift.isWorking { ProgressView().tint(.white) }
+            Text(String(format: L("%@에 선물하기", comment: "Gift: buy button. %@ = price"), price))
+                .font(.headline)
+        }
+        .foregroundStyle(.white)
+        .frame(maxWidth: .infinity, minHeight: 52)
+        .background(RoundedRectangle(cornerRadius: theme.radiusSm + 4, style: .continuous).fill(theme.accent))
+    }
+
+    @ViewBuilder
+    private var storeBuyButton: some View {
         #if canImport(StoreKit)
         if let product = gift.product {
             Button {
@@ -173,14 +205,7 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
                     }
                 }
             } label: {
-                HStack {
-                    if gift.isWorking { ProgressView().tint(.white) }
-                    Text(String(format: L("%@에 선물하기", comment: "Gift: buy button. %@ = price"), product.displayPrice))
-                        .font(.headline)
-                }
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity, minHeight: 52)
-                .background(RoundedRectangle(cornerRadius: theme.radiusSm + 4, style: .continuous).fill(theme.accent))
+                buyLabel(price: product.displayPrice)
             }
             .buttonStyle(.plain)
             .disabled(gift.isWorking)

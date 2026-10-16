@@ -52,6 +52,9 @@ public struct LeeoPaywallConfig: Sendable {
     /// Pro 선물하기 (`LeeoGiftConfig`). nil 이면 선물 기능이 없다.
     public let gift: LeeoGiftConfig?
 
+    /// 팁(응원). nil 이면 없다 (`LeeoTipJarConfig`). 기능을 열지 않는 소모성 상품이다.
+    public let tipJar: LeeoTipJarConfig?
+
     public init(
         productIDs: [String],
         entitlementIDs: Set<String>? = nil,
@@ -60,10 +63,12 @@ public struct LeeoPaywallConfig: Sendable {
         autoLoad: Bool = true,
         cacheSuiteName: String? = nil,
         gate: LeeoGatePolicy = .none,
-        gift: LeeoGiftConfig? = nil
+        gift: LeeoGiftConfig? = nil,
+        tipJar: LeeoTipJarConfig? = nil
     ) {
         self.gate = gate
         self.gift = gift
+        self.tipJar = tipJar
         self.productIDs = productIDs
         self.entitlementIDs = entitlementIDs ?? Set(productIDs)
         self.termsURL = termsURL
