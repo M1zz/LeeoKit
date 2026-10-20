@@ -43,6 +43,22 @@ public enum LeeoGiftCode {
         return nil
     }
 
+    /// 치는 중인 글을 칸에 넣을 모양으로 다듬는다. 8칸 입력칸이 쓴다.
+    ///
+    /// - 받은 메시지를 통째로 붙여넣었으면 그 안의 코드
+    /// - 아니면 대문자로 바꾸고, 헷갈리는 글자를 고치고(O → 0, I · L → 1), 코드에 없는 글자(대시 · 공백 포함)를 버리고 8자까지
+    public static func typed(_ text: String) -> String {
+        if let found = extract(from: text) { return found }
+        let mapped = text.uppercased().compactMap { ch -> Character? in
+            switch ch {
+            case "O": return "0"
+            case "I", "L": return "1"
+            default: return alphabet.contains(ch) ? ch : nil
+            }
+        }
+        return String(mapped.prefix(length))
+    }
+
     /// 코드 하나만 담긴 글을 정규화한다. 코드가 아니면 nil.
     static func normalize(_ text: String) -> String? {
         let mapped = text.uppercased().compactMap { ch -> Character? in

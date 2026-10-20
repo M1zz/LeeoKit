@@ -11,6 +11,10 @@
 //           (이미 있으면 다른 사람이 쓴 것) → 비공개 DB 에 결제 번호 적기(다른 기기용)
 //  다시 확인: 앱을 열 때·복원할 때 사용 기록이 아직 내 것인지, 서명이 맞는지 본다.
 //
+//  시험 선물 (개발자): 결제 없이 공개 DB 에 `gift-<코드>` 를 만들고, 받기도 같은 길(찾기 · 한 번만 쓰기)을 지난다.
+//           **Pro 는 열지 않는다.** 출시 빌드의 CloudKit Production 이 제대로 도는지 보는 용도다.
+//           (개발자 모드는 누구나 켤 수 있어서, 시험 코드가 Pro 를 열면 그게 곧 공짜 Pro 가 된다)
+//
 //  ⚠️ 한계 (서버가 없어서):
 //   · 보낸 사람이 환불받아도, 이미 받은 사람의 Pro 는 그대로다. 받기 전이면 보낸 사람 기기가 선물 기록을 지운다.
 //   · 두 사람 모두 iCloud 에 로그인해야 한다.
@@ -122,6 +126,12 @@ public final class LeeoGiftStore: ObservableObject {
 
     /// 받은 선물이 여는 상품 ID. LeeoStore 가 권한에 합친다.
     public var grantedProductIDs: Set<String> { redeemed == nil ? [] : [config.grantsProductID] }
+
+    /// 시험 선물을 끝까지 받은 코드. 받기 화면이 "끝까지 처리됐다" 를 보여 준다. Pro 와는 무관하다.
+    @Published public private(set) var testRedeemedCode: String?
+
+    /// 시험 선물을 만들고 받아도 되는가. 앱이 개발자 모드로 채운다. 기본은 막힘.
+    public var allowsTestGifts: @MainActor () -> Bool = { false }
 
     /// 이미 권한이 있는가. 있으면 받기를 막고 코드는 다른 사람에게 넘기게 둔다.
     /// LeeoStore 가 "선물 말고 산 것 · 그랜드파더" 로 채운다. 앱에 다른 Pro 경로가 있으면 덮어써도 된다.
@@ -275,6 +285,71 @@ public final class LeeoGiftStore: ObservableObject {
     }
     #endif
 
+    // MARK: - 시험 선물 (개발자)
+
+    /// 결제 없이 시험 코드를 만든다. 만든 코드를 돌려준다(막혔거나 실패면 nil, 까닭은 `lastError`).
+    ///
+    /// ⚠️ 이미 Production 스키마에 있는 칸(`jws` · `transactionId` · `bundleId`)만 쓴다.
+    ///    새 칸을 더하면 Production 에서는 저장이 거절된다(스키마는 개발 환경에서만 저절로 자란다).
+    @discardableResult
+    public func issueTestGift() async -> String? {
+        guard allowsTestGifts(), !isWorking else { return nil }
+        lastError = nil
+        isWorking = true
+        defer { isWorking = false }
+        do {
+            try await requireAccount()
+            let txid = Self.testTransactionPrefix + UUID().uuidString
+            for attempt in 0..<2 {
+                let code = LeeoGiftCode.generate()
+                let record = CKRecord(recordType: config.giftRecordType,
+                                      recordID: CKRecord.ID(recordName: config.giftRecordName(code: code)))
+                record["jws"] = Self.testGiftMarker
+                record["transactionId"] = txid
+                record["bundleId"] = bundleID
+                do {
+                    try await saveNew(record, in: publicDB) { $0["transactionId"] as? String == txid }
+                    print("🧪 [LeeoGiftStore.issueTestGift] 시험 코드 \(LeeoGiftCode.display(code))")
+                    return code
+                } catch LeeoGiftError.alreadyUsed where attempt == 0 {
+                    continue
+                }
+            }
+            throw LeeoGiftError.alreadyUsed
+        } catch {
+            print("❌ [LeeoGiftStore.issueTestGift] \(error)")
+            lastError = Self.map(error)
+            return nil
+        }
+    }
+
+    /// 시험 결과를 지운다. 받기 화면을 떠날 때 부른다.
+    public func clearTestResult() {
+        testRedeemedCode = nil
+    }
+
+    /// 시험 선물 표시. 진짜 선물의 `jws` 는 서명된 결제라 이 값과 겹칠 수 없다.
+    nonisolated static let testGiftMarker = "leeo-test-gift"
+    /// 시험 선물의 결제 번호 머리. 진짜 결제 번호는 숫자뿐이라 겹치지 않는다.
+    nonisolated static let testTransactionPrefix = "test-"
+
+    /// 시험 선물을 받는다. 사용 기록을 만들어 "한 번만" 을 확인하되 **Pro 는 열지 않는다.**
+    private func redeemTest(_ giftRecord: CKRecord, code: String) async throws {
+        guard allowsTestGifts() else { throw LeeoGiftError.invalidGift }
+        guard giftRecord["bundleId"] as? String == bundleID,
+              let txid = giftRecord["transactionId"] as? String,
+              txid.hasPrefix(Self.testTransactionPrefix) else { throw LeeoGiftError.invalidGift }
+        let me = try await container.userRecordID()
+        let redemption = CKRecord(
+            recordType: config.redemptionRecordType,
+            recordID: CKRecord.ID(recordName: config.redemptionRecordName(bundleID: bundleID, transactionID: txid)))
+        redemption["jws"] = Self.testGiftMarker
+        redemption["code"] = code
+        try await saveNew(redemption, in: publicDB) { Self.isCreated(by: me, $0) }
+        testRedeemedCode = code
+        print("🧪 [LeeoGiftStore.redeem] 시험 선물을 끝까지 받음 \(LeeoGiftCode.display(code)) (Pro 는 열지 않음)")
+    }
+
     // MARK: - 받기
 
     /// 코드를 넣어 선물을 받는다. 받은 메시지를 통째로 넣어도 된다. 성공하면 true.
@@ -283,7 +358,11 @@ public final class LeeoGiftStore: ObservableObject {
         guard !isWorking else { return false }
         lastError = nil
         guard let code = LeeoGiftCode.extract(from: input) else { lastError = .invalidCode; return false }
-        if redeemed != nil || alreadyEntitled() { lastError = .alreadyPro; return false }
+        testRedeemedCode = nil
+        // ⚠️ 시험 선물은 이미 Pro 인 개발자도 받아 봐야 한다. 그래서 시험을 허락한 동안에는
+        //    "이미 Pro" 를 선물 기록을 읽은 **뒤에** 본다. 보통 사람은 예전처럼 연결 전에 막는다.
+        let testing = allowsTestGifts()
+        if !testing, redeemed != nil || alreadyEntitled() { lastError = .alreadyPro; return false }
         isWorking = true
         defer { isWorking = false }
 
@@ -296,6 +375,11 @@ public final class LeeoGiftStore: ObservableObject {
                 throw LeeoGiftError.notFound
             }
             guard let jws = giftRecord["jws"] as? String else { throw LeeoGiftError.invalidGift }
+            if jws == Self.testGiftMarker {
+                try await redeemTest(giftRecord, code: code)
+                return true
+            }
+            if testing, redeemed != nil || alreadyEntitled() { throw LeeoGiftError.alreadyPro }
             let tx = try await check(jws)
             let me = try await container.userRecordID()
 
