@@ -74,6 +74,20 @@ public final class LeeoEngagement: @unchecked Sendable {
     func markPrompted(_ id: String) { defaults.set(Date(), forKey: key("lastPrompt.\(id)")) }
     func lastPromptedVersion(_ id: String) -> String? { defaults.string(forKey: key("lastVersion.\(id)")) }
     func markPromptedVersion(_ id: String, _ version: String) { defaults.set(version, forKey: key("lastVersion.\(id)")) }
+    func clearPrompted(_ id: String) {
+        defaults.removeObject(forKey: key("lastPrompt.\(id)"))
+        defaults.removeObject(forKey: key("lastVersion.\(id)"))
+    }
+
+    // "나중에" — 미룬 시각과 그때의 긍정 행동 수 (새로 해낸 일이 있어야 다시 묻는다)
+    func lastLaterDate(_ id: String) -> Date? { defaults.object(forKey: key("lastLater.\(id)")) as? Date }
+    func eventsAtLater(_ id: String) -> Int { defaults.integer(forKey: key("eventsAtLater.\(id)")) }
+    func markLater(_ id: String) {
+        defaults.set(Date(), forKey: key("lastLater.\(id)"))
+        defaults.set(significantEventCount, forKey: key("eventsAtLater.\(id)"))
+    }
+    func laterCount(_ id: String, version: String) -> Int { defaults.integer(forKey: key("laterCount.\(id).\(version)")) }
+    func setLaterCount(_ id: String, version: String, _ n: Int) { defaults.set(n, forKey: key("laterCount.\(id).\(version)")) }
 
     /// 테스트/디버그용 — 모든 기록 초기화.
     public func reset() {

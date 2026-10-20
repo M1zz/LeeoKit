@@ -358,6 +358,9 @@ RootView()
 ```
 
 - 노출 조건은 `LeeoReviewPolicy` (기본: 실행 3회·설치 2일·긍정행동 1회↑, 버전당 1회, 120일 쿨다운)
+- "나중에"·답 없이 닫음은 답으로 치지 않는다. 버전·쿨다운 대신 7일 + 새 긍정행동 1회 뒤 다시 묻고,
+  한 버전에서 3번 미루면 그 버전엔 더 묻지 않는다 (`laterDays` · `maxLaterPerVersion`)
+- 묻는 때는 앱을 켠 직후보다 **해낸 직후**가 낫다 — 그 자리에서 `shouldRequest` 를 보고 바인딩을 켠다
 - 직접 제어: `.leeoReviewGate(MyAppSpec.self, isPresented: $flag)`
 - 시스템 프롬프트만 바로: `LeeoReviewRequest.requestIfAppropriate { requestReview() }`
   (SwiftUI `@Environment(\.requestReview)`)

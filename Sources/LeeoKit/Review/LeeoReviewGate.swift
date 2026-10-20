@@ -6,6 +6,10 @@
 //  - 만족 → 시스템 App Store 리뷰 요청
 //  - 아쉬움 → 피드백 화면(개선 제안)으로 연결
 //  좋은 인상일 때만 리뷰를 유도하고, 불편한 사용자는 스토어 별점 대신 피드백으로 흡수한다.
+//  - 나중에 → 답이 아니다. 버전·쿨다운 대신 짧게 미룬다 (LeeoReviewPolicy.laterDays + 새 긍정행동)
+//
+//  묻는 때: 앱을 켜자마자보다 **사용자가 무언가를 해낸 직후**가 좋다. 그 자리에서
+//  shouldRequest 를 확인하고 `.leeoReviewGate` 바인딩을 켜는 방식(2번)을 우선 쓴다.
 //
 //  사용 예:
 //      // 1) 자동: 조건(LeeoReviewPolicy)이 맞으면 화면 진입 시 스스로 물어본다
@@ -31,6 +35,8 @@ private struct LeeoReviewGateModifier<Spec: LeeoAppSpec>: ViewModifier {
     @Environment(\.requestReview) private var requestReview
     @Environment(\.leeoStyle) private var theme
     @State private var showFeedback = false
+    /// 이번 노출에서 사용자가 답했는가. 답 없이 닫히면 "나중에"로 본다.
+    @State private var answered = false
 
     func body(content: Content) -> some View {
         content
@@ -40,15 +46,27 @@ private struct LeeoReviewGateModifier<Spec: LeeoAppSpec>: ViewModifier {
                 titleVisibility: .visible
             ) {
                 Button(L("네, 좋아요 👍", comment: "Satisfaction: happy")) {
+                    answered = true
                     LeeoReviewRequest.markRequested(engagement: engagement)
                     requestReview()
                 }
                 Button(L("아쉬운 점이 있어요", comment: "Satisfaction: unhappy")) {
+                    answered = true
+                    LeeoReviewRequest.markRequested(engagement: engagement)
                     showFeedback = true
                 }
                 Button(L("나중에", comment: "Satisfaction: later"), role: .cancel) {}
             } message: {
                 Text(L("의견을 들려주시면 더 좋은 앱으로 만들 수 있어요.", comment: "Satisfaction prompt message"))
+            }
+            // "나중에"·바깥 눌러 닫기는 답이 아니다 — 띄울 때 남긴 버전·쿨다운 기록을 짧은 미룸으로 바꾼다.
+            // 버튼 동작이 닫힘보다 늦게 올 수 있어 잠깐 기다린 뒤 판정한다.
+            .onChange(of: isPresented) { _, shown in
+                guard !shown else { answered = false; return }
+                Task { @MainActor in
+                    try? await Task.sleep(nanoseconds: 300_000_000)
+                    if !answered { LeeoReviewRequest.markLater(policy: policy, engagement: engagement) }
+                }
             }
             .sheet(isPresented: $showFeedback) {
                 LeeoFeedbackView<Spec>(initialType: .improvement)

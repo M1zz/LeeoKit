@@ -30,22 +30,32 @@ public struct LeeoReviewPolicy: Sendable {
     public var cooldownDays: Int
     /// 같은 앱 버전에서는 한 번만 요청
     public var oncePerVersion: Bool
+    /// "나중에"(또는 답 없이 닫음) 뒤 다시 묻기까지 최소 간격(일).
+    /// 미룸은 답이 아니므로 버전·쿨다운을 쓰지 않고, 이 간격과 **새 긍정 행동 1회**만 기다린다.
+    public var laterDays: Int
+    /// 한 버전에서 "나중에"를 이만큼 받으면 그 버전에선 더 묻지 않는다 (답한 것과 같게 버전·쿨다운 기록).
+    public var maxLaterPerVersion: Int
 
     public init(
         minLaunches: Int = 3,
         minDaysSinceInstall: Int = 2,
         minSignificantEvents: Int = 1,
         cooldownDays: Int = 120,
-        oncePerVersion: Bool = true
+        oncePerVersion: Bool = true,
+        laterDays: Int = 7,
+        maxLaterPerVersion: Int = 3
     ) {
         self.minLaunches = minLaunches
         self.minDaysSinceInstall = minDaysSinceInstall
         self.minSignificantEvents = minSignificantEvents
         self.cooldownDays = cooldownDays
         self.oncePerVersion = oncePerVersion
+        self.laterDays = laterDays
+        self.maxLaterPerVersion = maxLaterPerVersion
     }
 
     /// 무난한 기본값: 실행 3회 · 설치 2일 · 긍정행동 1회 이상, 버전당 1회, 120일 쿨다운.
+    /// "나중에"는 7일 + 새 긍정행동 뒤 다시, 한 버전에 3번까지.
     public static let `default` = LeeoReviewPolicy()
 }
 
@@ -68,6 +78,12 @@ public enum LeeoReviewRequest {
         if let last = engagement.lastPromptDate(promptID) {
             let days = Calendar.current.dateComponents([.day], from: last, to: Date()).day ?? 0
             if days < policy.cooldownDays { return false }
+        }
+        if let later = engagement.lastLaterDate(promptID) {
+            let days = Calendar.current.dateComponents([.day], from: later, to: Date()).day ?? 0
+            if days < policy.laterDays { return false }
+            // 미룬 뒤 새로 해낸 일이 있어야 다시 묻는다 — 같은 기분에 같은 질문을 반복하지 않는다
+            if engagement.significantEventCount <= engagement.eventsAtLater(promptID) { return false }
         }
         return true
     }
@@ -92,6 +108,25 @@ public enum LeeoReviewRequest {
     public static func markRequested(engagement: LeeoEngagement = .shared) {
         engagement.markPrompted(promptID)
         engagement.markPromptedVersion(promptID, appVersion)
+    }
+
+    /// 사용자가 답하지 않고 미뤘다("나중에" · 바깥을 눌러 닫음).
+    ///
+    /// 띄우는 순간 `markRequested` 로 남긴 버전·쿨다운 기록을 거두고, 짧은 미룸으로 바꾼다.
+    /// 사용자가 적은 앱에서 한 번의 "나중에"로 그 버전 내내 · 120일 동안 기회를 잃지 않게 한다.
+    /// 한 버전에서 `maxLaterPerVersion` 번 미루면 그때는 답한 것과 같이 버전·쿨다운을 기록한다.
+    public static func markLater(
+        policy: LeeoReviewPolicy = .default,
+        engagement: LeeoEngagement = .shared
+    ) {
+        let count = engagement.laterCount(promptID, version: appVersion) + 1
+        engagement.setLaterCount(promptID, version: appVersion, count)
+        if count >= policy.maxLaterPerVersion {
+            markRequested(engagement: engagement)
+            return
+        }
+        engagement.clearPrompted(promptID)
+        engagement.markLater(promptID)
     }
 
     /// App Store 리뷰 작성 페이지 주소. SwiftUI 에서는 `@Environment(\.openURL)` 로 열면
