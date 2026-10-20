@@ -38,6 +38,26 @@ final class LeeoGiftCodeTests: XCTestCase {
         XCTAssertTrue(message.contains("7KQ2-M9XA"))
         XCTAssertTrue(message.hasSuffix("https://apps.apple.com/app/id1543660502"))
     }
+
+    /// 여덟 칸에 치는 글. 줄표는 칠 필요가 없고, 쳐도 버린다.
+    func test_칸에_치는_글은_코드_글자만_8자까지_남는다() {
+        XCTAssertEqual(LeeoGiftCode.typed("abcd-ef"), "ABCDEF")
+        XCTAssertEqual(LeeoGiftCode.typed("ABCD-EFGH"), "ABCDEFGH")
+        XCTAssertEqual(LeeoGiftCode.typed("ABCDEFGHJK"), "ABCDEFGH")
+        XCTAssertEqual(LeeoGiftCode.typed("o1l2 u"), "0112")       // U 는 없는 글자라 버린다
+        XCTAssertEqual(LeeoGiftCode.typed(""), "")
+    }
+
+    func test_칸에_메시지를_통째로_붙여넣어도_코드만_들어간다() {
+        let message = LeeoGiftText.shareMessage(appName: "ClipKeyboard", code: "7KQ2M9XA", appStoreID: "1543660502")
+        XCTAssertEqual(LeeoGiftCode.typed(message), "7KQ2M9XA")
+    }
+
+    /// 시험 선물 표시는 진짜 선물의 서명된 결제와 겹치지 않는다(서명된 결제는 점 두 개로 나뉜 JWS 다).
+    func test_시험_선물_표시는_진짜_결제와_겹치지_않는다() {
+        XCTAssertFalse(LeeoGiftStore.testGiftMarker.contains("."))
+        XCTAssertFalse(LeeoGiftStore.testTransactionPrefix.allSatisfy(\.isNumber))
+    }
 }
 
 final class LeeoGiftJWSTests: XCTestCase {

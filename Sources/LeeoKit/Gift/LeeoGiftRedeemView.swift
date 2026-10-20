@@ -11,8 +11,6 @@ public struct LeeoGiftRedeemView<Spec: LeeoAppSpec>: View {
     @ObservedObject private var gift: LeeoGiftStore
     @Environment(\.leeoStyle) private var theme
     @State private var input: String
-    @FocusState private var focused: Bool
-
     private let onContactSupport: (() -> Void)?
 
     /// - Parameters:
@@ -20,23 +18,25 @@ public struct LeeoGiftRedeemView<Spec: LeeoAppSpec>: View {
     ///   - onContactSupport: 받기가 안 될 때 문의 창을 연다(`LeeoGiftSupport`). nil 이면 문의 줄이 없다.
     public init(gift: LeeoGiftStore, code: String = "", onContactSupport: (() -> Void)? = nil) {
         self.gift = gift
-        _input = State(initialValue: code)
+        _input = State(initialValue: LeeoGiftCode.typed(code))
         self.onContactSupport = onContactSupport
     }
 
     public var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                Image(systemName: gift.redeemed == nil ? "giftcard.fill" : "checkmark.seal.fill")
+                Image(systemName: isDone ? "checkmark.seal.fill" : "giftcard.fill")
                     .font(.system(size: 40, weight: .semibold))
-                    .foregroundStyle(gift.redeemed == nil ? theme.accent : Color.green)
+                    .foregroundStyle(isDone ? Color.green : theme.accent)
                     .frame(width: 84, height: 84)
-                    .background(Circle().fill((gift.redeemed == nil ? theme.accent : Color.green).opacity(0.14)))
+                    .background(Circle().fill((isDone ? Color.green : theme.accent).opacity(0.14)))
                     .accessibilityHidden(true)
                     .padding(.top, 8)
 
                 if gift.redeemed != nil {
                     done
+                } else if gift.testRedeemedCode != nil {
+                    testDone
                 } else {
                     form
                 }
@@ -50,7 +50,10 @@ public struct LeeoGiftRedeemView<Spec: LeeoAppSpec>: View {
         }
         .background(theme.bg.ignoresSafeArea())
         .navigationTitle(LeeoGiftText.redeemEntry)
+        .onDisappear { gift.clearTestResult() }
     }
+
+    private var isDone: Bool { gift.redeemed != nil || gift.testRedeemedCode != nil }
 
     private var form: some View {
         VStack(spacing: 16) {
@@ -60,22 +63,11 @@ public struct LeeoGiftRedeemView<Spec: LeeoAppSpec>: View {
                 .foregroundStyle(theme.textMuted)
                 .multilineTextAlignment(.center)
 
-            TextField(text: $input) { Text(verbatim: "XXXX-XXXX") }
-                .font(.system(.title2, design: .monospaced).weight(.semibold))
-                .multilineTextAlignment(.center)
-                .autocorrectionDisabled()
-                #if os(iOS)
-                .textInputAutocapitalization(.characters)
-                #endif
-                .focused($focused)
-                .padding(.vertical, 14)
-                .background(RoundedRectangle(cornerRadius: theme.radiusSm + 4, style: .continuous).fill(theme.surface))
-                .onSubmit(redeem)
-
+            LeeoGiftCodeBoxes(code: $input, onSubmit: redeem)
             PasteButton(payloadType: String.self) { strings in
                 guard let text = strings.first else { return }
                 Task { @MainActor in
-                    input = LeeoGiftCode.extract(from: text).map(LeeoGiftCode.display) ?? text
+                    input = LeeoGiftCode.typed(text)
                 }
             }
             .labelStyle(.titleAndIcon)
@@ -116,13 +108,109 @@ public struct LeeoGiftRedeemView<Spec: LeeoAppSpec>: View {
         }
     }
 
+    /// 시험 선물이 끝까지 지나갔다. **Pro 는 열리지 않았다**는 것을 분명히 말한다.
+    private var testDone: some View {
+        VStack(spacing: 10) {
+            Text(L("시험 선물이 끝까지 처리됐어요", comment: "Gift (developer test): test gift went through the whole redeem path"))
+                .font(.title2.bold())
+                .foregroundStyle(theme.text)
+                .multilineTextAlignment(.center)
+            Text(L("시험 코드라 Pro는 열리지 않아요. 같은 코드를 다시 넣으면 이미 받은 선물로 나와야 맞아요.",
+                   comment: "Gift (developer test): explains a test code does not unlock Pro, and re-entering it should say already used"))
+                .font(.body)
+                .foregroundStyle(theme.textMuted)
+                .multilineTextAlignment(.center)
+            Button {
+                gift.clearTestResult()
+                input = ""
+            } label: {
+                Text(L("다시 넣어 보기", comment: "Gift (developer test): try entering a code again"))
+                    .font(.headline)
+            }
+            .padding(.top, 6)
+        }
+    }
+
+    /// 여덟 칸이 다 차야 보낸다. 칸에는 코드에 쓰는 글자만 들어간다(`LeeoGiftCode.typed`).
     private var canSubmit: Bool {
-        !gift.isWorking && !input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        !gift.isWorking && input.count == LeeoGiftCode.length
     }
 
     private func redeem() {
         guard canSubmit else { return }
-        focused = false
         Task { await gift.redeem(input) }
+    }
+}
+
+// MARK: - 여덟 칸
+
+/// 선물 코드를 넣는 여덟 칸. 넷 · 넷으로 나누고 사이에 줄표를 **그려 둔다.**
+///
+/// 왜 칸인가: 코드는 `ABCD-EFGH` 로 보이지만 칠 때 줄표를 넣을지 말지 헷갈린다. 한 줄 입력칸이면
+/// 넣은 사람과 안 넣은 사람의 글자 수가 달라 몇 자를 더 쳐야 하는지 안 보였다. 칸이면 남은 칸이 보이고,
+/// 줄표는 칸 사이에 이미 그려져 있어 칠 필요가 없다.
+///
+/// ⚠️ 실제로 받는 것은 보이지 않는 입력칸 하나다. 칸마다 입력칸을 두면 붙여넣기 · 지우기 · 음성 입력이
+///    칸을 넘나들 때 어긋난다. 받은 메시지를 통째로 붙여넣어도 코드만 골라 넣는다.
+struct LeeoGiftCodeBoxes: View {
+    @Binding var code: String
+    var onSubmit: () -> Void
+
+    @Environment(\.leeoStyle) private var theme
+    @FocusState private var focused: Bool
+
+    var body: some View {
+        ZStack {
+            TextField("", text: Binding(get: { code }, set: { code = LeeoGiftCode.typed($0) }))
+                .focused($focused)
+                .autocorrectionDisabled()
+                #if os(iOS)
+                .textInputAutocapitalization(.characters)
+                .keyboardType(.asciiCapable)
+                #endif
+                .onSubmit(onSubmit)
+                .foregroundStyle(.clear)
+                .tint(.clear)
+                .frame(width: 1, height: 1)
+                .opacity(0.02)
+                .accessibilityLabel(L("선물 코드", comment: "Gift: accessibility label of the 8-character code field"))
+                .accessibilityValue(code.isEmpty ? "" : LeeoGiftCode.display(code))
+
+            HStack(spacing: 6) {
+                ForEach(0..<LeeoGiftCode.length, id: \.self) { index in
+                    if index == LeeoGiftCode.length / 2 {
+                        Text(verbatim: "-")
+                            .font(.system(.title3, design: .monospaced).weight(.semibold))
+                            .foregroundStyle(theme.textMuted)
+                            .accessibilityHidden(true)
+                    }
+                    box(at: index)
+                }
+            }
+            .contentShape(Rectangle())
+            .onTapGesture { focused = true }
+            .accessibilityHidden(true)
+        }
+        .onAppear {
+            // 링크로 코드가 다 채워져 온 게 아니면 바로 칠 수 있게.
+            if code.count < LeeoGiftCode.length { focused = true }
+        }
+    }
+
+    private func box(at index: Int) -> some View {
+        let chars = Array(code)
+        let char = index < chars.count ? String(chars[index]) : ""
+        // 다음에 칠 칸만 강조한다. 다 찼으면 어느 칸도 강조하지 않는다.
+        let isNext = focused && index == min(chars.count, LeeoGiftCode.length - 1) && chars.count < LeeoGiftCode.length
+        return Text(verbatim: char)
+            .font(.system(.title2, design: .monospaced).weight(.semibold))
+            .foregroundStyle(theme.text)
+            .frame(maxWidth: 44, minHeight: 52)
+            .background(RoundedRectangle(cornerRadius: theme.radiusSm + 2, style: .continuous).fill(theme.surface))
+            .overlay(
+                RoundedRectangle(cornerRadius: theme.radiusSm + 2, style: .continuous)
+                    .strokeBorder(isNext ? theme.accent : Color.clear, lineWidth: 2)
+            )
+            .animation(.easeOut(duration: 0.12), value: isNext)
     }
 }
