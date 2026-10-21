@@ -72,6 +72,11 @@ public enum LeeoKit {
         usageReporting: Bool = true,
         preflight: Bool = true
     ) {
+        // 단위 시험 안에서는 iCloud(피드백 허브)에 닿는 일을 하지 않는다. 시험 실행이 사용 통계로
+        // 찍히면 안 되고, 서명 없이 빌드하는 CI(CODE_SIGNING_ALLOWED=NO)에서는 iCloud 권한이 없어
+        // 컨테이너를 여는 순간 앱이 죽어 시험이 시작도 못 한다.
+        let cloud = !isRunningUnitTests
+
         // 1. 사용량 — 리뷰/만족도 프롬프트가 이 값 없이는 동작하지 않는다.
         engagement.registerLaunch()
         mutate { $0.engagement = true }
@@ -81,7 +86,7 @@ public enum LeeoKit {
         mutate { $0.analytics = !(Spec.analytics is LeeoNoopAnalytics) }
 
         // 3. 크래시·행 진단 (macOS/Catalyst 는 내부에서 자동 no-op).
-        if diagnostics {
+        if diagnostics, cloud {
             LeeoDiagnostics.shared.start(spec: spec)
             mutate { $0.diagnostics = true }
         }
@@ -90,7 +95,7 @@ public enum LeeoKit {
         //    `app_open` (하루 한 번) 은 스냅샷과 같은 조건으로 켠다. 다만 여기서 곧장 보내지 않고
         //    활성화 알림에 맡긴다: 앱 `init()` 은 백그라운드 실행에서도 불리므로, 여기서 보내면
         //    사용자가 연 적 없는 날이 "연 날"로 찍힌다. 끄려면 Spec 에 `sendsDailyAppOpen = false`.
-        if usageReporting, !(Spec.analytics is LeeoNoopAnalytics) {
+        if usageReporting, cloud, !(Spec.analytics is LeeoNoopAnalytics) {
             let reporter = LeeoUsageReporter(spec: spec)
             Task {
                 await reporter.report(engagement: engagement, metrics: [:],
@@ -117,8 +122,15 @@ public enum LeeoKit {
     ) where F: LeeoRemoteFlag & CaseIterable & RawRepresentable, F.RawValue == String {
         bootstrap(spec, engagement: engagement, diagnostics: diagnostics,
                   usageReporting: usageReporting, preflight: preflight)
+        guard !isRunningUnitTests else { return }
         LeeoRemoteFlags(spec: spec).refreshInBackground(flags)
         mutate { $0.remoteFlags = true }
+    }
+
+    /// 지금 이 프로세스가 XCTest 단위 시험(앱을 호스트로 쓰는 시험 포함) 안인지.
+    /// UI 시험은 앱을 별도 프로세스로 띄우므로 여기서 false 다.
+    public static var isRunningUnitTests: Bool {
+        ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
     }
 
     /// 테스트용 — 활성화 기록 초기화.
