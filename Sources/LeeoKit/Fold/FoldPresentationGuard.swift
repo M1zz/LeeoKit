@@ -91,9 +91,13 @@ public enum FoldSheetGuard {
             sheet.selectedDetentIdentifier = lowerPaneDetentID
             sheet.prefersGrabberVisible = false
         case .innerLandscape:
+            // iOS 27 SDK(Xcode 27, Swift 6.4)에만 있는 API. 앱 CI 처럼 옛 Xcode 로 빌드하는
+            // 곳에서도 패키지가 컴파일되도록 컴파일러로 한 번 더 거른다.
+            #if compiler(>=6.4)
             if #available(iOS 27.0, *) {
                 sheet.preferredPlacement = .trailing
             }
+            #endif
         case .single:
             break
         }
