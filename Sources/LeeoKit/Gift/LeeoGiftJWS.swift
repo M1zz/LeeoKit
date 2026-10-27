@@ -30,6 +30,8 @@ struct LeeoSignedGiftTransaction: Equatable, Sendable {
     let environment: String
     let signedDate: Date?
     let revocationDate: Date?
+    /// 구독의 끝(평생 상품은 nil). 언제나 패스 연 구독이 아직 살아 있는지 볼 때 쓴다.
+    var expiresDate: Date? = nil
 }
 
 enum LeeoGiftJWS {
@@ -129,7 +131,8 @@ enum LeeoGiftJWS {
             type: string("type") ?? "",
             environment: string("environment") ?? "",
             signedDate: date("signedDate"),
-            revocationDate: date("revocationDate"))
+            revocationDate: date("revocationDate"),
+            expiresDate: date("expiresDate"))
     }
 
     // MARK: - 내부

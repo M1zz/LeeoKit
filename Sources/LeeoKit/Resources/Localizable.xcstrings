@@ -1,6 +1,149 @@
 {
   "sourceLanguage": "ko",
   "strings": {
+    "%@ / 년": {
+      "comment": "Pricing ladder: yearly price. %@ = price",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / rok"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / år"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / Jahr"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / έτος"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / year"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / año"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / vuosi"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / an"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / tahun"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / anno"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / 年"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / 년"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / år"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / jaar"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / rok"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / ano"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / год"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / år"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / ปี"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / yıl"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / năm"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / 年"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ / 年"
+          }
+        }
+      }
+    },
     "%@ · %@": {
       "localizations": {
         "cs": {
@@ -1133,6 +1276,149 @@
           "stringUnit": {
             "state": "translated",
             "value": "還沒有登入 iCloud"
+          }
+        }
+      }
+    },
+    "같은 Apple 계정의 iCloud 로 다른 앱에서도 열려요. 산 앱을 한 번 열어 두면 다른 앱이 찾아요.": {
+      "comment": "Forever pass: how other apps find the pass",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Přes iCloud na stejném účtu Apple funguje i v ostatních aplikacích. Stačí jednou otevřít aplikaci, kde jste ho koupili, a ostatní ho najdou."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Via iCloud på samme Apple-konto virker det også i andre apps. Åbn den app, du købte det i, én gang, så finder de andre det."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Über iCloud mit demselben Apple Account funktioniert er auch in anderen Apps. Öffne die App, in der du ihn gekauft hast, einmal, dann finden ihn die anderen."
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Μέσω iCloud στον ίδιο λογαριασμό Apple λειτουργεί και σε άλλες εφαρμογές. Ανοίξτε μία φορά την εφαρμογή όπου το αγοράσατε και οι άλλες θα το βρουν."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It works in other apps through iCloud on the same Apple account. Open the app you bought it in once, and the others will find it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con iCloud en la misma cuenta de Apple, también funciona en otras apps. Abre una vez la app donde lo compraste y las demás lo encontrarán."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toimii muissakin sovelluksissa saman Apple-tilin iCloudin kautta. Avaa ostosovellus kerran, niin muut löytävät sen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Via iCloud sur le même compte Apple, il fonctionne aussi dans les autres apps. Ouvrez une fois l’app où vous l’avez acheté et les autres le trouveront."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lewat iCloud di akun Apple yang sama, pass juga terbuka di aplikasi lain. Buka sekali aplikasi tempat Anda membelinya, dan aplikasi lain akan menemukannya."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con iCloud sullo stesso account Apple funziona anche nelle altre app. Apri una volta l’app in cui l’hai comprato e le altre lo troveranno."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同じ Apple アカウントの iCloud で、ほかのアプリでも使えます。購入したアプリを一度開いておくと、ほかのアプリが見つけます。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "같은 Apple 계정의 iCloud 로 다른 앱에서도 열려요. 산 앱을 한 번 열어 두면 다른 앱이 찾아요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Via iCloud på samme Apple-konto virker det også i andre apper. Åpne appen du kjøpte det i én gang, så finner de andre det."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Via iCloud op hetzelfde Apple Account werkt hij ook in andere apps. Open de app waarin je hem kocht één keer, dan vinden de andere hem."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dzięki iCloud na tym samym koncie Apple działa też w innych aplikacjach. Otwórz raz aplikację, w której została kupiona, a pozostałe ją znajdą."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pelo iCloud da mesma conta Apple, funciona também em outros apps. Abra uma vez o app em que comprou e os outros vão encontrar."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Через iCloud того же Аккаунта Apple работает и в других приложениях. Откройте один раз приложение, где купили пропуск, и остальные его найдут."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Via iCloud på samma Apple-konto fungerar det även i andra appar. Öppna appen där du köpte det en gång, så hittar de andra det."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ใช้ได้ในแอปอื่นผ่าน iCloud ของบัญชี Apple เดียวกัน เปิดแอปที่ซื้อไว้สักครั้ง แล้วแอปอื่นจะหาเจอเอง"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aynı Apple Hesabının iCloud’u ile diğer uygulamalarda da açılır. Satın aldığınız uygulamayı bir kez açın, diğerleri onu bulur."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dùng được ở ứng dụng khác qua iCloud của cùng tài khoản Apple. Mở ứng dụng bạn đã mua một lần, các ứng dụng khác sẽ tự tìm thấy."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通过同一 Apple 账户的 iCloud，在其他 App 中也能使用。只需打开一次购买的 App，其他 App 就能找到。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "透過同一 Apple 帳號的 iCloud，在其他 App 也能使用。只要打開一次購買的 App，其他 App 就會找到。"
           }
         }
       }
@@ -2411,6 +2697,435 @@
           "stringUnit": {
             "state": "translated",
             "value": "每次都要翻找帳號或地址的人"
+          }
+        }
+      }
+    },
+    "구독 관리 열기": {
+      "comment": "Graduation offer: open App Store subscription management",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spravovat předplatné"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Administrer abonnement"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abo verwalten"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Διαχείριση συνδρομής"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manage Subscription"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gestionar suscripción"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hallitse tilausta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gérer l’abonnement"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kelola Langganan"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gestisci abbonamento"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サブスクリプションを管理"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "구독 관리 열기"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Administrer abonnement"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abonnement beheren"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zarządzaj subskrypcją"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerenciar assinatura"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Управлять подпиской"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hantera prenumeration"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "จัดการการสมัครสมาชิก"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aboneliği Yönet"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quản lý gói đăng ký"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "管理订阅"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "管理訂閱"
+          }
+        }
+      }
+    },
+    "구독은 아직 켜져 있어요. 구독 관리에서 해지하면 다음 갱신부터 더 내지 않아요.": {
+      "comment": "Graduation offer: body after buying, asks to cancel the subscription",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Předplatné je stále aktivní. Zrušte ho ve správě předplatného a při dalším obnovení už nezaplatíte."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dit abonnement er stadig aktivt. Opsig det under abonnementer, så betaler du ikke ved næste fornyelse."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Abo läuft noch. Kündige es in der Abo-Verwaltung, dann zahlst du ab der nächsten Verlängerung nichts mehr."
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Η συνδρομή σας είναι ακόμη ενεργή. Ακυρώστε τη από τη διαχείριση συνδρομών και δεν θα χρεωθείτε στην επόμενη ανανέωση."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your subscription is still on. Cancel it in subscription management and you won’t pay at the next renewal."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu suscripción sigue activa. Cancélala en la gestión de suscripciones y no pagarás en la próxima renovación."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tilauksesi on yhä voimassa. Peru se tilausten hallinnasta, niin seuraavaa uusintaa ei veloiteta."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre abonnement est toujours actif. Résiliez-le dans la gestion des abonnements pour ne plus payer au prochain renouvellement."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Langganan masih aktif. Batalkan di pengelolaan langganan agar tidak ditagih pada perpanjangan berikutnya."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’abbonamento è ancora attivo. Annullalo nella gestione abbonamenti e dal prossimo rinnovo non pagherai più."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サブスクはまだ有効です。サブスクリプションの管理で解約すると、次の更新から支払いは発生しません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "구독은 아직 켜져 있어요. 구독 관리에서 해지하면 다음 갱신부터 더 내지 않아요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abonnementet er fortsatt aktivt. Si det opp under abonnementer, så betaler du ikke ved neste fornyelse."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je abonnement loopt nog. Zeg het op via abonnementsbeheer, dan betaal je vanaf de volgende verlenging niets meer."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subskrypcja jest nadal aktywna. Anuluj ją w zarządzaniu subskrypcjami, a przy następnym odnowieniu nie zapłacisz."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sua assinatura ainda está ativa. Cancele em gerenciar assinaturas e você não paga mais a partir da próxima renovação."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Подписка всё ещё активна. Отмените её в управлении подписками, и со следующего продления платить не придётся."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prenumerationen är fortfarande aktiv. Avsluta den under prenumerationer så betalar du inget vid nästa förnyelse."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "การสมัครสมาชิกยังเปิดอยู่ ยกเลิกได้ในการจัดการการสมัครสมาชิก แล้วจะไม่ถูกเรียกเก็บเงินในรอบต่ออายุถัดไป"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aboneliğiniz hâlâ açık. Abonelik yönetiminden iptal ederseniz bir sonraki yenilemede ödeme yapmazsınız."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gói đăng ký vẫn đang bật. Hủy trong phần quản lý đăng ký để không bị tính phí ở lần gia hạn tới."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "订阅仍在生效。在订阅管理中取消后，下次续订起不再扣费。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "訂閱仍在生效。到訂閱管理取消後，下次續訂起就不會再扣款。"
+          }
+        }
+      }
+    },
+    "구독을 평생으로 바꿀까요?": {
+      "comment": "Graduation offer: title for subscribers",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Přejít na doživotní verzi?"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skift til livstid?"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zu Lebenslang wechseln?"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Μετάβαση σε εφ’ όρου ζωής;"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch to Lifetime?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Cambiar a la versión de por vida?"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vaihdetaanko elinikäiseen?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passer à l’achat à vie ?"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beralih ke Seumur Hidup?"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passare alla versione a vita?"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "買い切りに切り替えますか？"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "구독을 평생으로 바꿀까요?"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bytte til livstid?"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Overstappen op levenslang?"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przejść na dostęp dożywotni?"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mudar para o vitalício?"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перейти на покупку навсегда?"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Byta till livstid?"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เปลี่ยนเป็นแบบตลอดชีพไหม?"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ömür boyuya geçilsin mi?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chuyển sang trọn đời?"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "改为永久版？"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "改為永久版？"
           }
         }
       }
@@ -4257,6 +4972,149 @@
           "stringUnit": {
             "state": "translated",
             "value": "其他應用"
+          }
+        }
+      }
+    },
+    "다른 앱에서 산 패스 찾기": {
+      "comment": "Forever pass: re-check a pass bought in another app",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Najít pas koupený v jiné aplikaci"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Find pas købt i en anden app"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In anderer App gekauften Pass finden"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Εύρεση πάσου από άλλη εφαρμογή"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Find a pass bought in another app"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buscar un pase comprado en otra app"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etsi toisessa sovelluksessa ostettu passi"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retrouver un pass acheté dans une autre app"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cari pass yang dibeli di aplikasi lain"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trova un pass acquistato in un’altra app"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ほかのアプリで買ったパスを探す"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다른 앱에서 산 패스 찾기"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finn pass kjøpt i en annen app"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas uit een andere app zoeken"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Znajdź przepustkę kupioną w innej aplikacji"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encontrar passe comprado em outro app"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Найти пропуск из другого приложения"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hitta pass köpt i en annan app"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ค้นหาพาสที่ซื้อในแอปอื่น"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Başka uygulamada alınan geçişi bul"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tìm vé đã mua ở ứng dụng khác"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查找在其他 App 购买的通行证"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尋找在其他 App 購買的通行證"
           }
         }
       }
@@ -6813,6 +7671,149 @@
           "stringUnit": {
             "state": "translated",
             "value": "郵件和文檔裡要用的句子，從菜單欄的剪貼鍵盤用快速鍵取出。"
+          }
+        }
+      }
+    },
+    "모든 앱 평생으로 열기": {
+      "comment": "Forever pass: one line under the plans",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Odemknout všechny aplikace navždy"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lås alle apps op for livet"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Apps für immer freischalten"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ξεκλείδωμα όλων των εφαρμογών για πάντα"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock every app for life"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquea todas las apps para siempre"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avaa kaikki sovellukset pysyvästi"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquer toutes les apps à vie"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buka semua aplikasi selamanya"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sblocca tutte le app a vita"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべてのアプリを買い切りで解放"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "모든 앱 평생으로 열기"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lås opp alle apper for alltid"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle apps voor altijd ontgrendelen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Odblokuj wszystkie aplikacje na zawsze"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloqueie todos os apps para sempre"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Открыть все приложения навсегда"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lås upp alla appar för alltid"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ปลดล็อกทุกแอปตลอดชีพ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm uygulamaları ömür boyu aç"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mở khóa mọi ứng dụng trọn đời"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "永久解锁所有 App"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "永久解鎖所有 App"
           }
         }
       }
@@ -12631,6 +13632,149 @@
         }
       }
     },
+    "언제나 평생 패스": {
+      "comment": "Forever pass: name",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas navždy"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Evighedspas"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für-immer-Pass"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Πάσο για πάντα"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forever Pass"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pase para siempre"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ikuinen passi"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pass à vie"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pass Selamanya"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pass per sempre"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ずっとパス"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "언제나 평생 패스"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Evighetspass"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Altijd-pas"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przepustka na zawsze"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passe para sempre"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вечный пропуск"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Evighetspass"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "พาสตลอดกาล"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sonsuz Geçiş"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vé trọn đời"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "永久通行证"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "永久通行證"
+          }
+        }
+      }
+    },
     "여기서 아무것도 수집하지 않습니다. 눌러야만 App Store 가 열립니다.": {
       "localizations": {
         "cs": {
@@ -12769,6 +13913,435 @@
           "stringUnit": {
             "state": "translated",
             "value": "這裡不收集任何東西。只有你點了，App Store 才會開啟。"
+          }
+        }
+      }
+    },
+    "연 %@": {
+      "comment": "Forever pass: yearly buy button. %@ = price",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ročně %@"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Årligt %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jährlich %@"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ετήσια %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yearly %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anual %@"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vuosittain %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annuel %@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tahunan %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annuale %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "年額 %@"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "연 %@"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Årlig %@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jaarlijks %@"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rocznie %@"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anual %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "На год %@"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Årsvis %@"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "รายปี %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yıllık %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Theo năm %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "年订阅 %@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "年訂閱 %@"
+          }
+        }
+      }
+    },
+    "연 구독": {
+      "comment": "Pricing ladder: yearly subscription option",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ročně"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Årligt"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jährlich"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ετήσια"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yearly"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anual"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vuosittain"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annuel"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tahunan"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annuale"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "年額"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "연 구독"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Årlig"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jaarlijks"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rocznie"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anual"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "На год"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Årsvis"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "รายปี"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yıllık"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Theo năm"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "年订阅"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "年訂閱"
+          }
+        }
+      }
+    },
+    "연 구독 %d년치, 한 번만 내면 끝": {
+      "comment": "Pricing ladder: lifetime equals N years of the subscription. %d = years",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jako %d× roční předplatné. Platíte jen jednou."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Det samme som %d års abonnement. Betal én gang."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So viel wie %d Jahre Abo. Einmal zahlen, fertig."
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Όσο %d χρόνια συνδρομής. Πληρώνετε μία φορά."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Same as %d years of Yearly. Pay once, done."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lo mismo que %d años de suscripción. Pagas una vez."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saman verran kuin %d vuoden tilaus. Maksat vain kerran."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le prix de %d ans d’abonnement. Un seul paiement."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Setara langganan %d tahun. Bayar sekali saja."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Come %d anni di abbonamento. Paghi una volta sola."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "年額%d年分。1回払えばずっと使えます"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "연 구독 %d년치, 한 번만 내면 끝"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Som %d års abonnement. Betal én gang."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zoveel als %d jaar abonnement. Eén keer betalen."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jak %d× roczna subskrypcja. Płacisz tylko raz."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O mesmo que %d anos de assinatura. Pague uma vez."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Как годовая подписка ×%d. Платите один раз."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Som %d års prenumeration. Betala en gång."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เท่ากับรายปี %d ปี จ่ายครั้งเดียวจบ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d yıllık abonelik kadar. Bir kez ödeyin, bitsin."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bằng %d năm gói năm. Trả một lần là xong."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "相当于 %d 年订阅，一次买断"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "相當於 %d 年訂閱，一次買斷"
           }
         }
       }
@@ -16029,6 +17602,149 @@
         }
       }
     },
+    "이제 평생 쓰세요": {
+      "comment": "Graduation offer: title after buying",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teď je to vaše navždy"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nu er den din for livet"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jetzt gehört es dir für immer"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Τώρα είναι δικό σας για πάντα"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Now it’s yours for life"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ahora es tuyo para siempre"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nyt se on sinun pysyvästi"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "C’est à vous pour toujours"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sekarang milik Anda selamanya"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ora è tuo per sempre"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "これでずっと使えます"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이제 평생 쓰세요"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nå er den din for alltid"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nu is het voor altijd van jou"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Teraz masz to na zawsze"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agora é seu para sempre"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Теперь это ваше навсегда"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nu är den din för alltid"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ตอนนี้ใช้ได้ตลอดชีพแล้ว"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Artık ömür boyu sizin"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giờ bạn dùng trọn đời rồi"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "现在可以永久使用了"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "現在可以永久使用了"
+          }
+        }
+      }
+    },
     "일요일 저녁, 다음 한 주를 미리 앉혀 둘 때": {
       "localizations": {
         "cs": {
@@ -18018,6 +19734,149 @@
         }
       }
     },
+    "지금까지 구독해 주셔서 고마워요. 구독하신 분께만 평생을 낮은 값에 드려요. 한 번만 내면 더는 갱신되지 않아요.": {
+      "comment": "Graduation offer: body",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Díky, že předplácíte. Předplatitelé dostanou doživotní verzi levněji. Zaplatíte jednou a nic se už neobnovuje."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tak, fordi du har abonneret. Abonnenter får livstid til en lavere pris. Betal én gang, og intet fornyes mere."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Danke für dein Abo bis heute. Abonnenten bekommen Lebenslang günstiger. Einmal zahlen, keine Verlängerung mehr."
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ευχαριστούμε για τη συνδρομή σας. Οι συνδρομητές παίρνουν την εφ’ όρου ζωής έκδοση σε χαμηλότερη τιμή. Πληρώνετε μία φορά και δεν ανανεώνεται."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thanks for subscribing all this time. Subscribers get Lifetime at a lower price. Pay once and it never renews."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gracias por tu suscripción. Los suscriptores obtienen la versión de por vida a un precio más bajo. Pagas una vez y no se renueva más."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kiitos tilauksestasi. Tilaajat saavat elinikäisen version edullisemmin. Maksat kerran, eikä mitään enää uusita."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Merci pour votre abonnement. Les abonnés obtiennent l’achat à vie à prix réduit. Un seul paiement, plus aucun renouvellement."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terima kasih sudah berlangganan. Pelanggan bisa mendapat Seumur Hidup dengan harga lebih murah. Bayar sekali, tidak diperpanjang lagi."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grazie per il tuo abbonamento. Gli abbonati hanno la versione a vita a un prezzo ridotto. Paghi una volta e non si rinnova più."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "これまでサブスクをご利用いただきありがとうございます。登録中の方だけ、買い切りをお得な価格でご用意しました。1回払えば、もう更新されません。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "지금까지 구독해 주셔서 고마워요. 구독하신 분께만 평생을 낮은 값에 드려요. 한 번만 내면 더는 갱신되지 않아요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Takk for at du har abonnert. Abonnenter får livstid til lavere pris. Betal én gang, så fornyes ingenting mer."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bedankt voor je abonnement. Abonnees krijgen levenslang voor een lagere prijs. Eén keer betalen, daarna wordt er niets meer verlengd."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dziękujemy za subskrypcję. Subskrybenci dostają dostęp dożywotni taniej. Płacisz raz i nic się już nie odnawia."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obrigado por assinar até aqui. Assinantes levam o vitalício por um preço menor. Pague uma vez e nada mais é renovado."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Спасибо, что были с нами по подписке. Подписчикам покупка навсегда дешевле. Платите один раз, и больше ничего не продлевается."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tack för att du har prenumererat. Prenumeranter får livstid till lägre pris. Betala en gång, sedan förnyas inget mer."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ขอบคุณที่สมัครสมาชิกมาตลอด สมาชิกเท่านั้นที่ได้แบบตลอดชีพในราคาที่ถูกลง จ่ายครั้งเดียว ไม่มีการต่ออายุอีก"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bugüne kadar abone olduğunuz için teşekkürler. Abonelere ömür boyu sürüm daha uygun fiyatlı. Bir kez ödeyin, bir daha yenilenmez."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cảm ơn bạn đã đăng ký suốt thời gian qua. Người đăng ký được mua trọn đời với giá thấp hơn. Trả một lần và không gia hạn nữa."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "感谢你一直以来的订阅。订阅用户可以用更低的价格购买永久版。一次付清，不再续费。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "感謝你一直以來的訂閱。訂閱者可用更低的價格購買永久版。一次付清，不再續訂。"
+          }
+        }
+      }
+    },
     "지원서를 넣는 날": {
       "localizations": {
         "cs": {
@@ -18586,6 +20445,149 @@
         }
       }
     },
+    "처음이면 첫 해 %@": {
+      "comment": "Pricing ladder: first-year intro price for new subscribers. %@ = price",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poprvé? První rok za %@"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ny her? Første år for %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neu hier? Erstes Jahr für %@"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Νέος συνδρομητής; Πρώτο έτος %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New here? %@ for the first year"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Eres nuevo? Primer año por %@"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uusi tilaaja? Ensimmäinen vuosi %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouveau ? Première année à %@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baru? Tahun pertama hanya %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sei nuovo? Primo anno a %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "初めてなら1年目は%@"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "처음이면 첫 해 %@"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ny? Første år for %@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nieuw? Eerste jaar voor %@"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nowy? Pierwszy rok za %@"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Primeira vez? Primeiro ano por %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Впервые? Первый год за %@"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ny? Första året för %@"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "สมัครครั้งแรก ปีแรก %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeni misiniz? İlk yıl %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lần đầu? Năm đầu chỉ %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新用户首年 %@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新用戶首年 %@"
+          }
+        }
+      }
+    },
     "취소": {
       "localizations": {
         "cs": {
@@ -19150,6 +21152,1007 @@
           "stringUnit": {
             "state": "translated",
             "value": "點一下就直接發給開發者"
+          }
+        }
+      }
+    },
+    "패스가 열려 있어요. 이 앱의 모든 기능을 평생 쓰세요.": {
+      "comment": "Forever pass: already active",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pas je aktivní. Všechny funkce této aplikace máte navždy."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dit pas er aktivt. Brug alle appens funktioner for livet."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Pass ist aktiv. Nutze alle Funktionen dieser App für immer."
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Το πάσο σας είναι ενεργό. Χρησιμοποιήστε όλες τις λειτουργίες της εφαρμογής για πάντα."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your pass is active. Enjoy every feature of this app for life."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu pase está activo. Disfruta de todas las funciones de esta app para siempre."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passisi on käytössä. Kaikki tämän sovelluksen ominaisuudet ovat sinun pysyvästi."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre pass est actif. Profitez de toutes les fonctions de cette app à vie."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pass Anda aktif. Nikmati semua fitur aplikasi ini selamanya."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il tuo pass è attivo. Usa tutte le funzioni di questa app per sempre."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パスが有効です。このアプリのすべての機能をずっと使えます。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "패스가 열려 있어요. 이 앱의 모든 기능을 평생 쓰세요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passet ditt er aktivt. Bruk alle funksjonene i appen for alltid."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je pas is actief. Gebruik alle functies van deze app voor altijd."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przepustka jest aktywna. Korzystaj ze wszystkich funkcji tej aplikacji na zawsze."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seu passe está ativo. Aproveite todos os recursos deste app para sempre."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пропуск активен. Все функции этого приложения ваши навсегда."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ditt pass är aktivt. Använd alla funktioner i appen för alltid."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "พาสเปิดใช้งานอยู่ ใช้ทุกฟีเจอร์ของแอปนี้ได้ตลอดชีพ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçişiniz etkin. Bu uygulamanın tüm özelliklerini ömür boyu kullanın."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vé của bạn đang hoạt động. Dùng mọi tính năng của ứng dụng này trọn đời."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通行证已生效。这个 App 的所有功能都可永久使用。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通行證已生效。這個 App 的所有功能都可永久使用。"
+          }
+        }
+      }
+    },
+    "평생": {
+      "comment": "Pricing ladder: one-time lifetime purchase option",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Doživotně"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Livstid"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lebenslang"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Εφ’ όρου ζωής"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lifetime"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De por vida"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elinikäinen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À vie"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seumur Hidup"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A vita"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "買い切り"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "평생"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Livstid"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Levenslang"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dożywotnio"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vitalício"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Навсегда"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Livstid"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ตลอดชีพ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ömür Boyu"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trọn đời"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "永久"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "永久"
+          }
+        }
+      }
+    },
+    "평생 %@": {
+      "comment": "Forever pass: lifetime buy button. %@ = price",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Doživotně %@"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Livstid %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lebenslang %@"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Εφ’ όρου ζωής %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lifetime %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De por vida %@"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elinikäinen %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "À vie %@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seumur Hidup %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A vita %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "買い切り %@"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "평생 %@"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Livstid %@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Levenslang %@"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dożywotnio %@"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vitalício %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Навсегда %@"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Livstid %@"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ตลอดชีพ %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ömür Boyu %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trọn đời %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "永久 %@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "永久 %@"
+          }
+        }
+      }
+    },
+    "평생 가격이 %@부터 올라요. 이미 산 분은 그대로 써요.": {
+      "comment": "Pricing ladder: lifetime price increase notice. %@ = date",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cena doživotní verze se od %@ zvýší. Kdo už koupil, tomu se nic nemění."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prisen på livstid stiger fra %@. Har du allerede købt, ændres intet."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ab %@ steigt der Preis für Lebenslang. Wer schon gekauft hat, für den ändert sich nichts."
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Η τιμή εφ’ όρου ζωής αυξάνεται από %@. Αν έχετε ήδη αγοράσει, δεν αλλάζει τίποτα."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Lifetime price goes up on %@. If you already bought it, nothing changes."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El precio de por vida sube a partir del %@. Si ya lo compraste, no cambia nada."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elinikäisen hinta nousee %@ alkaen. Jos olet jo ostanut, mikään ei muutu."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le prix à vie augmente à partir du %@. Si vous l’avez déjà acheté, rien ne change."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Harga Seumur Hidup naik mulai %@. Yang sudah membeli tidak terpengaruh."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il prezzo a vita aumenta dal %@. Se l’hai già comprato, non cambia nulla."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@から買い切りの価格が上がります。購入済みの方はそのまま使えます。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "평생 가격이 %@부터 올라요. 이미 산 분은 그대로 써요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prisen på livstid øker fra %@. Har du allerede kjøpt, endres ingenting."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De prijs van levenslang stijgt vanaf %@. Heb je al gekocht, dan verandert er niets."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cena dostępu dożywotniego wzrośnie od %@. Kto już kupił, nic się nie zmienia."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O preço do vitalício sobe a partir de %@. Quem já comprou continua igual."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "С %@ цена покупки навсегда вырастет. Если вы уже купили, ничего не изменится."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Priset för livstid höjs från %@. Har du redan köpt ändras ingenting."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ราคาแบบตลอดชีพจะขึ้นตั้งแต่ %@ ผู้ที่ซื้อแล้วใช้ต่อได้ตามเดิม"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ömür boyu fiyatı %@ itibarıyla artıyor. Zaten satın aldıysanız hiçbir şey değişmez."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giá trọn đời sẽ tăng từ %@. Ai đã mua thì vẫn dùng như cũ."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "永久版价格将于 %@ 起上涨。已购买的用户不受影响。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "永久版價格將於 %@ 起調漲。已購買的使用者不受影響。"
+          }
+        }
+      }
+    },
+    "평생으로 바꾸기": {
+      "comment": "Settings row: switch a subscription to lifetime",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Přejít na doživotní verzi"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skift til livstid"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zu Lebenslang wechseln"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Μετάβαση σε εφ’ όρου ζωής"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch to Lifetime"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambiar a la versión de por vida"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vaihda elinikäiseen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passer à l’achat à vie"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beralih ke Seumur Hidup"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passa alla versione a vita"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "買い切りに切り替える"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "평생으로 바꾸기"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bytt til livstid"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Overstappen op levenslang"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przejdź na dostęp dożywotni"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mudar para o vitalício"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Перейти на покупку навсегда"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Byt till livstid"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เปลี่ยนเป็นตลอดชีพ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ömür boyuya geç"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chuyển sang trọn đời"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "改为永久版"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "改為永久版"
+          }
+        }
+      }
+    },
+    "평생으로 바꾸기 %@": {
+      "comment": "Graduation offer: buy button. %@ = price",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Přejít na doživotní verzi za %@"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skift til livstid for %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zu Lebenslang wechseln für %@"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Μετάβαση σε εφ’ όρου ζωής για %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch to Lifetime for %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambiar a la versión de por vida por %@"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vaihda elinikäiseen %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passer à l’achat à vie pour %@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beralih ke Seumur Hidup %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passa alla versione a vita per %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@で買い切りに切り替える"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "평생으로 바꾸기 %@"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bytt til livstid for %@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Overstappen op levenslang voor %@"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Przejdź na dostęp dożywotni za %@"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mudar para o vitalício por %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Купить навсегда за %@"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Byt till livstid för %@"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เปลี่ยนเป็นตลอดชีพ %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ ile ömür boyuya geç"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chuyển sang trọn đời %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以 %@ 改为永久版"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以 %@ 改為永久版"
+          }
+        }
+      }
+    },
+    "평생을 사도 구독은 저절로 멈추지 않아요. 산 뒤 구독 관리에서 해지해 주세요. 남은 기간은 그대로 써요.": {
+      "comment": "Graduation offer: the subscription must be cancelled by the user",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nákup doživotní verze předplatné sám nezruší. Po nákupu ho zrušte ve správě předplatného. Zbývající období vám zůstane."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Livstid stopper ikke dit abonnement af sig selv. Opsig det under abonnementer, når du har købt. Den resterende tid kan du stadig bruge."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lebenslang beendet dein Abo nicht von selbst. Kündige es nach dem Kauf in der Abo-Verwaltung. Die restliche Laufzeit bleibt dir."
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Η αγορά εφ’ όρου ζωής δεν σταματά αυτόματα τη συνδρομή. Μετά την αγορά, ακυρώστε τη από τη διαχείριση συνδρομών. Ο υπόλοιπος χρόνος παραμένει δικός σας."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buying Lifetime won’t stop your subscription on its own. Cancel it in subscription management after buying. You keep the time you have left."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprar de por vida no cancela tu suscripción automáticamente. Después de comprar, cancélala en la gestión de suscripciones. Conservas el tiempo que te queda."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elinikäisen osto ei lopeta tilausta itsestään. Peru tilaus oston jälkeen tilausten hallinnasta. Jäljellä oleva aika säilyy."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’achat à vie n’arrête pas votre abonnement tout seul. Après l’achat, résiliez-le dans la gestion des abonnements. Vous gardez le temps restant."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Membeli Seumur Hidup tidak menghentikan langganan secara otomatis. Setelah membeli, batalkan di pengelolaan langganan. Sisa masa langganan tetap bisa dipakai."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprare a vita non ferma l’abbonamento da solo. Dopo l’acquisto, annullalo nella gestione abbonamenti. Il periodo rimanente resta tuo."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "買い切りを買ってもサブスクは自動で止まりません。購入後、サブスクリプションの管理から解約してください。残りの期間はそのまま使えます。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "평생을 사도 구독은 저절로 멈추지 않아요. 산 뒤 구독 관리에서 해지해 주세요. 남은 기간은 그대로 써요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Livstid stopper ikke abonnementet av seg selv. Si det opp under abonnementer etter kjøpet. Gjenværende tid kan du fortsatt bruke."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Levenslang kopen stopt je abonnement niet vanzelf. Zeg het na de aankoop op via abonnementsbeheer. De resterende tijd houd je gewoon."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zakup dostępu dożywotniego nie zatrzyma subskrypcji sam. Po zakupie anuluj ją w zarządzaniu subskrypcjami. Pozostały okres nadal działa."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comprar o vitalício não cancela a assinatura sozinho. Depois da compra, cancele em gerenciar assinaturas. Você continua usando o tempo restante."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Покупка навсегда не отменяет подписку сама. После покупки отмените её в управлении подписками. Оставшийся срок сохранится."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Livstid stoppar inte prenumerationen av sig själv. Avsluta den under prenumerationer efter köpet. Återstående tid får du behålla."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "การซื้อแบบตลอดชีพไม่ได้หยุดการสมัครสมาชิกให้อัตโนมัติ หลังซื้อแล้วโปรดยกเลิกในการจัดการการสมัครสมาชิก ระยะเวลาที่เหลือยังใช้ได้ตามเดิม"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ömür boyu satın almak aboneliği kendiliğinden durdurmaz. Satın aldıktan sonra abonelik yönetiminden iptal edin. Kalan süreyi kullanmaya devam edersiniz."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mua trọn đời không tự dừng gói đăng ký. Sau khi mua, hãy hủy trong phần quản lý đăng ký. Thời gian còn lại vẫn dùng bình thường."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "购买永久版不会自动停止订阅。购买后请在订阅管理中取消。剩余的订阅期仍可照常使用。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "購買永久版不會自動停止訂閱。購買後請到訂閱管理取消。剩下的訂閱期間仍可照常使用。"
           }
         }
       }
@@ -20428,6 +23431,149 @@
           "stringUnit": {
             "state": "translated",
             "value": "沒能載入意見回饋：%@"
+          }
+        }
+      }
+    },
+    "한 번 사면 이 개발자의 모든 앱이 Plus · Pro 평생으로 열려요. 앞으로 나올 앱과 기능도 따로 사지 않아요.": {
+      "comment": "Forever pass: what it unlocks",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kupte jednou a ve všech aplikacích tohoto vývojáře budete mít Plus · Pro navždy. Budoucí aplikace a funkce jsou v ceně."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Køb én gang, og alle denne udviklers apps låses op med Plus · Pro for livet. Kommende apps og funktioner er også med."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einmal kaufen und alle Apps dieses Entwicklers sind für immer mit Plus · Pro freigeschaltet. Künftige Apps und Funktionen sind auch dabei."
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Αγοράστε μία φορά και όλες οι εφαρμογές αυτού του δημιουργού ξεκλειδώνουν Plus · Pro για πάντα. Οι μελλοντικές εφαρμογές και λειτουργίες περιλαμβάνονται."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buy once and every app from this developer unlocks Plus · Pro for life. Future apps and features are included too."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compra una vez y todas las apps de este desarrollador se desbloquean con Plus · Pro para siempre. Las apps y funciones futuras también están incluidas."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Osta kerran, niin Plus · Pro avautuu pysyvästi kaikkiin tämän kehittäjän sovelluksiin. Myös tulevat sovellukset ja ominaisuudet sisältyvät."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un seul achat et toutes les apps de ce développeur passent en Plus · Pro à vie. Les futures apps et fonctions sont incluses."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beli sekali, semua aplikasi dari developer ini terbuka Plus · Pro selamanya. Aplikasi dan fitur mendatang juga sudah termasuk."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compri una volta e tutte le app di questo sviluppatore si sbloccano con Plus · Pro a vita. Anche app e funzioni future sono incluse."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一度買えば、この開発者のすべてのアプリで Plus · Pro がずっと使えます。これから出るアプリや機能も追加購入は不要です。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "한 번 사면 이 개발자의 모든 앱이 Plus · Pro 평생으로 열려요. 앞으로 나올 앱과 기능도 따로 사지 않아요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kjøp én gang, så låses alle apper fra denne utvikleren opp med Plus · Pro for alltid. Fremtidige apper og funksjoner er også med."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eén keer kopen en alle apps van deze ontwikkelaar zijn voor altijd ontgrendeld met Plus · Pro. Toekomstige apps en functies horen er ook bij."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kup raz, a wszystkie aplikacje tego twórcy odblokują Plus · Pro na zawsze. Przyszłe aplikacje i funkcje też są w cenie."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compre uma vez e todos os apps deste desenvolvedor ficam com Plus · Pro para sempre. Apps e recursos futuros também estão incluídos."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Купите один раз, и во всех приложениях этого разработчика навсегда откроются Plus · Pro. Будущие приложения и функции тоже входят."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Köp en gång så låses alla appar från den här utvecklaren upp med Plus · Pro för alltid. Kommande appar och funktioner ingår också."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ซื้อครั้งเดียว ทุกแอปของนักพัฒนารายนี้จะปลดล็อก Plus · Pro ตลอดชีพ แอปและฟีเจอร์ที่จะออกในอนาคตก็ไม่ต้องซื้อแยก"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir kez alın, bu geliştiricinin tüm uygulamalarında Plus · Pro ömür boyu açılsın. Gelecek uygulamalar ve özellikler de dahil."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mua một lần, mọi ứng dụng của nhà phát triển này đều mở Plus · Pro trọn đời. Ứng dụng và tính năng sau này cũng không cần mua thêm."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "买一次，这位开发者的所有 App 都永久解锁 Plus · Pro。以后推出的 App 和功能也无需另购。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "買一次，這位開發者的所有 App 都永久解鎖 Plus · Pro。之後推出的 App 和功能也不用另外購買。"
           }
         }
       }
