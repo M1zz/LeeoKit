@@ -14,7 +14,7 @@
 //  앱이 하는 일: 피드백 창을 여는 것뿐이다.
 //      LeeoGiftView<Spec>(gift: gift, onContactSupport: { showSupport = true })
 //      .sheet(isPresented: $showSupport) {
-//          LeeoFeedbackView<Spec>(initialType: .bug, initialCategory: .purchase, extraInfo: gift.supportLines())
+//          LeeoFeedbackView<Spec>(initialType: .bug, extraInfo: gift.supportLines, initialCategory: .purchase)
 //      }
 //
 

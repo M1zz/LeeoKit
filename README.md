@@ -406,6 +406,18 @@ WindowGroup { RootView().environmentObject(store) }
 - 테스트는 Xcode의 `.storekit` Configuration 또는 샌드박스 계정으로 확인
 - `store.gate` 로 "지금 페이월을 띄워야 하나"를 판정한다 (위 [수익모델과 게이트](#수익모델과-게이트-leeomonetization))
 
+## 친구에게 소개하기 (LeeoShareAppLink, v3.24)
+
+팔 것이 없는 무료 앱에서 **선물하기 자리**에 선다. 줄 수 있는 것이 앱 자체뿐이라 App Store 링크를 공유 시트로 보낸다.
+
+```swift
+// 설정에서 한 줄. Spec.appStoreID 가 없으면(아직 안 나온 앱) 줄을 그리지 않는다.
+LeeoShareAppLink<MyAppSpec>()
+```
+
+- 문구(`LeeoShareText`)는 패키지 카탈로그에 23개 언어로 들어 있다. 앱 카탈로그에 다시 적지 않는다.
+- 유료 기능이 있는 앱은 이것 대신 Pro 선물(`LeeoGiftConfig`)을 쓴다.
+
 ## 함께 쓰는 앱 (LeeoFamily)
 
 내가 만든 앱들이 **서로를 소개한다.** 목록·문구·이야기는 `LeeoFamilyCatalog` 한 곳에만 있어서,

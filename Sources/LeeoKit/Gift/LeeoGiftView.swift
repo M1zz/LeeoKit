@@ -58,7 +58,7 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
     /// - Parameter showsRedeemLink: 아래에 "선물받은 코드가 있나요?" 링크를 둘지.
     ///   앱이 설정에 코드 입력 행을 따로 두면 false (화면 안에서 또 밀어 넣지 않게).
     /// - Parameter onContactSupport: 선물이 안 될 때 결제 내용과 함께 문의하게 할 창을 연다.
-    ///   앱은 `LeeoFeedbackView(initialType: .bug, initialCategory: .purchase, extraInfo: gift.supportLines)` 를 띄운다.
+    ///   앱은 `LeeoFeedbackView(initialType: .bug, extraInfo: gift.supportLines, initialCategory: .purchase)` 를 띄운다.
     public init(gift: LeeoGiftStore, showsRedeemLink: Bool = true, onContactSupport: (() -> Void)? = nil) {
         self.gift = gift
         self.showsRedeemLink = showsRedeemLink
