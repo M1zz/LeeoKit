@@ -87,6 +87,7 @@ public extension LeeoTipJar {
 public struct LeeoTipAskCard: View {
     @ObservedObject private var tipJar: LeeoTipJar
     @Environment(\.leeoStyle) private var theme
+    @Environment(\.dynamicTypeSize) private var typeSize
     private let moment: LeeoTipMoment
     private let onSupport: () -> Void
     private let onLater: () -> Void
@@ -122,7 +123,9 @@ public struct LeeoTipAskCard: View {
                 }
                 .fixedSize(horizontal: false, vertical: true)
             }
-            HStack(spacing: 10) {
+            // 아주 큰 글자에서는 두 단추를 위아래로 세운다.
+            let buttons = typeSize.isAccessibilitySize ? AnyLayout(VStackLayout(spacing: 10)) : AnyLayout(HStackLayout(spacing: 10))
+            buttons {
                 Button {
                     tipJar.declineAsk()
                     onLater()

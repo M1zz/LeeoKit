@@ -108,6 +108,33 @@ public struct LeeoFamilyApp: Identifiable, Sendable, Equatable {
 
     public var tint: Color { Color(hex: tintHex) ?? .accentColor }
 
+    /// 흰 글자를 얹는 바탕(스토어 단추). 하늘색 · 주황처럼 밝은 색은 흰 글자가 안 읽혀서,
+    /// 같은 색을 흰 글자와 4.5:1 이 될 때까지만 어둡게 한다. 원래 어두운 색은 그대로다.
+    var tintBehindWhiteText: Color {
+        guard let rgb = Self.rgb(tintHex) else { return tint }
+        let k = Self.darkening(rgb)
+        return Color(red: rgb.r * k, green: rgb.g * k, blue: rgb.b * k)
+    }
+
+    /// 흰색과 4.5:1 이 되는 가장 작은 어둡게 하기 비율(1 = 그대로).
+    static func darkening(_ rgb: (r: Double, g: Double, b: Double)) -> Double {
+        var k = 1.0
+        while k > 0.05, contrastWithWhite(r: rgb.r * k, g: rgb.g * k, b: rgb.b * k) < 4.5 { k -= 0.02 }
+        return k
+    }
+
+    /// WCAG 대비. 흰색의 상대 휘도는 1 이다.
+    static func contrastWithWhite(r: Double, g: Double, b: Double) -> Double {
+        func linear(_ c: Double) -> Double { c <= 0.03928 ? c / 12.92 : pow((c + 0.055) / 1.055, 2.4) }
+        let luminance = 0.2126 * linear(r) + 0.7152 * linear(g) + 0.0722 * linear(b)
+        return 1.05 / (luminance + 0.05)
+    }
+
+    private static func rgb(_ hex: String) -> (r: Double, g: Double, b: Double)? {
+        guard let v = UInt32(hex.replacingOccurrences(of: "#", with: ""), radix: 16) else { return nil }
+        return (Double((v >> 16) & 0xFF) / 255, Double((v >> 8) & 0xFF) / 255, Double(v & 0xFF) / 255)
+    }
+
     public var storeURL: URL? {
         URL(string: "https://apps.apple.com/app/id\(appStoreID)")
     }

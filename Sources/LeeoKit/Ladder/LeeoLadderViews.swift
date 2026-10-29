@@ -41,6 +41,7 @@ public struct LeeoTermPicker: View {
     private let yearly: Product?
     private let lifetime: Product?
     @Environment(\.leeoStyle) private var theme
+    @Environment(\.dynamicTypeSize) private var typeSize
     @State private var introEligible = false
 
     public init(term: Binding<LeeoPlanTerm>, yearly: Product?, lifetime: Product?) {
@@ -50,8 +51,10 @@ public struct LeeoTermPicker: View {
     }
 
     public var body: some View {
+        // 아주 큰 글자에서는 두 길을 위아래로 세운다. 나란히 두면 가격이 몇 줄로 꺾인다.
+        let options = typeSize.isAccessibilitySize ? AnyLayout(VStackLayout(spacing: 8)) : AnyLayout(HStackLayout(spacing: 8))
         VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
+            options {
                 option(.yearly, title: LeeoLadderText.yearly,
                        price: yearly.map { String(format: LeeoLadderText.perYearFormat, $0.displayPrice) })
                 option(.lifetime, title: LeeoLadderText.lifetime, price: lifetime?.displayPrice)
@@ -108,6 +111,7 @@ public struct LeeoTermPicker: View {
         .buttonStyle(.plain)
         .disabled(price == nil)
         .accessibilityAddTraits(selected ? .isSelected : [])
+        .accessibilityInputLabels([Text(title)])
     }
 }
 
@@ -263,6 +267,7 @@ public struct LeeoForeverPassView: View {
                 Text(LeeoLadderText.passTitle)
                     .font(.title2.bold())
                     .foregroundStyle(theme.text)
+                    .multilineTextAlignment(.center)
                     .accessibilityAddTraits(.isHeader)
                 Text(pass.isActive ? LeeoLadderText.passActiveBody : LeeoLadderText.passBody)
                     .foregroundStyle(theme.textMuted)
@@ -277,6 +282,7 @@ public struct LeeoForeverPassView: View {
                 .font(.footnote)
                 .foregroundStyle(theme.accent)
                 .frame(minHeight: 44)
+                .accessibilityLabel(LeeoLadderText.passFind)
                 Text(LeeoLadderText.passFootnote)
                     .font(.footnote)
                     .foregroundStyle(theme.textMuted)
@@ -354,6 +360,7 @@ public struct LeeoLifetimePriceNotice: View {
                     .fixedSize(horizontal: false, vertical: true)
             } icon: {
                 Image(systemName: "calendar.badge.clock")
+                    .accessibilityHidden(true)
             }
             .font(.footnote)
             .foregroundStyle(theme.textMuted)

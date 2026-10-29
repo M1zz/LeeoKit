@@ -192,4 +192,15 @@ final class LeeoFamilyTests: XCTestCase {
     func testNoFeaturedByDefault() {
         XCTAssertTrue(LeeoFamilyCatalog.featured(for: ClipSpec.self).isEmpty)
     }
+
+    /// 스토어 단추의 흰 글자는 어느 앱 색 위에서도 4.5:1 이상이어야 한다. 이미 어두운 색은 건드리지 않는다.
+    func testStoreButtonTintKeepsWhiteTextReadable() {
+        for app in LeeoFamilyCatalog.apps {
+            let v = UInt32(app.tintHex, radix: 16)!
+            let rgb = (r: Double((v >> 16) & 0xFF) / 255, g: Double((v >> 8) & 0xFF) / 255, b: Double(v & 0xFF) / 255)
+            let k = LeeoFamilyApp.darkening(rgb)
+            XCTAssertGreaterThanOrEqual(LeeoFamilyApp.contrastWithWhite(r: rgb.r * k, g: rgb.g * k, b: rgb.b * k), 4.5, app.id)
+        }
+        XCTAssertEqual(LeeoFamilyApp.darkening((r: 0.2, g: 0.2, b: 0.5)), 1)
+    }
 }

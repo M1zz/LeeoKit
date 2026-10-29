@@ -168,6 +168,7 @@ public struct LeeoUsageStatsView<Spec: LeeoAppSpec>: View {
             Spacer()
             Text(value).font(.body.monospacedDigit().weight(.semibold)).foregroundStyle(.secondary)
         }
+        .accessibilityElement(children: .combine)
     }
 
     // MARK: - 집계 (클라이언트 계산)

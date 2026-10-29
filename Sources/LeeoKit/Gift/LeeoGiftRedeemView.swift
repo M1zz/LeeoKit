@@ -51,9 +51,18 @@ public struct LeeoGiftRedeemView<Spec: LeeoAppSpec>: View {
         .background(theme.bg.ignoresSafeArea())
         .navigationTitle(LeeoGiftText.redeemEntry)
         .onDisappear { gift.clearTestResult() }
+        // 입력칸이 사라지고 결과가 서는 것을 VoiceOver 에도 말해 준다.
+        .onChange(of: isDone) { _, done in
+            guard done else { return }
+            AccessibilityNotification.Announcement(gift.redeemed != nil ? doneTitle : testDoneTitle).post()
+        }
     }
 
     private var isDone: Bool { gift.redeemed != nil || gift.testRedeemedCode != nil }
+    private var doneTitle: String { L("선물받은 Pro가 열렸어요", comment: "Gift: redeem success title") }
+    private var testDoneTitle: String {
+        L("시험 선물이 끝까지 처리됐어요", comment: "Gift (developer test): test gift went through the whole redeem path")
+    }
 
     private var form: some View {
         VStack(spacing: 16) {
@@ -96,10 +105,11 @@ public struct LeeoGiftRedeemView<Spec: LeeoAppSpec>: View {
 
     private var done: some View {
         VStack(spacing: 10) {
-            Text(L("선물받은 Pro가 열렸어요", comment: "Gift: redeem success title"))
+            Text(doneTitle)
                 .font(.title2.bold())
                 .foregroundStyle(theme.text)
                 .multilineTextAlignment(.center)
+                .accessibilityAddTraits(.isHeader)
             Text(L("같은 iCloud 계정이면 다른 기기에서도 이전 구매 복원으로 다시 열려요.",
                    comment: "Gift: redeemed gift restores on other devices"))
                 .font(.body)
@@ -111,10 +121,11 @@ public struct LeeoGiftRedeemView<Spec: LeeoAppSpec>: View {
     /// 시험 선물이 끝까지 지나갔다. **Pro 는 열리지 않았다**는 것을 분명히 말한다.
     private var testDone: some View {
         VStack(spacing: 10) {
-            Text(L("시험 선물이 끝까지 처리됐어요", comment: "Gift (developer test): test gift went through the whole redeem path"))
+            Text(testDoneTitle)
                 .font(.title2.bold())
                 .foregroundStyle(theme.text)
                 .multilineTextAlignment(.center)
+                .accessibilityAddTraits(.isHeader)
             Text(L("시험 코드라 Pro는 열리지 않아요. 같은 코드를 다시 넣으면 이미 받은 선물로 나와야 맞아요.",
                    comment: "Gift (developer test): explains a test code does not unlock Pro, and re-entering it should say already used"))
                 .font(.body)
@@ -152,6 +163,8 @@ public struct LeeoGiftRedeemView<Spec: LeeoAppSpec>: View {
 ///
 /// ⚠️ 실제로 받는 것은 보이지 않는 입력칸 하나다. 칸마다 입력칸을 두면 붙여넣기 · 지우기 · 음성 입력이
 ///    칸을 넘나들 때 어긋난다. 받은 메시지를 통째로 붙여넣어도 코드만 골라 넣는다.
+/// ⚠️ 그 입력칸은 칸들 **뒤에 같은 폭으로** 깐다. VoiceOver 는 칸 자리를 만지면 입력칸을 찾고,
+///    음성 명령은 "선물 코드 탭" 으로 누른다. 1pt 짜리였을 때는 손가락으로 찾을 수 없었다.
 struct LeeoGiftCodeBoxes: View {
     @Binding var code: String
     var onSubmit: () -> Void
@@ -160,41 +173,42 @@ struct LeeoGiftCodeBoxes: View {
     @FocusState private var focused: Bool
 
     var body: some View {
-        ZStack {
-            TextField("", text: Binding(get: { code }, set: { code = LeeoGiftCode.typed($0) }))
-                .focused($focused)
-                .autocorrectionDisabled()
-                #if os(iOS)
-                .textInputAutocapitalization(.characters)
-                .keyboardType(.asciiCapable)
-                #endif
-                .onSubmit(onSubmit)
-                .foregroundStyle(.clear)
-                .tint(.clear)
-                .frame(width: 1, height: 1)
-                .opacity(0.02)
-                .accessibilityLabel(L("선물 코드", comment: "Gift: accessibility label of the 8-character code field"))
-                .accessibilityValue(code.isEmpty ? "" : LeeoGiftCode.display(code))
-
-            HStack(spacing: 6) {
-                ForEach(0..<LeeoGiftCode.length, id: \.self) { index in
-                    if index == LeeoGiftCode.length / 2 {
-                        Text(verbatim: "-")
-                            .font(.system(.title3, design: .monospaced).weight(.semibold))
-                            .foregroundStyle(theme.textMuted)
-                            .accessibilityHidden(true)
-                    }
-                    box(at: index)
+        HStack(spacing: 6) {
+            ForEach(0..<LeeoGiftCode.length, id: \.self) { index in
+                if index == LeeoGiftCode.length / 2 {
+                    Text(verbatim: "-")
+                        .font(.system(.title3, design: .monospaced).weight(.semibold))
+                        .foregroundStyle(theme.textMuted)
                 }
+                box(at: index)
             }
-            .contentShape(Rectangle())
-            .onTapGesture { focused = true }
-            .accessibilityHidden(true)
         }
+        .contentShape(Rectangle())
+        .onTapGesture { focused = true }
+        .accessibilityHidden(true)
+        .background { field }
         .onAppear {
             // 링크로 코드가 다 채워져 온 게 아니면 바로 칠 수 있게.
             if code.count < LeeoGiftCode.length { focused = true }
         }
+    }
+
+    private var field: some View {
+        TextField("", text: Binding(get: { code }, set: { code = LeeoGiftCode.typed($0) }))
+            .focused($focused)
+            .autocorrectionDisabled()
+            #if os(iOS)
+            .textInputAutocapitalization(.characters)
+            .keyboardType(.asciiCapable)
+            #endif
+            .onSubmit(onSubmit)
+            .foregroundStyle(.clear)
+            .tint(.clear)
+            .opacity(0.02)
+            .accessibilityLabel(L("선물 코드", comment: "Gift: accessibility label of the 8-character code field"))
+            // 한 글자씩 읽는다. 붙여 읽으면 "ABCD" 가 낱말처럼 들린다.
+            .accessibilityValue(Text(LeeoGiftCode.display(code)).speechSpellsOutCharacters())
+            .accessibilityHint(L("영문과 숫자 8자리", comment: "Gift: accessibility hint of the code field, the code is 8 letters or digits"))
     }
 
     private func box(at index: Int) -> some View {
@@ -204,6 +218,8 @@ struct LeeoGiftCodeBoxes: View {
         let isNext = focused && index == min(chars.count, LeeoGiftCode.length - 1) && chars.count < LeeoGiftCode.length
         return Text(verbatim: char)
             .font(.system(.title2, design: .monospaced).weight(.semibold))
+            .lineLimit(1)
+            .minimumScaleFactor(0.5)
             .foregroundStyle(theme.text)
             .frame(maxWidth: 44, minHeight: 52)
             .background(RoundedRectangle(cornerRadius: theme.radiusSm + 2, style: .continuous).fill(theme.surface))

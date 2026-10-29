@@ -92,6 +92,10 @@ public struct FoldTabBar<Value: Hashable>: View {
         .buttonStyle(.plain)
         .accessibilityLabel(item.title)
         .accessibilityAddTraits(isOn ? .isSelected : [])
+        // 시스템 탭바처럼, 큰 글자를 쓰는 사람이 길게 누르면 칸 이름을 크게 보여 준다.
+        .accessibilityShowsLargeContentViewer {
+            Label(item.title, systemImage: item.symbol)
+        }
     }
 }
 

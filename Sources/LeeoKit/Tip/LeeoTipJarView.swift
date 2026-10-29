@@ -32,6 +32,7 @@ public enum LeeoTipText {
 public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
     @ObservedObject private var tipJar: LeeoTipJar
     @Environment(\.leeoStyle) private var theme
+    @Environment(\.dynamicTypeSize) private var typeSize
     #if canImport(StoreKit)
     @Environment(\.purchase) private var purchaseAction
     #endif
@@ -83,6 +84,10 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
             #endif
         }
         .onDisappear { tipJar.justTipped = false }
+        // 고맙다는 카드는 화면 위쪽에 조용히 선다. 결제 시트에서 돌아온 VoiceOver 사용자에게도 말해 준다.
+        .onChange(of: tipJar.justTipped) { _, tipped in
+            if tipped { AccessibilityNotification.Announcement(thanksTitle).post() }
+        }
     }
 
     // MARK: 부분
@@ -109,9 +114,11 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
         }
     }
 
+    private var thanksTitle: String { L("고마워요! 큰 힘이 돼요.", comment: "Tip jar: thank-you title right after tipping") }
+
     private var thanks: some View {
         VStack(spacing: 6) {
-            Text(L("고마워요! 큰 힘이 돼요.", comment: "Tip jar: thank-you title right after tipping"))
+            Text(thanksTitle)
                 .font(.headline)
                 .foregroundStyle(theme.text)
             Text(String(format: L("지금까지 %d번 응원해 주셨어요.", comment: "Tip jar: how many times this person has tipped"),
@@ -164,24 +171,26 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
                     .foregroundStyle(theme.accent)
                     .frame(width: 32)
                     .accessibilityHidden(true)
-                Text(tier.title)
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(theme.text)
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(2)
-                    .minimumScaleFactor(0.85)
-                Spacer(minLength: 8)
-                // ⚠️ 가격은 **한 줄**이다. 자리가 모자라면 이름 쪽이 줄을 바꾸거나 작아진다.
-                //    (가격이 두 줄로 꺾이면 "₩1," / "100" 처럼 읽혀 얼마인지 헷갈린다)
-                Text(price)
-                    .font(.body.weight(.semibold).monospacedDigit())
-                    .foregroundStyle(.white)
-                    .lineLimit(1)
-                    .fixedSize(horizontal: true, vertical: false)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 8)
-                    .background(Capsule().fill(theme.accent))
-                    .layoutPriority(1)
+                // 아주 큰 글자에서는 가격을 이름 아래로 내린다. 옆에 두면 이름이 몇 글자 폭으로 눌린다.
+                if typeSize.isAccessibilitySize {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(tier.title)
+                            .font(.body.weight(.semibold))
+                            .foregroundStyle(theme.text)
+                            .fixedSize(horizontal: false, vertical: true)
+                        priceTag(price)
+                    }
+                    Spacer(minLength: 0)
+                } else {
+                    Text(tier.title)
+                        .font(.body.weight(.semibold))
+                        .foregroundStyle(theme.text)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.85)
+                    Spacer(minLength: 8)
+                    priceTag(price)
+                }
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
@@ -191,6 +200,21 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
         .buttonStyle(.plain)
         .disabled(tipJar.isWorking)
         .accessibilityLabel("\(tier.title), \(price)")
+        .accessibilityInputLabels([Text(tier.title)])
+    }
+
+    /// ⚠️ 가격은 **한 줄**이다. 자리가 모자라면 이름 쪽이 줄을 바꾸거나 작아진다.
+    ///    (가격이 두 줄로 꺾이면 "₩1," / "100" 처럼 읽혀 얼마인지 헷갈린다)
+    private func priceTag(_ price: String) -> some View {
+        Text(price)
+            .font(.body.weight(.semibold).monospacedDigit())
+            .foregroundStyle(.white)
+            .lineLimit(1)
+            .fixedSize(horizontal: true, vertical: false)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 8)
+            .background(Capsule().fill(theme.accent))
+            .layoutPriority(1)
     }
 }
 

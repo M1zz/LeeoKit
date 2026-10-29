@@ -261,7 +261,7 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
                 if let createdAt = record.createdAt {
                     Text(dateFormatter.string(from: createdAt))
                         .font(.caption2)
-                        .foregroundColor(theme.textFaint)
+                        .foregroundColor(theme.textMuted)
                 }
             }
 
@@ -305,7 +305,7 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
                  ? "\(record.appVersion) · \(record.platform) · \(record.locale)"
                  : "\(record.deviceInfo) · \(record.locale)")
                 .font(.caption2)
-                .foregroundColor(theme.textFaint)
+                .foregroundColor(theme.textMuted)
         }
         .padding(.vertical, 4)
     }

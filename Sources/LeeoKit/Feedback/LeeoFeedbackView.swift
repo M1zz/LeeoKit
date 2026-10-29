@@ -21,6 +21,8 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
     @Environment(\.dismiss) private var dismiss
     /// `UIApplication.shared` 대신 쓴다. 앱 익스텐션에서도 컴파일되게 (APPLICATION_EXTENSION_API_ONLY).
     @Environment(\.openURL) private var openURL
+    @Environment(\.dynamicTypeSize) private var typeSize
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var selectedType: LeeoFeedbackType
     /// 버그의 분류. 고르기 전에는 nil 이고, 분류를 보여 주는 화면에서는 고르기 전까지 못 보낸다.
@@ -203,13 +205,19 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                 .font(.body)
                 .fontWeight(.semibold)
                 .foregroundColor(theme.text)
+                .accessibilityAddTraits(.isHeader)
 
-            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+            LazyVGrid(columns: chipColumns, spacing: 10) {
                 ForEach(types, id: \.self) { type in
                     typeChip(type)
                 }
             }
         }
+    }
+
+    /// 두 칸씩. 아주 큰 글자에서는 한 칸씩 — 반 폭에서는 낱말이 글자 단위로 꺾인다.
+    private var chipColumns: [GridItem] {
+        Array(repeating: GridItem(.flexible()), count: typeSize.isAccessibilitySize ? 1 : 2)
     }
 
     private func typeChip(_ type: LeeoFeedbackType) -> some View {
@@ -219,6 +227,7 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
             HStack(spacing: 6) {
                 Image(systemName: type.icon)
                     .font(.body)
+                    .accessibilityHidden(true)
                 Text(type.localizedName)
                     .font(.body)
                     .multilineTextAlignment(.center)
@@ -247,8 +256,9 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                 .font(.body)
                 .fontWeight(.semibold)
                 .foregroundColor(theme.text)
+                .accessibilityAddTraits(.isHeader)
 
-            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+            LazyVGrid(columns: chipColumns, spacing: 10) {
                 ForEach(bugCategories, id: \.self) { category in
                     categoryChip(category)
                 }
@@ -373,6 +383,7 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                         .background(theme.surfaceAlt)
                         .cornerRadius(theme.radiusSm)
                         .scrollContentBackground(.hidden)
+                        .accessibilityLabel(prompt.label)
                     if binding.wrappedValue.isEmpty {
                         Text(prompt.placeholder)
                             .font(.body)
@@ -411,6 +422,7 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                 .font(.body)
                 .fontWeight(.semibold)
                 .foregroundColor(theme.text)
+                .accessibilityAddTraits(.isHeader)
 
             if let wanted = activeCategory?.attachments, !wanted.isEmpty {
                 attachmentGuide(wanted)
@@ -441,6 +453,7 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                 ) {
                     HStack(spacing: 6) {
                         Image(systemName: "photo.badge.plus")
+                            .accessibilityHidden(true)
                         Text(L("사진 붙이기", comment: "Attach screenshot button"))
                     }
                     .font(.body)
@@ -464,6 +477,7 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
             .scaledToFill()
             .frame(width: 72, height: 72)
             .clipShape(RoundedRectangle(cornerRadius: theme.radiusSm))
+            .accessibilityLabel(L("붙인 사진", comment: "Attached screenshot a11y label"))
             .overlay(alignment: .topTrailing) {
                 Button {
                     screenshots.removeAll { $0.id == shot.id }
@@ -475,7 +489,6 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                 }
                 .accessibilityLabel(L("이 사진 떼기", comment: "Remove attached screenshot"))
             }
-            .accessibilityLabel(L("붙인 사진", comment: "Attached screenshot a11y label"))
     }
 
     /// 고른 사진을 **줄여서** 들고 있는다. 원본 그대로 올리면 한 장이 몇 MB 라
@@ -507,6 +520,7 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                 .font(.body)
                 .fontWeight(.semibold)
                 .foregroundColor(theme.text)
+                .accessibilityAddTraits(.isHeader)
 
             ZStack(alignment: .topLeading) {
                 TextEditor(text: $message)
@@ -558,6 +572,7 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                 .font(.body)
                 .fontWeight(.semibold)
                 .foregroundColor(theme.text)
+                .accessibilityAddTraits(.isHeader)
 
             VStack(spacing: 8) {
                 TextField(L("이름 (선택)", comment: "Contact name placeholder"), text: $contactName)
@@ -591,6 +606,7 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                 .font(.body)
                 .fontWeight(.semibold)
                 .foregroundColor(theme.textMuted)
+                .accessibilityAddTraits(.isHeader)
 
             if isProbing {
                 HStack(spacing: 8) {
@@ -638,6 +654,9 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
         }
         .disabled(isDisabled)
         .accessibilityLabel(L("피드백 보내기", comment: "Send feedback a11y label"))
+        // 음성 명령은 화면에 보이는 "보내기" 로도 누를 수 있어야 한다.
+        .accessibilityInputLabels([Text(L("보내기", comment: "Send feedback button")),
+                                   Text(L("피드백 보내기", comment: "Send feedback a11y label"))])
         .accessibilityHint(isDisabled
             ? L("빈 칸을 채우면 활성화됩니다", comment: "Send button disabled hint v2")
             : L("탭하면 개발자에게 바로 전송됩니다", comment: "Send button enabled hint"))
@@ -650,7 +669,8 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
             Image(systemName: "checkmark.circle.fill")
                 .font(.system(size: 56))
                 .foregroundColor(.green)
-            Text(L("피드백을 보냈습니다!\n소중한 의견 감사합니다 🙏", comment: "Feedback sent confirmation message"))
+                .accessibilityHidden(true)
+            Text(sentMessage)
                 .font(.headline)
                 .multilineTextAlignment(.center)
                 .foregroundColor(theme.text)
@@ -660,7 +680,11 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
         .cornerRadius(theme.radiusLg)
         .shadow(color: .black.opacity(0.15), radius: 16, x: 0, y: 8)
         .padding(40)
-        .transition(.opacity.combined(with: .scale(scale: 0.9)))
+        .transition(reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.9)))
+    }
+
+    private var sentMessage: String {
+        L("피드백을 보냈습니다!\n소중한 의견 감사합니다 🙏", comment: "Feedback sent confirmation message")
     }
 
     // MARK: - Send Logic
@@ -764,7 +788,9 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
             LeeoFeedbackService(spec: Spec.self)
                 .rememberContact(name: contactName, email: contactEmail)
         }
-        withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) { didSend = true }
+        withAnimation(reduceMotion ? .easeInOut(duration: 0.2) : .spring(response: 0.4, dampingFraction: 0.7)) { didSend = true }
+        // 확인 카드는 잠깐 섰다가 창과 함께 닫힌다. 보지 못하는 사람에게도 갔다는 것을 말해 준다.
+        AccessibilityNotification.Announcement(sentMessage).post()
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) { dismiss() }
     }
 }

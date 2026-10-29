@@ -141,6 +141,7 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
                 .font(.title2.bold())
                 .foregroundStyle(theme.text)
                 .multilineTextAlignment(.center)
+                .accessibilityAddTraits(.isHeader)
             Text(L("결제는 보내는 분이 하고, Pro는 받는 분이 써요.", comment: "Gift: send screen subtitle"))
                 .font(.body)
                 .foregroundStyle(theme.textMuted)
@@ -154,6 +155,7 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
             Text(L("이렇게 전해져요", comment: "Gift: heading of the how-it-works steps"))
                 .font(.headline)
                 .foregroundStyle(theme.text)
+                .accessibilityAddTraits(.isHeader)
             step(1, L("선물을 결제해요", comment: "Gift step 1 title"),
                  L("Apple 계정으로 결제하면 선물 코드가 만들어져요.", comment: "Gift step 1 detail"))
             step(2, L("코드를 보내요", comment: "Gift step 2 title"),
@@ -270,6 +272,7 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
                 Text(L("보낸 선물", comment: "Gift: list of gifts I sent"))
                     .font(.headline)
                     .foregroundStyle(theme.text)
+                    .accessibilityAddTraits(.isHeader)
                 ForEach(others) { sent in
                     LeeoSentGiftRow<Spec>(gift: sent)
                 }
@@ -284,6 +287,7 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
 struct LeeoGiftCodeCard<Spec: LeeoAppSpec>: View {
     let gift: LeeoSentGift
     @Environment(\.leeoStyle) private var theme
+    @Environment(\.dynamicTypeSize) private var typeSize
     @State private var copied = false
 
     var body: some View {
@@ -291,17 +295,24 @@ struct LeeoGiftCodeCard<Spec: LeeoAppSpec>: View {
             Text(L("선물이 준비됐어요", comment: "Gift: title after purchase"))
                 .font(.headline)
                 .foregroundStyle(theme.text)
+                .accessibilityAddTraits(.isHeader)
             Text(LeeoGiftCode.display(gift.code))
+                .speechSpellsOutCharacters()
                 .font(.system(.largeTitle, design: .monospaced).weight(.bold))
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
                 .foregroundStyle(theme.text)
                 .textSelection(.enabled)
             Text(L("이 코드를 받는 분께 보내 주세요.", comment: "Gift: instruction under the code"))
                 .font(.subheadline)
                 .foregroundStyle(theme.textMuted)
-            HStack(spacing: 12) {
+            // 아주 큰 글자에서는 두 단추를 위아래로 세운다.
+            let buttons = typeSize.isAccessibilitySize ? AnyLayout(VStackLayout(spacing: 12)) : AnyLayout(HStackLayout(spacing: 12))
+            buttons {
                 Button {
                     LeeoGiftClipboard.copy(LeeoGiftCode.display(gift.code))
                     copied = true
+                    AccessibilityNotification.Announcement(L("복사했어요", comment: "Gift: copied confirmation")).post()
                 } label: {
                     Label(copied ? L("복사했어요", comment: "Gift: copied confirmation")
                                  : L("코드 복사", comment: "Gift: copy code button"),
@@ -330,19 +341,24 @@ struct LeeoSentGiftRow<Spec: LeeoAppSpec>: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(LeeoGiftCode.display(gift.code))
-                    .font(.system(.body, design: .monospaced).weight(.semibold))
-                    .foregroundStyle(theme.text)
-                Text(gift.createdAt, style: .date)
-                    .font(.caption)
-                    .foregroundStyle(theme.textMuted)
+            // 코드 · 날짜 · 받았는지는 한 덩어리로 읽고, 보내기 단추는 따로 누르게 둔다.
+            HStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(LeeoGiftCode.display(gift.code))
+                        .speechSpellsOutCharacters()
+                        .font(.system(.body, design: .monospaced).weight(.semibold))
+                        .foregroundStyle(theme.text)
+                    Text(gift.createdAt, style: .date)
+                        .font(.caption)
+                        .foregroundStyle(theme.textMuted)
+                }
+                Spacer()
+                Text(gift.isRedeemed ? L("받음", comment: "Gift status: redeemed")
+                                     : L("아직 안 받음", comment: "Gift status: not redeemed yet"))
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(gift.isRedeemed ? Color.green : theme.textMuted)
             }
-            Spacer()
-            Text(gift.isRedeemed ? L("받음", comment: "Gift status: redeemed")
-                                 : L("아직 안 받음", comment: "Gift status: not redeemed yet"))
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(gift.isRedeemed ? Color.green : theme.textMuted)
+            .accessibilityElement(children: .combine)
             if !gift.isRedeemed {
                 ShareLink(item: LeeoGiftText.shareMessage(appName: Spec.displayName, code: gift.code, appStoreID: Spec.appStoreID)) {
                     Image(systemName: "square.and.arrow.up")
@@ -352,7 +368,6 @@ struct LeeoSentGiftRow<Spec: LeeoAppSpec>: View {
         }
         .padding(14)
         .background(RoundedRectangle(cornerRadius: theme.radiusSm, style: .continuous).fill(theme.surface))
-        .accessibilityElement(children: .combine)
     }
 }
 

@@ -37,6 +37,7 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
     @StateObject private var store: LeeoStore
     @Environment(\.leeoStyle) private var theme
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var typeSize
     @State private var selectedProductID: String?
 
     private let hasConfig: Bool
@@ -103,10 +104,12 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
                 .font(.system(size: 44))
                 .foregroundStyle(theme.accent)
                 .padding(.top, 28)
+                .accessibilityHidden(true)
             Text(title)
                 .font(.title.bold())
                 .multilineTextAlignment(.center)
                 .foregroundStyle(theme.text)
+                .accessibilityAddTraits(.isHeader)
             Text(subtitle)
                 .font(.subheadline)
                 .multilineTextAlignment(.center)
@@ -120,6 +123,7 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
                 HStack(alignment: .firstTextBaseline, spacing: 12) {
                     Image(systemName: "checkmark.circle.fill")
                         .foregroundStyle(theme.accent)
+                        .accessibilityHidden(true)
                     Text(feature)
                         .foregroundStyle(theme.text)
                     Spacer(minLength: 0)
@@ -170,7 +174,8 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
         } label: {
             HStack(spacing: 12) {
                 Image(systemName: isSelected ? "largecircle.fill.circle" : "circle")
-                    .foregroundStyle(isSelected ? theme.accent : theme.textFaint)
+                    .foregroundStyle(isSelected ? theme.accent : theme.textMuted)
+                    .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(product.displayName)
                         .font(.headline)
@@ -180,11 +185,11 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
                             .font(.caption)
                             .foregroundStyle(theme.textMuted)
                     }
+                    // 아주 큰 글자에서는 가격을 이름 아래로 내린다. 옆에 두면 이름 칸이 몇 글자 폭으로 좁아진다.
+                    if typeSize.isAccessibilitySize { price(product) }
                 }
                 Spacer(minLength: 8)
-                Text(priceLabel(product))
-                    .font(.headline)
-                    .foregroundStyle(theme.text)
+                if !typeSize.isAccessibilitySize { price(product) }
             }
             .padding(16)
             .background(theme.surface, in: RoundedRectangle(cornerRadius: theme.radiusLg))
@@ -194,6 +199,20 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
             )
         }
         .buttonStyle(.plain)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+        .accessibilityInputLabels([Text(product.displayName)])
+    }
+
+    private func price(_ product: Product) -> some View {
+        Text(priceLabel(product))
+            .font(.headline)
+            .foregroundStyle(theme.text)
+    }
+
+    private var purchaseTitle: String {
+        isSubscription(selectedProduct)
+            ? L("구독 시작하기", comment: "Paywall: purchase CTA (subscription)")
+            : L("구매하기", comment: "Paywall: purchase CTA (one-time)")
     }
 
     private var purchaseButton: some View {
@@ -205,9 +224,7 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
                 if store.purchasingProductID != nil {
                     ProgressView().tint(.white)
                 } else {
-                    Text(isSubscription(selectedProduct)
-                         ? L("구독 시작하기", comment: "Paywall: purchase CTA (subscription)")
-                         : L("구매하기", comment: "Paywall: purchase CTA (one-time)"))
+                    Text(purchaseTitle)
                         .font(.headline)
                 }
             }
@@ -217,6 +234,8 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
             .foregroundStyle(.white)
         }
         .disabled(selectedProduct == nil || store.purchasingProductID != nil)
+        // 결제 중에는 글자 대신 스피너가 서므로 이름을 따로 붙인다.
+        .accessibilityLabel(purchaseTitle)
         .padding(.top, 4)
     }
 
@@ -234,6 +253,7 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
             }
             .tint(theme.accent)
             .disabled(store.isRestoring)
+            .accessibilityLabel(L("구매 복원", comment: "Paywall: restore purchases"))
 
             // 구독 안내는 구독 상품을 팔 때만. 평생 상품만 파는 앱에 "해지할 수 있어요"를
             // 띄우면 구독인 줄 알고 망설이게 되고, 사실과도 다르다.
@@ -244,7 +264,7 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
                      comment: "Paywall: billing disclaimer (one-time)"))
                 .font(.caption2)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(theme.textFaint)
+                .foregroundStyle(theme.textMuted)
 
             HStack(spacing: 16) {
                 if let terms = store.config.termsURL {
@@ -265,7 +285,7 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
             Image(systemName: "xmark.circle.fill")
                 .font(.title2)
                 .symbolRenderingMode(.hierarchical)
-                .foregroundStyle(theme.textFaint)
+                .foregroundStyle(theme.textMuted)
                 .padding(16)
         }
         .accessibilityLabel(L("닫기", comment: "Paywall: close"))

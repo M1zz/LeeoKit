@@ -164,6 +164,7 @@ public struct LeeoFamilyView<Spec: LeeoAppSpec>: View {
                 Text(title)
                     .font(.headline)
                     .foregroundStyle(style.text)
+                    .accessibilityAddTraits(.isHeader)
                 if let note {
                     Text(note)
                         .font(.subheadline)
@@ -179,7 +180,7 @@ public struct LeeoFamilyView<Spec: LeeoAppSpec>: View {
         Text(L("여기서 아무것도 수집하지 않습니다. 눌러야만 App Store 가 열립니다.",
                comment: "Family footer note"))
             .font(.footnote)
-            .foregroundStyle(style.textFaint)
+            .foregroundStyle(style.textMuted)
             .fixedSize(horizontal: false, vertical: true)
             .padding(.top, 4)
     }
@@ -213,11 +214,14 @@ public struct LeeoFamilyAppCard: View {
                 .font(.footnote.weight(.semibold))
                 .foregroundStyle(style.textFaint)
                 .padding(.top, 4)
+                .accessibilityHidden(true)
         }
         .padding(16)
         .background(style.surfaceAlt)
         .clipShape(RoundedRectangle(cornerRadius: style.radiusLg))
         .contentShape(Rectangle())
+        .accessibilityElement(children: .combine)
+        .accessibilityInputLabels([Text(app.name)])
     }
 }
 
@@ -266,6 +270,7 @@ public struct LeeoFamilySynergyRow: View {
                 .font(.footnote.weight(.semibold))
                 .foregroundStyle(style.textFaint)
                 .padding(.top, 4)
+                .accessibilityHidden(true)
         }
         .padding(16)
         .background(style.surfaceAlt)
@@ -275,6 +280,7 @@ public struct LeeoFamilySynergyRow: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(synergy.title), \(synergy.scene)")
         .accessibilityHint(cast.map(\.name).joined(separator: ", "))
+        .accessibilityInputLabels([Text(synergy.title)])
     }
 }
 
@@ -304,6 +310,7 @@ public struct LeeoFamilySynergyDetailView: View {
                         Text(L("이 장면에 나오는 앱", comment: "Family synergy detail: cast"))
                             .font(.headline)
                             .foregroundStyle(style.text)
+                            .accessibilityAddTraits(.isHeader)
                         ForEach(cast) { app in
                             NavigationLink(destination: LeeoFamilyAppDetailView(app: app)) {
                                 LeeoFamilyAppCard(app: app)
@@ -380,21 +387,27 @@ public struct LeeoFamilySynergyCard: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, 2)
 
-            HStack(spacing: 6) {
-                ForEach(cast) { app in
-                    Text(app.name)
-                        .font(.caption)
-                        .foregroundStyle(style.textMuted)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(style.surface, in: Capsule())
-                }
+            // 한 줄에 안 들어가면(큰 글자) 위아래로 쌓는다.
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 6) { castChips }
+                VStack(alignment: .leading, spacing: 6) { castChips }
             }
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(style.surfaceAlt)
         .clipShape(RoundedRectangle(cornerRadius: style.radiusLg))
+    }
+
+    private var castChips: some View {
+        ForEach(cast) { app in
+            Text(app.name)
+                .font(.caption)
+                .foregroundStyle(style.textMuted)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(style.surface, in: Capsule())
+        }
     }
 }
 
@@ -427,6 +440,7 @@ public struct LeeoFamilyAppDetailView: View {
                         Text(L("함께 쓰는 장면", comment: "Family detail: stories"))
                             .font(.headline)
                             .foregroundStyle(style.text)
+                            .accessibilityAddTraits(.isHeader)
                         ForEach(stories) { synergy in
                             NavigationLink(destination: LeeoFamilySynergyDetailView(synergy: synergy)) {
                                 LeeoFamilySynergyRow(synergy: synergy)
@@ -456,6 +470,7 @@ public struct LeeoFamilyAppDetailView: View {
             Text(app.name)
                 .font(.title2).fontWeight(.semibold)
                 .foregroundStyle(style.text)
+                .accessibilityAddTraits(.isHeader)
             Text(app.tagline)
                 .font(.body)
                 .foregroundStyle(style.textMuted)
@@ -469,6 +484,7 @@ public struct LeeoFamilyAppDetailView: View {
             Text(L("무엇을 하는 앱인가", comment: "Family detail: purpose"))
                 .font(.headline)
                 .foregroundStyle(style.text)
+                .accessibilityAddTraits(.isHeader)
             Text(app.purpose)
                 .font(.body)
                 .foregroundStyle(style.text)
@@ -485,6 +501,7 @@ public struct LeeoFamilyAppDetailView: View {
             Text(title)
                 .font(.headline)
                 .foregroundStyle(style.text)
+                .accessibilityAddTraits(.isHeader)
             ForEach(Array(items.enumerated()), id: \.offset) { _, item in
                 HStack(alignment: .top, spacing: 10) {
                     Image(systemName: symbol)
@@ -510,13 +527,14 @@ public struct LeeoFamilyAppDetailView: View {
             } label: {
                 HStack(spacing: 8) {
                     Image(systemName: "arrow.up.forward.app.fill")
+                        .accessibilityHidden(true)
                     Text(L("App Store 에서 보기", comment: "Family: open App Store"))
                         .fontWeight(.semibold)
                 }
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
-                .background(app.tint)
+                .background(app.tintBehindWhiteText)
                 .clipShape(RoundedRectangle(cornerRadius: style.radiusSm))
             }
             .buttonStyle(.plain)
@@ -695,18 +713,24 @@ struct LeeoFamilyPlatformLine: View {
     let app: LeeoFamilyApp
 
     var body: some View {
-        HStack(spacing: 8) {
-            ForEach(app.platforms) { platform in
-                HStack(spacing: 4) {
-                    Image(systemName: platform.symbol)
-                        .font(.caption2)
-                    Text(platform.label)
-                        .font(.caption)
-                }
-                .foregroundStyle(style.textMuted)
-            }
+        // 한 줄에 안 들어가면(큰 글자) 위아래로 쌓는다.
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 8) { platforms }
+            VStack(alignment: .leading, spacing: 4) { platforms }
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(app.platformSummary)
+    }
+
+    private var platforms: some View {
+        ForEach(app.platforms) { platform in
+            HStack(spacing: 4) {
+                Image(systemName: platform.symbol)
+                    .font(.caption2)
+                Text(platform.label)
+                    .font(.caption)
+            }
+            .foregroundStyle(style.textMuted)
+        }
     }
 }

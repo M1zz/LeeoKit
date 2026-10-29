@@ -19,6 +19,8 @@ public struct LeeoStyle {
     public var surfaceAlt: Color
     public var text: Color
     public var textMuted: Color
+    /// 꾸밈(화살표 · 구분 아이콘)에만 쓴다. 글자에 쓰면 대비가 모자란다(기본값 tertiaryLabel 은 흰 바탕에서 약 2.5:1).
+    /// 읽어야 하는 글은 `textMuted` 로.
     public var textFaint: Color
     public var radiusSm: CGFloat
     public var radiusLg: CGFloat
