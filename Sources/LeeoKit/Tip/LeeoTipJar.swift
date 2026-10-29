@@ -47,6 +47,11 @@ public final class LeeoTipJar: ObservableObject {
     @Published public var justTipped = false
     @Published public private(set) var lastError: String?
 
+    #if canImport(StoreKit)
+    /// 혼자 쓰는 팁(`startStandalone()`)의 결제 갱신 리스너.
+    private var updatesTask: Task<Void, Never>?
+    #endif
+
     let defaults: UserDefaults
     private let countKey: String
     private let seenKey: String
@@ -163,6 +168,23 @@ public final class LeeoTipJar: ObservableObject {
             guard case .verified(let tx) = result, config.productIDs.contains(tx.productID) else { continue }
             await accept(tx)
         }
+    }
+
+    /// **LeeoStore 없이** 팁만 받는 앱(무료 앱)에서 앱을 열 때 한 번 부른다.
+    /// 상품을 불러오고, 끝나지 않은 팁을 마저 세고, 승인 대기 뒤에 온 결제를 듣는다.
+    /// ⚠️ 계약(`LeeoPurchaseConfig.tipJar`)으로 만든 팁에는 부르지 않는다. LeeoStore 가 이미 이 일을 한다.
+    public func startStandalone() async {
+        if updatesTask == nil {
+            let ids = Set(config.productIDs)
+            updatesTask = Task { [weak self] in
+                for await update in Transaction.updates {
+                    guard case .verified(let tx) = update, ids.contains(tx.productID) else { continue }
+                    await self?.accept(tx)
+                }
+            }
+        }
+        await loadProducts()
+        await resumePending()
     }
 
     private func accept(_ tx: Transaction) async {

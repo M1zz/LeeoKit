@@ -406,6 +406,27 @@ WindowGroup { RootView().environmentObject(store) }
 - 테스트는 Xcode의 `.storekit` Configuration 또는 샌드박스 계정으로 확인
 - `store.gate` 로 "지금 페이월을 띄워야 하나"를 판정한다 (위 [수익모델과 게이트](#수익모델과-게이트-leeomonetization))
 
+## 팁 (LeeoTipJar, v3.25)
+
+고마운 사람이 **소모성 팁**(작은 것부터 셋 이상)을 낼 수 있다. 기능은 열지 않는다.
+
+```swift
+// 유료 등급이 있는 앱: 계약에 한 줄 (LeeoStore 가 상품·결제를 맡는다)
+.freemium(LeeoPurchaseConfig(productIDs: [...], tipJar: LeeoTipJarConfig(productIDs: [small, medium, large])))
+
+// 무료 앱: 엔진을 직접 두고 앱을 열 때 한 번 시작한다
+static let tipJar = LeeoTipJar(config: LeeoTipJarConfig(productIDs: [small, medium, large]))
+.task { await MyApp.tipJar.startStandalone() }
+
+// 설정 줄 · 고마운 순간의 부탁 카드
+LeeoTipJarLink<MyAppSpec>(tipJar: tipJar)
+LeeoTipAskSlot<MyAppSpec>(tipJar: tipJar, reached: MyTipMoments.reachedNow)
+```
+
+- 부탁은 그 사람이 앱으로 얻은 것이 숫자로 보이는 순간에만, 드물게 한다(`LeeoTipAskPolicy`: 물으면 60일, 낸 사람은 180일, '다음에' 세 번이면 끝).
+- 유료 등급이 있는 앱은 이미 다 가진 사람에게만 부탁한다.
+- 팁 상품을 `productIDs` · `entitlementIDs` 에 넣지 않는다(사전 점검 `tip.sellsPro`).
+
 ## 친구에게 소개하기 (LeeoShareAppLink, v3.24)
 
 팔 것이 없는 무료 앱에서 **선물하기 자리**에 선다. 줄 수 있는 것이 앱 자체뿐이라 App Store 링크를 공유 시트로 보낸다.
