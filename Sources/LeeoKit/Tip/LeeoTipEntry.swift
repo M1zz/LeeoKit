@@ -53,7 +53,9 @@ public struct LeeoTipJarLink<Spec: LeeoAppSpec>: View {
 public struct LeeoTipAskSlot<Spec: LeeoAppSpec>: View {
     @ObservedObject private var tipJar: LeeoTipJar
     private let reached: [LeeoTipMoment]
-    @State private var moment: LeeoTipMoment?
+    /// 화면에 세운 순간. 세운 뒤에는 물은 것으로 적혀 `momentToAsk` 가 nil 이 되므로 여기 붙잡아 둔다.
+    @State private var shown: LeeoTipMoment?
+    @State private var closed = false
     @State private var showTipJar = false
 
     /// - Parameter reached: 지금 넘어선 순간, 인상적인 것부터.
@@ -62,34 +64,34 @@ public struct LeeoTipAskSlot<Spec: LeeoAppSpec>: View {
         self.reached = reached
     }
 
-    public var body: some View {
-        Group {
-            if let moment {
-                LeeoTipAskCard(tipJar: tipJar, moment: moment,
-                               onSupport: { showTipJar = true },
-                               onLater: { withAnimation(.easeInOut(duration: 0.2)) { self.moment = nil } })
-                    // 카드가 실제로 섰을 때 물은 것으로 적는다. 함께 넘어선 작은 순간도 다 쓴 것으로 친다.
-                    .onAppear { tipJar.markAsked(covering: reached) }
-                    .sheet(isPresented: $showTipJar, onDismiss: { self.moment = nil }) {
-                        NavigationStack {
-                            LeeoTipJarView<Spec>(tipJar: tipJar)
-                                .toolbar {
-                                    ToolbarItem(placement: .cancellationAction) {
-                                        Button(L("닫기", comment: "Close")) { showTipJar = false }
-                                    }
-                                }
-                        }
-                    }
-            }
-        }
-        .onAppear(perform: evaluate)
-        .onChange(of: tipJar.isAvailable) { evaluate() }
-        .onChange(of: reached.map(\.id)) { evaluate() }
+    /// ⚠️ 빈 자리에 붙인 `onAppear` 는 불리지 않는다. 그래서 물을지는 그릴 때마다 계산한다
+    ///    (상품이 늦게 와도 `tipJar` 를 관찰하므로 다시 그려진다).
+    private var moment: LeeoTipMoment? {
+        if closed { return nil }
+        return shown ?? tipJar.momentToAsk(from: reached)
     }
 
-    /// 이미 카드가 서 있으면 그대로 둔다. 상품이 아직 안 왔으면 묻지 않는다(`momentToAsk`).
-    private func evaluate() {
-        guard moment == nil else { return }
-        moment = tipJar.momentToAsk(from: reached)
+    public var body: some View {
+        if let moment {
+            LeeoTipAskCard(tipJar: tipJar, moment: moment,
+                           onSupport: { showTipJar = true },
+                           onLater: { withAnimation(.easeInOut(duration: 0.2)) { closed = true } })
+                // 카드가 실제로 섰을 때 물은 것으로 적는다. 함께 넘어선 작은 순간도 다 쓴 것으로 친다.
+                .onAppear {
+                    guard shown == nil else { return }
+                    shown = moment
+                    tipJar.markAsked(covering: reached)
+                }
+                .sheet(isPresented: $showTipJar, onDismiss: { closed = true }) {
+                    NavigationStack {
+                        LeeoTipJarView<Spec>(tipJar: tipJar)
+                            .toolbar {
+                                ToolbarItem(placement: .cancellationAction) {
+                                    Button(L("닫기", comment: "Close")) { showTipJar = false }
+                                }
+                            }
+                    }
+                }
+        }
     }
 }
