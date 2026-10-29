@@ -7,6 +7,9 @@
 //
 
 import XCTest
+#if canImport(UIKit)
+import UIKit
+#endif
 @testable import LeeoKit
 
 final class LeeoCrashLoopGuardTests: XCTestCase {
@@ -98,6 +101,41 @@ final class LeeoCrashLoopGuardTests: XCTestCase {
         XCTAssertEqual(process("x").consecutiveIncompleteLaunches, 0)
         XCTAssertEqual(process("x").unreportedIncompleteLaunches, 0)
     }
+
+    func testPrewarmJudgesButLeavesNoMarkerUntilRealLaunch() {
+        process("1").beginLaunch()   // 죽음
+        let warm = LeeoCrashLoopGuard(name: "keyboard", defaults: defaults, threshold: 1,
+                                      survivalDelay: 0, session: "2", isPrewarm: true)
+        XCTAssertTrue(warm.beginLaunch(), "판정은 지금 한다")
+        XCTAssertEqual(warm.consecutiveIncompleteLaunches, 0, "버려질 수 있는 실행이라 아직 세지 않는다")
+
+        // 쓰이지 않고 버려졌다 → 다음 실행이 세는 것은 처음 죽은 한 번뿐이다.
+        let next = process("3")
+        next.beginLaunch()
+        XCTAssertEqual(next.consecutiveIncompleteLaunches, 1)
+    }
+
+    func testPrewarmCountsOnceItReallyLaunches() {
+        process("1").beginLaunch()   // 죽음
+        let warm = LeeoCrashLoopGuard(name: "keyboard", defaults: defaults, threshold: 2,
+                                      survivalDelay: 0, session: "2", isPrewarm: true)
+        warm.beginLaunch()
+        warm.commitLaunch()          // didFinishLaunching
+        XCTAssertEqual(warm.consecutiveIncompleteLaunches, 1)
+        process("3").beginLaunch()   // 실제로 켜진 뒤 죽은 것은 센다
+        XCTAssertEqual(process("4").consecutiveIncompleteLaunches, 2)
+    }
+
+    #if canImport(UIKit)
+    func testGoingToBackgroundIsNotADeath() {
+        let g = process("1")
+        g.beginLaunch()
+        NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
+        let next = process("2")
+        XCTAssertFalse(next.beginLaunch())
+        XCTAssertEqual(next.unreportedIncompleteLaunches, 0, "내린 뒤 시스템이 정리한 것은 죽은 것이 아니다")
+    }
+    #endif
 
     func testThresholdIsConfigurable() {
         XCTAssertFalse(process("1", threshold: 1).beginLaunch())

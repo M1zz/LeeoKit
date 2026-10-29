@@ -121,6 +121,8 @@ Task { await keyboardGuard.reportIncompleteLaunches(to: LeeoUsageReporter(spec: 
 - 허브 이벤트: `launch_incomplete:<name>` (한 번 보고에 최대 3건). 익스텐션에서 CloudKit 은
   전체 접근·iCloud 권한이 따로 필요하므로 **보통 본 앱이 보낸다.** 자기 통계 경로로 보내려면
   `takeUnreportedIncompleteLaunches()` 로 숫자만 가져간다.
+- **죽은 것만 센다(v3.26.1).** 본 앱에서는 앱을 내리면 스스로 성공 표시를 하고, iOS 가 미리 띄운
+  실행(prewarm)은 실제로 켜질 때(`didFinishLaunching`)까지 표식을 미룬다. `App.init` 에서 불러도 된다.
 - 판정은 `LeeoCrashLoopPolicy` (순수 함수)에 있어 저장소 없이 시험한다.
 - `reset()`: 설정의 "기록 초기화"나 테스트용.
 

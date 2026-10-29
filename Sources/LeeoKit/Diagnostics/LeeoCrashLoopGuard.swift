@@ -18,6 +18,14 @@
 //    ④ 세이프 모드에서 무사히 뜨면 횟수가 0 으로 돌아가고, 그다음 실행은 평소대로 연다.
 //       (새 빌드나 바뀐 데이터가 원인을 없앴을 수 있고, 확인할 방법은 한 번 더 켜 보는 것뿐이다)
 //
+//  **죽은 것만 센다.** 본 앱에서는 가드가 두 가지를 스스로 걸러 낸다(앱이 할 일 없음):
+//    - 앱을 내렸다(백그라운드로 감) → 성공. 3초 안에 내리면 타이머가 멈춘 채 시스템이
+//      앱을 정리하는데, 그것은 죽은 것이 아니다.
+//    - iOS 가 미리 띄운 실행(prewarm, `ActivePrewarm=1`) → 판정만 하고 표식은 실제로
+//      켜질 때(`didFinishLaunching`) 남긴다. `App.init` 은 prewarm 에서도 돌고, 쓰이지 않고
+//      버려지는 일이 흔하다.
+//  이 둘을 세던 3.26 까지는 낫마템포 1.0.10 이 크래시 0건에 "크래시 없는 설치 69%"로 나왔다.
+//
 //  익스텐션 안전: Foundation 만 쓴다. `UIApplication.shared` 같은 익스텐션 금지 API 가 없다.
 //
 //  사용 예 (키보드 익스텐션):
@@ -55,6 +63,9 @@
 //
 
 import Foundation
+#if canImport(UIKit)
+import UIKit
+#endif
 
 // MARK: - 순수 판정
 
@@ -130,8 +141,11 @@ public final class LeeoCrashLoopGuard: @unchecked Sendable {
 
     private let defaults: UserDefaults
     private let session: String
+    /// iOS 가 미리 띄운 실행인가. 그렇다면 표식은 실제로 켜질 때 남긴다.
+    private let isPrewarm: Bool
     private let lock = NSLock()
     private var safeMode = false
+    private var observers: [NSObjectProtocol] = []
 
     /// 프로세스마다 하나. 같은 프로세스 안의 재호출을 "직전 실행이 죽었다"로 세지 않기 위한 값.
     private static let processSession = UUID().uuidString
@@ -143,15 +157,22 @@ public final class LeeoCrashLoopGuard: @unchecked Sendable {
         self.threshold = threshold
         self.survivalDelay = survivalDelay
         self.session = Self.processSession
+        self.isPrewarm = ProcessInfo.processInfo.environment["ActivePrewarm"] == "1"
     }
 
     /// 테스트용. 서로 다른 프로세스를 세션 값으로 흉내 낸다.
-    init(name: String, defaults: UserDefaults, threshold: Int, survivalDelay: TimeInterval, session: String) {
+    init(name: String, defaults: UserDefaults, threshold: Int, survivalDelay: TimeInterval,
+         session: String, isPrewarm: Bool = false) {
         self.name = name
         self.defaults = defaults
         self.threshold = threshold
         self.survivalDelay = survivalDelay
         self.session = session
+        self.isPrewarm = isPrewarm
+    }
+
+    deinit {
+        observers.forEach(NotificationCenter.default.removeObserver)
     }
 
     // MARK: 공개 상태
@@ -173,8 +194,26 @@ public final class LeeoCrashLoopGuard: @unchecked Sendable {
     // MARK: 실행 경계
 
     /// 실행 맨 앞에서 부른다. **true 면 세이프 모드**, 최소 화면만 띄울 것.
+    ///
+    /// 본 앱이면 앱을 내릴 때 스스로 성공 표시를 하고, prewarm 이면 표식을 실제로
+    /// 켜질 때로 미룬다(머리말 "죽은 것만 센다").
     @discardableResult
     public func beginLaunch() -> Bool {
+        if isPrewarm {
+            // 판정은 지금 한다(화면을 고르는 데 필요하다). 표식은 실제로 켜질 때.
+            lock.lock()
+            safeMode = LeeoCrashLoopPolicy.begin(load(), session: session, threshold: threshold).safeMode
+            lock.unlock()
+            observeOnce(Self.launchNotification) { [weak self] in self?.commitLaunch() }
+        } else {
+            commitLaunch()
+        }
+        observeOnce(Self.backgroundNotification) { [weak self] in self?.markLaunchSucceeded() }
+        return isInSafeMode
+    }
+
+    /// 실제로 켜졌다. 표식을 남기고, 직전 실행의 표식이 남아 있었으면 센다.
+    func commitLaunch() {
         lock.lock(); defer { lock.unlock() }
         let result = LeeoCrashLoopPolicy.begin(load(), session: session, threshold: threshold)
         store(result.state)
@@ -183,7 +222,28 @@ public final class LeeoCrashLoopGuard: @unchecked Sendable {
             print("❌ [LeeoCrashLoopGuard.beginLaunch] '\(name)' 직전 실행이 끝나지 못했다 "
                   + "(연속 \(result.state.consecutiveIncomplete)회)\(result.safeMode ? ", 세이프 모드로 연다" : "")")
         }
-        return result.safeMode
+    }
+
+    // MARK: 앱 생명주기
+
+    #if canImport(UIKit)
+    private static let launchNotification: Notification.Name? = UIApplication.didFinishLaunchingNotification
+    /// 익스텐션에는 오지 않는다. 익스텐션은 `viewWillDisappear` 에서 직접 성공 표시를 한다.
+    private static let backgroundNotification: Notification.Name? = UIApplication.didEnterBackgroundNotification
+    #else
+    private static let launchNotification: Notification.Name? = nil
+    private static let backgroundNotification: Notification.Name? = nil
+    #endif
+
+    /// 알림을 한 번만 받는다. 알림이 없는 플랫폼(맥)에는 prewarm 도 없으니 기다리지 않는다.
+    private func observeOnce(_ name: Notification.Name?, _ action: @escaping () -> Void) {
+        guard let name else { return }
+        var token: NSObjectProtocol?
+        token = NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) { _ in
+            if let token { NotificationCenter.default.removeObserver(token) }
+            action()
+        }
+        lock.lock(); observers.append(token!); lock.unlock()
     }
 
     /// 무사히 떴다. 첫 화면을 그린 뒤, 또는 `survivalDelay` 만큼 살아 있은 뒤에 부른다.
