@@ -58,6 +58,7 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
             VStack(spacing: 20) {
                 header
                 if tipJar.justTipped { thanks }
+                if tipJar.hasTipped, let page = tipJar.config.thanksPage { thanksList(page) }
                 tiers
                 if let error = tipJar.lastError {
                     Text(error)
@@ -131,6 +132,67 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
         .background(RoundedRectangle(cornerRadius: theme.radiusSm + 4, style: .continuous)
             .fill(theme.accent.opacity(0.12)))
         .accessibilityElement(children: .combine)
+    }
+
+    /// '고마운 사람들' — 응원한 사람이 앱 소개 페이지에 이름을 올릴 수 있다고 알려 준다.
+    /// 이름은 메일로 받아 개발자가 주문 번호로 확인한 뒤 손으로 올린다(서버 없음). 그래서 버튼은 메일 쓰기다.
+    private func thanksList(_ page: URL) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Label(L("고마운 사람들에 이름 올리기", comment: "Tip jar: thank-you list card title"),
+                  systemImage: "person.2.fill")
+                .font(.body.weight(.semibold))
+                .foregroundStyle(theme.text)
+            Text(L("앱 소개 페이지의 '고마운 사람들'에 이름을 올려 드려요. 올리고 싶은 이름과 App Store 영수증 메일의 주문 번호(Order ID)를 보내 주세요.",
+                   comment: "Tip jar: thank-you list card explanation"))
+                .font(.body)
+                .foregroundStyle(theme.textMuted)
+                .fixedSize(horizontal: false, vertical: true)
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 10) { thanksButtons(page) }
+                VStack(alignment: .leading, spacing: 10) { thanksButtons(page) }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(16)
+        .background(RoundedRectangle(cornerRadius: theme.radiusSm + 4, style: .continuous).fill(theme.surface))
+    }
+
+    @ViewBuilder
+    private func thanksButtons(_ page: URL) -> some View {
+        if let mail = thanksMail {
+            Link(destination: mail) {
+                Text(L("이름 보내기", comment: "Tip jar: button that opens a mail to send the name for the thank-you list"))
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 9)
+                    .background(Capsule().fill(theme.accent))
+            }
+        }
+        Link(destination: page) {
+            Text(L("고마운 사람들 보기", comment: "Tip jar: button that opens the thank-you list on the app's web page"))
+                .font(.body.weight(.semibold))
+                .foregroundStyle(theme.accent)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 9)
+                .background(Capsule().stroke(theme.accent, lineWidth: 1.5))
+        }
+    }
+
+    /// 개발자에게 가는 메일. 제목에 앱 이름을, 본문에 적을 칸 두 개를 미리 넣는다.
+    private var thanksMail: URL? {
+        var c = URLComponents()
+        c.scheme = "mailto"
+        c.path = Spec.developerEmail
+        c.queryItems = [
+            URLQueryItem(name: "subject",
+                         value: String(format: L("[고마운 사람들] %@", comment: "Tip jar: thank-you list mail subject. %@ = app name"),
+                                       Spec.displayName)),
+            URLQueryItem(name: "body",
+                         value: L("올리고 싶은 이름:\n주문 번호(Order ID):\n",
+                                  comment: "Tip jar: thank-you list mail body with two blanks to fill in")),
+        ]
+        return c.url
     }
 
     @ViewBuilder

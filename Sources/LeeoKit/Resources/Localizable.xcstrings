@@ -56157,6 +56157,864 @@
           }
         }
       }
+    },
+    "고마운 사람들에 이름 올리기": {
+      "comment": "Tip jar: thank-you list card title",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Přidat mé jméno do poděkování"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sæt mit navn på takkelisten"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Namen in die Dankesliste eintragen"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Προσθήκη του ονόματός μου στις ευχαριστίες"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add your name to the thank-you list"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir mi nombre a los agradecimientos"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisää nimeni kiitoslistaan"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter mon nom aux remerciements"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cantumkan namaku di daftar terima kasih"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi il tuo nome ai ringraziamenti"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ありがとうリストに名前を載せる"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "고마운 사람들에 이름 올리기"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Legg navnet mitt på takkelisten"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mijn naam op de bedanklijst"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dodaj moje imię do podziękowań"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Incluir meu nome nos agradecimentos"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Добавить моё имя в список благодарностей"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lägg till mitt namn i tacklistan"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ใส่ชื่อของฉันในรายชื่อขอบคุณ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adımı teşekkür listesine ekle"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ghi tên tôi vào danh sách cảm ơn"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "把名字加入感谢名单"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "把名字加入感謝名單"
+          }
+        }
+      }
+    },
+    "앱 소개 페이지의 '고마운 사람들'에 이름을 올려 드려요. 올리고 싶은 이름과 App Store 영수증 메일의 주문 번호(Order ID)를 보내 주세요.": {
+      "comment": "Tip jar: thank-you list card explanation",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rádi uvedeme vaše jméno v části „Děkujeme“ na webu aplikace. Pošlete jméno, které chcete zobrazit, a číslo objednávky (Order ID) z účtenky App Store."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vi viser gerne dit navn under »Tak« på appens webside. Send det navn, du vil vise, og ordrenummeret (Order ID) fra din App Store-kvittering."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wir nennen dich gern unter „Danke“ auf der Webseite der App. Schick uns den gewünschten Namen und die Bestellnummer (Order ID) aus deiner App-Store-Quittung."
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Θα χαρούμε να γράψουμε το όνομά σας στο «Ευχαριστούμε» στη σελίδα της εφαρμογής. Στείλτε το όνομα που θέλετε και τον αριθμό παραγγελίας (Order ID) από την απόδειξη του App Store."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We'd love to list your name under 'Thank you' on the app's web page. Send the name you'd like shown and the Order ID from your App Store receipt email."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nos encantará poner tu nombre en «Gracias» en la web de la app. Envía el nombre que quieres mostrar y el número de pedido (Order ID) de tu recibo de App Store."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lisäämme nimesi mielellämme sovelluksen verkkosivun Kiitos-listaan. Lähetä haluamasi nimi ja App Store -kuitin tilausnumero (Order ID)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nous serons heureux d'afficher votre nom dans « Merci » sur la page web de l'app. Envoyez le nom souhaité et le numéro de commande (Order ID) de votre reçu App Store."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kami senang mencantumkan namamu di bagian “Terima kasih” pada halaman aplikasi. Kirim nama yang ingin ditampilkan dan nomor pesanan (Order ID) dari struk App Store."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saremo felici di mettere il tuo nome in «Grazie» sulla pagina web dell'app. Invia il nome da mostrare e il numero d'ordine (Order ID) della ricevuta App Store."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリ紹介ページの「ありがとう」にお名前を載せます。載せたいお名前と、App Store の領収書メールにある注文番号(Order ID)をお送りください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "앱 소개 페이지의 '고마운 사람들'에 이름을 올려 드려요. 올리고 싶은 이름과 App Store 영수증 메일의 주문 번호(Order ID)를 보내 주세요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vi viser gjerne navnet ditt under «Takk» på appens nettside. Send navnet du vil vise og ordrenummeret (Order ID) fra App Store-kvitteringen."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We zetten je naam graag onder ‘Bedankt’ op de webpagina van de app. Stuur de naam die je wilt tonen en het bestelnummer (Order ID) uit je App Store-bon."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chętnie umieścimy Twoje imię w sekcji „Dziękujemy” na stronie aplikacji. Wyślij imię do pokazania i numer zamówienia (Order ID) z rachunku App Store."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vamos adorar colocar seu nome em “Obrigado” na página do app. Envie o nome que deseja mostrar e o número do pedido (Order ID) do recibo da App Store."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Мы с радостью укажем ваше имя в разделе «Спасибо» на странице приложения. Пришлите имя для показа и номер заказа (Order ID) из чека App Store."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vi visar gärna ditt namn under ”Tack” på appens webbsida. Skicka namnet du vill visa och ordernumret (Order ID) från ditt App Store-kvitto."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เรายินดีใส่ชื่อของคุณไว้ในส่วน “ขอบคุณ” บนหน้าเว็บของแอป ส่งชื่อที่อยากให้แสดงและหมายเลขคำสั่งซื้อ (Order ID) จากใบเสร็จ App Store มาได้เลย"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adını uygulamanın web sayfasındaki “Teşekkürler” bölümünde göstermekten mutluluk duyarız. Görünmesini istediğin adı ve App Store makbuzundaki sipariş numarasını (Order ID) gönder."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chúng tôi rất vui được ghi tên bạn ở mục “Cảm ơn” trên trang web của ứng dụng. Hãy gửi tên muốn hiển thị và mã đơn hàng (Order ID) trong biên lai App Store."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "我们很乐意把你的名字列在应用介绍页的“感谢名单”中。请发送想显示的名字，以及 App Store 收据邮件中的订单号（Order ID）。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "我們很樂意把你的名字列在 App 介紹頁的「感謝名單」中。請寄來想顯示的名字，以及 App Store 收據郵件中的訂單編號（Order ID）。"
+          }
+        }
+      }
+    },
+    "이름 보내기": {
+      "comment": "Tip jar: button that opens a mail to send the name for the thank-you list",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poslat jméno"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Send navn"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Namen senden"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Αποστολή ονόματος"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Send my name"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviar mi nombre"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lähetä nimi"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Envoyer mon nom"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kirim nama"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invia il nome"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "名前を送る"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이름 보내기"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Send navn"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Naam sturen"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wyślij imię"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enviar meu nome"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отправить имя"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skicka namn"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ส่งชื่อ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adımı gönder"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gửi tên"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "发送名字"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "寄出名字"
+          }
+        }
+      }
+    },
+    "고마운 사람들 보기": {
+      "comment": "Tip jar: button that opens the thank-you list on the app's web page",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zobrazit seznam"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se listen"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liste ansehen"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Δείτε τη λίστα"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See the list"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver la lista"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Näytä lista"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir la liste"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lihat daftar"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vedi la lista"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リストを見る"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "고마운 사람들 보기"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se listen"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lijst bekijken"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zobacz listę"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver a lista"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Посмотреть список"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Visa listan"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ดูรายชื่อ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listeyi gör"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem danh sách"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看名单"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看名單"
+          }
+        }
+      }
+    },
+    "[고마운 사람들] %@": {
+      "comment": "Tip jar: thank-you list mail subject. %@ = app name",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Seznam poděkování] %@"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Takkeliste] %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Dankesliste] %@"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Λίστα ευχαριστιών] %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Thank-you list] %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Lista de agradecimientos] %@"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Kiitoslista] %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Liste de remerciements] %@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Daftar terima kasih] %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Lista dei ringraziamenti] %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[ありがとうリスト] %@"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[고마운 사람들] %@"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Takkeliste] %@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Bedanklijst] %@"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Lista podziękowań] %@"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Lista de agradecimentos] %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Список благодарностей] %@"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Tacklista] %@"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[รายชื่อขอบคุณ] %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Teşekkür listesi] %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[Danh sách cảm ơn] %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[感谢名单] %@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[感謝名單] %@"
+          }
+        }
+      }
+    },
+    "올리고 싶은 이름:\n주문 번호(Order ID):\n": {
+      "comment": "Tip jar: thank-you list mail body with two blanks to fill in",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jméno k zobrazení:\nČíslo objednávky (Order ID):\n"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Navn der skal vises:\nOrdrenummer (Order ID):\n"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Angezeigter Name:\nBestellnummer (Order ID):\n"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Όνομα για εμφάνιση:\nΑριθμός παραγγελίας (Order ID):\n"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name to show:\nOrder ID:\n"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nombre a mostrar:\nNúmero de pedido (Order ID):\n"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Näytettävä nimi:\nTilausnumero (Order ID):\n"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nom à afficher :\nNuméro de commande (Order ID) :\n"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nama yang ditampilkan:\nNomor pesanan (Order ID):\n"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nome da mostrare:\nNumero d'ordine (Order ID):\n"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "載せたい名前:\n注文番号(Order ID):\n"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "올리고 싶은 이름:\n주문 번호(Order ID):\n"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Navn som skal vises:\nOrdrenummer (Order ID):\n"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Naam om te tonen:\nBestelnummer (Order ID):\n"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imię do pokazania:\nNumer zamówienia (Order ID):\n"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nome a mostrar:\nNúmero do pedido (Order ID):\n"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Имя для показа:\nНомер заказа (Order ID):\n"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Namn att visa:\nOrdernummer (Order ID):\n"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ชื่อที่จะแสดง:\nหมายเลขคำสั่งซื้อ (Order ID):\n"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Görünecek ad:\nSipariş numarası (Order ID):\n"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tên muốn hiển thị:\nMã đơn hàng (Order ID):\n"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "想显示的名字：\n订单号（Order ID）：\n"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "想顯示的名字：\n訂單編號（Order ID）：\n"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

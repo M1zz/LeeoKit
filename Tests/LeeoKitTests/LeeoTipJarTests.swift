@@ -76,6 +76,14 @@ final class LeeoTipJarTests: XCTestCase {
         XCTAssertTrue(codes.contains("tip.sellsPro"))
     }
 
+    func test_고마운_사람들_자리는_앱이_줄_때만_있다() {
+        XCTAssertNil(LeeoTipJarConfig(productIDs: tipIDs).thanksPage, "주지 않으면 이름 올리기 칸을 그리지 않는다")
+        let page = URL(string: "https://m1zz.github.io/Rereminder/#leeo-thanks")!
+        let config = LeeoTipJarConfig(productIDs: tipIDs, thanksPage: page)
+        XCTAssertEqual(config.thanksPage, page)
+        XCTAssertNotEqual(config, LeeoTipJarConfig(productIDs: tipIDs), "자리가 다르면 다른 구성이다")
+    }
+
     func test_부탁은_드물게_한다() {
         let day: TimeInterval = 24 * 60 * 60
         let now = Date()

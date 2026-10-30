@@ -428,6 +428,10 @@ LeeoTipAskSlot<MyAppSpec>(tipJar: tipJar, reached: MyTipMoments.reachedNow)
 - 부탁은 그 사람이 앱으로 얻은 것이 숫자로 보이는 순간에만, 드물게 한다(`LeeoTipAskPolicy`: 물으면 60일, 낸 사람은 180일, '다음에' 세 번이면 끝).
 - 유료 등급이 있는 앱은 이미 다 가진 사람에게만 부탁한다.
 - 팁 상품을 `productIDs` · `entitlementIDs` 에 넣지 않는다(사전 점검 `tip.sellsPro`).
+- **고마운 사람들(v3.27).** `LeeoTipJarConfig(productIDs:thanksPage:)` 에 앱 소개 페이지의 자리
+  (`https://m1zz.github.io/MyApp/#leeo-thanks`)를 주면, 한 번이라도 낸 사람에게 팁 화면에서 '이름 보내기'(개발자 메일,
+  이름 · 주문 번호 칸을 미리 채움)와 '고마운 사람들 보기'를 보여 준다. 이름은 app-portfolio 의 `docs/thanks.json` 에
+  손으로 올리고, 소개 페이지는 `thanks.js` 위젯이 그린다. 주지 않으면 그 칸은 없다.
 
 ## 친구에게 소개하기 (LeeoShareAppLink, v3.24)
 

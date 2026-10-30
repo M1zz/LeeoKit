@@ -23,9 +23,14 @@ import StoreKit
 public struct LeeoTipJarConfig: Sendable, Equatable {
     /// 팁 상품 ID. **작은 것부터 큰 것 순**(화면도 이 순서다). 소모성 상품이어야 한다.
     public let productIDs: [String]
+    /// 앱 소개 페이지의 '고마운 사람들' 자리(예: `https://m1zz.github.io/Rereminder/#leeo-thanks`).
+    /// 있으면 한 번이라도 응원한 사람에게 팁 화면에서 '이름 올리기'(개발자에게 메일)와 '보기'를 보여 준다.
+    /// 이름은 app-portfolio 의 docs/thanks.json 에 손으로 올린다. 없으면 그 칸을 그리지 않는다.
+    public let thanksPage: URL?
 
-    public init(productIDs: [String]) {
+    public init(productIDs: [String], thanksPage: URL? = nil) {
         self.productIDs = productIDs
+        self.thanksPage = thanksPage
     }
 }
 
