@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "apps": [
+    {
+      "id": "clipkeyboard",
+      "bundleID": "com.Ysoup.TokenMemo",
+      "appStoreID": "1543660502",
+      "name": {
+        "ko": "클립키보드",
+        "en": "Clip Keyboard"
+      },
+      "tagline": {
+        "ko": "자주 쓰는 문장을 키보드에서 바로 꺼낸다",
+        "en": "Pull up the phrases you use most, right from the keyboard"
+      },
+      "intro": {
+        "ko": "https://m1zz.github.io/ClipKeyboard/ko/",
+        "en": "https://m1zz.github.io/ClipKeyboard/en/"
+      },
+      "platforms": [
+        "iPhone",
+        "iPad"
+      ]
+    },
+    {
+      "id": "goldweek",
+      "bundleID": "com.Ysoup.LeaveWise",
+      "appStoreID": "6755983135",
+      "name": {
+        "ko": "골드위크 - 황금연휴 플래너",
+        "en": "Goldweek - PTO and Vacation"
+      },
+      "tagline": {
+        "ko": "연차를 어디에 끼우면 가장 오래 쉬는지 찾아 준다",
+        "en": "Finds where a day off gives you the longest break"
+      },
+      "intro": {
+        "ko": "https://m1zz.github.io/Goldweek/ko/",
+        "en": "https://m1zz.github.io/Goldweek/en/"
+      },
+      "platforms": [
+        "iPhone",
+        "iPad"
+      ]
+    },
+    {
+      "id": "rainbow-ios",
+      "bundleID": "com.example.ScheduleDensityApp",
+      "appStoreID": "6755280882",
+      "name": {
+        "ko": "욕망의 무지개",
+        "en": "Rainbow of Desire"
+      },
+      "tagline": {
+        "ko": "겹칠수록 진해지는 한 주, 지금 집을 수 있는 일",
+        "en": "See how full your week is and what you can pick up now"
+      },
+      "intro": {
+        "ko": "https://m1zz.github.io/ScheduleDensity/",
+        "en": "https://m1zz.github.io/ScheduleDensity/en/"
+      },
+      "platforms": [
+        "iPhone"
+      ]
+    }
+  ]
+}

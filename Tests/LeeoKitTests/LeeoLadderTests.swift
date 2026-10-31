@@ -74,3 +74,78 @@ final class LeeoLadderTests: XCTestCase {
         }
     }
 }
+
+// MARK: - 패스로 열리는 앱 목록
+
+final class LeeoForeverPassAppsTests: XCTestCase {
+
+    private func defaults() -> UserDefaults {
+        let name = "LeeoForeverPassAppsTests.\(UUID().uuidString)"
+        let store = UserDefaults(suiteName: name)!
+        store.removePersistentDomain(forName: name)
+        return store
+    }
+
+    private func entry(id: String = "goldweek", bundleID: String = "com.Ysoup.LeaveWise",
+                       storeID: String = "6755983135", intro: String = "https://example.com/en/",
+                       icon: String? = nil) -> [String: Any] {
+        var item: [String: Any] = ["id": id, "bundleID": bundleID, "appStoreID": storeID,
+                                   "name": ["ko": "이름", "en": "Name"], "tagline": ["en": "Line"],
+                                   "intro": ["ko": "https://example.com/ko/", "en": intro], "platforms": ["iPhone"]]
+        if let icon { item["icon"] = icon }
+        return item
+    }
+
+    private func payload(_ entries: [[String: Any]]) throws -> Data {
+        try JSONSerialization.data(withJSONObject: ["version": 1, "apps": entries])
+    }
+
+    func test_내장_목록은_모두_로고와_소개_페이지가_있고_패스가_믿는_앱이다() {
+        let apps = LeeoForeverPassApps.embedded
+        XCTAssertEqual(apps.map(\.id), ["clipkeyboard", "goldweek", "rainbow-ios"])
+        for app in apps {
+            XCTAssertFalse(app.iconPNGData.isEmpty, app.id)
+            XCTAssertTrue(LeeoForeverPassRule.family.contains(app.bundleID), app.id)
+            XCTAssertEqual(app.introURL.scheme, "https", app.id)
+            XCTAssertNotEqual(app.introURL.host, "apps.apple.com", app.id)
+        }
+    }
+
+    func test_지금_쓰는_앱은_빠지고_개수에는_한_번만_든다() {
+        let store = defaults()
+        let others = LeeoForeverPassApps.others(than: "com.Ysoup.TokenMemo", defaults: store)
+        XCTAssertFalse(others.contains { $0.bundleID == "com.Ysoup.TokenMemo" })
+        XCTAssertEqual(LeeoForeverPassApps.unlockedCount(bundleID: "com.Ysoup.TokenMemo", defaults: store), 3)
+        XCTAssertEqual(LeeoForeverPassApps.unlockedCount(bundleID: "com.xa.toki", defaults: store), 4)
+    }
+
+    func test_받은_목록은_패스가_모르는_앱_이상한_ID_로고_없는_앱을_뺀다() throws {
+        let data = try payload([
+            entry(),
+            entry(id: "stranger", bundleID: "com.someone.else"),
+            entry(id: "bad-id", storeID: "abc"),
+            entry(id: "no-logo", bundleID: "com.xa.toki"),
+            entry(id: "http", intro: "http://example.com"),
+        ])
+        XCTAssertEqual(LeeoForeverPassApps.decode(data, language: "en")?.map(\.id), ["goldweek"])
+    }
+
+    func test_받은_앱은_함께_온_로고로_설_수_있다() throws {
+        let icon = Data([1, 2, 3]).base64EncodedString()
+        let data = try payload([entry(id: "new-app", bundleID: "com.xa.toki", icon: icon)])
+        XCTAssertEqual(LeeoForeverPassApps.decode(data, language: "en")?.first?.iconPNGData, Data([1, 2, 3]))
+    }
+
+    func test_없는_언어는_영어_소개_페이지로_간다() throws {
+        let data = try payload([entry()])
+        XCTAssertEqual(LeeoForeverPassApps.decode(data, language: "de")?.first?.introURL.absoluteString, "https://example.com/en/")
+        XCTAssertEqual(LeeoForeverPassApps.decode(data, language: "ko")?.first?.introURL.absoluteString, "https://example.com/ko/")
+    }
+
+    func test_공개_목록_파일이_앱에서_읽힌다() throws {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+            .deletingLastPathComponent().appendingPathComponent("pass-apps.json")
+        let apps = try XCTUnwrap(LeeoForeverPassApps.decode(Data(contentsOf: url), language: "ko"))
+        XCTAssertEqual(apps.map(\.id), LeeoForeverPassApps.embedded.map(\.id))
+    }
+}
