@@ -34,16 +34,53 @@ public struct LeeoTipJarLink<Spec: LeeoAppSpec>: View {
                 LeeoTipJarView<Spec>(tipJar: tipJar)
             } label: {
                 Label {
-                    VStack(alignment: .leading, spacing: 2) {
+                    VStack(alignment: .leading, spacing: 4) {
                         Text(LeeoTipText.entry)
-                        Text(LeeoTipText.entrySubtitle)
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
+                        // 낸 사람에게는 설명 대신 후원자 배지 — 리이오의 어느 앱에서 냈든 여기 보인다.
+                        if tipJar.level != nil {
+                            LeeoSupporterBadge(tipJar: tipJar)
+                        } else {
+                            Text(LeeoTipText.entrySubtitle)
+                                .font(.body)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                 } icon: {
                     Image(systemName: systemImage)
                 }
             }
+            .task { await tipJar.syncSupporter(containerIdentifier: Spec.feedback.containerIdentifier) }
+        }
+    }
+}
+
+// MARK: - 후원자 배지
+
+/// 응원 단계 배지(그림 · 단계 · 점수). 낸 적이 없으면 아무것도 그리지 않는다.
+/// 설정의 '개발자 응원하기' 줄(`LeeoTipJarLink`)에 이미 들어 있다. 팁 줄을 직접 그리는 앱은 이것을 붙인다.
+public struct LeeoSupporterBadge: View {
+    @ObservedObject private var tipJar: LeeoTipJar
+    @Environment(\.leeoStyle) private var theme
+
+    public init(tipJar: LeeoTipJar) {
+        self.tipJar = tipJar
+    }
+
+    public var body: some View {
+        if let level = tipJar.level {
+            Label {
+                Text(String(format: L("%1$@ · %2$d점", comment: "Supporter badge: level and points. %1$@ = level, %2$d = points"),
+                            level.title, tipJar.points))
+            } icon: {
+                Image(systemName: level.symbol)
+            }
+            .font(.body.weight(.semibold))
+            .foregroundStyle(theme.accent)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 4)
+            .background(Capsule().fill(theme.accent.opacity(0.14)))
+            .accessibilityLabel(String(format: L("후원자 배지: %1$@, %2$d점", comment: "Supporter badge: accessibility label. %1$@ = level, %2$d = points"),
+                                       level.title, tipJar.points))
         }
     }
 }

@@ -126,4 +126,79 @@ final class LeeoTipJarTests: XCTestCase {
         // large 만 따로 나와 있을 때
         XCTAssertEqual(jar.tier(for: tipIDs[2], fallbackIndex: 0).size, .large)
     }
+
+    // MARK: 후원 보상
+
+    func test_점수는_칸_크기로_쌓이고_단계가_오른다() {
+        let (defaults, suite) = makeDefaults()
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let jar = LeeoTipJar(config: LeeoTipJarConfig(productIDs: tipIDs), defaults: defaults, bundleID: "com.example.a")
+        XCTAssertNil(jar.level, "내기 전에는 단계가 없다")
+        jar.record(transactionID: "1", productID: tipIDs[0])
+        XCTAssertEqual(jar.points, 1)
+        XCTAssertEqual(jar.level, .supporter, "처음 한 번이면 응원자")
+        jar.record(transactionID: "2", productID: tipIDs[1])
+        jar.record(transactionID: "3", productID: tipIDs[1])
+        jar.record(transactionID: "4", productID: tipIDs[1])
+        XCTAssertEqual(jar.points, 10)
+        XCTAssertEqual(jar.level, .regular, "10점이면 단골")
+        jar.record(transactionID: "5", productID: tipIDs[2])
+        jar.record(transactionID: "6", productID: tipIDs[2])
+        XCTAssertEqual(jar.points, 30)
+        XCTAssertEqual(jar.level, .patron, "30점이면 후견인")
+        XCTAssertNil(LeeoSupporterLevel.patron.next)
+
+        let reopened = LeeoTipJar(config: LeeoTipJarConfig(productIDs: tipIDs), defaults: defaults, bundleID: "com.example.a")
+        XCTAssertEqual(reopened.points, 30, "다시 켜도 점수가 남는다")
+    }
+
+    func test_장부가_생기기_전에_센_팁은_작은_칸으로_옮긴다() {
+        let (defaults, suite) = makeDefaults()
+        defer { defaults.removePersistentDomain(forName: suite) }
+        defaults.set(4, forKey: "leeo.tips.count." + tipIDs[0])
+        let jar = LeeoTipJar(config: LeeoTipJarConfig(productIDs: tipIDs), defaults: defaults, bundleID: "com.example.a")
+        XCTAssertEqual(jar.tipCount, 4)
+        XCTAssertEqual(jar.points, 4, "칸을 모르는 옛 팁은 1점씩")
+        XCTAssertEqual(LeeoTipJar(config: LeeoTipJarConfig(productIDs: tipIDs), defaults: defaults).points, 4, "한 번만 옮긴다")
+    }
+
+    func test_앱이_따로_세던_옛_후원은_한_번만_옮긴다() {
+        let (defaults, suite) = makeDefaults()
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let jar = LeeoTipJar(config: LeeoTipJarConfig(productIDs: tipIDs), defaults: defaults, bundleID: "com.example.mart")
+        jar.adoptLegacyTips(3)
+        jar.adoptLegacyTips(3)
+        XCTAssertEqual(jar.points, 3, "다시 불러도 두 번 세지 않는다")
+        XCTAssertEqual(jar.tipCount, 3)
+        XCTAssertTrue(jar.hasTipped)
+    }
+
+    func test_다른_기기_다른_앱의_장부를_합친다() {
+        let mine = [LeeoSupporterLedger.entry(bundleID: "a", transactionID: "1", points: 3)]
+        let cloud = [LeeoSupporterLedger.entry(bundleID: "a", transactionID: "1", points: 3),
+                     LeeoSupporterLedger.entry(bundleID: "a", transactionID: "2", points: 1),
+                     LeeoSupporterLedger.entry(bundleID: "b", transactionID: "1", points: 10),
+                     "모양이 틀린 줄"]
+        let merged = LeeoSupporterLedger.merge(cloud, mine)
+        XCTAssertEqual(merged.count, 3, "같은 결제는 한 줄, 다른 앱의 같은 번호는 다른 결제")
+        XCTAssertEqual(LeeoSupporterLedger.total(merged), 14)
+        XCTAssertEqual(LeeoSupporterLedger.lines(merged, of: "a").count, 2)
+    }
+
+    func test_후원_뒤_업그레이드_배너는_30일_쉰다() {
+        let (defaults, suite) = makeDefaults()
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let jar = LeeoTipJar(config: LeeoTipJarConfig(productIDs: tipIDs), defaults: defaults)
+        XCTAssertFalse(jar.tippedRecently())
+        jar.record(transactionID: "1", at: Date().addingTimeInterval(-29 * 24 * 60 * 60))
+        XCTAssertTrue(jar.tippedRecently())
+        XCTAssertFalse(jar.tippedRecently(now: Date().addingTimeInterval(2 * 24 * 60 * 60)))
+    }
+
+    func test_보상_자리는_앱이_줄_때만_있다() {
+        let config = LeeoTipJarConfig(productIDs: tipIDs)
+        XCTAssertNil(config.supporterIcon)
+        XCTAssertNil(config.betaURL)
+        XCTAssertEqual(LeeoTipJarConfig(productIDs: tipIDs, supporterIcon: "SupporterIcon").supporterIcon, "SupporterIcon")
+    }
 }

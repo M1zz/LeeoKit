@@ -4,6 +4,7 @@
 //
 //  팁을 내는 화면. 무엇을 위한 돈인지(기능이 아니라 앱을 계속 다듬는 데) 먼저 말하고,
 //  작은 것부터 큰 것까지 고르게 한다. 낸 뒤에는 같은 자리에서 고맙다고 말한다.
+//  응원 단계(`LeeoSupporterLevel`)와 단계마다 받는 것을 늘 보여 주고, 연 보상(아이콘 · 한 표 · 베타)은 여기서 쓴다.
 //
 //  설정에서 한 줄:
 //      if let tipJar = store.tipJar, tipJar.isAvailable {
@@ -37,6 +38,10 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
     @Environment(\.purchase) private var purchaseAction
     #endif
 
+    #if os(iOS)
+    @State private var iconName: String? = UIApplication.shared.alternateIconName
+    #endif
+
     /// 미리보기 가격(작은 것부터). 있으면 상품을 기다리지 않고 이 값으로 칸을 그리며, 눌러도 결제하지 않는다.
     private let previewPrices: [String]?
 
@@ -58,17 +63,18 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
             VStack(spacing: 20) {
                 header
                 if tipJar.justTipped { thanks }
+                levelCard
                 if tipJar.hasTipped, let page = tipJar.config.thanksPage { thanksList(page) }
                 tiers
                 if let error = tipJar.lastError {
                     Text(error)
-                        .font(.footnote)
+                        .font(.body)
                         .foregroundStyle(.red)
                         .multilineTextAlignment(.center)
                 }
                 Text(L("한 번만 결제돼요. 구독이 아니고, 열리는 기능도 없어요.",
                        comment: "Tip jar: footnote, one-time payment that unlocks nothing"))
-                    .font(.footnote)
+                    .font(.body)
                     .foregroundStyle(theme.textMuted)
                     .multilineTextAlignment(.center)
             }
@@ -83,6 +89,7 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
             #if canImport(StoreKit)
             await tipJar.loadProducts()
             #endif
+            await tipJar.syncSupporter(containerIdentifier: Spec.feedback.containerIdentifier)
         }
         .onDisappear { tipJar.justTipped = false }
         // 고맙다는 카드는 화면 위쪽에 조용히 선다. 결제 시트에서 돌아온 VoiceOver 사용자에게도 말해 준다.
@@ -124,7 +131,18 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
                 .foregroundStyle(theme.text)
             Text(String(format: L("지금까지 %d번 응원해 주셨어요.", comment: "Tip jar: how many times this person has tipped"),
                         tipJar.tipCount))
-                .font(.subheadline)
+                .font(.body)
+                .foregroundStyle(theme.textMuted)
+            // 개발자의 짧은 편지
+            Text(L("혼자 만드는 앱이라 보내 주신 응원을 하나하나 다 보고 있어요. 다음 업데이트로 꼭 보답할게요.",
+                   comment: "Tip jar: short letter from the developer right after tipping"))
+                .font(.body)
+                .foregroundStyle(theme.text)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 6)
+            Text(L("— 만든 사람 드림", comment: "Tip jar: signature under the developer's letter"))
+                .font(.body.italic())
                 .foregroundStyle(theme.textMuted)
         }
         .frame(maxWidth: .infinity)
@@ -159,40 +177,158 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
 
     @ViewBuilder
     private func thanksButtons(_ page: URL) -> some View {
-        if let mail = thanksMail {
+        if let mail = mail(subject: L("[고마운 사람들] %@", comment: "Tip jar: thank-you list mail subject. %@ = app name"),
+                           body: L("올리고 싶은 이름:\n주문 번호(Order ID):\n",
+                                   comment: "Tip jar: thank-you list mail body with two blanks to fill in")) {
             Link(destination: mail) {
-                Text(L("이름 보내기", comment: "Tip jar: button that opens a mail to send the name for the thank-you list"))
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 9)
-                    .background(Capsule().fill(theme.accent))
+                pill(L("이름 보내기", comment: "Tip jar: button that opens a mail to send the name for the thank-you list"), filled: true)
             }
         }
         Link(destination: page) {
-            Text(L("고마운 사람들 보기", comment: "Tip jar: button that opens the thank-you list on the app's web page"))
-                .font(.body.weight(.semibold))
-                .foregroundStyle(theme.accent)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 9)
-                .background(Capsule().stroke(theme.accent, lineWidth: 1.5))
+            pill(L("고마운 사람들 보기", comment: "Tip jar: button that opens the thank-you list on the app's web page"), filled: false)
         }
     }
 
-    /// 개발자에게 가는 메일. 제목에 앱 이름을, 본문에 적을 칸 두 개를 미리 넣는다.
-    private var thanksMail: URL? {
+    private func pill(_ title: String, filled: Bool) -> some View {
+        Text(title)
+            .font(.body.weight(.semibold))
+            .foregroundStyle(filled ? Color.white : theme.accent)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 9)
+            .background(Capsule().fill(filled ? theme.accent : Color.clear))
+            .overlay(Capsule().stroke(theme.accent, lineWidth: filled ? 0 : 1.5))
+    }
+
+    /// 개발자에게 가는 메일. `subject` 의 %@ 에 앱 이름이 들어간다.
+    private func mail(subject: String, body: String) -> URL? {
         var c = URLComponents()
         c.scheme = "mailto"
         c.path = Spec.developerEmail
         c.queryItems = [
-            URLQueryItem(name: "subject",
-                         value: String(format: L("[고마운 사람들] %@", comment: "Tip jar: thank-you list mail subject. %@ = app name"),
-                                       Spec.displayName)),
-            URLQueryItem(name: "body",
-                         value: L("올리고 싶은 이름:\n주문 번호(Order ID):\n",
-                                  comment: "Tip jar: thank-you list mail body with two blanks to fill in")),
+            URLQueryItem(name: "subject", value: String(format: subject, Spec.displayName)),
+            URLQueryItem(name: "body", value: body),
         ]
         return c.url
+    }
+
+    // MARK: 응원 단계
+
+    /// 단계 사다리. 지금 단계 · 다음 단계까지 남은 점수 · 단계마다 받는 것. 아직 안 낸 사람에게도 보인다
+    /// (무엇을 받는지 미리 안다). 기능은 열지 않으므로 '산다'가 아니라 '쌓인다'로 말한다.
+    private var levelCard: some View {
+        let level = tipJar.level
+        let next: LeeoSupporterLevel? = level == nil ? .supporter : level?.next
+        return VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 10) {
+                Image(systemName: level?.symbol ?? "heart")
+                    .font(.title3.weight(.semibold))
+                    .foregroundStyle(theme.accent)
+                    .accessibilityHidden(true)
+                Text(level?.title ?? L("응원 단계", comment: "Supporter: level card title before the first tip"))
+                    .font(.headline)
+                    .foregroundStyle(theme.text)
+                Spacer(minLength: 8)
+                if tipJar.points > 0 {
+                    Text(String(format: L("%d점", comment: "Supporter: points. %d = points"), tipJar.points))
+                        .font(.body.weight(.semibold).monospacedDigit())
+                        .foregroundStyle(theme.accent)
+                }
+            }
+            .accessibilityElement(children: .combine)
+            if let next {
+                ProgressView(value: Double(min(tipJar.points, next.need)), total: Double(next.need))
+                    .tint(theme.accent)
+                    .accessibilityHidden(true)
+                Text(String(format: L("%1$@까지 %2$d점 남았어요", comment: "Supporter: points left to the next level. %1$@ = level, %2$d = points"),
+                            next.title, next.need - tipJar.points))
+                    .font(.body)
+                    .foregroundStyle(theme.textMuted)
+            } else {
+                Text(L("가장 높은 단계예요. 늘 고마워요.", comment: "Supporter: reached the top level"))
+                    .font(.body)
+                    .foregroundStyle(theme.textMuted)
+            }
+            ForEach(LeeoSupporterLevel.allCases, id: \.self) { l in
+                let reached = level.map { $0 >= l } ?? false
+                HStack(alignment: .firstTextBaseline, spacing: 10) {
+                    Image(systemName: reached ? "checkmark.circle.fill" : "circle")
+                        .font(.body)
+                        .foregroundStyle(reached ? theme.accent : theme.textMuted)
+                        .accessibilityHidden(true)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(String(format: L("%1$@ · %2$d점부터", comment: "Supporter: level row. %1$@ = level, %2$d = points needed"),
+                                    l.title, l.need))
+                            .font(.body.weight(.semibold))
+                            .foregroundStyle(theme.text)
+                        Text(l.perks)
+                            .font(.body)
+                            .foregroundStyle(theme.textMuted)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .accessibilityElement(children: .combine)
+                .accessibilityAddTraits(reached ? .isSelected : [])
+            }
+            Text(L("커피 한 잔 1점 · 간식 한 번 3점 · 든든한 한 끼 10점. 리이오의 모든 앱에서 낸 응원을 합쳐요.",
+                   comment: "Supporter: how points are counted"))
+                .font(.body)
+                .foregroundStyle(theme.textMuted)
+                .fixedSize(horizontal: false, vertical: true)
+            rewards
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(16)
+        .background(RoundedRectangle(cornerRadius: theme.radiusSm + 4, style: .continuous).fill(theme.surface))
+    }
+
+    /// 연 보상. 단골: 후원자 아이콘 · 다음 기능에 한 표, 후견인: 베타.
+    @ViewBuilder
+    private var rewards: some View {
+        if let level = tipJar.level, level >= .regular {
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 10) { rewardButtons(level) }
+                VStack(alignment: .leading, spacing: 10) { rewardButtons(level) }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func rewardButtons(_ level: LeeoSupporterLevel) -> some View {
+        #if os(iOS)
+        if let icon = tipJar.config.supporterIcon, UIApplication.shared.supportsAlternateIcons {
+            let using = iconName == icon
+            Button {
+                let target = using ? nil : icon
+                UIApplication.shared.setAlternateIconName(target) { error in
+                    if error == nil { Task { @MainActor in iconName = target } }
+                }
+            } label: {
+                pill(using ? L("원래 아이콘으로", comment: "Supporter reward: switch back to the default app icon")
+                           : L("후원자 아이콘 쓰기", comment: "Supporter reward: use the supporter-only app icon"), filled: !using)
+            }
+            .buttonStyle(.plain)
+        }
+        #endif
+        if let vote = mail(subject: L("[한 표] %@", comment: "Supporter reward: vote mail subject. %@ = app name"), body: voteBody) {
+            Link(destination: vote) {
+                pill(L("다음 기능에 한 표", comment: "Supporter reward: vote for the next feature"), filled: false)
+            }
+        }
+        if level >= .patron,
+           let beta = tipJar.config.betaURL
+            ?? mail(subject: L("[베타 신청] %@", comment: "Supporter reward: beta request mail subject. %@ = app name"),
+                    body: L("TestFlight 초대를 받을 이메일:\n", comment: "Supporter reward: beta request mail body")) {
+            Link(destination: beta) {
+                pill(L("베타 함께하기", comment: "Supporter reward: join the TestFlight beta"), filled: false)
+            }
+        }
+    }
+
+    /// 한 표 메일 본문. 만들고 있거나 다음에 만들 기능을 미리 보여 주고 하나 고르게 한다.
+    private var voteBody: String {
+        let items = (Spec.roadmap.building + Spec.roadmap.planned).map { "- \($0.title)" }
+        return ([L("가장 기다리는 기능을 하나 골라 남겨 주세요.", comment: "Supporter reward: vote mail body")] + [""] + items)
+            .joined(separator: "\n") + "\n"
     }
 
     @ViewBuilder

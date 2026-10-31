@@ -114,11 +114,11 @@ public struct LeeoTipAskCard: View {
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 4) {
                     Text(moment.message)
-                        .font(.subheadline.weight(.semibold))
+                        .font(.body.weight(.semibold))
                         .foregroundStyle(theme.text)
                     Text(L("혼자 만들고 고쳐 가는 앱이에요. 앞으로도 계속 다듬을 수 있게 조금만 힘을 보태 주시겠어요?",
                            comment: "Tip ask card: asks for support so the developer can keep maintaining the app"))
-                        .font(.footnote)
+                        .font(.body)
                         .foregroundStyle(theme.textMuted)
                 }
                 .fixedSize(horizontal: false, vertical: true)
@@ -131,14 +131,14 @@ public struct LeeoTipAskCard: View {
                     onLater()
                 } label: {
                     Text(L("다음에", comment: "Tip ask card: not now"))
-                        .font(.subheadline.weight(.medium))
+                        .font(.body.weight(.medium))
                         .foregroundStyle(theme.textMuted)
                         .frame(maxWidth: .infinity, minHeight: 40)
                 }
                 .buttonStyle(.plain)
                 Button(action: onSupport) {
                     Text(L("응원하기", comment: "Tip ask card: open the tip jar"))
-                        .font(.subheadline.weight(.semibold))
+                        .font(.body.weight(.semibold))
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity, minHeight: 40)
                         .background(Capsule().fill(theme.accent))

@@ -408,7 +408,7 @@ WindowGroup { RootView().environmentObject(store) }
 - 테스트는 Xcode의 `.storekit` Configuration 또는 샌드박스 계정으로 확인
 - `store.gate` 로 "지금 페이월을 띄워야 하나"를 판정한다 (위 [수익모델과 게이트](#수익모델과-게이트-leeomonetization))
 
-## 팁 (LeeoTipJar, v3.25)
+## 팁 (LeeoTipJar, v3.25 · 응원 단계 v3.29)
 
 고마운 사람이 **소모성 팁**(작은 것부터 셋 이상)을 낼 수 있다. 기능은 열지 않는다.
 
@@ -432,6 +432,17 @@ LeeoTipAskSlot<MyAppSpec>(tipJar: tipJar, reached: MyTipMoments.reachedNow)
   (`https://m1zz.github.io/MyApp/#leeo-thanks`)를 주면, 한 번이라도 낸 사람에게 팁 화면에서 '이름 보내기'(개발자 메일,
   이름 · 주문 번호 칸을 미리 채움)와 '고마운 사람들 보기'를 보여 준다. 이름은 app-portfolio 의 `docs/thanks.json` 에
   손으로 올리고, 소개 페이지는 `thanks.js` 위젯이 그린다. 주지 않으면 그 칸은 없다.
+- **응원 단계와 보상(v3.29).** 팁은 점수로 쌓인다 — 작은 칸 1 · 중간 3 · 큰 10점, **리이오의 모든 앱 점수를 합친다**.
+  응원자(처음 한 번): 후원자 배지 · 고마운 사람들 / 단골(10점): 후원자 전용 아이콘 · 다음 기능에 한 표(로드맵을 담은 메일) /
+  후견인(30점): 베타 초대. 기능은 열지 않는다. 낸 직후 감사 카드에 개발자의 짧은 편지가 붙고, 팁 화면에 단계 사다리가 늘 보인다.
+  - 기록은 결제마다 한 줄(번들 · 결제 번호 · 점수)의 장부. `Spec.feedback.containerIdentifier` 의 **개인** DB 기록 하나
+    (`LeeoSupporter` / `supporter`)로 기기와 앱을 넘어 합친다. 앱에 새 권한은 필요 없다.
+    ⚠️ CloudKit 콘솔에서 `LeeoSupporter` 기록 종류를 운영 스키마로 내보내야 출시 빌드가 올린다(그 전에는 이 기기 점수만).
+  - 장부 전에 센 팁은 1점씩 옮긴다. 앱이 따로 세던 옛 후원은 `tipJar.adoptLegacyTips(count)` 로 한 번만 옮긴다.
+  - 보상 자리: `LeeoTipJarConfig(..., supporterIcon: "SupporterIcon", betaURL: 공개 TestFlight 링크)`. 아이콘이 없으면 그 버튼이 없고,
+    베타 링크가 없으면 베타 신청 메일을 쓴다.
+  - 배지: `LeeoTipJarLink` 줄에 이미 들어 있다. 팁 줄을 직접 그리는 앱은 `LeeoSupporterBadge(tipJar:)` 를 붙인다.
+  - 무료로 쓰다 후원한 사람에게는 업그레이드 배너를 `tipJar.tippedRecently(days: 30)` 동안 쉰다.
 
 ## 친구에게 소개하기 (LeeoShareAppLink, v3.24)
 
