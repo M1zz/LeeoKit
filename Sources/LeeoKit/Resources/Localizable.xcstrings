@@ -428,6 +428,292 @@
         }
       }
     },
+    "%@ 받기": {
+      "comment": "Forever pass list: VoiceOver label. %@ = app name",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Získat %@"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hent %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ laden"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Λήψη %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obtener %@"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lataa %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obtenir %@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dapatkan %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ottieni %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@を入手"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 받기"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hent %@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Download %@"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pobierz %@"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obter %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Загрузить %@"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hämta %@"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "รับ %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ uygulamasını al"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhận %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "获取 %@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取得 %@"
+          }
+        }
+      }
+    },
+    "%@ 소개 보기": {
+      "comment": "Forever pass list: VoiceOver label. %@ = app name",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zobrazit představení %@"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vis intro til %@"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorstellung von %@ ansehen"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Προβολή παρουσίασης %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View %@ intro"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver presentación de %@"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Näytä esittely: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir la présentation de %@"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lihat pengenalan %@"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vedi presentazione di %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@の紹介を見る"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 소개 보기"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vis intro til %@"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bekijk introductie van %@"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zobacz opis: %@"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver apresentação de %@"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Открыть описание: %@"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Visa intro för %@"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ดูข้อมูลแนะนำ %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ tanıtımını gör"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem giới thiệu %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看 %@ 介绍"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看 %@ 介紹"
+          }
+        }
+      }
+    },
     "%@를 즐겁게 쓰고 계신가요?": {
       "localizations": {
         "cs": {
@@ -566,6 +852,149 @@
           "stringUnit": {
             "state": "translated",
             "value": "用 %@ 用得還開心嗎？"
+          }
+        }
+      }
+    },
+    "%d개 모두 보기": {
+      "comment": "Forever pass list: expand. %d = number of apps",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zobrazit všech %d"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vis alle %d"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle %d anzeigen"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Εμφάνιση και των %d"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show all %d"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver las %d"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Näytä kaikki %d"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir les %d"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lihat semua %d"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra tutte le %d"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d個すべて見る"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d개 모두 보기"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vis alle %d"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toon alle %d"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pokaż wszystkie (%d)"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver todos os %d"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Показать все (%d)"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Visa alla %d"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ดูทั้งหมด %d แอป"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d uygulamanın tümünü gör"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem tất cả %d"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看全部 %d 款"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看全部 %d 款"
           }
         }
       }
@@ -996,6 +1425,149 @@
         }
       }
     },
+    "Mac 앱": {
+      "comment": "Forever pass list: the app only runs on Mac",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro Mac"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac-app"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac-App"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Για Mac"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac app"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App de Mac"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac-sovellus"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Mac"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplikasi Mac"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App per Mac"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Macアプリ"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac 앱"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac-app"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac-app"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Na Maca"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App para Mac"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Для Mac"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac-app"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แอป Mac"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac uygulaması"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ứng dụng Mac"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac 应用"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac App"
+          }
+        }
+      }
+    },
     "Mail 앱이 설정되어 있지 않습니다. mailto: 링크로 다른 메일 앱을 열겠습니까?": {
       "localizations": {
         "cs": {
@@ -1276,6 +1848,149 @@
           "stringUnit": {
             "state": "translated",
             "value": "還沒有登入 iCloud"
+          }
+        }
+      }
+    },
+    "iPhone 앱": {
+      "comment": "Forever pass list: the app does not run on this Mac",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro iPhone"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone-app"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone-App"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Για iPhone"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone app"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App de iPhone"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone-sovellus"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App iPhone"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplikasi iPhone"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App per iPhone"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhoneアプリ"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone 앱"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone-app"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone-app"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Na iPhone'a"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App para iPhone"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Для iPhone"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone-app"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แอป iPhone"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone uygulaması"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ứng dụng iPhone"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone 应用"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone App"
           }
         }
       }
@@ -2697,6 +3412,149 @@
           "stringUnit": {
             "state": "translated",
             "value": "每次都要翻找帳號或地址的人"
+          }
+        }
+      }
+    },
+    "골드위크 - 황금연휴 플래너": {
+      "comment": "Forever pass list: Goldweek store name",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek - PTO and Vacation"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek - PTO and Vacation"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek: Brückentage & Urlaub"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek - PTO and Vacation"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek - PTO and Vacation"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek: Puentes y vacaciones"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek - PTO and Vacation"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek - Congés et ponts"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek - PTO and Vacation"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek - PTO and Vacation"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek - 有給・連休プランナー"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "골드위크 - 황금연휴 플래너"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek - PTO and Vacation"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek - PTO and Vacation"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek - PTO and Vacation"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek - PTO and Vacation"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek: планер отпуска"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek - PTO and Vacation"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek - PTO and Vacation"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek - PTO and Vacation"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek - PTO and Vacation"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek - 黄金假期规划"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Goldweek - 連假請假規劃"
           }
         }
       }
@@ -7675,149 +8533,6 @@
         }
       }
     },
-    "모든 앱 평생으로 열기": {
-      "comment": "Forever pass: one line under the plans",
-      "localizations": {
-        "cs": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Odemknout všechny aplikace navždy"
-          }
-        },
-        "da": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lås alle apps op for livet"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alle Apps für immer freischalten"
-          }
-        },
-        "el": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ξεκλείδωμα όλων των εφαρμογών για πάντα"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unlock every app for life"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desbloquea todas las apps para siempre"
-          }
-        },
-        "fi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Avaa kaikki sovellukset pysyvästi"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Débloquer toutes les apps à vie"
-          }
-        },
-        "id": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Buka semua aplikasi selamanya"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sblocca tutte le app a vita"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "すべてのアプリを買い切りで解放"
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "모든 앱 평생으로 열기"
-          }
-        },
-        "nb": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lås opp alle apper for alltid"
-          }
-        },
-        "nl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alle apps voor altijd ontgrendelen"
-          }
-        },
-        "pl": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Odblokuj wszystkie aplikacje na zawsze"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desbloqueie todos os apps para sempre"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Открыть все приложения навсегда"
-          }
-        },
-        "sv": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lås upp alla appar för alltid"
-          }
-        },
-        "th": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ปลดล็อกทุกแอปตลอดชีพ"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tüm uygulamaları ömür boyu aç"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mở khóa mọi ứng dụng trọn đời"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "永久解锁所有 App"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "永久解鎖所有 App"
-          }
-        }
-      }
-    },
     "무엇을 하는 앱인가": {
       "localizations": {
         "cs": {
@@ -8670,6 +9385,435 @@
         }
       }
     },
+    "받기": {
+      "comment": "Forever pass list: get the app from the App Store",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Získat"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hent"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Laden"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Λήψη"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obtener"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lataa"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obtenir"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dapatkan"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ottieni"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "入手"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "받기"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hent"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Download"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pobierz"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obter"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Загрузить"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hämta"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "รับ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Al"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhận"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "获取"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取得"
+          }
+        }
+      }
+    },
+    "받으러 가기": {
+      "comment": "Forever pass list: title after buying",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stáhnout aplikace"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hent dine apps"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deine Apps laden"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Λήψη εφαρμογών"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get your apps"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descarga tus apps"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lataa sovellukset"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Téléchargez vos apps"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unduh aplikasi Anda"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scarica le tue app"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリを入手"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "받으러 가기"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hent appene dine"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Download je apps"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pobierz aplikacje"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baixe seus apps"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Скачать приложения"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hämta dina appar"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "รับแอปของคุณ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygulamalarınızı indirin"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tải ứng dụng"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "获取应用"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取得 App"
+          }
+        }
+      }
+    },
+    "받으면 추가 결제 없이 열려요.": {
+      "comment": "Forever pass list: note after buying",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Odemknou se bez dalšího placení."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De låses op uden ekstra betaling."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sie werden ohne weitere Zahlung freigeschaltet."
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ξεκλειδώνουν χωρίς επιπλέον πληρωμή."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "They unlock with no extra payment."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se desbloquean sin pagar nada más."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ne avautuvat ilman lisämaksua."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elles se débloquent sans paiement supplémentaire."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terbuka tanpa bayar lagi."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Si sbloccano senza altri pagamenti."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "入手すると追加料金なしで使えます。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "받으면 추가 결제 없이 열려요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De låses opp uten ekstra betaling."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ze worden ontgrendeld zonder extra betaling."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Odblokują się bez dodatkowej opłaty."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eles são desbloqueados sem pagamento extra."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Они откроются без дополнительной оплаты."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De låses upp utan extra betalning."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ปลดล็อกโดยไม่ต้องจ่ายเพิ่ม"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ek ödeme olmadan açılırlar."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mở khóa mà không phải trả thêm."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下载后无需额外付费即可解锁。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下載後無須額外付費即可解鎖。"
+          }
+        }
+      }
+    },
     "받은 피드백 %d건": {
       "localizations": {
         "cs": {
@@ -9366,6 +10510,149 @@
           "stringUnit": {
             "state": "translated",
             "value": "版本"
+          }
+        }
+      }
+    },
+    "보기": {
+      "comment": "Forever pass list: open the app's intro page",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zobrazit"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vis"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ansehen"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Προβολή"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Näytä"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lihat"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vedi"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "見る"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "보기"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vis"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bekijk"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zobacz"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Открыть"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Visa"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ดู"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gör"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "查看"
           }
         }
       }
@@ -11501,6 +12788,149 @@
         }
       }
     },
+    "소개 페이지를 엽니다": {
+      "comment": "Forever pass list: VoiceOver hint for a row",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otevře představení aplikace"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Åbner appens introside"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffnet die Vorstellungsseite der App"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ανοίγει τη σελίδα παρουσίασης"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the app's intro page"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre la página de presentación"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avaa sovelluksen esittelysivun"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre la page de présentation"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Membuka halaman pengenalan"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apre la pagina di presentazione"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "紹介ページを開きます"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "소개 페이지를 엽니다"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Åpner appens introside"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opent de introductiepagina"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otwiera stronę z opisem aplikacji"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abre a página de apresentação"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Открывает страницу о приложении"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öppnar appens introsida"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เปิดหน้าแนะนำแอป"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tanıtım sayfasını açar"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mở trang giới thiệu"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开介绍页面"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開啟介紹頁面"
+          }
+        }
+      }
+    },
     "손을 키보드에서 떼지 않고 붙여넣고 싶을 때": {
       "localizations": {
         "cs": {
@@ -12776,6 +14206,149 @@
           "stringUnit": {
             "state": "translated",
             "value": "Apple Watch"
+          }
+        }
+      }
+    },
+    "앱 %d개 평생으로 열기": {
+      "comment": "Forever pass: one line under the plans. %d = number of apps",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Odemknout %d aplikací navždy"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lås %d apps op for livet"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d Apps auf Lebenszeit freischalten"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ξεκλείδωμα %d εφαρμογών εφ' όρου ζωής"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock %d apps for life"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquear %d apps de por vida"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avaa %d sovellusta elinikäisesti"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Débloquer %d apps à vie"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buka %d aplikasi seumur hidup"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sblocca %d app a vita"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d個のアプリを買い切りで開放"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "앱 %d개 평생으로 열기"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lås opp %d apper for livet"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ontgrendel %d apps voor altijd"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Odblokuj %d aplikacji na zawsze"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquear %d apps para sempre"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Открыть %d приложений навсегда"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lås upp %d appar för alltid"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ปลดล็อก %d แอปตลอดชีพ"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d uygulamayı ömür boyu aç"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mở khóa %d ứng dụng trọn đời"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "永久解锁 %d 款应用"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "永久解鎖 %d 款 App"
           }
         }
       }
@@ -14342,6 +15915,149 @@
           "stringUnit": {
             "state": "translated",
             "value": "相當於 %d 年訂閱，一次買斷"
+          }
+        }
+      }
+    },
+    "연차를 어디에 끼우면 가장 오래 쉬는지 찾아 준다": {
+      "comment": "Forever pass list: Goldweek tagline",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Najde, kam dát volno, abyste si odpočinuli nejdéle"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finder, hvor en fridag giver den længste ferie"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Findet, wo ein Urlaubstag die längste Pause bringt"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Βρίσκει πού μια μέρα άδειας δίνει τη μεγαλύτερη ξεκούραση"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finds where a day off gives you the longest break"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encuentra dónde un día libre te da el descanso más largo"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Löytää, mihin vapaapäivä tuo pisimmän loman"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trouve où poser un congé pour la plus longue pause"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menemukan hari cuti yang memberi libur terpanjang"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trova dove un giorno di ferie regala la pausa più lunga"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "どこで有給を取れば一番長く休めるかを見つける"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "연차를 어디에 끼우면 가장 오래 쉬는지 찾아 준다"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Finner hvor en fridag gir lengst ferie"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vindt waar een vrije dag de langste pauze geeft"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Znajduje dzień urlopu, który da najdłuższy odpoczynek"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encontra onde um dia de folga rende o descanso mais longo"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Подскажет, где взять отгул, чтобы отдыхать дольше всего"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hittar var en ledig dag ger längst ledighet"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "หาวันลาที่ทำให้ได้หยุดยาวที่สุด"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En uzun tatili sağlayacak izin gününü bulur"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tìm ngày nghỉ phép giúp bạn nghỉ dài nhất"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "找出请哪天假能休息最久"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "找出請哪天假能休息最久"
           }
         }
       }
@@ -16604,6 +18320,149 @@
           "stringUnit": {
             "state": "translated",
             "value": "這個場景裡出現的應用"
+          }
+        }
+      }
+    },
+    "이 패스로 열리는 앱": {
+      "comment": "Forever pass list: title before buying",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplikace odemčené touto permanentkou"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps, dette pas låser op"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps, die dieser Pass freischaltet"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Εφαρμογές που ξεκλειδώνει το πάσο"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps this pass unlocks"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps que desbloquea este pase"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tämän passin avaamat sovellukset"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps débloquées par ce pass"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplikasi yang dibuka pass ini"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App sbloccate da questo pass"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このパスで使えるアプリ"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이 패스로 열리는 앱"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apper dette passet låser opp"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps die deze pas ontgrendelt"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aplikacje odblokowane tą przepustką"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps que este passe desbloqueia"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Приложения, которые открывает этот пропуск"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appar som passet låser upp"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "แอปที่พาสนี้ปลดล็อก"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu geçişin açtığı uygulamalar"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ứng dụng được mở khóa bằng thẻ này"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此通行证解锁的应用"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此通行證解鎖的 App"
           }
         }
       }
@@ -23435,145 +25294,145 @@
         }
       }
     },
-    "한 번 사면 이 개발자의 모든 앱이 Plus · Pro 평생으로 열려요. 앞으로 나올 앱과 기능도 따로 사지 않아요.": {
+    "한 번 사면 이 앱과 아래 앱들이 Plus · Pro 평생으로 열려요. 앞으로 더해지는 앱과 기능도 따로 사지 않아요.": {
       "comment": "Forever pass: what it unlocks",
       "localizations": {
         "cs": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kupte jednou a ve všech aplikacích tohoto vývojáře budete mít Plus · Pro navždy. Budoucí aplikace a funkce jsou v ceně."
+            "value": "Jeden nákup navždy odemkne Plus a Pro v této aplikaci i v aplikacích níže. Později přidané aplikace a funkce jsou v ceně."
           }
         },
         "da": {
           "stringUnit": {
             "state": "translated",
-            "value": "Køb én gang, og alle denne udviklers apps låses op med Plus · Pro for livet. Kommende apps og funktioner er også med."
+            "value": "Køb én gang, så låser denne app og apps herunder Plus og Pro op for livet. Apps og funktioner, der kommer til senere, er også med."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Einmal kaufen und alle Apps dieses Entwicklers sind für immer mit Plus · Pro freigeschaltet. Künftige Apps und Funktionen sind auch dabei."
+            "value": "Einmal kaufen, und diese App sowie die Apps unten sind mit Plus und Pro auf Lebenszeit freigeschaltet. Später hinzukommende Apps und Funktionen sind inklusive."
           }
         },
         "el": {
           "stringUnit": {
             "state": "translated",
-            "value": "Αγοράστε μία φορά και όλες οι εφαρμογές αυτού του δημιουργού ξεκλειδώνουν Plus · Pro για πάντα. Οι μελλοντικές εφαρμογές και λειτουργίες περιλαμβάνονται."
+            "value": "Με μία αγορά, αυτή η εφαρμογή και οι παρακάτω ξεκλειδώνουν Plus και Pro εφ' όρου ζωής. Περιλαμβάνονται και εφαρμογές και λειτουργίες που θα προστεθούν αργότερα."
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Buy once and every app from this developer unlocks Plus · Pro for life. Future apps and features are included too."
+            "value": "Buy once and this app and the apps below unlock Plus and Pro for life. Apps and features added later are included too."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Compra una vez y todas las apps de este desarrollador se desbloquean con Plus · Pro para siempre. Las apps y funciones futuras también están incluidas."
+            "value": "Con una sola compra, esta app y las de abajo desbloquean Plus y Pro de por vida. Las apps y funciones que se añadan después también están incluidas."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Osta kerran, niin Plus · Pro avautuu pysyvästi kaikkiin tämän kehittäjän sovelluksiin. Myös tulevat sovellukset ja ominaisuudet sisältyvät."
+            "value": "Yhdellä ostolla tämä sovellus ja alla olevat sovellukset avaavat Plus- ja Pro-tason elinikäisesti. Myöhemmin lisättävät sovellukset ja ominaisuudet sisältyvät hintaan."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Un seul achat et toutes les apps de ce développeur passent en Plus · Pro à vie. Les futures apps et fonctions sont incluses."
+            "value": "Un seul achat débloque Plus et Pro à vie dans cette app et celles ci-dessous. Les apps et fonctions ajoutées plus tard sont incluses."
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Beli sekali, semua aplikasi dari developer ini terbuka Plus · Pro selamanya. Aplikasi dan fitur mendatang juga sudah termasuk."
+            "value": "Sekali beli, aplikasi ini dan aplikasi di bawah membuka Plus dan Pro seumur hidup. Aplikasi dan fitur yang ditambahkan nanti juga termasuk."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Compri una volta e tutte le app di questo sviluppatore si sbloccano con Plus · Pro a vita. Anche app e funzioni future sono incluse."
+            "value": "Con un solo acquisto, questa app e quelle qui sotto sbloccano Plus e Pro a vita. Sono incluse anche le app e le funzioni aggiunte in seguito."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "一度買えば、この開発者のすべてのアプリで Plus · Pro がずっと使えます。これから出るアプリや機能も追加購入は不要です。"
+            "value": "一度の購入で、このアプリと下のアプリのPlus・Proがずっと使えます。今後追加されるアプリや機能も追加料金はありません。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "한 번 사면 이 개발자의 모든 앱이 Plus · Pro 평생으로 열려요. 앞으로 나올 앱과 기능도 따로 사지 않아요."
+            "value": "한 번 사면 이 앱과 아래 앱들이 Plus · Pro 평생으로 열려요. 앞으로 더해지는 앱과 기능도 따로 사지 않아요."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kjøp én gang, så låses alle apper fra denne utvikleren opp med Plus · Pro for alltid. Fremtidige apper og funksjoner er også med."
+            "value": "Kjøp én gang, så låser denne appen og appene under opp Plus og Pro for livet. Apper og funksjoner som kommer senere, er også med."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Eén keer kopen en alle apps van deze ontwikkelaar zijn voor altijd ontgrendeld met Plus · Pro. Toekomstige apps en functies horen er ook bij."
+            "value": "Eenmalig kopen en deze app en de apps hieronder ontgrendelen Plus en Pro voor altijd. Later toegevoegde apps en functies zijn inbegrepen."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kup raz, a wszystkie aplikacje tego twórcy odblokują Plus · Pro na zawsze. Przyszłe aplikacje i funkcje też są w cenie."
+            "value": "Jeden zakup odblokowuje na zawsze Plus i Pro w tej aplikacji i w aplikacjach poniżej. Aplikacje i funkcje dodane później też są w cenie."
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Compre uma vez e todos os apps deste desenvolvedor ficam com Plus · Pro para sempre. Apps e recursos futuros também estão incluídos."
+            "value": "Com uma única compra, este app e os abaixo desbloqueiam Plus e Pro para sempre. Apps e recursos adicionados depois também estão incluídos."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Купите один раз, и во всех приложениях этого разработчика навсегда откроются Plus · Pro. Будущие приложения и функции тоже входят."
+            "value": "Одна покупка навсегда открывает Plus и Pro в этом приложении и в приложениях ниже. Приложения и функции, добавленные позже, тоже входят."
           }
         },
         "sv": {
           "stringUnit": {
             "state": "translated",
-            "value": "Köp en gång så låses alla appar från den här utvecklaren upp med Plus · Pro för alltid. Kommande appar och funktioner ingår också."
+            "value": "Köp en gång så låser den här appen och apparna nedan upp Plus och Pro för alltid. Appar och funktioner som läggs till senare ingår också."
           }
         },
         "th": {
           "stringUnit": {
             "state": "translated",
-            "value": "ซื้อครั้งเดียว ทุกแอปของนักพัฒนารายนี้จะปลดล็อก Plus · Pro ตลอดชีพ แอปและฟีเจอร์ที่จะออกในอนาคตก็ไม่ต้องซื้อแยก"
+            "value": "ซื้อครั้งเดียว แอปนี้และแอปด้านล่างจะปลดล็อก Plus และ Pro ตลอดชีพ แอปและฟีเจอร์ที่เพิ่มในภายหลังก็รวมอยู่ด้วย"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bir kez alın, bu geliştiricinin tüm uygulamalarında Plus · Pro ömür boyu açılsın. Gelecek uygulamalar ve özellikler de dahil."
+            "value": "Tek satın alımla bu uygulama ve aşağıdaki uygulamalar Plus ve Pro'yu ömür boyu açar. Sonradan eklenen uygulamalar ve özellikler de dahildir."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mua một lần, mọi ứng dụng của nhà phát triển này đều mở Plus · Pro trọn đời. Ứng dụng và tính năng sau này cũng không cần mua thêm."
+            "value": "Mua một lần, ứng dụng này và các ứng dụng bên dưới mở khóa Plus và Pro trọn đời. Ứng dụng và tính năng thêm sau này cũng được bao gồm."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "买一次，这位开发者的所有 App 都永久解锁 Plus · Pro。以后推出的 App 和功能也无需另购。"
+            "value": "一次购买，此应用和下方应用即可永久解锁 Plus 和 Pro。之后新增的应用和功能也包含在内。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "買一次，這位開發者的所有 App 都永久解鎖 Plus · Pro。之後推出的 App 和功能也不用另外購買。"
+            "value": "一次購買，此 App 和下方 App 即可永久解鎖 Plus 和 Pro。之後新增的 App 和功能也包含在內。"
           }
         }
       }

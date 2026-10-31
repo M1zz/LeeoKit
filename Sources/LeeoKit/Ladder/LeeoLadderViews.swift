@@ -274,6 +274,7 @@ public struct LeeoForeverPassView: View {
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                 if !pass.isActive { buttons }
+                LeeoForeverPassAppList(bundleID: pass.bundleID, owned: pass.isActive)
                 Button {
                     Task { checking = true; await pass.refresh(); checking = false }
                 } label: {
@@ -412,10 +413,13 @@ public enum LeeoLadderText {
     public static var later: String { L("다음에", comment: "Pricing ladder: dismiss for now") }
     public static var done: String { L("닫기", comment: "Pricing ladder: close") }
 
-    public static var passLine: String { L("모든 앱 평생으로 열기", comment: "Forever pass: one line under the plans") }
+    public static var passLine: String {
+        String(format: L("앱 %d개 평생으로 열기", comment: "Forever pass: one line under the plans. %d = number of apps"),
+               LeeoForeverPassApps.unlockedCount())
+    }
     public static var passTitle: String { L("언제나 평생 패스", comment: "Forever pass: name") }
     public static var passBody: String {
-        L("한 번 사면 이 개발자의 모든 앱이 Plus · Pro 평생으로 열려요. 앞으로 나올 앱과 기능도 따로 사지 않아요.",
+        L("한 번 사면 이 앱과 아래 앱들이 Plus · Pro 평생으로 열려요. 앞으로 더해지는 앱과 기능도 따로 사지 않아요.",
           comment: "Forever pass: what it unlocks")
     }
     public static var passActiveBody: String {
@@ -430,6 +434,20 @@ public enum LeeoLadderText {
         L("같은 Apple 계정의 iCloud 로 다른 앱에서도 열려요. 산 앱을 한 번 열어 두면 다른 앱이 찾아요.",
           comment: "Forever pass: how other apps find the pass")
     }
+    static var passListTitle: String { L("이 패스로 열리는 앱", comment: "Forever pass list: title before buying") }
+    static var passListOwnedTitle: String { L("받으러 가기", comment: "Forever pass list: title after buying") }
+    static var passListOwnedNote: String { L("받으면 추가 결제 없이 열려요.", comment: "Forever pass list: note after buying") }
+    static var passListGet: String { L("받기", comment: "Forever pass list: get the app from the App Store") }
+    static var passListView: String { L("보기", comment: "Forever pass list: open the app's intro page") }
+    static var passListMacOnly: String { L("Mac 앱", comment: "Forever pass list: the app only runs on Mac") }
+    static var passListIPhoneOnly: String { L("iPhone 앱", comment: "Forever pass list: the app does not run on this Mac") }
+    static var passListIntroHint: String { L("소개 페이지를 엽니다", comment: "Forever pass list: VoiceOver hint for a row") }
+    /// %@ = 앱 이름
+    static var passListGetLabelFormat: String { L("%@ 받기", comment: "Forever pass list: VoiceOver label. %@ = app name") }
+    /// %@ = 앱 이름
+    static var passListViewLabelFormat: String { L("%@ 소개 보기", comment: "Forever pass list: VoiceOver label. %@ = app name") }
+    /// %d = 앱 수
+    static var passListShowAllFormat: String { L("%d개 모두 보기", comment: "Forever pass list: expand. %d = number of apps") }
     /// %@ = 날짜
     public static var priceNoticeFormat: String {
         L("평생 가격이 %@부터 올라요. 이미 산 분은 그대로 써요.", comment: "Pricing ladder: lifetime price increase notice. %@ = date")

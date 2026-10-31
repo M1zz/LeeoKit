@@ -16,6 +16,7 @@ Sources/LeeoKit/Family/LeeoFamilyIconData.swift 에 쓴다. 리소스 번들을 
 """
 import base64
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -34,6 +35,8 @@ SOURCES = {
     "rainbow-ios": "욕망의 무지개/ScheduleDensityApp/Assets.xcassets/AppIcon.appiconset/image1414.png",
     "rainbow-mac": "무지개 공방/WeekBlocks/Assets.xcassets/AppIcon.appiconset/1024.png",
     "rereminder": "두번알림/Rereminder/Assets.xcassets/AppIcon.appiconset/logo.png",
+    # 패스 목록(LeeoForeverPassApps)에만 서는 앱.
+    "goldweek": "Goldweek/Goldweek/Assets.xcassets/AppIcon.appiconset/image7343.png",
 }
 
 HEADER = '''//
@@ -73,9 +76,18 @@ def shrink(path):
 
 def main():
     rows = []
+    existing = {}
+    if os.path.exists(OUT):
+        with open(OUT, encoding="utf-8") as f:
+            existing = dict(re.findall(r'^\s+"([^"]+)": "([^"]+)",$', f.read(), re.M))
     for app_id, rel in SOURCES.items():
         path = os.path.join(APPS, rel)
         if not os.path.exists(path):
+            # 이 컴퓨터에 그 앱 레포가 없으면 이미 박아 둔 아이콘을 지우지 않는다.
+            if app_id in existing:
+                rows.append(f'        "{app_id}": "{existing[app_id]}",')
+                print(f"⏭️  {app_id}: 원본이 없어 지금 것을 둔다 ({path})")
+                continue
             sys.exit(f"❌ {app_id}: 원본이 없다 ({path})")
         data = shrink(path)
         rows.append(f'        "{app_id}": "{base64.b64encode(data).decode()}",')
