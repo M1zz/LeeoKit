@@ -17,7 +17,10 @@ struct LeeoMailComposer: UIViewControllerRepresentable {
     let body: String
     /// 증상 사진의 JPEG. 메일 컴포저는 첨부를 받으므로 그대로 붙인다.
     var attachments: [Data] = []
-    let onFinish: () -> Void
+    let onFinish: (MFMailComposeResult) -> Void
+
+    /// 메일이 실제로 나갔는가. 취소 · 임시 저장 · 실패는 보낸 것이 아니다.
+    static func didSend(_ result: MFMailComposeResult) -> Bool { result == .sent }
 
     /// 이 기기에서 Mail 컴포저를 띄울 수 있는지.
     static var canSendMail: Bool { MFMailComposeViewController.canSendMail() }
@@ -39,13 +42,13 @@ struct LeeoMailComposer: UIViewControllerRepresentable {
     func makeCoordinator() -> Coordinator { Coordinator(onFinish: onFinish) }
 
     final class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
-        let onFinish: () -> Void
-        init(onFinish: @escaping () -> Void) { self.onFinish = onFinish }
+        let onFinish: (MFMailComposeResult) -> Void
+        init(onFinish: @escaping (MFMailComposeResult) -> Void) { self.onFinish = onFinish }
 
         func mailComposeController(_ controller: MFMailComposeViewController,
                                    didFinishWith result: MFMailComposeResult,
                                    error: Error?) {
-            onFinish()
+            onFinish(result)
         }
     }
 }

@@ -225,4 +225,21 @@ final class LeeoFeedbackServiceTests: XCTestCase {
             XCTAssertFalse(type.localizedName.isEmpty)
         }
     }
+
+    // MARK: - 앱에서 보내지 못했을 때
+
+    /// 사용자: "메일 앱은 왜 열리는건지 어떤 상황인지 알려줘". 이유를 말하고, 소용 있을 때만 다시 시도를 준다.
+    func testSendFailureTellsWhyAndWhetherRetryHelps() {
+        let noICloud = LeeoFeedbackService.SendFailure(LeeoFeedbackService.FeedbackError.iCloudUnavailable)
+        XCTAssertEqual(noICloud.title, LeeoFeedbackService.FeedbackError.iCloudUnavailable.errorDescription)
+        XCTAssertFalse(noICloud.canRetry)
+
+        struct Network: Error {}
+        let saveFailed = LeeoFeedbackService.FeedbackError.saveFailed(Network())
+        XCTAssertTrue(LeeoFeedbackService.SendFailure(saveFailed).canRetry)
+        // CloudKit 이 그대로 던진 낯선 오류도 기술 용어를 보이지 않는다.
+        let unknown = LeeoFeedbackService.SendFailure(Network())
+        XCTAssertEqual(unknown.title, saveFailed.errorDescription)
+        XCTAssertTrue(unknown.canRetry)
+    }
 }

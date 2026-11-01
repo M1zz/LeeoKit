@@ -59,6 +59,19 @@ public final class LeeoFeedbackService {
         }
     }
 
+    /// 앱에서 보내지 못했을 때 사용자에게 말할 것.
+    struct SendFailure {
+        let title: String
+        /// 다시 눌러 볼 만한가. iCloud 로그인이 없으면 다시 눌러도 같다.
+        let canRetry: Bool
+
+        init(_ error: Error) {
+            let known = error as? FeedbackError
+            title = known?.errorDescription ?? FeedbackError.saveFailed(error).errorDescription ?? ""
+            if case .iCloudUnavailable = known { canRetry = false } else { canRetry = true }
+        }
+    }
+
     // MARK: - 개발자 인박스 (마스터 모드 전용)
 
     /// 접수된 피드백 한 건 (조회용 read model)
