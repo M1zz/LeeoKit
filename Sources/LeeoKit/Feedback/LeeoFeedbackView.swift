@@ -3,7 +3,7 @@
 //  LeeoKit
 //
 //  사용자 피드백 제출 화면. 1차: CloudKit Public DB 직접 제출(메일 앱 불필요),
-//  실패 시 폴백: emailFallback 클로저(앱의 메일 컴포저) → mailto: 링크.
+//  실패하면 이유를 말하고 고르게 한 뒤: emailFallback 클로저(앱의 메일 컴포저) → 내장 컴포저 → mailto: 링크.
 //
 //  사용 예:
 //      LeeoFeedbackView<MyAppSpec>()
@@ -42,6 +42,8 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
     @State private var contactName: String
     @State private var contactEmail: String
     @State private var showMailFallback = false
+    /// 앱에서 보내지 못한 이유. 있으면 메일로 보낼지 묻는다.
+    @State private var sendFailure: LeeoFeedbackService.SendFailure?
     @State private var showMailComposer = false
     @State private var didSend = false
     @State private var isSending = false
@@ -175,6 +177,20 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
             } message: {
                 Text(L("Mail 앱이 설정되어 있지 않습니다. mailto: 링크로 다른 메일 앱을 열겠습니까?", comment: "Mail unavailable alert message"))
             }
+            // 왜 앱에서 못 보냈는지 말하고 고르게 한다. 예전에는 설명 없이 메일 앱이 열렸다.
+            .alert(
+                sendFailure?.title ?? "",
+                isPresented: Binding(get: { sendFailure != nil }, set: { if !$0 { sendFailure = nil } }),
+                presenting: sendFailure
+            ) { failure in
+                Button(L("메일로 보내기", comment: "Feedback send failed: send by Mail instead"), action: sendViaEmail)
+                if failure.canRetry {
+                    Button(L("다시 시도", comment: "Retry"), action: sendFeedback)
+                }
+                Button(L("취소", comment: "Cancel"), role: .cancel) {}
+            } message: { _ in
+                Text(L("메일에서 한 번 더 보내야 전달돼요.", comment: "Feedback send failed: the message must also be sent from the Mail app"))
+            }
             .overlay(alignment: .center) {
                 if didSend { sentConfirmation }
             }
@@ -186,9 +202,10 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                     subject: selectedType.emailSubject(appName: Spec.appName),
                     body: buildEmailBody(),
                     attachments: screenshotData,
-                    onFinish: {
+                    onFinish: { result in
                         showMailComposer = false
-                        handleSent()
+                        // 취소 · 임시 저장은 보낸 것이 아니다. 쓴 글을 그대로 두고 이 창에 남는다.
+                        if LeeoMailComposer.didSend(result) { handleSent() }
                     }
                 )
                 .ignoresSafeArea()
@@ -690,7 +707,7 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
     // MARK: - Send Logic
 
     /// 1차: CloudKit Public DB로 직접 제출 (메일 앱 불필요, iCloud 로그인만 필요).
-    /// 실패 시 폴백: 이메일 경로.
+    /// 실패하면 이유를 말하고, 메일로 보낼지 사람이 고른다.
     private func sendFeedback() {
         isSending = true
         Task {
@@ -708,10 +725,10 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                     handleSent()
                 }
             } catch {
-                print("⚠️ [LeeoFeedbackView.sendFeedback] CloudKit 제출 실패 → 이메일 폴백: \(error)")
+                print("⚠️ [LeeoFeedbackView.sendFeedback] CloudKit 제출 실패: \(error)")
                 await MainActor.run {
                     isSending = false
-                    sendViaEmail()
+                    sendFailure = LeeoFeedbackService.SendFailure(error)
                 }
             }
         }
