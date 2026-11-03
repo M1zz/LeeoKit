@@ -280,7 +280,7 @@ final class LeeoVaultStore: @unchecked Sendable {
             if let data = try? Data(contentsOf: file),
                let dict = try PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any] {
                 store.setPersistentDomain(dict, forName: domain)
-            } else if domain.hasPrefix("group.") ? snap.groups.contains(domain) : true {
+            } else if groups.contains(domain) ? snap.groups.contains(domain) : true {   // 그때 몰랐던 그룹은 건드리지 않는다
                 store.removePersistentDomain(forName: domain)
             }
             store.synchronize()
