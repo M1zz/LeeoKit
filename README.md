@@ -570,6 +570,32 @@ VoiceOver · 음성 명령 · 다이내믹 타입 · 다크 모드 · 색 없이
 - ⚠️ `LeeoStyle.textFaint` 는 **꾸밈 전용**이다. 읽어야 하는 글은 `textMuted` 로 — 앱 테마를 넣을 때도
   `text` · `textMuted` 는 바탕과 4.5:1 이상, `accent` 는 흰 글자와 4.5:1 이상인 색을 준다(단추 글자가 흰색이다).
 
+## 백업 금고 (LeeoVault, v3.30)
+
+사용자의 기록이 날아가지 않게 하는 세 겹. **`LeeoKit.bootstrap` 을 앱 시작에서 가장 먼저 부르면 켜진다**
+(bootstrap 을 안 쓰는 앱은 `LeeoVault.start(MySpec.self)`). 설정의 `LeeoSupportSection` 에 "백업 및 복원" 행이 저절로 생긴다.
+
+1. **이 기기** — 매일 한 번, 그리고 **업데이트 직후 첫 실행에서 저장소를 열기 전에** Documents · Application Support ·
+   앱 그룹 · UserDefaults 를 통째로 떠 둔다(`Library/LeeoVault`). APFS 복제라 즉시 끝나고 바뀐 만큼만 자리를 쓴다.
+   구조 이전이 어긋나도 "업데이트 직전" 으로 되돌린다. 기기 백업에서는 뺀다(원본은 이미 백업된다).
+2. **iCloud** — 하루 한 번 최신 한 벌을 묶어(Apple Archive) 사용자 iCloud 의 **private DB** 에 올린다.
+   폰을 바꾸거나 앱을 지워도 되살린다. 개발자는 볼 수 없다. 앱마다 칸 3개를 돌려 써서 조회·인덱스가 필요 없다.
+3. **파일** — `.leeobackup` 으로 내보내고 가져온다.
+
+복원은 예약만 하고 **다음 실행 맨 처음**(저장소가 열리기 전)에 한다. 그 직전 상태를 `beforeRestore` 로 떠 두므로
+복원도 되돌릴 수 있고, 도중에 실패하면 직전 상태로 돌려놓는다.
+
+```swift
+enum MySpec: LeeoAppSpec {
+    static let appGroups = ["group.com.example.app"]   // 위젯과 나눠 쓰는 기록이 있으면 반드시
+    // static let vaultUsesICloud = false               // 피드백 허브 컨테이너가 entitlements 에 없으면
+}
+```
+
+- ⚠️ iCloud 쪽은 피드백 허브 컨테이너에 레코드 타입 `LeeoBackup` 이 **Production 에 배포돼 있어야** 한다 →
+  [docs/VAULT.md](docs/VAULT.md). 없으면 올리기만 실패하고(화면에 이유가 뜬다) 이 기기 · 파일 백업은 그대로 돈다.
+- 200MB 를 넘는 묶음은 iCloud 에 올리지 않고 "파일로 내보내 보관" 을 권한다.
+
 ## 다국어
 
 원문은 한국어(카탈로그 `sourceLanguage = ko`)이고 22개 언어 번역을 담는다

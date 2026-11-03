@@ -77,6 +77,12 @@ public struct LeeoSupportSection<Spec: LeeoAppSpec>: View {
                       systemImage: "tray.full")
             }
         }
+        // 백업 및 복원 — 금고가 켜진 앱(bootstrap · LeeoVault.start)이면 모든 앱에 같은 자리에 뜬다
+        if LeeoVault.isStarted {
+            NavigationLink(destination: LeeoVaultView(appName: Spec.displayName)) {
+                Label(LeeoVaultText.entry, systemImage: "externaldrive.badge.timemachine")
+            }
+        }
         // 앱 버전 — 7번 탭하면 개발자 모드(인박스) 토글. 모든 앱에 공통 노출.
         HStack {
             Label(L("버전", comment: "App version row"), systemImage: "info.circle")

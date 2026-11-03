@@ -84,9 +84,19 @@ public protocol LeeoAppSpec {
     /// 인앱 결제(페이월) 설정. **보통 선언하지 않는다** — `monetization` 에서 자동으로 유도된다.
     /// 직접 선언하면 그 값이 우선하지만, `monetization` 과 어긋나면 Preflight 가 잡아낸다.
     static var paywall: LeeoPaywallConfig? { get }
+
+    /// 위젯·익스텐션과 나눠 쓰는 앱 그룹. 금고(`LeeoVault`)가 그 안의 기록도 함께 떠 둔다.
+    /// 미지정이면 비어 있다 — 앱 그룹에 기록을 두는 앱은 반드시 적는다.
+    static var appGroups: [String] { get }
+
+    /// 금고가 하루 한 번 최신 백업을 사용자 iCloud(피드백 허브 컨테이너의 private DB)에 올릴지.
+    /// 미지정이면 켬. 그 컨테이너가 entitlements 에 없는 앱은 false 로 둔다 — 없는 컨테이너를 열면 앱이 죽는다.
+    static var vaultUsesICloud: Bool { get }
 }
 
 public extension LeeoAppSpec {
+    static var appGroups: [String] { [] }
+    static var vaultUsesICloud: Bool { true }
     /// 기본값 — 현지화된 번들 표시 이름, 없으면 `appName`.
     static var displayName: String { LeeoAppDisplayName.resolve(fallback: appName) }
 

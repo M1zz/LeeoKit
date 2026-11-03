@@ -77,6 +77,10 @@ public enum LeeoKit {
         // 컨테이너를 여는 순간 앱이 죽어 시험이 시작도 못 한다.
         let cloud = !isRunningUnitTests
 
+        // 0. 금고 — 저장소가 열리기 전에 예약된 복원을 하고, 업데이트 직전 상태를 떠 둔다.
+        //    그래서 bootstrap 은 앱 시작에서 **가장 먼저** 부른다.
+        LeeoVault.start(spec)
+
         // 1. 사용량 — 리뷰/만족도 프롬프트가 이 값 없이는 동작하지 않는다.
         engagement.registerLaunch()
         mutate { $0.engagement = true }
