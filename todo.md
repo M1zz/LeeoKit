@@ -1,5 +1,18 @@
 # LeeoKit todo
 
+## 답장이 왔다고 사용자에게 알리기 (2026-11-04)
+
+> 계기: 답장은 설정 > 보낸 의견에만 있어서, 설정에 안 들어가는 사람은 답장이 와도 몰랐다.
+
+- [x] `.leeoFeedbackReplyNotice(Spec.self)`: 앞으로 올 때마다 설정 배지와 같은 기준(안 읽은 답장)이면 보낸 의견 시트. 로컬 알림을 받았어도 안 읽었으면 뜸. 서버 읽기만 10분 간격
+- [x] `.leeoFeedbackReplyRefresh(Spec.self)` (Scene): BGAppRefresh `com.leeokit.feedback.replies` → 새 답장 로컬 알림. 알림을 이미 허락한 앱만, 뒤로 갈 때 예약
+- [x] 같은 답장 두 번 알리지 않기(피드백 id → 알린 답장 글), 고친 답장은 다시 · `LeeoReplyNoticePolicy` 시험 3개
+- [x] 새 문자열 2개 23개 언어 (check-l10n 0)
+- [ ] 앱마다 붙이기: 루트 뷰에 modifier, Scene 에 refresh, Info.plist 두 항목
+- [ ] 알림을 눌렀을 때 보낸 의견 화면으로 바로 가기(지금은 앱이 열리면 1번 시트가 뜨는 것으로 대신)
+- [ ] 참고: `APPLICATION_EXTENSION_API_ONLY=YES` iOS 빌드가 `LeeoTipJarView` 의 `UIApplication.shared` · 대체 아이콘 때문에 깨져 있음(이번 작업 전부터)
+
+
 ## 완료: 하루 한 번 app_open 과 익스텐션용 크래시 루프 가드 (v3.12 예정, 태그 전)
 
 > 계기 1: 허브의 DAU·잔존과 곧 붙일 버전별 안정성 카드가 `app_open` 으로 "그날 왔다"를 센다.

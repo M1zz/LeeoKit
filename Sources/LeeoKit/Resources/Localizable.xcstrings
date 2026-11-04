@@ -66308,6 +66308,292 @@
           }
         }
       }
+    },
+    "개발자가 답장을 보냈어요": {
+      "comment": "Feedback reply notification title",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vývojář vám odpověděl"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Udvikleren har svaret dig"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Entwickler hat dir geantwortet"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ο προγραμματιστής σας απάντησε"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The developer replied to you"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El desarrollador te ha respondido"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kehittäjä vastasi sinulle"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le développeur vous a répondu"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pengembang membalas masukan Anda"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lo sviluppatore ti ha risposto"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開発者から返信が届きました"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "개발자가 답장을 보냈어요"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utvikleren har svart deg"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De ontwikkelaar heeft je geantwoord"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deweloper Ci odpowiedział"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O desenvolvedor respondeu você"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Разработчик ответил вам"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utvecklaren har svarat dig"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "นักพัฒนาตอบกลับคุณแล้ว"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geliştirici size yanıt verdi"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhà phát triển đã trả lời bạn"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "开发者回复了你"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開發者回覆了你"
+          }
+        }
+      }
+    },
+    "보낸 의견에 답장 %d개가 왔어요. 앱을 열어 확인해 보세요.": {
+      "comment": "Feedback reply notification body plural",
+      "localizations": {
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Na vaši zpětnou vazbu přišlo odpovědí: %d. Otevřete aplikaci a přečtěte si je."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du har fået %d svar på din feedback. Åbn appen for at læse dem."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du hast %d Antworten auf dein Feedback. Öffne die App, um sie zu lesen."
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Έχετε %d απαντήσεις στα σχόλιά σας. Ανοίξτε την εφαρμογή για να τις διαβάσετε."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You have %d replies to your feedback. Open the app to read them."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tienes %d respuestas a tus comentarios. Abre la app para leerlas."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Palautteeseesi on tullut %d vastausta. Avaa appi lukeaksesi ne."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous avez %d réponses à vos avis. Ouvrez l’app pour les lire."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ada %d balasan untuk masukan Anda. Buka aplikasi untuk membacanya."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hai %d risposte ai tuoi feedback. Apri l’app per leggerle."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "送ったご意見に返信が%d件届きました。アプリを開いて確認してください。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "보낸 의견에 답장 %d개가 왔어요. 앱을 열어 확인해 보세요."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du har fått %d svar på tilbakemeldingene dine. Åpne appen for å lese dem."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Je hebt %d antwoorden op je feedback. Open de app om ze te lezen."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Masz odpowiedzi na swoje opinie: %d. Otwórz aplikację, aby je przeczytać."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Você recebeu %d respostas ao seu feedback. Abra o app para ler."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "На ваши отзывы пришло ответов: %d. Откройте приложение, чтобы прочитать."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du har fått %d svar på din feedback. Öppna appen för att läsa dem."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "มีคำตอบ %d รายการสำหรับความคิดเห็นของคุณ เปิดแอปเพื่ออ่าน"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geri bildiriminize %d yanıt geldi. Okumak için uygulamayı açın."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn có %d phản hồi cho góp ý của mình. Mở ứng dụng để xem."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你的反馈收到了 %d 条回复。打开应用查看。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "你的意見收到了 %d 則回覆。打開 App 查看。"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

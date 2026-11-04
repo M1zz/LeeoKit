@@ -528,6 +528,31 @@ Dashboard 에서 앱(컨테이너)마다 한 번:
 
 배포 전에는 답장 읽기가 조용히 빈 결과다. 의견 보내기는 영향이 없다.
 
+### 답장이 왔다고 알리기
+
+설정에 들어가지 않는 사람도 답장을 알게, 두 가지를 단다.
+
+```swift
+@main struct MyApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+                .leeoFeedbackReplyNotice(MyAppSpec.self)   // 1. 앱 안 시트
+        }
+        .leeoFeedbackReplyRefresh(MyAppSpec.self)           // 2. 백그라운드 → 로컬 알림 (iOS)
+    }
+}
+```
+
+1. 앱 안 시트: 앱이 앞으로 올 때마다 설정의 배지와 같은 기준(안 읽은 답장)으로 보고, 있으면 보낸 의견 화면을 시트로 띄운다. 로컬 알림을 이미 받았어도 안 읽었으면 뜬다. 시트에서 읽음으로 적혀 되풀이되지 않는다. 서버는 10분에 한 번까지만 읽는다. 알림 권한이 필요 없다. 보낸 의견이 없는 기기는 서버를 읽지 않는다.
+2. 로컬 알림: 앱이 뒤로 갈 때 백그라운드 새로고침을 예약(4시간 뒤 이후, 실제 시각은 iOS 가 정함)하고, 깨면 새 답장을 알림으로 보낸다. **이미 알림을 허락한 앱에서만** 보낸다. 답장 때문에 권한을 묻지 않는다. Info.plist 에:
+   - `BGTaskSchedulerPermittedIdentifiers` 에 `com.leeokit.feedback.replies`
+   - `UIBackgroundModes` 에 `fetch`
+
+   빠뜨리면 예약만 실패하고 1번은 그대로 동작한다.
+
+로컬 알림은 같은 답장으로 두 번 보내지 않는다(시트로 이미 봤으면 보내지 않음). 개발자가 답장을 고치면 한 번 더.
+
 함께 바뀐 것:
 
 - `LeeoFeedbackView(extraInfo:)`: 자동 첨부 정보에 앱이 줄을 덧붙인다(보낸 곳, 상태). 기존 `deviceInfo` 필드에 담으므로 스키마를 건드리지 않는다.
