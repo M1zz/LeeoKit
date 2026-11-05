@@ -1,5 +1,28 @@
 # LeeoKit todo
 
+## 선물 받기를 App Store 오퍼 코드로 — 3.1.1 리젝 대응 1단계 (2026-11-05)
+
+> 계기: 소모성 선물 상품 → LeeoKit 코드 → 받는 앱이 코드로 Pro 를 연다. 심사가 "자체 방법으로 기능을 연다"(3.1.1)로 거듭 리젝.
+> 2025-10 부터 비소모성에도 오퍼 코드가 되고, 2026-03-26 부터 IAP 프로모 코드는 새로 못 만든다.
+
+- [x] `LeeoGiftConfig.sellsGifts` (기본 false): 꺼져 있으면 선물 판매 · LeeoKit 코드 입력칸이 없다. `purchase` 도 막음
+- [x] `LeeoGiftRedeemView`: 기본은 "App Store 코드 넣기" → `offerCodeRedemption` 시트(iOS · macOS 15+, macOS 14 는 App Store 링크). 닫히면 `checkOwnership(retry:)` 로 `grantsProductID` 를 정식으로 가졌는지 보고 "열렸어요"
+- [x] `LeeoGiftStore.canRedeem` · `ownsGrantedProduct` · `checkOwnership()`. `isAvailable` 은 이제 "팔 수 있는가"(sellsGifts && 상품)
+- [x] 이미 받은 선물(`redeemed`) · 코드를 못 만든 결제(`resumePending`)는 그대로 처리
+- [x] 새 문자열 2개 23개 언어, "App Store" 가 줄 끝에서 갈리지 않게 붙는 공백
+- [x] 골드위크(로컬 LeeoKit)로 설정 → 선물 코드 입력 → 시트까지 시뮬레이터 확인. 시트는 시뮬레이터에서 빈 화면(실기기 필요)
+- [ ] 앱마다: 설정의 선물 칸 조건을 `isAvailable`(보내기) · `canRedeem`(받기)으로 나누기 — 안 고치면 판매가 꺼져 선물 칸이 통째로 숨는다
+- [ ] 이미 "오퍼 코드 사용" 줄이 있는 앱(골드위크 등)은 같은 시트가 두 줄 — 하나로 합치기
+- [ ] App Store Connect: 앱마다 Pro 비소모성에 오퍼 코드 만들기(일회용 코드 또는 사용자 지정 코드)
+- [x] 2단계: 돈 내고 사 주는 선물을 서버 없이 — 공개 DB 오퍼 코드 묶음(`LeeoOfferCodePool`, 앱마다 100장). 산 사람 앱이 한 장 가져가(가져감 · 발급 기록으로 한 장은 한 결제만, 같은 결제는 어느 기기에서나 같은 코드) App Store 사용 링크로 공유. 묶음이 비면 결제를 끝내지 않고 "준비 중"
+- [x] 보내기 화면 문구를 링크 흐름으로(11개 문구 23개 언어), 받기 화면의 LeeoKit 코드 칸은 더 안 띄움. 시험 7개(전체 239개)
+- [x] 뚫리면 묶음에 남은 만큼(많아야 100장) 잃는 것을 받아들이기로 함(2026-11-05, 사용자 결정)
+- [ ] Apple 약관: 오퍼 코드를 돈 받고 건네도 되는지 확인
+- [ ] CloudKit Dashboard: 개발 환경에서 한 번 채우고 한 번 사서 `LeeoOfferCode` · `LeeoOfferCodeClaim` 생성, 두 타입 `bundleId` Queryable, Production 배포
+- [ ] 실기기: 사용 링크(`ctx=offercodes&id=…&code=…`)가 비소모성 오퍼 코드에서 코드 채워진 창을 여는지
+- [ ] 앱마다 `sellsGifts: true` 는 묶음을 채우고 위 셋을 확인한 뒤에
+
+
 ## 답장이 왔다고 사용자에게 알리기 (2026-11-04)
 
 > 계기: 답장은 설정 > 보낸 의견에만 있어서, 설정에 안 들어가는 사람은 답장이 와도 몰랐다.

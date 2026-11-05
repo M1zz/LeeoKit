@@ -54,14 +54,37 @@ public struct LeeoGiftConfig: Sendable {
     /// 받은 사람 비공개 DB 의 "받은 선물 목록" 타입. 다른 기기에서 다시 찾는 데 쓴다.
     public let claimsRecordType: String
 
+    /// 사람이 돈을 내고 Pro 를 선물하는 길을 열지.
+    ///
+    /// 열면: 보내는 사람이 소모성 선물 상품을 사고, 앱이 공개 DB 의 **오퍼 코드 묶음**에서 한 장을
+    /// 가져와 App Store 사용 링크로 공유한다. 받는 사람은 링크를 누르고 "사용" 한 번 — Pro 를 여는 것은
+    /// App Store 다(심사 3.1.1). 묶음은 개발자가 FeedbackHub 에서 앱마다 100장씩 채운다.
+    ///
+    /// ⚠️ 기본은 **닫힘.** 묶음을 채우기 전에 열면 산 사람이 "준비 중" 에서 기다린다.
+    /// ⚠️ 묶음은 공개 DB 에 있어 앱을 뜯는 사람은 읽을 수 있다. 그래서 작게(100장) 두고 채운다.
+    /// 닫혀 있어도 이미 받은 예전 선물(`redeemed`)과 결제만 되고 코드를 못 가져온 것(`resumePending`)은 처리한다.
+    public let sellsGifts: Bool
+
+    /// 공개 DB 의 오퍼 코드 묶음 타입. 레코드 이름 = `offercode-<번들 ID>-<UUID>`,
+    /// 칸 `bundleId`(Queryable) · `code`. FeedbackHub 가 만들고 지운다.
+    public let offerCodeRecordType: String
+    /// 공개 DB 의 가져감 · 발급 기록 타입. 이름 `offerclaim-<묶음 레코드 이름>` · `offerissue-<번들>-<결제 번호>`.
+    public let offerClaimRecordType: String
+
     public init(
         productID: String,
         grantsProductID: String,
         containerIdentifier: String,
         giftRecordType: String = "LeeoGift",
         redemptionRecordType: String = "LeeoGiftRedemption",
-        claimsRecordType: String = "LeeoGiftClaims"
+        claimsRecordType: String = "LeeoGiftClaims",
+        sellsGifts: Bool = false,
+        offerCodeRecordType: String = "LeeoOfferCode",
+        offerClaimRecordType: String = "LeeoOfferCodeClaim"
     ) {
+        self.sellsGifts = sellsGifts
+        self.offerCodeRecordType = offerCodeRecordType
+        self.offerClaimRecordType = offerClaimRecordType
         self.productID = productID
         self.grantsProductID = grantsProductID
         self.containerIdentifier = containerIdentifier
@@ -77,6 +100,14 @@ public struct LeeoGiftConfig: Sendable {
     /// 결제 하나에 사용 기록 하나. 번들 ID 를 넣어 한 컨테이너를 여러 앱이 써도 겹치지 않게 한다.
     func redemptionRecordName(bundleID: String, transactionID: String) -> String {
         "giftredeem-\(bundleID)-\(transactionID)"
+    }
+
+    /// 묶음 한 장을 가져간 기록. 묶음 레코드마다 하나라, 두 결제가 같은 장을 가질 수 없다.
+    func offerClaimRecordName(poolRecordName: String) -> String { "offerclaim-\(poolRecordName)" }
+
+    /// 결제 하나가 받은 코드. 같은 결제를 다른 기기에서 다시 처리해도 같은 코드가 나온다.
+    func offerIssueRecordName(bundleID: String, transactionID: String) -> String {
+        "offerissue-\(bundleID)-\(transactionID)"
     }
 
     /// 비공개 DB 에서 앱마다 하나.

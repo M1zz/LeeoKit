@@ -5,10 +5,14 @@
 //  선물을 **권하고, 어떻게 전해지는지 알려 주고, 사게 하는** 화면.
 //  산 뒤에는 같은 자리에 코드와 보내기 단추가 선다. 아래에는 보낸 선물과 받았는지가 남는다.
 //
-//  설정에서 한 줄:
-//      if let gift = store.gift, gift.isAvailable {
-//          NavigationLink(LeeoGiftText.sendEntry) { LeeoGiftView<MyAppSpec>(gift: gift) }
-//          NavigationLink(LeeoGiftText.redeemEntry) { LeeoGiftRedeemView<MyAppSpec>(gift: gift) }
+//  설정에서:
+//      if let gift = store.gift {
+//          if gift.isAvailable {   // 선물 판매를 연 계약(`sellsGifts`)만
+//              NavigationLink(LeeoGiftText.sendEntry) { LeeoGiftView<MyAppSpec>(gift: gift) }
+//          }
+//          if gift.canRedeem {     // App Store 오퍼 코드 받기
+//              NavigationLink(LeeoGiftText.redeemEntry) { LeeoGiftRedeemView<MyAppSpec>(gift: gift) }
+//          }
 //      }
 //
 
@@ -29,7 +33,23 @@ public enum LeeoGiftText {
     public static var sendEntry: String { L("Pro 선물하기", comment: "Gift: entry to send Pro as a gift") }
     public static var redeemEntry: String { L("선물 코드 입력", comment: "Gift: entry to enter a received gift code") }
 
-    /// 받는 사람에게 보낼 글. 앱 링크가 있으면 끝에 붙인다.
+    /// 받는 사람에게 보낼 글 — 오퍼 코드면 App Store 사용 링크, 예전 LeeoKit 코드면 코드와 앱 링크.
+    public static func shareMessage(appName: String, gift: LeeoSentGift, appStoreID: String?) -> String {
+        guard gift.isOfferCode == true else {
+            return shareMessage(appName: appName, code: gift.code, appStoreID: appStoreID)
+        }
+        let link = LeeoOfferCodePool.redeemURL(code: gift.code, appStoreID: appStoreID)?.absoluteString ?? gift.code
+        return String(format: L("%1$@ Pro를 선물로 보내요.\n링크를 누르고 '사용'을 누르면 Pro가 열려요.\n%2$@",
+                                comment: "Gift: message with an App Store offer code link. 1 = app name, 2 = link"),
+                      appName, link)
+    }
+
+    /// 보여 줄 코드. 예전 LeeoKit 코드는 `ABCD-EFGH`, 오퍼 코드는 그대로.
+    static func displayCode(_ gift: LeeoSentGift) -> String {
+        gift.isOfferCode == true ? gift.code : LeeoGiftCode.display(gift.code)
+    }
+
+    /// 예전 LeeoKit 코드의 글. 앱 링크가 있으면 끝에 붙인다.
     public static func shareMessage(appName: String, code: String, appStoreID: String?) -> String {
         let body = String(format: L("%1$@ Pro를 선물로 보내요.\n앱에서 '선물 코드 입력'을 열고 이 코드를 넣어 주세요: %2$@",
                                     comment: "Gift: message sent to the recipient. 1 = app name, 2 = gift code"),
@@ -157,11 +177,11 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
                 .foregroundStyle(theme.text)
                 .accessibilityAddTraits(.isHeader)
             step(1, L("선물을 결제해요", comment: "Gift step 1 title"),
-                 L("Apple 계정으로 결제하면 선물 코드가 만들어져요.", comment: "Gift step 1 detail"))
-            step(2, L("코드를 보내요", comment: "Gift step 2 title"),
-                 L("메시지로 코드와 앱 링크를 보내 주세요.", comment: "Gift step 2 detail"))
-            step(3, L("받는 분이 코드를 넣어요", comment: "Gift step 3 title"),
-                 L("앱에서 '선물 코드 입력'을 열고 코드를 넣으면 바로 Pro가 열려요.", comment: "Gift step 3 detail"))
+                 L("Apple 계정으로 결제하면 선물 링크가 만들어져요.", comment: "Gift step 1 detail (offer code link)"))
+            step(2, L("링크를 보내요", comment: "Gift step 2 title (offer code link)"),
+                 L("메시지로 링크를 보내 주세요.", comment: "Gift step 2 detail (offer code link)"))
+            step(3, L("받는 분이 링크를 눌러요", comment: "Gift step 3 title (offer code link)"),
+                 L("App Store가 열리고 '사용'을 누르면 Pro가 열려요. 코드를 칠 필요가 없어요.", comment: "Gift step 3 detail (offer code link)"))
         }
         .padding(18)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -229,7 +249,7 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
     private var notes: some View {
         VStack(alignment: .leading, spacing: 6) {
             note(L("코드 하나는 한 사람이 한 번 쓸 수 있어요.", comment: "Gift note: one-time code"))
-            note(L("보내는 분과 받는 분 모두 iCloud에 로그인되어 있어야 해요.", comment: "Gift note: iCloud required"))
+            note(L("보내는 분만 iCloud에 로그인되어 있으면 돼요.", comment: "Gift note: only the sender needs iCloud (offer code link)"))
             note(L("환불은 결제한 분의 Apple 계정으로만 받을 수 있어요.", comment: "Gift note: refunds go to the purchaser only"))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -296,31 +316,36 @@ struct LeeoGiftCodeCard<Spec: LeeoAppSpec>: View {
                 .font(.headline)
                 .foregroundStyle(theme.text)
                 .accessibilityAddTraits(.isHeader)
-            Text(LeeoGiftCode.display(gift.code))
+            Text(LeeoGiftText.displayCode(gift))
                 .speechSpellsOutCharacters()
                 .font(.system(.largeTitle, design: .monospaced).weight(.bold))
                 .lineLimit(1)
                 .minimumScaleFactor(0.5)
                 .foregroundStyle(theme.text)
                 .textSelection(.enabled)
-            Text(L("이 코드를 받는 분께 보내 주세요.", comment: "Gift: instruction under the code"))
+            Text(gift.isOfferCode == true
+                 ? L("이 링크를 받는 분께 보내 주세요.", comment: "Gift: instruction under the offer code")
+                 : L("이 코드를 받는 분께 보내 주세요.", comment: "Gift: instruction under the code"))
                 .font(.subheadline)
                 .foregroundStyle(theme.textMuted)
             // 아주 큰 글자에서는 두 단추를 위아래로 세운다.
             let buttons = typeSize.isAccessibilitySize ? AnyLayout(VStackLayout(spacing: 12)) : AnyLayout(HStackLayout(spacing: 12))
             buttons {
                 Button {
-                    LeeoGiftClipboard.copy(LeeoGiftCode.display(gift.code))
+                    LeeoGiftClipboard.copy(gift.isOfferCode == true
+                        ? (LeeoOfferCodePool.redeemURL(code: gift.code, appStoreID: Spec.appStoreID)?.absoluteString ?? gift.code)
+                        : LeeoGiftCode.display(gift.code))
                     copied = true
                     AccessibilityNotification.Announcement(L("복사했어요", comment: "Gift: copied confirmation")).post()
                 } label: {
                     Label(copied ? L("복사했어요", comment: "Gift: copied confirmation")
-                                 : L("코드 복사", comment: "Gift: copy code button"),
+                                 : (gift.isOfferCode == true ? L("링크 복사", comment: "Gift: copy offer code link button")
+                                                             : L("코드 복사", comment: "Gift: copy code button")),
                           systemImage: copied ? "checkmark" : "doc.on.doc")
                         .frame(maxWidth: .infinity, minHeight: 44)
                 }
                 .buttonStyle(.bordered)
-                ShareLink(item: LeeoGiftText.shareMessage(appName: Spec.displayName, code: gift.code, appStoreID: Spec.appStoreID)) {
+                ShareLink(item: LeeoGiftText.shareMessage(appName: Spec.displayName, gift: gift, appStoreID: Spec.appStoreID)) {
                     Label(L("보내기", comment: "Gift: share button"), systemImage: "square.and.arrow.up")
                         .frame(maxWidth: .infinity, minHeight: 44)
                 }
@@ -344,7 +369,7 @@ struct LeeoSentGiftRow<Spec: LeeoAppSpec>: View {
             // 코드 · 날짜 · 받았는지는 한 덩어리로 읽고, 보내기 단추는 따로 누르게 둔다.
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(LeeoGiftCode.display(gift.code))
+                    Text(LeeoGiftText.displayCode(gift))
                         .speechSpellsOutCharacters()
                         .font(.system(.body, design: .monospaced).weight(.semibold))
                         .foregroundStyle(theme.text)
@@ -353,14 +378,16 @@ struct LeeoSentGiftRow<Spec: LeeoAppSpec>: View {
                         .foregroundStyle(theme.textMuted)
                 }
                 Spacer()
-                Text(gift.isRedeemed ? L("받음", comment: "Gift status: redeemed")
+                // 오퍼 코드는 받았는지 App Store 만 안다 — "보냄" 까지만 말한다.
+                Text(gift.isOfferCode == true ? L("보냄", comment: "Gift status: offer code link sent (redemption unknown)")
+                     : gift.isRedeemed ? L("받음", comment: "Gift status: redeemed")
                                      : L("아직 안 받음", comment: "Gift status: not redeemed yet"))
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(gift.isRedeemed ? Color.green : theme.textMuted)
             }
             .accessibilityElement(children: .combine)
             if !gift.isRedeemed {
-                ShareLink(item: LeeoGiftText.shareMessage(appName: Spec.displayName, code: gift.code, appStoreID: Spec.appStoreID)) {
+                ShareLink(item: LeeoGiftText.shareMessage(appName: Spec.displayName, gift: gift, appStoreID: Spec.appStoreID)) {
                     Image(systemName: "square.and.arrow.up")
                 }
                 .accessibilityLabel(L("보내기", comment: "Gift: share button"))

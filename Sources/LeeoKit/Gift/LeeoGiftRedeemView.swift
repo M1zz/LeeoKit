@@ -2,15 +2,24 @@
 //  LeeoGiftRedeemView.swift
 //  LeeoKit
 //
-//  받은 선물 코드를 넣는 화면. 받은 메시지를 통째로 붙여넣어도 코드를 찾아낸다.
+//  받은 선물 코드를 넣는 화면.
+//
+//  기본은 **App Store 오퍼 코드**다. 단추를 누르면 App Store 의 코드 입력 시트가 뜨고, App Store 가
+//  코드를 확인해 Pro 를 정식 구매로 연다(복원 · 다른 기기 · 환불이 모두 App Store 몫). LeeoKit 이 만든
+//  코드로 Pro 를 여는 것은 심사 3.1.1 리젝 사유라 그 입력칸(`form`, `LeeoGiftCodeBoxes`)은 더 띄우지 않는다.
+//  돈 내고 사 준 선물도 이제 오퍼 코드 링크로 온다(`LeeoOfferCodePool`). 받는 사람은 보통 이 화면에 오지 않고
+//  링크를 눌러 App Store 에서 바로 받는다 — 이 화면은 코드만 따로 받은 사람을 위한 자리다.
 //
 
 import SwiftUI
+import StoreKit
 
 public struct LeeoGiftRedeemView<Spec: LeeoAppSpec>: View {
     @ObservedObject private var gift: LeeoGiftStore
     @Environment(\.leeoStyle) private var theme
     @State private var input: String
+    @State private var isRedeemingOfferCode = false
+    @Environment(\.openURL) private var openURL
     private let onContactSupport: (() -> Void)?
 
     /// - Parameters:
@@ -33,12 +42,12 @@ public struct LeeoGiftRedeemView<Spec: LeeoAppSpec>: View {
                     .accessibilityHidden(true)
                     .padding(.top, 8)
 
-                if gift.redeemed != nil {
+                if gift.redeemed != nil || gift.ownsGrantedProduct {
                     done
                 } else if gift.testRedeemedCode != nil {
                     testDone
                 } else {
-                    form
+                    offerCodeForm
                 }
                 if let onContactSupport {
                     LeeoGiftSupportRow(gift: gift, onContact: onContactSupport)
@@ -51,17 +60,52 @@ public struct LeeoGiftRedeemView<Spec: LeeoAppSpec>: View {
         .background(theme.bg.ignoresSafeArea())
         .navigationTitle(LeeoGiftText.redeemEntry)
         .onDisappear { gift.clearTestResult() }
+        .task { await gift.checkOwnership() }
+        .modifier(LeeoOfferCodeSheet(isPresented: $isRedeemingOfferCode) {
+            Task { await gift.checkOwnership(retry: true) }
+        })
         // 입력칸이 사라지고 결과가 서는 것을 VoiceOver 에도 말해 준다.
         .onChange(of: isDone) { _, done in
             guard done else { return }
-            AccessibilityNotification.Announcement(gift.redeemed != nil ? doneTitle : testDoneTitle).post()
+            AccessibilityNotification.Announcement(gift.testRedeemedCode == nil ? doneTitle : testDoneTitle).post()
         }
     }
 
-    private var isDone: Bool { gift.redeemed != nil || gift.testRedeemedCode != nil }
+    private var isDone: Bool { gift.redeemed != nil || gift.ownsGrantedProduct || gift.testRedeemedCode != nil }
     private var doneTitle: String { L("선물받은 Pro가 열렸어요", comment: "Gift: redeem success title") }
     private var testDoneTitle: String {
         L("시험 선물이 끝까지 처리됐어요", comment: "Gift (developer test): test gift went through the whole redeem path")
+    }
+
+    /// App Store 오퍼 코드 — 기본 길.
+    private var offerCodeForm: some View {
+        VStack(spacing: 16) {
+            // "App Store" 가 두 줄로 갈리지 않게 붙는 공백으로.
+            Text(L("App Store 코드를 받았다면 여기서 넣으세요. App Store가 코드를 확인하고 Pro를 열어 줘요.",
+                   comment: "Gift: offer code redeem explanation (Apple offer code, verified by the App Store)")
+                .replacingOccurrences(of: "App Store", with: "App\u{00A0}Store"))
+                .font(.body)
+                .foregroundStyle(theme.textMuted)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Button {
+                if LeeoOfferCodeSheet.isSupported {
+                    isRedeemingOfferCode = true
+                } else if let url = LeeoOfferCodeSheet.redeemURL(appStoreID: Spec.appStoreID) {
+                    openURL(url)
+                }
+            } label: {
+                Text(L("App Store 코드 넣기", comment: "Gift: button that opens the App Store offer code sheet"))
+                    .font(.headline)
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity, minHeight: 52)
+                    .background(RoundedRectangle(cornerRadius: theme.radiusSm + 4, style: .continuous)
+                        .fill(theme.accent))
+            }
+            .buttonStyle(.plain)
+            .disabled(!LeeoOfferCodeSheet.isSupported && Spec.appStoreID == nil)
+        }
     }
 
     private var form: some View {
@@ -228,5 +272,45 @@ struct LeeoGiftCodeBoxes: View {
                     .strokeBorder(isNext ? theme.accent : Color.clear, lineWidth: 2)
             )
             .animation(.easeOut(duration: 0.12), value: isNext)
+    }
+}
+
+// MARK: - App Store 오퍼 코드 시트
+
+/// App Store 의 오퍼 코드 입력 시트. iOS 16 · macOS 15 부터 앱 안에서 뜬다.
+/// 그 아래(macOS 14)는 App Store 의 코드 사용 링크로 대신한다(`redeemURL`).
+struct LeeoOfferCodeSheet: ViewModifier {
+    @Binding var isPresented: Bool
+    var onCompletion: () -> Void
+
+    static var isSupported: Bool {
+        #if os(iOS)
+        return true
+        #elseif os(macOS)
+        if #available(macOS 15.0, *) { return true }
+        return false
+        #else
+        return false
+        #endif
+    }
+
+    /// 앱 밖에서 코드를 넣는 App Store 링크. 앱 ID 가 없으면 nil.
+    static func redeemURL(appStoreID: String?) -> URL? {
+        guard let appStoreID, !appStoreID.isEmpty else { return nil }
+        return URL(string: "https://apps.apple.com/redeem?ctx=offercodes&id=\(appStoreID)")
+    }
+
+    func body(content: Content) -> some View {
+        #if os(iOS)
+        content.offerCodeRedemption(isPresented: $isPresented) { _ in onCompletion() }
+        #elseif os(macOS)
+        if #available(macOS 15.0, *) {
+            content.offerCodeRedemption(isPresented: $isPresented) { _ in onCompletion() }
+        } else {
+            content
+        }
+        #else
+        content
+        #endif
     }
 }

@@ -510,6 +510,15 @@ LeeoFamilySynergy(id: "apply-day", appIDs: ["rainbow-ios", "clipkeyboard", "rere
   `LeeoFamilyTests` 가 지킨다. 앱을 추가하면 테스트가 먼저 알려 준다.
 - 수집하는 것 없음. 누르면 App Store 가 열릴 뿐이다.
 
+## 선물: App Store 오퍼 코드 링크
+
+LeeoKit 이 만든 코드로 Pro 를 여는 것은 심사 3.1.1 리젝 사유라, 선물은 App Store 오퍼 코드로 주고받는다.
+
+- 받기: `LeeoGiftRedeemView` 는 "App Store 코드 넣기" 단추 하나 — `offerCodeRedemption` 시트. 설정 줄은 `gift.canRedeem` 으로 띄운다.
+- 보내기(`LeeoGiftConfig(sellsGifts: true)`, 기본 꺼짐): 소모성 선물 상품을 사면 공개 DB 의 오퍼 코드 묶음에서 한 장을 가져와 `https://apps.apple.com/redeem?ctx=offercodes&id=<앱 ID>&code=<코드>` 링크로 공유한다. 받는 사람은 링크를 누르고 "사용" 한 번. 설정 줄은 `gift.isAvailable` 로 띄운다.
+- 묶음은 FeedbackHub(인앱 구입 화면의 "선물 코드 묶음")에서 앱마다 100장까지 채운다. App Store Connect 의 일회용 코드 파일을 넣으면 나머지는 그 기기에 예비로 둔다.
+- 묶음은 공개 DB 라 앱을 뜯는 사람은 읽을 수 있다. 작게 두는 까닭이다. 기록 이름은 `LeeoOfferCodePool.swift` 머리말.
+
 ## 의견 답장 (v3.15)
 
 회신 이메일은 대개 비어 온다. 그래도 개발자가 되물을 수 있게, 보낸 의견에 답장을 단다.

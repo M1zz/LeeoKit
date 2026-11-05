@@ -33,8 +33,10 @@ public struct LeeoSentGift: Codable, Identifiable, Equatable, Sendable {
     public let code: String
     public let transactionID: String
     public let createdAt: Date
-    /// 받은 사람이 썼는가. 화면을 열 때 공개 DB 를 보고 갱신한다.
+    /// 받은 사람이 썼는가. 화면을 열 때 공개 DB 를 보고 갱신한다. 오퍼 코드는 알 길이 없어 늘 false.
     public var isRedeemed: Bool
+    /// App Store 오퍼 코드인가(묶음에서 가져온 것). nil 이면 예전 LeeoKit 코드.
+    public var isOfferCode: Bool? = nil
     public var id: String { transactionID }
 }
 
@@ -65,6 +67,8 @@ public enum LeeoGiftError: LocalizedError, Equatable {
     case alreadyPro
     case invalidGift
     case refunded
+    /// 결제는 됐는데 묶음에 남은 오퍼 코드가 없다. 개발자가 채우면 다음에 열 때 나온다.
+    case poolEmpty
 
     public var errorDescription: String? {
         switch self {
@@ -92,6 +96,9 @@ public enum LeeoGiftError: LocalizedError, Equatable {
             return L("이 선물은 확인할 수 없어요. 보낸 분께 문의해 주세요.", comment: "Gift error: signature or product mismatch")
         case .refunded:
             return L("환불된 선물이에요.", comment: "Gift error: gift purchase refunded")
+        case .poolEmpty:
+            return L("결제는 됐어요. 선물 링크를 준비하고 있어요. 준비되면 이 화면에 나와요.",
+                     comment: "Gift error: paid, but no App Store offer code is left in the pool yet")
         }
     }
 }
@@ -115,14 +122,29 @@ public final class LeeoGiftStore: ObservableObject {
     @Published public private(set) var pendingCount = 0
     @Published public var lastError: LeeoGiftError?
 
-    /// 선물을 팔 수 있는가 (상품이 App Store 에서 왔는가).
+    /// 선물을 팔 수 있는가 — 계약이 열어 뒀고(`LeeoGiftConfig.sellsGifts`) 상품이 App Store 에서 왔는가.
+    /// 보내기 화면(`LeeoGiftView`)의 문은 이것을 본다.
     public var isAvailable: Bool {
         #if canImport(StoreKit)
-        return product != nil
+        return config.sellsGifts && product != nil
         #else
         return false
         #endif
     }
+
+    /// App Store 오퍼 코드를 받을 수 있는가 — 받기 화면(`LeeoGiftRedeemView`)의 문은 이것을 본다.
+    /// iOS · Catalyst 는 앱 안 시트, macOS 15 부터 앱 안 시트, 그 아래 macOS 는 App Store 링크.
+    public var canRedeem: Bool {
+        #if canImport(StoreKit) && (os(iOS) || os(macOS))
+        return true
+        #else
+        return false
+        #endif
+    }
+
+    /// 선물이 여는 상품(`grantsProductID`)을 App Store 에서 정식으로 갖고 있는가 — 오퍼 코드로 받았든 샀든.
+    /// 받기 화면이 오퍼 코드를 넣은 뒤 "열렸다" 를 보여 줄 때 쓴다(`checkOwnership`).
+    @Published public private(set) var ownsGrantedProduct = false
 
     /// 받은 선물이 여는 상품 ID. LeeoStore 가 권한에 합친다.
     public var grantedProductIDs: Set<String> { redeemed == nil ? [] : [config.grantsProductID] }
@@ -181,6 +203,8 @@ public final class LeeoGiftStore: ObservableObject {
     /// (결제 시트를 띄울 창을 아는 쪽이 사야 아이패드에서 결제가 오류로 끝나지 않는다. `LeeoStore.purchase` 참고)
     @discardableResult
     public func purchase(using action: (Product) async throws -> Product.PurchaseResult) async -> LeeoSentGift? {
+        // 선물 판매를 닫은 계약에서는 사지 않는다 — 받는 쪽이 LeeoKit 코드를 넣을 자리가 없다.
+        guard config.sellsGifts else { return nil }
         guard !isWorking else { return nil }
         lastError = nil
         if product == nil { await loadProduct() }
@@ -232,42 +256,92 @@ public final class LeeoGiftStore: ObservableObject {
         }
     }
 
-    /// 코드를 만들어 올리고, 올라간 다음에만 결제를 끝낸다.
-    private func issue(_ tx: Transaction, jws: String, retry: Bool = true) async -> LeeoSentGift? {
+    /// 묶음에서 App Store 오퍼 코드를 한 장 가져오고, 가져온 다음에만 결제를 끝낸다.
+    /// 못 가져오면(묶음이 비었거나 연결 문제) 끝내지 않는다 — 다음에 열 때 `resumePending` 이 다시 한다.
+    private func issue(_ tx: Transaction, jws: String) async -> LeeoSentGift? {
         let txid = String(tx.id)
         if let done = sentGifts.first(where: { $0.transactionID == txid }) {
             await tx.finish()
             return done
         }
-        let code = pendingCodes[txid] ?? LeeoGiftCode.generate()
-        setPending(txid, code)
-
-        let record = CKRecord(recordType: config.giftRecordType,
-                              recordID: CKRecord.ID(recordName: config.giftRecordName(code: code)))
-        record["jws"] = jws
-        record["transactionId"] = txid
-        record["bundleId"] = bundleID
+        setPending(txid, pendingCodes[txid] ?? "")
+        let code: String
         do {
-            try await saveNew(record, in: publicDB) { $0["transactionId"] as? String == txid }
-        } catch LeeoGiftError.alreadyUsed where retry {
-            // 다른 선물과 코드가 겹쳤다 (1조 분의 1). 새 코드로 한 번 더.
-            setPending(txid, nil)
-            return await issue(tx, jws: jws, retry: false)
+            code = try await claimOfferCode(transactionID: txid)
         } catch {
-            print("❌ [LeeoGiftStore.issue] 코드를 올리지 못했다 (결제는 끝내지 않음): \(error)")
-            lastError = .issuePending
+            let mapped = Self.map(error)
+            // 묶음 타입이 아직 없으면(한 번도 안 채움) CloudKit 은 "없음" 으로 답한다 — 빈 묶음과 같다.
+            lastError = (mapped == .poolEmpty || mapped == .notFound) ? .poolEmpty : .issuePending
+            print("❌ [LeeoGiftStore.issue] 오퍼 코드를 못 가져왔다 (결제는 끝내지 않음): \(error)")
             return nil
         }
 
-        let gift = LeeoSentGift(code: code, transactionID: txid, createdAt: tx.purchaseDate, isRedeemed: false)
+        let gift = LeeoSentGift(code: code, transactionID: txid, createdAt: tx.purchaseDate,
+                                isRedeemed: false, isOfferCode: true)
         if !sentGifts.contains(where: { $0.transactionID == txid }) {
             sentGifts.insert(gift, at: 0)
             encode(sentGifts, keySent)
         }
         setPending(txid, nil)
         await tx.finish()
-        print("✅ [LeeoGiftStore.issue] 선물 코드 생성 \(LeeoGiftCode.display(code))")
+        print("✅ [LeeoGiftStore.issue] 오퍼 코드 한 장 가져옴")
         return gift
+    }
+
+    /// 묶음에서 한 장. 같은 결제면 어느 기기에서 다시 불러도 같은 코드다(발급 기록).
+    ///
+    ///  1. 발급 기록 `offerissue-<번들>-<결제 번호>` 가 있으면 그 코드
+    ///  2. 묶음(`LeeoOfferCode`, 이 앱 번들)에서 아직 아무도 안 가져간 것을 골라
+    ///     가져감 기록 `offerclaim-<묶음 레코드 이름>` 을 만든다 — 이름이 하나라 한 장은 한 결제만 가진다
+    ///  3. 발급 기록을 만든다. 다른 기기가 먼저 만들었으면 그쪽 코드를 쓴다
+    private func claimOfferCode(transactionID txid: String) async throws -> String {
+        try await requireAccount()
+        let issueID = CKRecord.ID(recordName: config.offerIssueRecordName(bundleID: bundleID, transactionID: txid))
+        if let existing = try? await publicDB.record(for: issueID), let code = existing["code"] as? String, !code.isEmpty {
+            return code
+        }
+
+        let query = CKQuery(recordType: config.offerCodeRecordType,
+                            predicate: NSPredicate(format: "bundleId == %@", bundleID))
+        let (matches, _) = try await publicDB.records(matching: query, resultsLimit: LeeoOfferCodePool.fetchLimit)
+        let pool = matches.compactMap { try? $0.1.get() }
+        guard !pool.isEmpty else { throw LeeoGiftError.poolEmpty }
+
+        let claimIDs = pool.map { CKRecord.ID(recordName: config.offerClaimRecordName(poolRecordName: $0.recordID.recordName)) }
+        let claimResults = try await publicDB.records(for: claimIDs)
+        let claimed = Set(claimResults.compactMap { id, result in (try? result.get()) != nil ? id.recordName : nil })
+        let candidates = LeeoOfferCodePool.candidates(pool.map(\.recordID.recordName), claimedClaimNames: claimed,
+                                                      claimName: config.offerClaimRecordName(poolRecordName:))
+        let byName = Dictionary(pool.map { ($0.recordID.recordName, $0) }, uniquingKeysWith: { a, _ in a })
+
+        for name in candidates.shuffled() {
+            guard let record = byName[name], let code = record["code"] as? String, !code.isEmpty else { continue }
+            let claim = CKRecord(recordType: config.offerClaimRecordType,
+                                 recordID: CKRecord.ID(recordName: config.offerClaimRecordName(poolRecordName: name)))
+            claim["transactionId"] = txid
+            claim["bundleId"] = bundleID
+            do {
+                try await saveNew(claim, in: publicDB) { $0["transactionId"] as? String == txid }
+            } catch LeeoGiftError.alreadyUsed {
+                continue   // 다른 결제가 막 가져갔다
+            }
+            let issue = CKRecord(recordType: config.offerClaimRecordType, recordID: issueID)
+            issue["code"] = code
+            issue["transactionId"] = txid
+            issue["bundleId"] = bundleID
+            issue["poolRecord"] = name
+            do {
+                try await saveNew(issue, in: publicDB) { $0["code"] as? String == code }
+            } catch LeeoGiftError.alreadyUsed {
+                // 같은 결제를 다른 기기가 먼저 발급했다. 그쪽 코드를 쓴다(방금 가져간 한 장은 버린다).
+                if let other = try? await publicDB.record(for: issueID), let otherCode = other["code"] as? String {
+                    return otherCode
+                }
+                throw LeeoGiftError.network
+            }
+            return code
+        }
+        throw LeeoGiftError.poolEmpty
     }
 
     /// 보낸 선물이 환불됐다. 아직 안 받았으면 선물 기록을 지워 못 쓰게 한다.
@@ -407,6 +481,25 @@ public final class LeeoGiftStore: ObservableObject {
 
     /// 받은 선물이 아직 유효한지, 다른 기기에서 받은 선물이 있는지, 보낸 선물을 누가 받았는지 본다.
     /// 앱을 열 때 · 구매 복원 때 부른다. 연결이 안 되면 마지막으로 확인한 상태를 그대로 둔다.
+    /// `grantsProductID` 를 App Store 에서 갖고 있는지 다시 본다. 오퍼 코드 시트가 닫힌 뒤 부른다.
+    /// 시트가 닫히는 때와 거래가 들어오는 때가 어긋날 수 있어, 못 찾으면 잠깐 뒤 한 번 더 본다.
+    public func checkOwnership(retry: Bool = false) async {
+        #if canImport(StoreKit)
+        for attempt in 0..<(retry ? 3 : 1) {
+            if attempt > 0 { try? await Task.sleep(for: .seconds(1.5)) }
+            var owns = false
+            for await result in Transaction.currentEntitlements {
+                guard case .verified(let transaction) = result else { continue }
+                if transaction.productID == config.grantsProductID, transaction.revocationDate == nil {
+                    owns = true
+                }
+            }
+            if owns != ownsGrantedProduct { ownsGrantedProduct = owns }
+            if owns { return }
+        }
+        #endif
+    }
+
     public func refresh() async {
         guard (try? await container.accountStatus()) == .available,
               let me = try? await container.userRecordID() else { return }
@@ -455,7 +548,7 @@ public final class LeeoGiftStore: ObservableObject {
 
     private func refreshSentStatuses() async {
         var changed = false
-        for (i, gift) in sentGifts.enumerated() where !gift.isRedeemed {
+        for (i, gift) in sentGifts.enumerated() where !gift.isRedeemed && gift.isOfferCode != true {
             let id = CKRecord.ID(recordName: config.redemptionRecordName(bundleID: bundleID, transactionID: gift.transactionID))
             if (try? await publicDB.record(for: id)) != nil {
                 sentGifts[i].isRedeemed = true
