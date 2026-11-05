@@ -5,18 +5,18 @@
 //  선물 주고받기의 엔진. `LeeoStore` 가 `config.gift` 를 보고 하나 만들어 `store.gift` 로 내준다.
 //  받은 선물은 `grantedProductIDs` 로 LeeoStore 의 권한에 합쳐지므로, 앱의 Pro 판정은 고칠 것이 없다.
 //
-//  보내기:  소모성 결제 → 코드 생성 → 공개 DB 에 `gift-<코드>` (Apple 서명 결제 포함) → 그다음에 finish
-//           코드를 못 올리면 finish 하지 않는다. 다음에 앱을 열 때 `resumePending()` 이 다시 만든다.
-//  받기:    `gift-<코드>` 읽기 → 서명 확인 → 공개 DB 에 `giftredeem-<번들>-<결제 번호>` 만들기
-//           (이미 있으면 다른 사람이 쓴 것) → 비공개 DB 에 결제 번호 적기(다른 기기용)
-//  다시 확인: 앱을 열 때·복원할 때 사용 기록이 아직 내 것인지, 서명이 맞는지 본다.
+//  보내기:  소모성 결제 → 허브가 채운 App Store 오퍼 코드 묶음에서 한 장 가져오기(`offerclaim-` · `offerissue-`)
+//           → 그다음에 finish. 못 가져오면 finish 하지 않는다. 다음에 앱을 열 때 `resumePending()` 이 다시 한다.
+//  받기:    받는 사람이 App Store 사용 링크(또는 받기 화면의 코드 시트)에서 '사용'. Pro 를 여는 것은 App Store 다.
+//  옛 자체 코드(`gift-<코드>`): 예전에 보낸 선물을 받는 길로만 남아 있다. 새로 만들지 않는다.
 //
 //  시험 선물 (개발자): 결제 없이 공개 DB 에 `gift-<코드>` 를 만들고, 받기도 같은 길(찾기 · 한 번만 쓰기)을 지난다.
 //           **Pro 는 열지 않는다.** 출시 빌드의 CloudKit Production 이 제대로 도는지 보는 용도다.
 //           (개발자 모드는 누구나 켤 수 있어서, 시험 코드가 Pro 를 열면 그게 곧 공짜 Pro 가 된다)
 //
 //  ⚠️ 한계 (서버가 없어서):
-//   · 보낸 사람이 환불받아도, 이미 받은 사람의 Pro 는 그대로다. 받기 전이면 보낸 사람 기기가 선물 기록을 지운다.
+//   · 보낸 사람이 환불받아도, 이미 받은 사람의 Pro 는 그대로다. 오퍼 코드는 되돌릴 수 없고 누가 썼는지도
+//     Apple 이 알려 주지 않는다 — 보낸 사람 기기가 `offerrefund-` 표시만 남기고 허브가 센다.
 //   · 두 사람 모두 iCloud 에 로그인해야 한다.
 //
 
@@ -344,11 +344,17 @@ public final class LeeoGiftStore: ObservableObject {
         throw LeeoGiftError.poolEmpty
     }
 
-    /// 보낸 선물이 환불됐다. 아직 안 받았으면 선물 기록을 지워 못 쓰게 한다.
+    /// 보낸 선물이 환불됐다.
+    ///  · 예전 자체 코드: 아직 안 받았으면 선물 기록을 지워 못 쓰게 한다.
+    ///  · App Store 오퍼 코드: 이미 나간 코드는 되돌릴 수 없다. 환불 표시만 남겨 허브가 센다.
+    ///    (누가 그 코드로 Pro 를 받았는지는 Apple 이 알려 주지 않는다.)
     private func revoke(_ tx: Transaction) async {
         let txid = String(tx.id)
-        let code = sentGifts.first(where: { $0.transactionID == txid })?.code ?? pendingCodes[txid]
-        if let code {
+        let sent = sentGifts.first(where: { $0.transactionID == txid })
+        let code = sent?.code ?? pendingCodes[txid]
+        if let code, sent?.isOfferCode == true {
+            await markRefunded(code: code, transactionID: txid)
+        } else if let code {
             try? await publicDB.deleteRecord(withID: CKRecord.ID(recordName: config.giftRecordName(code: code)))
         }
         sentGifts.removeAll { $0.transactionID == txid }
@@ -356,6 +362,20 @@ public final class LeeoGiftStore: ObservableObject {
         setPending(txid, nil)
         await tx.finish()
         print("🔄 [LeeoGiftStore.revoke] 환불된 선물 정리")
+    }
+
+    /// `offerrefund-<번들>-<결제 번호>` — 발급 기록과 같은 타입 · 같은 칸만 쓴다(Production 스키마에 새 칸을 못 더한다).
+    private func markRefunded(code: String, transactionID txid: String) async {
+        let record = CKRecord(recordType: config.offerClaimRecordType,
+                              recordID: CKRecord.ID(recordName: config.offerRefundRecordName(bundleID: bundleID, transactionID: txid)))
+        record["code"] = code
+        record["transactionId"] = txid
+        record["bundleId"] = bundleID
+        do {
+            try await saveNew(record, in: publicDB) { $0["transactionId"] as? String == txid }
+        } catch {
+            print("❌ [LeeoGiftStore.markRefunded] \(error)")
+        }
     }
     #endif
 

@@ -23,6 +23,7 @@ final class LeeoOfferCodePoolTests: XCTestCase {
     func testRecordNamesAreTheContract() {
         XCTAssertEqual(config.offerClaimRecordName(poolRecordName: "offercode-com.x-1"), "offerclaim-offercode-com.x-1")
         XCTAssertEqual(config.offerIssueRecordName(bundleID: "com.x", transactionID: "42"), "offerissue-com.x-42")
+        XCTAssertEqual(config.offerRefundRecordName(bundleID: "com.x", transactionID: "42"), "offerrefund-com.x-42")
         XCTAssertEqual(config.offerCodeRecordType, "LeeoOfferCode")
         XCTAssertEqual(LeeoOfferCodePool.targetSize, 100)
     }

@@ -110,6 +110,11 @@ public struct LeeoGiftConfig: Sendable {
         "offerissue-\(bundleID)-\(transactionID)"
     }
 
+    /// 선물 결제가 환불됐다는 표시. 나간 코드는 되돌릴 수 없어서, 허브가 몇 장이 환불됐는지만 센다.
+    func offerRefundRecordName(bundleID: String, transactionID: String) -> String {
+        "offerrefund-\(bundleID)-\(transactionID)"
+    }
+
     /// 비공개 DB 에서 앱마다 하나.
     func claimsRecordName(bundleID: String) -> String { "giftclaims-\(bundleID)" }
 }
