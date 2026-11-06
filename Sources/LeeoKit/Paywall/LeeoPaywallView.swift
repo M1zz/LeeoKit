@@ -148,11 +148,12 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
     private var productSection: some View {
         if !hasConfig {
             notice(L("판매 상품이 구성되지 않았어요.", comment: "Paywall: no config"))
-        } else if store.isLoadingProducts && store.products.isEmpty {
+        } else if store.isLoadingProducts && visibleProducts.isEmpty {
             ProgressView(L("상품을 불러오는 중…", comment: "Paywall: loading products"))
                 .tint(theme.accent)
                 .padding(.vertical, 24)
-        } else if store.products.isEmpty {
+        } else if visibleProducts.isEmpty {
+            // 등급을 쓰면 고른 등급의 상품이 하나도 안 왔을 때도 여기다 (다른 등급 상품만 온 경우)
             VStack(spacing: 12) {
                 notice(store.lastError ?? L("상품을 불러오지 못했어요.", comment: "Paywall: load failed"))
                 Button(L("다시 시도", comment: "Paywall: retry")) {
