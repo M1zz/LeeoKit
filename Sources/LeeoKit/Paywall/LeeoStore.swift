@@ -82,8 +82,20 @@ public final class LeeoStore: ObservableObject {
     ///     case .blocked(let reason):     showPaywall(reason)
     ///     }
     public var gate: LeeoGate {
-        LeeoGate(policy: config.gate, hasPro: hasPro)
+        LeeoGate(policy: config.gate, hasPro: hasPro, tierIndex: currentTierIndex)
     }
+
+    /// 가진 유료 등급의 순번 (`config.gate.tiers`). 등급을 안 쓰거나 아무것도 없으면 nil.
+    /// 강제 해제 · 그랜드파더링 · 등급에 없는 권한 상품은 가장 높은 등급으로 본다.
+    public var currentTierIndex: Int? {
+        let tiers = config.gate.tiers
+        guard !tiers.isEmpty, hasPro else { return nil }
+        if unlockOverride?() == true || isGrandfathered { return tiers.count - 1 }
+        return config.gate.tierIndex(owning: purchasedProductIDs) ?? tiers.count - 1
+    }
+
+    /// 가진 유료 등급. 등급을 안 쓰거나 아무것도 없으면 nil.
+    public var currentTier: LeeoTier? { currentTierIndex.map { config.gate.tiers[$0] } }
 
     /// 앱이 주입하는 언락 정책. true=강제 해제(개발/맥앱), false=강제 잠금(페이월 테스트), nil=정상 판정.
     private let unlockOverride: (@MainActor () -> Bool?)?

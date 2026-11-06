@@ -25,4 +25,15 @@ public protocol LeeoProFeature {
     var leeoDetail: String { get }
     /// SF Symbol 이름.
     var leeoIcon: String { get }
+    /// 게이트 기능 키 (`LeeoGatePolicy`). 등급을 쓰는 앱의 페이월이 이 기능을 여는 등급을 먼저 보여 준다.
+    /// String rawValue 를 가진 enum 이면 rawValue 가 기본값이다.
+    var leeoKey: String? { get }
+}
+
+public extension LeeoProFeature {
+    var leeoKey: String? { nil }
+}
+
+public extension LeeoProFeature where Self: RawRepresentable, RawValue == String {
+    var leeoKey: String? { rawValue }
 }

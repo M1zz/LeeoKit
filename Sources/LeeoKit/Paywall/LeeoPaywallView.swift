@@ -33,12 +33,16 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
     private let onPurchased: (() -> Void)?
     /// 어떤 계기로 페이월이 떴는지 (분석 이벤트용). 리드 기능이 있으면 그 이름.
     private let analyticsReason: String?
+    /// 방금 부딪힌 기능의 게이트 키 — 등급을 쓰는 앱이면 그 기능을 여는 등급을 먼저 보여 준다.
+    private let leadKey: String?
 
     @StateObject private var store: LeeoStore
     @Environment(\.leeoStyle) private var theme
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) private var typeSize
     @State private var selectedProductID: String?
+    /// 등급을 쓰는 앱에서 지금 보고 있는 등급
+    @State private var selectedTierID: String?
 
     private let hasConfig: Bool
 
@@ -65,6 +69,7 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
         self.leadIcon = leadFeature?.leeoIcon ?? "crown.fill"
         self.onPurchased = onPurchased
         self.analyticsReason = leadFeature?.leeoTitle
+        self.leadKey = leadFeature?.leeoKey
         // config 가 없으면 빈 구성으로라도 안전하게 만든 뒤 안내 문구를 띄운다.
         self.hasConfig = config != nil
         _store = StateObject(wrappedValue: LeeoStore(config: config ?? LeeoPaywallConfig(productIDs: [])))
@@ -74,7 +79,11 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
         ScrollView {
             VStack(spacing: 24) {
                 header
-                if !features.isEmpty { featureList }
+                if tiers.isEmpty {
+                    if !features.isEmpty { featureList(features) }
+                } else {
+                    tierSection
+                }
                 productSection
                 footer
             }
@@ -91,8 +100,8 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
             await store.loadProducts()
             selectDefault()
         }
-        .onChange(of: store.hasPro) { _, pro in
-            if pro { onPurchased?(); dismiss() }
+        .onChange(of: isSatisfied) { _, satisfied in
+            if satisfied { onPurchased?(); dismiss() }
         }
     }
 
@@ -117,7 +126,7 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
         }
     }
 
-    private var featureList: some View {
+    private func featureList(_ features: [String]) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             ForEach(features, id: \.self) { feature in
                 HStack(alignment: .firstTextBaseline, spacing: 12) {
@@ -153,7 +162,7 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
             }
         } else {
             VStack(spacing: 12) {
-                ForEach(store.products, id: \.id) { product in
+                ForEach(visibleProducts, id: \.id) { product in
                     productRow(product)
                 }
             }
@@ -291,6 +300,63 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
         .accessibilityLabel(L("닫기", comment: "Paywall: close"))
     }
 
+    // MARK: - 등급
+
+    /// 등급 (낮은 것부터). 비어 있으면 등급 없는 페이월이다.
+    private var tiers: [LeeoTier] { store.config.gate.tiers }
+
+    /// 살 수 있는 등급 — 이미 가진 등급과 그 아래는 뺀다
+    private var offeredTiers: [LeeoTier] {
+        Array(tiers.dropFirst((store.currentTierIndex ?? -1) + 1))
+    }
+
+    private var selectedTier: LeeoTier? {
+        offeredTiers.first { $0.id == selectedTierID } ?? offeredTiers.last
+    }
+
+    @ViewBuilder
+    private var tierSection: some View {
+        if offeredTiers.count > 1 {
+            Picker(L("등급", comment: "Paywall: tier picker"), selection: Binding(
+                get: { selectedTier?.id ?? "" },
+                set: { selectTier($0) }
+            )) {
+                ForEach(offeredTiers) { Text($0.name).tag($0.id) }
+            }
+            .pickerStyle(.segmented)
+        }
+        if let tier = selectedTier { featureList(highlights(of: tier)) }
+    }
+
+    /// 그 등급의 혜택 — 아래 등급이 있으면 "그 등급의 모든 기능" 을 맨 위에 둔다
+    private func highlights(of tier: LeeoTier) -> [String] {
+        guard let index = tiers.firstIndex(of: tier), index > 0 else { return tier.highlights }
+        let lower = String(format: L("%@의 모든 기능", comment: "Paywall: includes every feature of the lower tier (tier name)"),
+                           tiers[index - 1].name)
+        return [lower] + tier.highlights
+    }
+
+    private func selectTier(_ id: String) {
+        guard id != selectedTierID else { return }
+        selectedTierID = id
+        selectedProductID = nil
+        selectDefault()
+    }
+
+    /// 지금 보여 줄 상품 — 등급을 쓰면 고른 등급의 상품만
+    private var visibleProducts: [Product] {
+        guard let tier = selectedTier else { return store.products }
+        return tier.productIDs.compactMap { id in store.products.first { $0.id == id } }
+    }
+
+    /// 페이월을 닫아도 되는지 — 고른(또는 방금 막힌 기능이 요구하는) 등급에 닿았는지
+    private var isSatisfied: Bool {
+        guard !tiers.isEmpty else { return store.hasPro }
+        guard let owned = store.currentTierIndex else { return false }
+        if let leadKey, let required = store.config.gate.requiredTierIndex(for: leadKey) { return owned >= required }
+        return owned == tiers.count - 1 || offeredTiers.isEmpty
+    }
+
     // MARK: - 헬퍼
 
     private func notice(_ message: String) -> some View {
@@ -319,7 +385,12 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
     }
 
     private func selectDefault() {
-        if selectedProductID == nil { selectedProductID = store.products.first?.id }
+        if selectedTierID == nil, !tiers.isEmpty {
+            // 방금 막힌 기능을 여는 등급, 없으면 가장 높은 등급
+            let lead = leadKey.flatMap { store.config.gate.requiredTierIndex(for: $0) }.map { tiers[$0].id }
+            selectedTierID = offeredTiers.first { $0.id == lead }?.id ?? offeredTiers.last?.id
+        }
+        if selectedProductID == nil { selectedProductID = visibleProducts.first?.id }
     }
 
     /// 구독 상품이면 "가격/기간", 아니면 그냥 가격.

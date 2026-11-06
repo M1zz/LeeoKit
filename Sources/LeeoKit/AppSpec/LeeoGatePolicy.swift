@@ -41,6 +41,10 @@ public struct LeeoGatePolicy: Sendable, Equatable {
     /// 체험(무료 사용) 기간 정책. 체험 중에는 모든 게이트가 열린다.
     public let trial: LeeoTrial
 
+    /// 유료 등급 (낮은 등급부터). 비어 있으면 등급 없이 "프로냐 아니냐" 로 판정한다 (`LeeoTier`).
+    /// 등급의 `features` 에 든 기능은 그 등급 이상이어야 열린다. `freeLimits` 에도 있으면 무료 한도까지는 쓸 수 있다.
+    public let tiers: [LeeoTier]
+
     /// 게이트를 두지 않는 정책 — 유료 다운로드 앱이나 전체 무료 앱이 쓴다.
     public static let none = LeeoGatePolicy()
 
@@ -48,20 +52,24 @@ public struct LeeoGatePolicy: Sendable, Equatable {
         freeLimits: [String: Int] = [:],
         proOnly: Set<String> = [],
         warnWhenRemaining: Int = 0,
-        trial: LeeoTrial = .none
+        trial: LeeoTrial = .none,
+        tiers: [LeeoTier] = []
     ) {
         self.freeLimits = freeLimits
         self.proOnly = proOnly
         self.warnWhenRemaining = warnWhenRemaining
         self.trial = trial
+        self.tiers = tiers
     }
 
     /// 무료 사용자가 페이월에 도달할 수 있는 경로가 하나라도 있는지.
     /// false 인데 유료 상품을 판다면 "팔 물건은 있는데 살 이유를 만들지 않은" 상태다 (Preflight 경고).
-    public var hasAnyGate: Bool { !freeLimits.isEmpty || !proOnly.isEmpty }
+    public var hasAnyGate: Bool { !freeLimits.isEmpty || !proOnly.isEmpty || tiers.contains { !$0.features.isEmpty } }
 
     /// 이 정책이 다루는 모든 기능 키 (매니페스트·디버그 표시용).
-    public var allKeys: Set<String> { Set(freeLimits.keys).union(proOnly) }
+    public var allKeys: Set<String> {
+        tiers.reduce(Set(freeLimits.keys).union(proOnly)) { $0.union($1.features) }
+    }
 }
 
 /// 체험 기간 정책. 판정에 필요한 사용량은 `LeeoEngagement` 에서 읽는다.
@@ -125,6 +133,8 @@ public struct LeeoGateReason: Sendable, Equatable {
     /// 부딪힌 기능 키.
     public let key: String
     public let kind: Kind
+    /// 이 기능을 여는 등급 (등급을 쓰는 앱만). 페이월이 이 등급을 먼저 보여 준다.
+    public var requiredTier: LeeoTier? = nil
 
     /// 사용자에게 보여줄 기본 문구 (앱이 자체 문구를 쓰면 무시해도 된다).
     public var localizedMessage: String {
@@ -132,6 +142,9 @@ public struct LeeoGateReason: Sendable, Equatable {
         case .limitReached(let limit):
             return String(format: L("무료로는 %d개까지 쓸 수 있어요.", comment: "Gate: free limit reached"), limit)
         case .proOnlyFeature:
+            if let requiredTier {
+                return String(format: L("%@ 기능이에요.", comment: "Gate: feature of a paid tier (tier name)"), requiredTier.name)
+            }
             return L("프로 전용 기능이에요.", comment: "Gate: pro only feature")
         }
     }
@@ -147,36 +160,52 @@ public struct LeeoGate: Sendable {
     public let hasPro: Bool
     /// 체험 유효 여부 (기본은 policy.trial 을 사용량 기록으로 평가한 값).
     public let isTrialActive: Bool
+    /// 가진 등급의 순번 (`policy.tiers`). 등급을 쓰는데 nil 이고 hasPro 면 가장 높은 등급으로 본다.
+    public let tierIndex: Int?
 
-    public init(policy: LeeoGatePolicy, hasPro: Bool, isTrialActive: Bool) {
+    public init(policy: LeeoGatePolicy, hasPro: Bool, isTrialActive: Bool, tierIndex: Int? = nil) {
         self.policy = policy
         self.hasPro = hasPro
         self.isTrialActive = isTrialActive
+        self.tierIndex = hasPro && !policy.tiers.isEmpty ? (tierIndex ?? policy.tiers.count - 1) : nil
     }
 
-    public init(policy: LeeoGatePolicy, hasPro: Bool, engagement: LeeoEngagement = .shared) {
-        self.init(policy: policy, hasPro: hasPro, isTrialActive: policy.trial.isActive(engagement: engagement))
+    public init(policy: LeeoGatePolicy, hasPro: Bool, tierIndex: Int? = nil, engagement: LeeoEngagement = .shared) {
+        self.init(policy: policy, hasPro: hasPro, isTrialActive: policy.trial.isActive(engagement: engagement),
+                  tierIndex: tierIndex)
     }
 
-    /// 모든 게이트가 열려 있는 상태인지 (구매했거나 체험 중).
-    public var isUnlocked: Bool { hasPro || isTrialActive }
+    /// 모든 게이트가 열려 있는 상태인지 (가장 높은 등급을 샀거나 체험 중).
+    public var isUnlocked: Bool {
+        if isTrialActive { return true }
+        guard hasPro else { return false }
+        return policy.tiers.isEmpty || tierIndex == policy.tiers.count - 1
+    }
+
+    /// 이 기능이 지금 가진 권한으로 열려 있는지 (무료 한도와 상관없이).
+    private func isUnlocked(_ key: String) -> Bool {
+        if isTrialActive { return true }
+        guard let required = policy.requiredTierIndex(for: key) else { return hasPro }
+        return (tierIndex ?? -1) >= required
+    }
 
     /// - Parameters:
     ///   - key: 기능 키 (`freeLimits`/`proOnly` 에서 쓴 이름).
     ///   - current: 지금 보유/사용 중인 개수. 개수 개념이 없는 기능은 생략.
     ///   - adding: 이번에 추가하려는 개수 (기본 1). 0이면 "쓸 수 있는지"만 확인.
     public func evaluate(_ key: String, current: Int = 0, adding: Int = 1) -> LeeoGateDecision {
-        if isUnlocked { return .allowed }
+        if isUnlocked(key) { return .allowed }
 
-        if policy.proOnly.contains(key) {
-            return .blocked(LeeoGateReason(key: key, kind: .proOnlyFeature))
+        let requiredTier = policy.requiredTierIndex(for: key).map { policy.tiers[$0] }
+        if policy.proOnly.contains(key) || (requiredTier != nil && policy.freeLimits[key] == nil) {
+            return .blocked(LeeoGateReason(key: key, kind: .proOnlyFeature, requiredTier: requiredTier))
         }
 
         guard let limit = policy.freeLimits[key] else { return .allowed }
 
         // 이번 동작까지 반영했을 때 한도를 넘는가.
         guard current + adding <= limit else {
-            return .blocked(LeeoGateReason(key: key, kind: .limitReached(limit: limit)))
+            return .blocked(LeeoGateReason(key: key, kind: .limitReached(limit: limit), requiredTier: requiredTier))
         }
 
         let remaining = limit - (current + adding)
@@ -193,7 +222,7 @@ public struct LeeoGate: Sendable {
 
     /// 남은 무료 여유분. 한도가 없거나 이미 해제됐으면 nil.
     public func remaining(_ key: String, current: Int) -> Int? {
-        guard !isUnlocked, let limit = policy.freeLimits[key] else { return nil }
+        guard !isUnlocked(key), let limit = policy.freeLimits[key] else { return nil }
         return max(0, limit - current)
     }
 }
