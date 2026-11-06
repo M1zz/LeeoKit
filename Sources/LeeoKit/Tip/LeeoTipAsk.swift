@@ -348,18 +348,22 @@ public extension View {
     ///
     /// - Parameters:
     ///   - when: 물어도 되는 사람인가. 유료 등급이 있는 앱은 이미 다 가진 사람에게만(`true` 일 때만 본다).
+    ///   - canPresent: 띄우기 **바로 전에** 한 번 묻는다. 앱에 "한 번 열 때 저절로 뜨는 창은 하나" 같은
+    ///     규칙이 있으면 여기서 자리를 쥔다. false 면 이번에는 띄우지 않고 물은 것으로도 적지 않는다.
     ///   - reached: 지금 넘어선 순간, **인상적인 것부터**. 화면이 뜰 때마다 다시 센다.
     ///
     /// ⚠️ 화면이 뜨자마자 띄우지 않는다. 2초 머문 뒤에 본다(앱을 열자마자 막아서지 않게).
     func leeoTipAsk(tipJar: LeeoTipJar, when enabled: Bool = true,
+                    canPresent: @escaping @MainActor () -> Bool = { true },
                     reached: @escaping () -> [LeeoTipMoment]) -> some View {
-        modifier(LeeoTipAskPresenter(tipJar: tipJar, enabled: enabled, reached: reached))
+        modifier(LeeoTipAskPresenter(tipJar: tipJar, enabled: enabled, canPresent: canPresent, reached: reached))
     }
 }
 
 private struct LeeoTipAskPresenter: ViewModifier {
     @ObservedObject var tipJar: LeeoTipJar
     let enabled: Bool
+    let canPresent: @MainActor () -> Bool
     let reached: () -> [LeeoTipMoment]
     @State private var moment: LeeoTipMoment?
     @Environment(\.scenePhase) private var scenePhase
@@ -372,7 +376,7 @@ private struct LeeoTipAskPresenter: ViewModifier {
                 try? await Task.sleep(for: .seconds(2))
                 guard !Task.isCancelled else { return }
                 let now = reached()
-                guard let next = tipJar.momentToAsk(from: now) else { return }
+                guard let next = tipJar.momentToAsk(from: now), canPresent() else { return }
                 tipJar.markAsked(covering: now)
                 moment = next
             }

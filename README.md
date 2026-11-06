@@ -426,6 +426,8 @@ LeeoTipAskSlot<MyAppSpec>(tipJar: tipJar, reached: MyTipMoments.reachedNow)
 
 // 카드 대신 창으로(v3.32). 첫 화면에 한 줄, 창 안에서 바로 팁을 낸다
 .leeoTipAsk(tipJar: tipJar, when: hasEverything) { MyTipMoments.reachedNow }
+// 저절로 뜨는 창을 한 번에 하나로 묶는 앱이면 띄우기 직전에 자리를 쥔다
+.leeoTipAsk(tipJar: tipJar, when: hasEverything, canPresent: { MyLaunchGate.claim("tipAsk") }) { ... }
 ```
 
 - 부탁은 그 사람이 앱으로 얻은 것이 숫자로 보이는 순간에만, 드물게 한다(`LeeoTipAskPolicy`: 물으면 60일, 낸 사람은 180일, '다음에' 세 번이면 끝, '앞으로 이 메시지 보지 않기' 를 누르면 바로 끝).
