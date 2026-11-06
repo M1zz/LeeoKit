@@ -68484,6 +68484,578 @@
           }
         }
       }
+    },
+    "앞으로 이 메시지 보지 않기" : {
+      "comment" : "Tip ask: never show this request again",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Už nezobrazovat"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis ikke igen"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht mehr anzeigen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Να μην εμφανιστεί ξανά"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Don't show this again"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No volver a mostrar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Älä näytä uudelleen"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ne plus afficher"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jangan tampilkan lagi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non mostrare più"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今後このメッセージを表示しない"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앞으로 이 메시지 보지 않기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikke vis igjen"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niet meer tonen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie pokazuj więcej"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não mostrar de novo"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Больше не показывать"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visa inte igen"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ไม่ต้องแสดงข้อความนี้อีก"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bunu bir daha gösterme"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Không hiện lại thông báo này"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不再显示此消息"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不再顯示此訊息"
+          }
+        }
+      }
+    },
+    "혼자 만드는 앱이에요. 작은 응원도 큰 힘이 되고, 더 좋은 앱을 만드는 데 그대로 쓰여요. 기능은 그대로예요." : {
+      "comment" : "Tip ask sheet: a solo developer asks for a small tip; it helps a lot and goes into making the app better. Nothing is locked",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuhle aplikaci dělám sám. I malá podpora hodně pomůže a celá jde na její zlepšování. Nic se nezamyká."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jeg laver denne app alene. Selv en lille støtte hjælper meget og går helt til at gøre appen bedre. Intet bliver låst."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich entwickle diese App allein. Schon ein kleines Trinkgeld hilft sehr und fließt ganz in die Verbesserung. Es wird nichts gesperrt."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Φτιάχνω αυτή την εφαρμογή μόνος μου. Ακόμα και μια μικρή στήριξη βοηθά πολύ και πηγαίνει ολόκληρη στο να γίνει καλύτερη. Δεν κλειδώνει τίποτα."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I make this app on my own. Even a small tip helps a lot, and all of it goes into making the app better. Nothing gets locked."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hago esta app yo solo. Incluso un pequeño apoyo ayuda mucho y va todo a mejorarla. No se bloquea nada."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teen tätä sovellusta yksin. Pienikin tuki auttaa paljon ja menee kokonaan sovelluksen parantamiseen. Mitään ei lukita."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je développe cette app seul. Même un petit soutien aide beaucoup et sert entièrement à l'améliorer. Rien n'est bloqué."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saya membuat aplikasi ini sendirian. Dukungan kecil pun sangat membantu dan seluruhnya dipakai untuk membuatnya lebih baik. Tidak ada fitur yang dikunci."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sviluppo questa app da solo. Anche un piccolo sostegno aiuta tanto e va tutto nel migliorarla. Non si blocca nulla."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ひとりで作っているアプリです。小さな応援も大きな力になり、もっと良いアプリにするために使います。機能はそのままです。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "혼자 만드는 앱이에요. 작은 응원도 큰 힘이 되고, 더 좋은 앱을 만드는 데 그대로 쓰여요. 기능은 그대로예요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jeg lager denne appen alene. Selv en liten støtte hjelper mye og går i sin helhet til å gjøre appen bedre. Ingenting blir låst."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ik maak deze app in mijn eentje. Zelfs een kleine bijdrage helpt enorm en gaat helemaal naar het beter maken van de app. Er wordt niets vergrendeld."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tworzę tę aplikację sam. Nawet małe wsparcie bardzo pomaga i w całości idzie na jej ulepszanie. Nic nie zostaje zablokowane."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eu faço este app sozinho. Até um apoio pequeno ajuda muito e vai todo para deixá-lo melhor. Nada fica bloqueado."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я делаю это приложение один. Даже небольшая поддержка очень помогает и целиком идёт на то, чтобы сделать его лучше. Ничего не блокируется."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jag gör den här appen ensam. Även ett litet bidrag hjälper mycket och går helt till att göra appen bättre. Inget låses."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "แอปนี้ทำคนเดียว การสนับสนุนเล็กน้อยก็เป็นกำลังใจมาก และจะนำไปพัฒนาแอปให้ดีขึ้นทั้งหมด ฟีเจอร์ยังเหมือนเดิม"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu uygulamayı tek başıma geliştiriyorum. Küçük bir destek bile çok işe yarar ve tamamı uygulamayı iyileştirmeye gider. Hiçbir şey kilitlenmez."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mình làm ứng dụng này một mình. Một chút ủng hộ cũng là động lực lớn và sẽ dùng hết để làm ứng dụng tốt hơn. Không tính năng nào bị khóa."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这是我一个人开发的 App。一点支持也是很大的鼓励，会全部用来把它做得更好。功能不会因此改变。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "這是我一個人開發的 App。一點支持也是很大的鼓勵，會全部用來把它做得更好。功能不會因此改變。"
+          }
+        }
+      }
+    },
+    "정말 고마워요" : {
+      "comment" : "Tip ask sheet: thanks after a tip",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moc děkuji"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mange tak"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vielen herzlichen Dank"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Σας ευχαριστώ πολύ"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thank you so much"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muchísimas gracias"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kiitos todella paljon"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Merci infiniment"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terima kasih banyak"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grazie di cuore"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本当にありがとうございます"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "정말 고마워요"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tusen takk"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heel erg bedankt"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bardzo dziękuję"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muito obrigado"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Огромное спасибо"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tack så mycket"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ขอบคุณมากจริงๆ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çok teşekkür ederim"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cảm ơn bạn rất nhiều"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "真的谢谢你"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "真的謝謝你"
+          }
+        }
+      }
+    },
+    "보내 주신 응원으로 계속 다듬을게요." : {
+      "comment" : "Tip ask sheet: thanks body, the developer will keep improving the app",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Díky vaší podpoře ji budu dál vylepšovat."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Med din støtte bliver jeg ved med at forbedre appen."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit deiner Unterstützung mache ich die App weiter besser."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Με τη στήριξή σας θα συνεχίσω να τη βελτιώνω."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your support keeps this app getting better."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Con tu apoyo, la seguiré mejorando."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tukesi ansiosta jatkan sovelluksen parantamista."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grâce à votre soutien, je vais continuer à l'améliorer."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dengan dukungan Anda, aplikasi ini akan terus saya sempurnakan."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Con il tuo sostegno continuerò a migliorarla."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "いただいた応援で、これからも磨いていきます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보내 주신 응원으로 계속 다듬을게요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Med din støtte fortsetter jeg å forbedre appen."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Met jouw steun blijf ik de app verbeteren."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dzięki Twojemu wsparciu będę dalej ją ulepszać."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Com o seu apoio, vou continuar melhorando o app."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Благодаря вашей поддержке приложение будет становиться лучше."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Med ditt stöd fortsätter jag att förbättra appen."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "จะพัฒนาแอปต่อไปด้วยกำลังใจที่ส่งมา"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desteğinizle uygulamayı geliştirmeye devam edeceğim."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhờ sự ủng hộ của bạn, mình sẽ tiếp tục hoàn thiện ứng dụng."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有你的支持，我会继续打磨。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有你的支持，我會繼續打磨。"
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

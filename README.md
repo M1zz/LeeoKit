@@ -423,9 +423,12 @@ static let tipJar = LeeoTipJar(config: LeeoTipJarConfig(productIDs: [small, medi
 // 설정 줄 · 고마운 순간의 부탁 카드
 LeeoTipJarLink<MyAppSpec>(tipJar: tipJar)
 LeeoTipAskSlot<MyAppSpec>(tipJar: tipJar, reached: MyTipMoments.reachedNow)
+
+// 카드 대신 창으로(v3.32). 첫 화면에 한 줄, 창 안에서 바로 팁을 낸다
+.leeoTipAsk(tipJar: tipJar, when: hasEverything) { MyTipMoments.reachedNow }
 ```
 
-- 부탁은 그 사람이 앱으로 얻은 것이 숫자로 보이는 순간에만, 드물게 한다(`LeeoTipAskPolicy`: 물으면 60일, 낸 사람은 180일, '다음에' 세 번이면 끝).
+- 부탁은 그 사람이 앱으로 얻은 것이 숫자로 보이는 순간에만, 드물게 한다(`LeeoTipAskPolicy`: 물으면 60일, 낸 사람은 180일, '다음에' 세 번이면 끝, '앞으로 이 메시지 보지 않기' 를 누르면 바로 끝).
 - 유료 등급이 있는 앱은 이미 다 가진 사람에게만 부탁한다.
 - 팁 상품을 `productIDs` · `entitlementIDs` 에 넣지 않는다(사전 점검 `tip.sellsPro`).
 - **고마운 사람들(v3.27).** `LeeoTipJarConfig(productIDs:thanksPage:)` 에 앱 소개 페이지의 자리

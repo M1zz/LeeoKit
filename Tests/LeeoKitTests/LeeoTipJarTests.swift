@@ -100,6 +100,19 @@ final class LeeoTipJarTests: XCTestCase {
         XCTAssertNotNil(pick(asked: now.addingTimeInterval(-61 * day)))
         XCTAssertNil(pick(tipped: now.addingTimeInterval(-179 * day)), "낸 사람에게는 180일 묻지 않는다")
         XCTAssertNil(pick(laters: 3), "'다음에' 세 번이면 끝")
+        XCTAssertNil(LeeoTipAskPolicy.pick(reached: [big], seen: [], lastAskedAt: nil, lastTipAt: nil,
+                                           laters: 0, optedOut: true, now: now), "'다시 보지 않기' 를 누르면 끝")
+    }
+
+    func test_다시_보지_않기를_누르면_다시는_묻지_않는다() {
+        let (defaults, suite) = makeDefaults()
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let jar = LeeoTipJar(config: LeeoTipJarConfig(productIDs: tipIDs), defaults: defaults)
+        XCTAssertFalse(jar.optedOutOfAsks)
+        jar.optOutOfAsks()
+        XCTAssertTrue(jar.optedOutOfAsks)
+        XCTAssertTrue(LeeoTipJar(config: LeeoTipJarConfig(productIDs: tipIDs), defaults: defaults).optedOutOfAsks,
+                      "앱을 다시 열어도 남는다")
     }
 
     func test_보여_준_카드는_함께_넘은_작은_순간까지_쓴다() {

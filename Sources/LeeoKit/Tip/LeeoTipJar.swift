@@ -80,6 +80,7 @@ public final class LeeoTipJar: ObservableObject {
     let askSeenKey: String
     let askLastKey: String
     let askLatersKey: String
+    let askNeverKey: String
 
     public init(config: LeeoTipJarConfig, defaults: UserDefaults = .standard,
                 bundleID: String = Bundle.main.bundleIdentifier ?? "") {
@@ -95,6 +96,7 @@ public final class LeeoTipJar: ObservableObject {
         askSeenKey = "leeo.tips.ask.seen." + ns
         askLastKey = "leeo.tips.ask.last." + ns
         askLatersKey = "leeo.tips.ask.laters." + ns
+        askNeverKey = "leeo.tips.ask.never." + ns
         tipCount = defaults.integer(forKey: countKey)
         points = 0
         // 장부가 생기기 전에 센 팁은 칸을 몰라 작은 칸(1점)으로 친다. 기기마다 따로 센 것이라 기기 이름을 붙인다.
