@@ -5,8 +5,8 @@
 //  **이미 다 가진 사람이 조금 더 내고 싶을 때** 내는 곳(팁). 기능을 열지 않는다.
 //
 //  - 상품은 소모성(Consumable)이다. 몇 번이든 낼 수 있다.
-//  - 낸 것은 점수 장부로 남는다(`LeeoSupporter`): 작은 칸 1 · 중간 3 · 큰 10점, iCloud 로 기기와 앱을 넘어 합친다.
-//    점수는 단계(응원자 · 단골 · 후견인)와 보상을 정할 뿐, 권한이 아니므로 기능을 열지 않는다.
+//  - 낸 것은 장부로 남는다(`LeeoSupporter`). iCloud 로 기기와 앱을 넘어 합친다.
+//    낸 칸이 단계(커피 한 잔 응원자 · 간식 한 번 단골 · 든든한 한 끼 후견인)와 보상을 정할 뿐, 권한이 아니므로 기능을 열지 않는다.
 //  - ⚠️ 팁 상품을 `productIDs` · `entitlementIDs` 에 넣으면 낸 사람이 Pro 가 된다. 사전 점검이 막는다(`tip.sellsPro`).
 //
 //  계약에서 한 줄:
@@ -28,10 +28,10 @@ public struct LeeoTipJarConfig: Sendable, Equatable {
     /// 있으면 한 번이라도 응원한 사람에게 팁 화면에서 '이름 올리기'(개발자에게 메일)와 '보기'를 보여 준다.
     /// 이름은 app-portfolio 의 docs/thanks.json 에 손으로 올린다. 없으면 그 칸을 그리지 않는다.
     public let thanksPage: URL?
-    /// 단골(10점)부터 쓸 수 있는 후원자 전용 앱 아이콘 이름(Asset Catalog 의 대체 아이콘). 없으면 그 보상을 그리지 않는다.
+    /// 단골(간식 한 번)부터 쓸 수 있는 후원자 전용 앱 아이콘 이름(Asset Catalog 의 대체 아이콘). 없으면 그 보상을 그리지 않는다.
     /// ⚠️ 앱 타깃의 'Include all app icon assets' 를 켜거나 CFBundleAlternateIcons 에 넣어야 바뀐다.
     public let supporterIcon: String?
-    /// 후견인(30점)의 베타 초대 — 공개 TestFlight 링크. 없으면 개발자에게 베타 신청 메일을 쓴다.
+    /// 후견인(든든한 한 끼)의 베타 초대: 공개 TestFlight 링크. 없으면 개발자에게 베타 신청 메일을 쓴다.
     public let betaURL: URL?
 
     public init(productIDs: [String], thanksPage: URL? = nil, supporterIcon: String? = nil, betaURL: URL? = nil) {
@@ -56,7 +56,7 @@ public final class LeeoTipJar: ObservableObject {
     @Published public private(set) var isWorking = false
     /// 이 앱에서 낸 팁 횟수(다른 기기에서 낸 것도 iCloud 로 합친다).
     @Published public private(set) var tipCount: Int
-    /// 리이오의 모든 앱에서 쌓은 후원 점수(`LeeoSupporterLedger`).
+    /// 리이오의 모든 앱에서 낸 팁 값의 합(`LeeoSupporterLedger`). 단계를 정할 때만 쓰고 화면에는 보이지 않는다.
     @Published public private(set) var points: Int
     /// 방금 냈다. 화면이 고맙다고 말할 차례.
     @Published public var justTipped = false
@@ -99,7 +99,7 @@ public final class LeeoTipJar: ObservableObject {
         askNeverKey = "leeo.tips.ask.never." + ns
         tipCount = defaults.integer(forKey: countKey)
         points = 0
-        // 장부가 생기기 전에 센 팁은 칸을 몰라 작은 칸(1점)으로 친다. 기기마다 따로 센 것이라 기기 이름을 붙인다.
+        // 장부가 생기기 전에 센 팁은 칸을 몰라 작은 칸으로 친다. 기기마다 따로 센 것이라 기기 이름을 붙인다.
         if defaults.stringArray(forKey: ledgerKey) == nil {
             let device = UUID().uuidString.prefix(8)
             defaults.set((0..<tipCount).map {
@@ -120,7 +120,7 @@ public final class LeeoTipJar: ObservableObject {
         return now.timeIntervalSince(lastTipAt) < TimeInterval(days) * 24 * 60 * 60
     }
 
-    /// 이 앱이 따로 세던 옛 후원(예: 앱 자체 팁 화면 · 옛 비소모성 커피)을 한 번만 장부로 옮긴다. 한 번에 1점씩.
+    /// 이 앱이 따로 세던 옛 후원(예: 앱 자체 팁 화면 · 옛 비소모성 커피)을 한 번만 장부로 옮긴다. 하나를 커피 한 잔으로.
     /// 번호가 기기와 상관없이 같아(`adopted.0` …) 여러 기기에서 불러도 두 번 세지 않는다.
     public func adoptLegacyTips(_ count: Int) {
         let lines = (0..<max(count, 0)).map {

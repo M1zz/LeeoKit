@@ -142,27 +142,49 @@ final class LeeoTipJarTests: XCTestCase {
 
     // MARK: 후원 보상
 
-    func test_점수는_칸_크기로_쌓이고_단계가_오른다() {
+    func test_낸_칸이_곧_단계다() {
         let (defaults, suite) = makeDefaults()
         defer { defaults.removePersistentDomain(forName: suite) }
         let jar = LeeoTipJar(config: LeeoTipJarConfig(productIDs: tipIDs), defaults: defaults, bundleID: "com.example.a")
         XCTAssertNil(jar.level, "내기 전에는 단계가 없다")
         jar.record(transactionID: "1", productID: tipIDs[0])
-        XCTAssertEqual(jar.points, 1)
-        XCTAssertEqual(jar.level, .supporter, "처음 한 번이면 응원자")
-        jar.record(transactionID: "2", productID: tipIDs[1])
-        jar.record(transactionID: "3", productID: tipIDs[1])
-        jar.record(transactionID: "4", productID: tipIDs[1])
-        XCTAssertEqual(jar.points, 10)
-        XCTAssertEqual(jar.level, .regular, "10점이면 단골")
-        jar.record(transactionID: "5", productID: tipIDs[2])
-        jar.record(transactionID: "6", productID: tipIDs[2])
-        XCTAssertEqual(jar.points, 30)
-        XCTAssertEqual(jar.level, .patron, "30점이면 후견인")
+        XCTAssertEqual(jar.level, .supporter, "커피 한 잔이면 응원자")
+
+        let (d2, s2) = makeDefaults()
+        defer { d2.removePersistentDomain(forName: s2) }
+        let snack = LeeoTipJar(config: LeeoTipJarConfig(productIDs: tipIDs), defaults: d2, bundleID: "com.example.a")
+        snack.record(transactionID: "1", productID: tipIDs[1])
+        XCTAssertEqual(snack.level, .regular, "간식 한 번이면 바로 단골이다(골드위크 피드백: 3점 칸을 내고 응원자에 머물렀다)")
+
+        let (d3, s3) = makeDefaults()
+        defer { d3.removePersistentDomain(forName: s3) }
+        let meal = LeeoTipJar(config: LeeoTipJarConfig(productIDs: tipIDs), defaults: d3, bundleID: "com.example.a")
+        meal.record(transactionID: "1", productID: tipIDs[2])
+        XCTAssertEqual(meal.level, .patron, "든든한 한 끼면 바로 후견인")
         XCTAssertNil(LeeoSupporterLevel.patron.next)
 
-        let reopened = LeeoTipJar(config: LeeoTipJarConfig(productIDs: tipIDs), defaults: defaults, bundleID: "com.example.a")
-        XCTAssertEqual(reopened.points, 30, "다시 켜도 점수가 남는다")
+        let reopened = LeeoTipJar(config: LeeoTipJarConfig(productIDs: tipIDs), defaults: d3, bundleID: "com.example.a")
+        XCTAssertEqual(reopened.level, .patron, "다시 켜도 단계가 남는다")
+    }
+
+    func test_작은_칸도_쌓여서_오른다() {
+        let (defaults, suite) = makeDefaults()
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let jar = LeeoTipJar(config: LeeoTipJarConfig(productIDs: tipIDs), defaults: defaults, bundleID: "com.example.a")
+        jar.record(transactionID: "1", productID: tipIDs[0])
+        jar.record(transactionID: "2", productID: tipIDs[0])
+        XCTAssertEqual(jar.level, .supporter)
+        jar.record(transactionID: "3", productID: tipIDs[0])
+        XCTAssertEqual(jar.level, .regular, "커피 세 잔은 간식 한 번과 같다")
+    }
+
+    func test_단계마다_이르는_칸이_하나씩이다() {
+        XCTAssertEqual(LeeoSupporterLevel.allCases.map(\.tip), [.small, .medium, .large])
+        for size in [LeeoTipTier.Size.small, .medium, .large] {
+            let tier = LeeoTipTier(size: size)
+            XCTAssertEqual(LeeoSupporterLevel.of(points: LeeoSupporterLedger.points(for: size)), tier.level,
+                           "칸 옆에 적은 단계와 그 칸을 내고 받는 단계가 같다")
+        }
     }
 
     func test_장부가_생기기_전에_센_팁은_작은_칸으로_옮긴다() {

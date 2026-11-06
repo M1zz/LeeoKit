@@ -227,20 +227,12 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
                 Text(level?.title ?? L("응원 단계", comment: "Supporter: level card title before the first tip"))
                     .font(.headline)
                     .foregroundStyle(theme.text)
-                Spacer(minLength: 8)
-                if tipJar.points > 0 {
-                    Text(String(format: L("%d점", comment: "Supporter: points. %d = points"), tipJar.points))
-                        .font(.body.weight(.semibold).monospacedDigit())
-                        .foregroundStyle(theme.accent)
-                }
+                Spacer(minLength: 0)
             }
             .accessibilityElement(children: .combine)
             if let next {
-                ProgressView(value: Double(min(tipJar.points, next.need)), total: Double(next.need))
-                    .tint(theme.accent)
-                    .accessibilityHidden(true)
-                Text(String(format: L("%1$@까지 %2$d점 남았어요", comment: "Supporter: points left to the next level. %1$@ = level, %2$d = points"),
-                            next.title, next.need - tipJar.points))
+                Text(String(format: L("다음 단계 %1$@: %2$@", comment: "Supporter: the next level and the tip that reaches it. %1$@ = level, %2$@ = tip name such as A Snack"),
+                            next.title, next.tipTitle))
                     .font(.body)
                     .foregroundStyle(theme.textMuted)
             } else {
@@ -256,8 +248,8 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
                         .foregroundStyle(reached ? theme.accent : theme.textMuted)
                         .accessibilityHidden(true)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(String(format: L("%1$@ · %2$d점부터", comment: "Supporter: level row. %1$@ = level, %2$d = points needed"),
-                                    l.title, l.need))
+                        Text(String(format: L("%1$@ · %2$@", comment: "Supporter: level row. %1$@ = level, %2$@ = the tip that reaches it, such as A Snack"),
+                                    l.title, l.tipTitle))
                             .font(.body.weight(.semibold))
                             .foregroundStyle(theme.text)
                         Text(l.perks)
@@ -269,8 +261,8 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
                 .accessibilityElement(children: .combine)
                 .accessibilityAddTraits(reached ? .isSelected : [])
             }
-            Text(L("커피 한 잔 1점 · 간식 한 번 3점 · 든든한 한 끼 10점. 리이오의 모든 앱에서 낸 응원을 합쳐요.",
-                   comment: "Supporter: how points are counted"))
+            Text(L("작은 응원도 쌓여요. 커피 세 잔이면 간식 한 번과 같아요. 리이오의 모든 앱에서 낸 응원을 합쳐요.",
+                   comment: "Supporter: how levels are counted. Three coffees count as one snack; tips from all of Leeo's apps add up"))
                 .font(.body)
                 .foregroundStyle(theme.textMuted)
                 .fixedSize(horizontal: false, vertical: true)
@@ -372,18 +364,12 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
                 // 아주 큰 글자에서는 가격을 이름 아래로 내린다. 옆에 두면 이름이 몇 글자 폭으로 눌린다.
                 if typeSize.isAccessibilitySize {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text(tier.title)
-                            .font(.body.weight(.semibold))
-                            .foregroundStyle(theme.text)
-                            .fixedSize(horizontal: false, vertical: true)
+                        tierName(tier)
                         priceTag(price)
                     }
                     Spacer(minLength: 0)
                 } else {
-                    Text(tier.title)
-                        .font(.body.weight(.semibold))
-                        .foregroundStyle(theme.text)
-                        .multilineTextAlignment(.leading)
+                    tierName(tier)
                         .lineLimit(2)
                         .minimumScaleFactor(0.85)
                     Spacer(minLength: 8)
@@ -397,8 +383,26 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
         }
         .buttonStyle(.plain)
         .disabled(tipJar.isWorking)
-        .accessibilityLabel("\(tier.title), \(price)")
+        .accessibilityLabel("\(tier.title), \(tierLevelLine(tier)), \(price)")
         .accessibilityInputLabels([Text(tier.title)])
+    }
+
+    /// 칸 이름과, 그 칸을 내면 되는 단계. 무엇을 사면 어느 단계가 되는지 칸에서 바로 읽힌다.
+    private func tierName(_ tier: LeeoTipTier) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(tier.title)
+                .font(.body.weight(.semibold))
+                .foregroundStyle(theme.text)
+            Text(tierLevelLine(tier))
+                .font(.subheadline)
+                .foregroundStyle(theme.textMuted)
+        }
+        .multilineTextAlignment(.leading)
+        .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private func tierLevelLine(_ tier: LeeoTipTier) -> String {
+        String(format: L("%@ 단계", comment: "Tip jar: the supporter level this tip reaches. %@ = level such as Regular"), tier.level.title)
     }
 
     /// ⚠️ 가격은 **한 줄**이다. 자리가 모자라면 이름 쪽이 줄을 바꾸거나 작아진다.
@@ -427,6 +431,10 @@ struct LeeoTipTier: Equatable {
     enum Size: Equatable { case small, medium, large }
     let size: Size
 
+    init(size: Size) {
+        self.size = size
+    }
+
     init(index: Int, of count: Int) {
         switch (index, count) {
         case (0, _): size = .small
@@ -441,6 +449,11 @@ struct LeeoTipTier: Equatable {
         case .medium: return L("간식 한 번", comment: "Tip jar: middle tip")
         case .large:  return L("든든한 한 끼", comment: "Tip jar: largest tip")
         }
+    }
+
+    /// 이 칸을 한 번 내면 되는 단계. 화면이 칸 옆에 적는다.
+    var level: LeeoSupporterLevel {
+        LeeoSupporterLevel.allCases.first { $0.tip == size } ?? .supporter
     }
 
     var symbol: String {

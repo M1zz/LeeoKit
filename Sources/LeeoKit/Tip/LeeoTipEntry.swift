@@ -69,8 +69,7 @@ public struct LeeoSupporterBadge: View {
     public var body: some View {
         if let level = tipJar.level {
             Label {
-                Text(String(format: L("%1$@ · %2$d점", comment: "Supporter badge: level and points. %1$@ = level, %2$d = points"),
-                            level.title, tipJar.points))
+                Text(level.title)
             } icon: {
                 Image(systemName: level.symbol)
             }
@@ -79,8 +78,8 @@ public struct LeeoSupporterBadge: View {
             .padding(.horizontal, 10)
             .padding(.vertical, 4)
             .background(Capsule().fill(theme.accent.opacity(0.14)))
-            .accessibilityLabel(String(format: L("후원자 배지: %1$@, %2$d점", comment: "Supporter badge: accessibility label. %1$@ = level, %2$d = points"),
-                                       level.title, tipJar.points))
+            .accessibilityLabel(String(format: L("후원자 배지: %@", comment: "Supporter badge: accessibility label. %@ = level"),
+                                       level.title))
         }
     }
 }
