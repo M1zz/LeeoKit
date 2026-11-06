@@ -51,6 +51,11 @@ public struct LeeoPaywallConfig: Sendable {
 
     /// Pro 선물하기 (`LeeoGiftConfig`). nil 이면 선물 기능이 없다.
     public let gift: LeeoGiftConfig?
+    /// 등급마다 따로 파는 선물(예: Plus). `gift` 다음에 선다. 상품 ID 가 서로 달라야 한다.
+    public let moreGifts: [LeeoGiftConfig]
+
+    /// 파는 선물 전부. 첫째가 `gift`.
+    public var gifts: [LeeoGiftConfig] { (gift.map { [$0] } ?? []) + moreGifts }
 
     /// 팁(응원). nil 이면 없다 (`LeeoTipJarConfig`). 기능을 열지 않는 소모성 상품이다.
     public let tipJar: LeeoTipJarConfig?
@@ -64,10 +69,12 @@ public struct LeeoPaywallConfig: Sendable {
         cacheSuiteName: String? = nil,
         gate: LeeoGatePolicy = .none,
         gift: LeeoGiftConfig? = nil,
+        moreGifts: [LeeoGiftConfig] = [],
         tipJar: LeeoTipJarConfig? = nil
     ) {
         self.gate = gate
         self.gift = gift
+        self.moreGifts = moreGifts
         self.tipJar = tipJar
         self.productIDs = productIDs
         self.entitlementIDs = entitlementIDs ?? Set(productIDs)

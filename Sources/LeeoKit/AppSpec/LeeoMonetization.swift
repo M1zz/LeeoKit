@@ -155,6 +155,8 @@ public struct LeeoPurchaseConfig: Sendable {
     public let autoLoad: Bool
     /// Pro 선물하기. nil 이면 선물 기능이 없다 (`LeeoGiftConfig`).
     public let gift: LeeoGiftConfig?
+    /// 등급마다 따로 파는 선물(예: Plus). `gift` 다음에 선다. 상품 ID 가 서로 달라야 한다.
+    public let moreGifts: [LeeoGiftConfig]
     /// 팁(응원). nil 이면 없다 (`LeeoTipJarConfig`).
     public let tipJar: LeeoTipJarConfig?
 
@@ -165,6 +167,7 @@ public struct LeeoPurchaseConfig: Sendable {
         cacheSuiteName: String? = nil,
         autoLoad: Bool = true,
         gift: LeeoGiftConfig? = nil,
+        moreGifts: [LeeoGiftConfig] = [],
         tipJar: LeeoTipJarConfig? = nil
     ) {
         self.productIDs = productIDs
@@ -173,6 +176,7 @@ public struct LeeoPurchaseConfig: Sendable {
         self.cacheSuiteName = cacheSuiteName
         self.autoLoad = autoLoad
         self.gift = gift
+        self.moreGifts = moreGifts
         self.tipJar = tipJar
     }
 }
@@ -199,6 +203,8 @@ public struct LeeoSubscriptionConfig: Sendable {
     public let autoLoad: Bool
     /// Pro 선물하기. nil 이면 선물 기능이 없다 (`LeeoGiftConfig`).
     public let gift: LeeoGiftConfig?
+    /// 등급마다 따로 파는 선물(예: Plus). `gift` 다음에 선다. 상품 ID 가 서로 달라야 한다.
+    public let moreGifts: [LeeoGiftConfig]
     /// 팁(응원). nil 이면 없다 (`LeeoTipJarConfig`).
     public let tipJar: LeeoTipJarConfig?
 
@@ -210,6 +216,7 @@ public struct LeeoSubscriptionConfig: Sendable {
         cacheSuiteName: String? = nil,
         autoLoad: Bool = true,
         gift: LeeoGiftConfig? = nil,
+        moreGifts: [LeeoGiftConfig] = [],
         tipJar: LeeoTipJarConfig? = nil
     ) {
         self.productIDs = productIDs
@@ -219,6 +226,7 @@ public struct LeeoSubscriptionConfig: Sendable {
         self.cacheSuiteName = cacheSuiteName
         self.autoLoad = autoLoad
         self.gift = gift
+        self.moreGifts = moreGifts
         self.tipJar = tipJar
     }
 }
@@ -245,6 +253,7 @@ public extension LeeoMonetization {
                 cacheSuiteName: c.cacheSuiteName,
                 gate: c.gate,
                 gift: c.gift,
+                moreGifts: c.moreGifts,
                 tipJar: c.tipJar
             )
 
@@ -258,6 +267,7 @@ public extension LeeoMonetization {
                 cacheSuiteName: c.cacheSuiteName,
                 gate: c.gate,
                 gift: c.gift,
+                moreGifts: c.moreGifts,
                 tipJar: c.tipJar
             )
 

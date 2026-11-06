@@ -199,6 +199,20 @@ final class LeeoGiftConfigTests: XCTestCase {
         XCTAssertEqual(money.paywallConfig(legal: legal)?.gift?.productID, "com.a.gift")
     }
 
+    func test_등급마다_선물을_따로_팔고_묶음도_따로다() {
+        let pro = LeeoGiftConfig(productID: "com.a.gift.pro", grantsProductID: "com.a.pro", containerIdentifier: "iCloud.com.a")
+        let plus = LeeoGiftConfig(productID: "com.a.gift.plus", grantsProductID: "com.a.plus", containerIdentifier: "iCloud.com.a",
+                                  tierName: "Plus", poolKey: "com.a#com.a.plus")
+        let money = LeeoMonetization.freemium(LeeoPurchaseConfig(productIDs: ["com.a.plus", "com.a.pro"],
+                                                                 entitlementIDs: ["com.a.pro"], gift: pro, moreGifts: [plus]))
+        let legal = LeeoLegalConfig(privacyURL: URL(string: "https://a.com/p")!, supportURL: URL(string: "https://a.com/s")!)
+        let config = money.paywallConfig(legal: legal)
+        XCTAssertEqual(config?.gifts.map(\.productID), ["com.a.gift.pro", "com.a.gift.plus"], "첫째가 gift")
+        XCTAssertEqual(config?.gifts.map(\.tierName), ["Pro", "Plus"])
+        XCTAssertNil(pro.poolKey, "첫 선물은 예전 묶음(번들 ID)을 그대로 쓴다")
+        XCTAssertEqual(LeeoGiftText.sendEntry(tier: "Plus").contains("Plus"), true)
+    }
+
     @MainActor
     func test_받은_선물이_없으면_아무것도_열지_않는다() {
         let suite = "leeo.test.gift.\(UUID().uuidString)"

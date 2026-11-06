@@ -301,8 +301,9 @@ public final class LeeoGiftStore: ObservableObject {
             return code
         }
 
+        // 등급마다 묶음이 따로다(`poolKey`). 첫 선물은 번들 ID 그대로라 예전 묶음을 쓴다.
         let query = CKQuery(recordType: config.offerCodeRecordType,
-                            predicate: NSPredicate(format: "bundleId == %@", bundleID))
+                            predicate: NSPredicate(format: "bundleId == %@", config.poolKey ?? bundleID))
         let (matches, _) = try await publicDB.records(matching: query, resultsLimit: LeeoOfferCodePool.fetchLimit)
         let pool = matches.compactMap { try? $0.1.get() }
         guard !pool.isEmpty else { throw LeeoGiftError.poolEmpty }

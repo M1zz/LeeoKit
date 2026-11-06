@@ -69488,6 +69488,721 @@
           }
         }
       }
+    },
+    "%@ 선물하기" : {
+      "comment" : "Gift: entry to send a paid tier as a gift. %@ = tier name, e.g. Plus or Pro (keep as is)",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Darovat %@"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giv %@ i gave"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ verschenken"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δώρισε %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gift %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regalar %@"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lahjoita %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offrir %@"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hadiahkan %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regala %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@をプレゼント"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 선물하기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gi bort %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ cadeau doen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podaruj %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presentear %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подарить %@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ge bort %@"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "มอบ %@ เป็นของขวัญ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ hediye et"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tặng %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "赠送 %@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "贈送 %@"
+          }
+        }
+      }
+    },
+    "%1$@ %2$@를 선물로 보내요.\n링크를 누르고 '사용'을 누르면 %2$@가 열려요.\n%3$@" : {
+      "comment" : "Gift: message with an App Store offer code link. 1 = app name, 2 = tier name (Plus or Pro, keep as is), 3 = link",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daruji ti %1$@ %2$@.\nOtevři odkaz a klepni na Uplatnit, aby se odemkl %2$@.\n%3$@"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jeg giver dig %1$@ %2$@ i gave.\nÅbn linket, og tryk på Indløs for at låse %2$@ op.\n%3$@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich schenke dir %1$@ %2$@.\nÖffne den Link und tippe auf Einlösen, um %2$@ freizuschalten.\n%3$@"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Σου κάνω δώρο %1$@ %2$@.\nΆνοιξε τον σύνδεσμο και πάτησε Εξαργύρωση για να ξεκλειδώσει το %2$@.\n%3$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I'm sending you %1$@ %2$@ as a gift.\nTap the link and then Redeem to unlock %2$@.\n%3$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Te regalo %1$@ %2$@.\nAbre el enlace y toca Canjear para desbloquear %2$@.\n%3$@"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annan sinulle lahjaksi %1$@ %2$@.\nAvaa linkki ja napauta Lunasta, niin %2$@ avautuu.\n%3$@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je t'offre %1$@ %2$@.\nOuvre le lien puis touche Utiliser pour débloquer %2$@.\n%3$@"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aku menghadiahkan %1$@ %2$@ untukmu.\nBuka tautannya lalu ketuk Tukarkan untuk membuka %2$@.\n%3$@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ti regalo %1$@ %2$@.\nApri il link e tocca Riscatta per sbloccare %2$@.\n%3$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@をプレゼントします。\nリンクを開いて「コードを使う」を押すと%2$@が使えます。\n%3$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@를 선물로 보내요.\n링크를 누르고 '사용'을 누르면 %2$@가 열려요.\n%3$@"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jeg gir deg %1$@ %2$@ i gave.\nÅpne lenken og trykk på Løs inn for å låse opp %2$@.\n%3$@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ik geef je %1$@ %2$@ cadeau.\nOpen de link en tik op Verzilver om %2$@ te ontgrendelen.\n%3$@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daruję Ci %1$@ %2$@.\nOtwórz link i stuknij Zrealizuj, aby odblokować %2$@.\n%3$@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estou te dando %1$@ %2$@ de presente.\nAbra o link e toque em Resgatar para liberar o %2$@.\n%3$@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дарю вам %1$@ %2$@.\nОткройте ссылку и нажмите «Активировать», чтобы получить %2$@.\n%3$@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jag ger dig %1$@ %2$@ i present.\nÖppna länken och tryck på Lös in för att låsa upp %2$@.\n%3$@"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ขอมอบ %1$@ %2$@ เป็นของขวัญ\nเปิดลิงก์แล้วแตะ แลกรับ เพื่อปลดล็อก %2$@\n%3$@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sana hediye olarak %1$@ %2$@ gönderiyorum.\nBağlantıyı aç ve Kullan'a dokun, %2$@ açılsın.\n%3$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mình tặng bạn %1$@ %2$@.\nMở liên kết rồi nhấn Đổi để mở khóa %2$@.\n%3$@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "送你一份 %1$@ %2$@ 礼物。\n点开链接后点“兑换”即可解锁 %2$@。\n%3$@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "送你一份 %1$@ %2$@ 禮物。\n點開連結後點「兌換」即可解鎖 %2$@。\n%3$@"
+          }
+        }
+      }
+    },
+    "%1$@ %2$@를 선물하세요" : {
+      "comment" : "Gift: send screen title. 1 = app name, 2 = tier name (Plus or Pro, keep as is)",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Darujte %1$@ %2$@"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giv %1$@ %2$@ i gave"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verschenke %1$@ %2$@"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Χαρίστε %1$@ %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gift %1$@ %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regala %1$@ %2$@"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anna lahjaksi %1$@ %2$@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offrez %1$@ %2$@"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hadiahkan %1$@ %2$@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regala %1$@ %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@をプレゼントしよう"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@를 선물하세요"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gi bort %1$@ %2$@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geef %1$@ %2$@ cadeau"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podaruj %1$@ %2$@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dê %1$@ %2$@ de presente"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подарите %1$@ %2$@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ge bort %1$@ %2$@"
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "มอบ %1$@ %2$@ เป็นของขวัญ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@ hediye edin"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tặng %1$@ %2$@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "赠送 %1$@ %2$@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "贈送 %1$@ %2$@"
+          }
+        }
+      }
+    },
+    "결제는 보내는 분이 하고, %@는 받는 분이 써요." : {
+      "comment" : "Gift: send screen subtitle. %@ = tier name (Plus or Pro, keep as is)",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Platíte vy, %@ používá obdarovaný."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du betaler, og modtageren bruger %@."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du bezahlst, die andere Person nutzt %@."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Πληρώνετε εσείς και ο άλλος χρησιμοποιεί το %@."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You pay, and they get %@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tú pagas y la otra persona usa %@."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinä maksat, ja vastaanottaja käyttää %@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous payez, et l'autre personne profite de %@."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda yang membayar, penerima yang memakai %@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paghi tu, e l'altra persona usa %@."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "お支払いは贈る方、%@を使うのは受け取る方です。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "결제는 보내는 분이 하고, %@는 받는 분이 써요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du betaler, og mottakeren bruker %@."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jij betaalt, de ander gebruikt %@."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ty płacisz, a %@ dostaje druga osoba."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você paga e a outra pessoa usa o %@."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Платите вы, а %@ получает другой человек."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du betalar och mottagaren använder %@."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "คุณเป็นคนจ่าย ผู้รับได้ใช้ %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ödemeyi siz yaparsınız, %@ karşı tarafın olur."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn trả tiền, người nhận dùng %@."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "由你付款，对方使用 %@。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "由你付款，對方使用 %@。"
+          }
+        }
+      }
+    },
+    "App Store가 열리고 '사용'을 누르면 %@가 열려요. 코드를 칠 필요가 없어요." : {
+      "comment" : "Gift step 3 detail (offer code link). %@ = tier name (Plus or Pro, keep as is)",
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otevře se App Store. Klepněte na Uplatnit a %@ se odemkne. Žádný kód není třeba psát."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store åbner. Tryk på Indløs, så låses %@ op. Ingen kode at skrive."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der App Store öffnet sich. Tippe auf Einlösen und %@ ist freigeschaltet. Kein Code nötig."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ανοίγει το App Store. Πατήστε Εξαργύρωση και το %@ ξεκλειδώνει. Δεν χρειάζεται κωδικός."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The App Store opens. Tap Redeem and %@ unlocks. No code to type."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se abre el App Store. Toca Canjear y se desbloquea %@. No hay que escribir ningún código."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store avautuu. Napauta Lunasta, niin %@ avautuu. Koodia ei tarvitse kirjoittaa."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'App Store s'ouvre. Touchez Utiliser et %@ est débloqué. Aucun code à saisir."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store akan terbuka. Ketuk Tukarkan dan %@ terbuka. Tidak perlu mengetik kode."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si apre l'App Store. Tocca Riscatta e %@ si sblocca. Nessun codice da digitare."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Storeが開き、「コードを使う」を押すと%@が使えます。コードの入力は不要です。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store가 열리고 '사용'을 누르면 %@가 열려요. 코드를 칠 필요가 없어요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store åpnes. Trykk på Løs inn, så låses %@ opp. Ingen kode å skrive."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De App Store opent. Tik op Verzilver en %@ wordt ontgrendeld. Geen code typen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otworzy się App Store. Stuknij Zrealizuj i %@ się odblokuje. Bez wpisywania kodu."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A App Store abre. Toque em Resgatar e o %@ é liberado. Não precisa digitar código."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Откроется App Store. Нажмите «Активировать», и %@ откроется. Код вводить не нужно."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store öppnas. Tryck på Lös in så låses %@ upp. Ingen kod att skriva."
+          }
+        },
+        "th" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store จะเปิดขึ้น แตะ แลกรับ แล้ว %@ จะปลดล็อก ไม่ต้องพิมพ์โค้ด"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store açılır. Kullan'a dokununca %@ açılır. Kod yazmaya gerek yok."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store sẽ mở. Nhấn Đổi là %@ được mở khóa. Không cần gõ mã."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store 会打开，点“兑换”即可解锁 %@，无需输入代码。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Store 會打開，點「兌換」即可解鎖 %@，不必輸入代碼。"
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

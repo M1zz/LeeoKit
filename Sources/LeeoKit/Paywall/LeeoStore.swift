@@ -66,12 +66,14 @@ public final class LeeoStore: ObservableObject {
 
     /// Pro 선물하기 엔진 (`config.gift` 가 있을 때만). 받은 선물은 `purchasedProductIDs` 에 합쳐진다.
     public let gift: LeeoGiftStore?
+    /// 파는 선물 전부(첫째가 `gift`). 등급마다 하나씩(`LeeoPaywallConfig.moreGifts`).
+    public let gifts: [LeeoGiftStore]
 
     /// 팁(응원) 엔진 (`config.tipJar` 가 있을 때만). 권한과 상관없다.
     public let tipJar: LeeoTipJar?
 
     /// 받은 선물로 Pro 가 열려 있는가 (산 것은 아니다).
-    public var isGifted: Bool { gift?.redeemed != nil }
+    public var isGifted: Bool { gifts.contains { $0.redeemed != nil } }
 
     /// 현재 권한을 반영한 게이트 판정기 — "지금 페이월을 띄워야 하나"의 답을 준다.
     /// 정책은 계약(`LeeoMonetization`)에서 오고, 권한은 이 스토어가 안다.
@@ -129,7 +131,8 @@ public final class LeeoStore: ObservableObject {
         self.cacheKeyGrandfather = "leeo.paywall.grandfathered." + ns
 
         // 받은 선물도 같은 suite 에 둔다 (확장 · 위젯이 같은 Pro 를 본다).
-        self.gift = config.gift.map { LeeoGiftStore(config: $0, defaults: defaults) }
+        self.gifts = config.gifts.map { LeeoGiftStore(config: $0, defaults: defaults) }
+        self.gift = gifts.first
         self.tipJar = config.tipJar.map { LeeoTipJar(config: $0, defaults: defaults) }
 
         // 네트워크 응답 전까지는 마지막으로 알던 권한으로 시작해 기능 깜빡임을 막는다.
@@ -139,7 +142,7 @@ public final class LeeoStore: ObservableObject {
         isGrandfathered = defaults.bool(forKey: cacheKeyGrandfather)
         applyOwned()
 
-        if let gift {
+        for gift in gifts {
             // 이미 산 사람은 선물을 받지 않는다 (코드를 다른 사람에게 넘기게 둔다).
             gift.alreadyEntitled = { [weak self] in
                 guard let self else { return false }
@@ -149,12 +152,12 @@ public final class LeeoStore: ObservableObject {
         }
 
         // 앱 실행 중 발생하는 트랜잭션 갱신(다른 기기 구매·환불·가족 공유)을 항상 반영.
-        updatesListener = Self.makeListener(store: self, giftProductID: config.gift?.productID,
+        updatesListener = Self.makeListener(store: self, giftProductIDs: Set(config.gifts.map(\.productID)),
                                             tipProductIDs: Set(config.tipJar?.productIDs ?? []))
         Task {
             await refreshEntitlements()
             #if canImport(StoreKit)
-            if let gift {
+            for gift in gifts {
                 await gift.loadProduct()
                 await gift.resumePending()   // 결제는 됐는데 코드를 못 만든 선물
             }
@@ -163,7 +166,7 @@ public final class LeeoStore: ObservableObject {
                 await tipJar.resumePending()
             }
             #endif
-            await gift?.refresh()
+            for gift in gifts { await gift.refresh() }
         }
     }
 
@@ -281,7 +284,7 @@ public final class LeeoStore: ObservableObject {
         }
         grandfatherChecked = false   // 동기화로 영수증이 갱신됐으니 그랜드파더링도 다시 확인
         await refreshEntitlements()
-        await gift?.refresh()          // 다른 기기에서 받은 선물도 다시 찾는다
+        for gift in gifts { await gift.refresh() }   // 다른 기기에서 받은 선물도 다시 찾는다
         LeeoAnalyticsCenter.track(.purchaseRestored(restored: hasPro))
         #endif
     }
@@ -316,13 +319,15 @@ public final class LeeoStore: ObservableObject {
 
     /// StoreKit 권한 + 받은 선물.
     private func applyOwned() {
-        let merged = storeKitOwned.union(gift?.grantedProductIDs ?? [])
+        let merged = gifts.reduce(storeKitOwned) { $0.union($1.grantedProductIDs) }
         if merged != purchasedProductIDs { purchasedProductIDs = merged }
     }
 
     #if canImport(StoreKit)
+    /// 그 결제의 상품을 파는 선물 엔진에 넘긴다(등급마다 엔진이 따로다).
     private func handleGift(_ update: VerificationResult<Transaction>) async {
-        await gift?.handle(update: update)
+        guard case .verified(let tx) = update else { return }
+        await gifts.first { $0.config.productID == tx.productID }?.handle(update: update)
     }
 
     private func handleTip(_ update: VerificationResult<Transaction>) async {
@@ -351,13 +356,13 @@ public final class LeeoStore: ObservableObject {
     }
 
     /// 앱 생존 기간 동안 트랜잭션 갱신을 수신해 권한을 반영하는 리스너.
-    private static func makeListener(store: LeeoStore, giftProductID: String?,
+    private static func makeListener(store: LeeoStore, giftProductIDs: Set<String>,
                                      tipProductIDs: Set<String>) -> Task<Void, Never> {
         Task.detached {
             for await update in Transaction.updates {
                 guard let transaction = verified(update) else { continue }
                 // 선물 결제는 코드를 올린 뒤에 끝내야 한다. 여기서 끝내면 돈만 받고 코드가 없다.
-                if transaction.productID == giftProductID {
+                if giftProductIDs.contains(transaction.productID) {
                     await store.handleGift(update)
                     continue
                 }
@@ -372,7 +377,7 @@ public final class LeeoStore: ObservableObject {
         }
     }
     #else
-    private static func makeListener(store: LeeoStore, giftProductID: String?,
+    private static func makeListener(store: LeeoStore, giftProductIDs: Set<String>,
                                      tipProductIDs: Set<String>) -> Task<Void, Never> { Task {} }
     #endif
 }

@@ -71,6 +71,16 @@ public struct LeeoGiftConfig: Sendable {
     /// 공개 DB 의 가져감 · 발급 기록 타입. 이름 `offerclaim-<묶음 레코드 이름>` · `offerissue-<번들>-<결제 번호>`.
     public let offerClaimRecordType: String
 
+    /// 받는 사람에게 열리는 등급의 이름(결제 화면 · 보내는 글에 쓴다). 예: "Pro", "Plus". 고유명사라 번역하지 않는다.
+    public let tierName: String
+
+    /// 오퍼 코드 묶음의 열쇠(묶음 레코드의 `bundleId` 칸 값). nil 이면 번들 ID.
+    ///
+    /// 한 앱이 등급마다 선물을 팔면 묶음도 등급마다 따로다(오퍼 코드는 상품마다 따로 만든다).
+    /// 첫 선물(보통 Pro)은 nil 로 두어 예전 묶음을 그대로 쓰고, 다음 선물은 `"<번들>#<받는 상품 ID>"` 처럼 준다.
+    /// 허브(FeedbackHub)가 같은 열쇠로 채운다.
+    public let poolKey: String?
+
     public init(
         productID: String,
         grantsProductID: String,
@@ -80,8 +90,12 @@ public struct LeeoGiftConfig: Sendable {
         claimsRecordType: String = "LeeoGiftClaims",
         sellsGifts: Bool = false,
         offerCodeRecordType: String = "LeeoOfferCode",
-        offerClaimRecordType: String = "LeeoOfferCodeClaim"
+        offerClaimRecordType: String = "LeeoOfferCodeClaim",
+        tierName: String = "Pro",
+        poolKey: String? = nil
     ) {
+        self.tierName = tierName
+        self.poolKey = poolKey
         self.sellsGifts = sellsGifts
         self.offerCodeRecordType = offerCodeRecordType
         self.offerClaimRecordType = offerClaimRecordType

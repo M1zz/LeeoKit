@@ -100,10 +100,14 @@ public enum LeeoPreflight {
 
         // MARK: 선물하기
 
-        if let actual, let gift = actual.gift {
-            if !actual.entitlementIDs.contains(gift.grantsProductID) {
+        if let actual {
+          let sold = Set(actual.productIDs).union(actual.entitlementIDs)
+          for (index, gift) in actual.gifts.enumerated() {
+            // 첫 선물은 Pro 를 연다(권한 목록). 등급 선물(`moreGifts`)은 그 등급의 판매 상품이면 된다(예: Plus 평생).
+            let opens = index == 0 ? actual.entitlementIDs.contains(gift.grantsProductID) : sold.contains(gift.grantsProductID)
+            if !opens {
                 issues.append(.init(.error, "gift.grantsNothing",
-                    "선물이 여는 상품(\(gift.grantsProductID))이 entitlementIDs 에 없습니다. 선물을 받아도 아무것도 안 열립니다."))
+                    "선물이 여는 상품(\(gift.grantsProductID))이 판매 · 권한 상품에 없습니다. 선물을 받아도 아무것도 안 열립니다."))
             }
             if actual.productIDs.contains(gift.productID) || actual.entitlementIDs.contains(gift.productID) {
                 issues.append(.init(.error, "gift.sellsPro",
@@ -113,6 +117,16 @@ public enum LeeoPreflight {
                 issues.append(.init(.error, "gift.badContainer",
                     "선물 컨테이너 식별자는 iCloud. 으로 시작해야 합니다: \(gift.containerIdentifier)"))
             }
+          }
+          // 선물끼리 상품이나 코드 묶음이 겹치면 한 결제가 엉뚱한 묶음에서 코드를 가져간다.
+          let gifts = actual.gifts
+          if Set(gifts.map(\.productID)).count != gifts.count {
+              issues.append(.init(.error, "gift.duplicateProduct", "선물 상품 ID 가 겹칩니다. 선물마다 상품이 따로여야 합니다."))
+          }
+          if Set(gifts.map { $0.poolKey ?? "" }).count != gifts.count {
+              issues.append(.init(.error, "gift.sharedPool",
+                  "선물끼리 오퍼 코드 묶음(poolKey)이 겹칩니다. 둘째 선물부터 poolKey 를 따로 주세요(예: \"<번들>#<받는 상품 ID>\")."))
+          }
         }
 
         // MARK: 팁(응원)
@@ -126,7 +140,7 @@ public enum LeeoPreflight {
                 issues.append(.init(.error, "tip.sellsPro",
                     "팁 상품이 productIDs/entitlementIDs 에 들어 있습니다. 팁을 낸 사람이 Pro 가 됩니다."))
             }
-            if let gift = actual.gift, tip.productIDs.contains(gift.productID) {
+            if let gift = actual.gifts.first(where: { tip.productIDs.contains($0.productID) }) {
                 issues.append(.init(.error, "tip.isGift",
                     "선물 상품(\(gift.productID))이 팁에도 들어 있습니다. 선물 결제가 코드 없이 끝납니다."))
             }

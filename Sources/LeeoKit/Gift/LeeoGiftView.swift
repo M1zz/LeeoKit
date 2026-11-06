@@ -31,17 +31,21 @@ import AppKit
 /// 앱이 설정 행 · 버튼에 쓰는 선물 문구. LeeoKit 카탈로그에 번역이 있어 앱이 다시 적지 않는다.
 public enum LeeoGiftText {
     public static var sendEntry: String { L("Pro 선물하기", comment: "Gift: entry to send Pro as a gift") }
+    /// 등급마다 선물을 팔 때의 설정 행 이름. 예: "Plus 선물하기". `gift.config.tierName` 을 넘긴다.
+    public static func sendEntry(tier: String) -> String {
+        String(format: L("%@ 선물하기", comment: "Gift: entry to send a paid tier as a gift. %@ = tier name, e.g. Plus or Pro (keep as is)"), tier)
+    }
     public static var redeemEntry: String { L("선물 코드 입력", comment: "Gift: entry to enter a received gift code") }
 
     /// 받는 사람에게 보낼 글 — 오퍼 코드면 App Store 사용 링크, 예전 LeeoKit 코드면 코드와 앱 링크.
-    public static func shareMessage(appName: String, gift: LeeoSentGift, appStoreID: String?) -> String {
+    public static func shareMessage(appName: String, gift: LeeoSentGift, appStoreID: String?, tierName: String = "Pro") -> String {
         guard gift.isOfferCode == true else {
             return shareMessage(appName: appName, code: gift.code, appStoreID: appStoreID)
         }
         let link = LeeoOfferCodePool.redeemURL(code: gift.code, appStoreID: appStoreID)?.absoluteString ?? gift.code
-        return String(format: L("%1$@ Pro를 선물로 보내요.\n링크를 누르고 '사용'을 누르면 Pro가 열려요.\n%2$@",
-                                comment: "Gift: message with an App Store offer code link. 1 = app name, 2 = link"),
-                      appName, link)
+        return String(format: L("%1$@ %2$@를 선물로 보내요.\n링크를 누르고 '사용'을 누르면 %2$@가 열려요.\n%3$@",
+                                comment: "Gift: message with an App Store offer code link. 1 = app name, 2 = tier name (Plus or Pro, keep as is), 3 = link"),
+                      appName, tierName, link)
     }
 
     /// 보여 줄 코드. 예전 LeeoKit 코드는 `ABCD-EFGH`, 오퍼 코드는 그대로.
@@ -100,7 +104,7 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
             VStack(spacing: 20) {
                 header
                 if let justSent {
-                    LeeoGiftCodeCard<Spec>(gift: justSent)
+                    LeeoGiftCodeCard<Spec>(gift: justSent, tierName: gift.config.tierName)
                     Button(L("새 선물 만들기", comment: "Gift: start another gift after one was created")) {
                         self.justSent = nil
                     }
@@ -136,7 +140,7 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
             .frame(maxWidth: .infinity)
         }
         .background(theme.bg.ignoresSafeArea())
-        .navigationTitle(LeeoGiftText.sendEntry)
+        .navigationTitle(LeeoGiftText.sendEntry(tier: gift.config.tierName))
         .task {
             guard previewPrice == nil else { return }
             #if canImport(StoreKit)
@@ -157,12 +161,14 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
                 .frame(width: 84, height: 84)
                 .background(Circle().fill(theme.accent.opacity(0.14)))
                 .accessibilityHidden(true)
-            Text(String(format: L("%@ Pro를 선물하세요", comment: "Gift: send screen title. %@ = app name"), Spec.displayName))
+            Text(String(format: L("%1$@ %2$@를 선물하세요", comment: "Gift: send screen title. 1 = app name, 2 = tier name (Plus or Pro, keep as is)"),
+                        Spec.displayName, gift.config.tierName))
                 .font(.title2.bold())
                 .foregroundStyle(theme.text)
                 .multilineTextAlignment(.center)
                 .accessibilityAddTraits(.isHeader)
-            Text(L("결제는 보내는 분이 하고, Pro는 받는 분이 써요.", comment: "Gift: send screen subtitle"))
+            Text(String(format: L("결제는 보내는 분이 하고, %@는 받는 분이 써요.", comment: "Gift: send screen subtitle. %@ = tier name (Plus or Pro, keep as is)"),
+                        gift.config.tierName))
                 .font(.body)
                 .foregroundStyle(theme.textMuted)
                 .multilineTextAlignment(.center)
@@ -181,7 +187,8 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
             step(2, L("링크를 보내요", comment: "Gift step 2 title (offer code link)"),
                  L("메시지로 링크를 보내 주세요.", comment: "Gift step 2 detail (offer code link)"))
             step(3, L("받는 분이 링크를 눌러요", comment: "Gift step 3 title (offer code link)"),
-                 L("App Store가 열리고 '사용'을 누르면 Pro가 열려요. 코드를 칠 필요가 없어요.", comment: "Gift step 3 detail (offer code link)"))
+                 String(format: L("App Store가 열리고 '사용'을 누르면 %@가 열려요. 코드를 칠 필요가 없어요.",
+                                  comment: "Gift step 3 detail (offer code link). %@ = tier name (Plus or Pro, keep as is)"), gift.config.tierName))
         }
         .padding(18)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -294,7 +301,7 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
                     .foregroundStyle(theme.text)
                     .accessibilityAddTraits(.isHeader)
                 ForEach(others) { sent in
-                    LeeoSentGiftRow<Spec>(gift: sent)
+                    LeeoSentGiftRow<Spec>(gift: sent, tierName: gift.config.tierName)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -306,6 +313,7 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
 
 struct LeeoGiftCodeCard<Spec: LeeoAppSpec>: View {
     let gift: LeeoSentGift
+    var tierName = "Pro"
     @Environment(\.leeoStyle) private var theme
     @Environment(\.dynamicTypeSize) private var typeSize
     @State private var copied = false
@@ -345,7 +353,7 @@ struct LeeoGiftCodeCard<Spec: LeeoAppSpec>: View {
                         .frame(maxWidth: .infinity, minHeight: 44)
                 }
                 .buttonStyle(.bordered)
-                ShareLink(item: LeeoGiftText.shareMessage(appName: Spec.displayName, gift: gift, appStoreID: Spec.appStoreID)) {
+                ShareLink(item: LeeoGiftText.shareMessage(appName: Spec.displayName, gift: gift, appStoreID: Spec.appStoreID, tierName: tierName)) {
                     Label(L("보내기", comment: "Gift: share button"), systemImage: "square.and.arrow.up")
                         .frame(maxWidth: .infinity, minHeight: 44)
                 }
@@ -362,6 +370,7 @@ struct LeeoGiftCodeCard<Spec: LeeoAppSpec>: View {
 
 struct LeeoSentGiftRow<Spec: LeeoAppSpec>: View {
     let gift: LeeoSentGift
+    var tierName = "Pro"
     @Environment(\.leeoStyle) private var theme
 
     var body: some View {
@@ -387,7 +396,7 @@ struct LeeoSentGiftRow<Spec: LeeoAppSpec>: View {
             }
             .accessibilityElement(children: .combine)
             if !gift.isRedeemed {
-                ShareLink(item: LeeoGiftText.shareMessage(appName: Spec.displayName, gift: gift, appStoreID: Spec.appStoreID)) {
+                ShareLink(item: LeeoGiftText.shareMessage(appName: Spec.displayName, gift: gift, appStoreID: Spec.appStoreID, tierName: tierName)) {
                     Image(systemName: "square.and.arrow.up")
                 }
                 .accessibilityLabel(L("보내기", comment: "Gift: share button"))
