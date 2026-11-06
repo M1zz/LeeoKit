@@ -157,10 +157,10 @@ public final class LeeoStore: ObservableObject {
         Task {
             await refreshEntitlements()
             #if canImport(StoreKit)
-            for gift in gifts {
-                await gift.loadProduct()
-                await gift.resumePending()   // 결제는 됐는데 코드를 못 만든 선물
-            }
+            // 상품부터 모두 불러온다. 밀린 선물 결제를 마저 처리하는 일(`resumePending`)은 iCloud 를 기다리느라
+            // 오래 걸릴 수 있어서, 선물마다 차례로 하면 뒤 선물(Plus)의 상품이 그동안 비어 설정 줄이 서지 않았다.
+            for gift in gifts { await gift.loadProduct() }
+            for gift in gifts { await gift.resumePending() }   // 결제는 됐는데 코드를 못 만든 선물
             if let tipJar {
                 await tipJar.loadProducts()  // 설정의 '응원하기' 줄은 상품이 있어야 선다
                 await tipJar.resumePending()
