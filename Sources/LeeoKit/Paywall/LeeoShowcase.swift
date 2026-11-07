@@ -37,6 +37,7 @@ import SwiftUI
 
 /// 페이월에서 넘겨 보는 기능 한 장 — 그림 · 이름 · 한 줄 설명.
 public struct LeeoShowcase: Identifiable {
+    /// 장의 이름. 등급을 쓰는 앱이 기능 키(`LeeoTier.features`)로 주면 `LeeoPaywallView` 가 고른 등급의 장만 보인다.
     public let id: String
     public let title: String
     public let detail: String

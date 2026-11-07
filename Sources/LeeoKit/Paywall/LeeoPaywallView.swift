@@ -118,7 +118,12 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
 
     /// 넘겨 볼 장. 앱이 그린 그림이 있으면 그것, 없으면 방금 부딪힌 기능 · 등급 혜택 · 혜택 글을 큰 기호 한 장씩으로.
     private var pages: [LeeoShowcase] {
-        if !showcases.isEmpty { return showcases }
+        if !showcases.isEmpty {
+            // 등급을 쓰는 앱: 장의 id 가 기능 키(`LeeoTier.features`)면 고른 등급의 장만 보인다
+            guard let tier = selectedTier, !tier.features.isEmpty else { return showcases }
+            let mine = showcases.filter { tier.features.contains($0.id) }
+            return mine.isEmpty ? showcases : mine
+        }
         var pages: [LeeoShowcase] = []
         if leadKey != nil || analyticsReason != nil {
             pages.append(LeeoShowcase(id: "lead", title: title, detail: subtitle, systemImage: leadIcon))
