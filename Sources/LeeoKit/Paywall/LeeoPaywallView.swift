@@ -162,11 +162,13 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
                 .tint(theme.accent)
             }
         } else {
-            VStack(spacing: 12) {
+            // 연간 줄의 할인 배지가 줄 위로 살짝 올라오므로 간격과 위 여백을 둔다
+            VStack(spacing: 20) {
                 ForEach(visibleProducts, id: \.id) { product in
                     productRow(product)
                 }
             }
+            .padding(.top, 10)
             purchaseButton
             if let error = store.lastError {
                 Text(error)
@@ -179,6 +181,7 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
 
     private func productRow(_ product: Product) -> some View {
         let isSelected = selectedProductID == product.id
+        let saving = savingPercent(product)
         return Button {
             selectedProductID = product.id
         } label: {
@@ -187,11 +190,11 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
                     .foregroundStyle(isSelected ? theme.accent : theme.textMuted)
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(product.displayName)
+                    Text(rowTitle(product))
                         .font(.headline)
                         .foregroundStyle(theme.text)
-                    if !product.description.isEmpty {
-                        Text(product.description)
+                    if let detail = rowDetail(product, saving: saving) {
+                        Text(detail)
                             .font(.caption)
                             .foregroundStyle(theme.textMuted)
                     }
@@ -207,16 +210,91 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
                 RoundedRectangle(cornerRadius: theme.radiusLg)
                     .stroke(isSelected ? theme.accent : .clear, lineWidth: 2)
             )
+            .overlay(alignment: .topTrailing) {
+                if let saving { savingBadge(saving) }
+            }
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
-        .accessibilityInputLabels([Text(product.displayName)])
+        .accessibilityInputLabels([Text(rowTitle(product))])
+    }
+
+    // MARK: - 상품 줄의 글
+
+    /// 등급을 쓰면 등급은 위에서 이미 골랐으니 줄 이름은 기간만 ("연간"). 앱 언어로 나온다.
+    /// 상품 이름(App Store 현지화)에 기대지 않으니, 그 언어 현지화가 없는 상품도 섞여 보이지 않는다.
+    private func rowTitle(_ product: Product) -> String {
+        guard !tiers.isEmpty else { return product.displayName }
+        if let period = product.subscription?.subscriptionPeriod, period.value == 1 {
+            switch period.unit {
+            case .year:  return L("연간", comment: "Paywall row: yearly plan")
+            case .month: return L("월간", comment: "Paywall row: monthly plan")
+            default: break
+            }
+        }
+        if product.type == .nonConsumable { return L("평생", comment: "Paywall row: lifetime") }
+        return product.displayName
+    }
+
+    /// 연간이면 한 달에 얼마꼴인지. 등급이 없는 앱은 상품 설명을 그대로 (할인 배지가 서면 설명은 겹치니 뺀다).
+    private func rowDetail(_ product: Product, saving: Int?) -> String? {
+        if let period = product.subscription?.subscriptionPeriod, period.unit == .year, period.value == 1,
+           (saving != nil || !tiers.isEmpty) {
+            let perMonth = (product.price / 12).formatted(product.priceFormatStyle)
+            return String(format: L("월 %@꼴", comment: "Paywall row: yearly price per month"), perMonth)
+        }
+        // 평생이면 연간 몇 년치인지 ("연 구독 3년치, 한 번만 내면 끝")
+        if product.type == .nonConsumable, let yearly = yearlyProduct, yearly.price > 0 {
+            let years = Int(NSDecimalNumber(decimal: product.price / yearly.price).doubleValue.rounded())
+            if years >= 2 { return String(format: L("연 구독 %d년치, 한 번만 내면 끝", comment: "Pricing ladder: lifetime equals N years of the subscription. %d = years"), years) }
+        }
+        if !tiers.isEmpty || saving != nil || product.description.isEmpty { return nil }
+        return product.description
+    }
+
+    private var monthlyProduct: Product? {
+        visibleProducts.first { $0.subscription?.subscriptionPeriod.unit == .month && $0.subscription?.subscriptionPeriod.value == 1 }
+    }
+
+    private var yearlyProduct: Product? {
+        visibleProducts.first { $0.subscription?.subscriptionPeriod.unit == .year && $0.subscription?.subscriptionPeriod.value == 1 }
+    }
+
+    /// 연간이 월간 열두 달보다 몇 % 싼지. 같은 줄에 월간이 있고 5% 이상일 때만.
+    private func savingPercent(_ product: Product) -> Int? {
+        guard let period = product.subscription?.subscriptionPeriod, period.unit == .year, period.value == 1,
+              let monthly = monthlyProduct, monthly.price > 0
+        else { return nil }
+        let ratio = NSDecimalNumber(decimal: product.price / (monthly.price * 12)).doubleValue
+        let percent = Int(((1 - ratio) * 100).rounded(.down))
+        return percent >= 5 ? percent : nil
+    }
+
+    private func savingBadge(_ percent: Int) -> some View {
+        Text(String(format: L("%d%% 할인", comment: "Paywall badge: yearly saving vs monthly"), percent))
+            .font(.subheadline.weight(.heavy))
+            .foregroundStyle(.white)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 5)
+            .background(theme.accent, in: Capsule())
+            .shadow(color: theme.accent.opacity(0.35), radius: 4, y: 2)
+            .offset(x: -14, y: -14)
     }
 
     private func price(_ product: Product) -> some View {
-        Text(priceLabel(product))
-            .font(.headline)
-            .foregroundStyle(theme.text)
+        VStack(alignment: typeSize.isAccessibilitySize ? .leading : .trailing, spacing: 2) {
+            Text(priceLabel(product))
+                .font(.headline)
+                .foregroundStyle(theme.text)
+            // 연간이면 월간으로 열두 달 낼 값을 그어 보인다 — 얼마나 아끼는지 한눈에
+            if savingPercent(product) != nil, let monthly = monthlyProduct {
+                Text((monthly.price * 12).formatted(product.priceFormatStyle))
+                    .font(.caption)
+                    .strikethrough()
+                    .foregroundStyle(theme.textMuted)
+                    .accessibilityHidden(true)
+            }
+        }
     }
 
     private var purchaseTitle: String {
