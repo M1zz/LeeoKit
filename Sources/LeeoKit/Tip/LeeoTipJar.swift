@@ -6,7 +6,8 @@
 //
 //  - 상품은 소모성(Consumable)이다. 몇 번이든 낼 수 있다.
 //  - 낸 것은 장부로 남는다(`LeeoSupporter`). iCloud 로 기기와 앱을 넘어 합친다.
-//    낸 칸이 단계(커피 한 잔 응원자 · 간식 한 번 단골 · 든든한 한 끼 후견인)와 보상을 정할 뿐, 권한이 아니므로 기능을 열지 않는다.
+//    팁뿐 아니라 구독 · 평생 구매 · 선물도 커피 잔으로 바꿔 쌓는다(`countPurchases` · `recordPayment`).
+//    쌓인 잔 수가 단계와 보상을 정할 뿐, 권한이 아니므로 기능을 열지 않는다.
 //  - ⚠️ 팁 상품을 `productIDs` · `entitlementIDs` 에 넣으면 낸 사람이 Pro 가 된다. 사전 점검이 막는다(`tip.sellsPro`).
 //
 //  계약에서 한 줄:
@@ -56,7 +57,7 @@ public final class LeeoTipJar: ObservableObject {
     @Published public private(set) var isWorking = false
     /// 이 앱에서 낸 팁 횟수(다른 기기에서 낸 것도 iCloud 로 합친다).
     @Published public private(set) var tipCount: Int
-    /// 리이오의 모든 앱에서 낸 팁 값의 합(`LeeoSupporterLedger`). 단계를 정할 때만 쓰고 화면에는 보이지 않는다.
+    /// 리이오의 모든 앱에서 낸 것을 커피 잔으로 센 합(`LeeoSupporterLedger`). 팁 · 구독 · 평생 구매 · 선물.
     @Published public private(set) var points: Int
     /// 방금 냈다. 화면이 고맙다고 말할 차례.
     @Published public var justTipped = false
@@ -143,7 +144,7 @@ public final class LeeoTipJar: ObservableObject {
 
     private func setLedger(_ lines: [String]) {
         defaults.set(lines, forKey: ledgerKey)
-        let count = max(defaults.integer(forKey: countKey), lines.count)
+        let count = max(defaults.integer(forKey: countKey), lines.filter(LeeoSupporterLedger.isTip).count)
         if tipCount != count { tipCount = count }
         defaults.set(count, forKey: countKey)
         refreshPoints()
@@ -209,6 +210,65 @@ public final class LeeoTipJar: ObservableObject {
         } catch {
             print("❌ [LeeoTipJar.loadProducts] \(error)")
         }
+    }
+
+    // MARK: 값
+
+    /// 가장 작은 칸의 상품. 커피 한 잔 값과 통화를 정한다.
+    private var unitProduct: Product? { products.first }
+
+    /// 커피 한 잔 값. 불러온 칸 값을 그 칸의 잔 수로 나눈다(작은 칸이 아직 안 나왔어도 맞다).
+    private var unitPrice: Decimal? {
+        guard let product = unitProduct else { return nil }
+        let cups = LeeoSupporterLedger.points(for: tier(for: product.id, fallbackIndex: 0).size)
+        return product.price / Decimal(cups)
+    }
+
+    /// 커피 `cups` 잔 값을 이 나라 돈으로("₩2,200"). 상품을 아직 못 불러왔으면 nil.
+    public func price(ofCups cups: Int) -> String? {
+        guard let product = unitProduct, let unit = unitPrice, cups > 0 else { return nil }
+        return (unit * Decimal(cups)).formatted(product.priceFormatStyle)
+    }
+
+    // MARK: 팁이 아닌 결제
+
+    /// 팁이 아닌 결제 하나(선물처럼 `Transaction.all` 에 남지 않는 소모성)를 커피 잔으로 장부에 적는다.
+    /// 같은 결제는 두 번 세지 않는다. 가족 공유 · 환불 · 공짜(체험 · 오퍼 코드)는 세지 않는다.
+    public func recordPayment(_ tx: Transaction) async {
+        if products.isEmpty { await loadProducts() }
+        guard let line = paidLine(tx) else { return }
+        let before = ledger.count
+        setLedger(LeeoSupporterLedger.merge(ledger, [line]))
+        if ledger.count != before, let containerIdentifier { await syncSupporter(containerIdentifier: containerIdentifier) }
+    }
+
+    /// 이 앱에서 낸 결제를 모두 훑어 장부에 적는다(구독은 갱신마다 한 번). 권한을 다시 읽을 때 LeeoStore 가 부른다.
+    public func countPurchases() async {
+        if products.isEmpty { await loadProducts() }
+        guard unitPrice != nil else { return }
+        var lines: [String] = []
+        for await result in Transaction.all {
+            guard case .verified(let tx) = result, let line = paidLine(tx) else { continue }
+            lines.append(line)
+        }
+        let before = ledger.count
+        setLedger(LeeoSupporterLedger.merge(ledger, lines))
+        if ledger.count != before, let containerIdentifier { await syncSupporter(containerIdentifier: containerIdentifier) }
+    }
+
+    /// 결제 하나의 장부 줄. 팁 · 가족 공유 · 환불 · 공짜 · 다른 나라 돈(커피 값과 견줄 수 없다)이면 nil.
+    private func paidLine(_ tx: Transaction) -> String? {
+        guard !config.productIDs.contains(tx.productID),
+              tx.revocationDate == nil,
+              tx.ownershipType == .purchased,
+              let price = tx.price,
+              let unit = unitPrice,
+              let product = unitProduct,
+              tx.currency?.identifier == product.priceFormatStyle.currencyCode else { return nil }
+        let cups = LeeoSupporterLedger.cups(price: price, unit: unit)
+        guard cups > 0 else { return nil }
+        return LeeoSupporterLedger.entry(bundleID: bundleID,
+                                         transactionID: LeeoSupporterLedger.paidPrefix + String(tx.id), points: cups)
     }
 
     // MARK: 내기

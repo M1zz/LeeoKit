@@ -213,57 +213,27 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
 
     // MARK: 응원 단계
 
-    /// 단계 사다리. 지금 단계 · 다음 단계까지 남은 점수 · 단계마다 받는 것. 아직 안 낸 사람에게도 보인다
+    /// 지금 단계 · 다음 단계까지 얼마나 왔는지 · 단계마다 받는 것. 아직 안 낸 사람에게도 보인다
     /// (무엇을 받는지 미리 안다). 기능은 열지 않으므로 '산다'가 아니라 '쌓인다'로 말한다.
     private var levelCard: some View {
         let level = tipJar.level
         let next: LeeoSupporterLevel? = level == nil ? .supporter : level?.next
-        return VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 10) {
-                Image(systemName: level?.symbol ?? "heart")
-                    .font(.title3.weight(.semibold))
-                    .foregroundStyle(theme.accent)
-                    .accessibilityHidden(true)
-                Text(level?.title ?? L("응원 단계", comment: "Supporter: level card title before the first tip"))
-                    .font(.headline)
-                    .foregroundStyle(theme.text)
-                Spacer(minLength: 0)
-            }
-            .accessibilityElement(children: .combine)
+        return VStack(alignment: .leading, spacing: 14) {
+            levelNow(level)
             if let next {
-                Text(String(format: L("다음 단계 %1$@: %2$@", comment: "Supporter: the next level and the tip that reaches it. %1$@ = level, %2$@ = tip name such as A Snack"),
-                            next.title, next.tipTitle))
-                    .font(.body)
-                    .foregroundStyle(theme.textMuted)
+                progress(from: level?.need ?? 0, to: next)
             } else {
                 Text(L("가장 높은 단계예요. 늘 고마워요.", comment: "Supporter: reached the top level"))
-                    .font(.body)
-                    .foregroundStyle(theme.textMuted)
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(theme.text)
             }
-            ForEach(LeeoSupporterLevel.allCases, id: \.self) { l in
-                let reached = level.map { $0 >= l } ?? false
-                HStack(alignment: .firstTextBaseline, spacing: 10) {
-                    Image(systemName: reached ? "checkmark.circle.fill" : "circle")
-                        .font(.body)
-                        .foregroundStyle(reached ? theme.accent : theme.textMuted)
-                        .accessibilityHidden(true)
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(String(format: L("%1$@ · %2$@", comment: "Supporter: level row. %1$@ = level, %2$@ = the tip that reaches it, such as A Snack"),
-                                    l.title, l.tipTitle))
-                            .font(.body.weight(.semibold))
-                            .foregroundStyle(theme.text)
-                        Text(l.perks)
-                            .font(.body)
-                            .foregroundStyle(theme.textMuted)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                }
-                .accessibilityElement(children: .combine)
-                .accessibilityAddTraits(reached ? .isSelected : [])
+            Divider()
+            VStack(alignment: .leading, spacing: 12) {
+                ForEach(LeeoSupporterLevel.allCases, id: \.self) { ladderRow($0, current: level) }
             }
-            Text(L("작은 응원도 쌓여요. 커피 세 잔이면 간식 한 번과 같아요. 리이오의 모든 앱에서 낸 응원을 합쳐요.",
-                   comment: "Supporter: how levels are counted. Three coffees count as one snack; tips from all of Leeo's apps add up"))
-                .font(.body)
+            Text(L("팁 · 구독 · 선물 · 앱 구매가 모두 쌓여요. 리이오의 모든 앱에서 낸 것을 합쳐요.",
+                   comment: "Supporter: what counts toward the level. Tips, subscriptions, gifts and purchases across all of Leeo's apps"))
+                .font(.footnote)
                 .foregroundStyle(theme.textMuted)
                 .fixedSize(horizontal: false, vertical: true)
             rewards
@@ -271,6 +241,85 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(16)
         .background(RoundedRectangle(cornerRadius: theme.radiusSm + 4, style: .continuous).fill(theme.surface))
+    }
+
+    /// 지금 단계 한 줄: 큰 그림 · 단계 이름 · 지금까지 쌓은 잔 수.
+    private func levelNow(_ level: LeeoSupporterLevel?) -> some View {
+        HStack(spacing: 14) {
+            Image(systemName: level?.symbol ?? "heart")
+                .font(.title2.weight(.semibold))
+                .foregroundStyle(levelColor(level))
+                .frame(width: 52, height: 52)
+                .background(Circle().fill(levelColor(level).opacity(0.14)))
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(level?.title ?? L("응원 단계", comment: "Supporter: level card title before the first tip"))
+                    .font(.title3.bold())
+                    .foregroundStyle(theme.text)
+                Text(tipJar.points > 0
+                     ? String(format: L("지금까지 커피 %d잔만큼 응원했어요", comment: "Supporter: total support so far, counted in cups of coffee. %d = cups"), tipJar.points)
+                     : L("커피 한 잔이면 응원자가 돼요", comment: "Supporter: before the first tip, one coffee makes you a supporter"))
+                    .font(.body)
+                    .foregroundStyle(theme.textMuted)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+        .accessibilityElement(children: .combine)
+    }
+
+    /// 다음 단계까지의 막대와 남은 만큼(잔 수 · 이 나라 돈).
+    private func progress(from start: Int, to next: LeeoSupporterLevel) -> some View {
+        let left = max(next.need - tipJar.points, 0)
+        let line = tipJar.price(ofCups: left).map {
+            String(format: L("%1$@까지 커피 %2$d잔(%3$@) 남았어요", comment: "Supporter: what is left to the next level. %1$@ = level, %2$d = cups of coffee, %3$@ = that amount in local currency"),
+                   next.title, left, $0)
+        } ?? String(format: L("%1$@까지 커피 %2$d잔 남았어요", comment: "Supporter: what is left to the next level. %1$@ = level, %2$d = cups of coffee"),
+                    next.title, left)
+        return VStack(alignment: .leading, spacing: 8) {
+            ProgressView(value: Double(tipJar.points - start), total: Double(max(next.need - start, 1)))
+                .tint(theme.accent)
+                .accessibilityHidden(true)
+            Text(line)
+                .font(.body.weight(.semibold))
+                .foregroundStyle(theme.text)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .accessibilityElement(children: .combine)
+    }
+
+    /// 사다리 한 칸. 닿은 단계는 채운 그림, 지금 단계는 굵게, 오른쪽에 문턱(잔 수).
+    private func ladderRow(_ l: LeeoSupporterLevel, current: LeeoSupporterLevel?) -> some View {
+        let reached = current.map { $0 >= l } ?? false
+        return HStack(alignment: .firstTextBaseline, spacing: 10) {
+            Image(systemName: reached ? l.symbol : "circle")
+                .font(.body)
+                .foregroundStyle(reached ? levelColor(l) : theme.textMuted)
+                .frame(width: 22)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(l.title)
+                    .font(.body.weight(l == current ? .bold : .regular))
+                    .foregroundStyle(reached ? theme.text : theme.textMuted)
+                Text(l.perks)
+                    .font(.footnote)
+                    .foregroundStyle(theme.textMuted)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 8)
+            Text(String(format: L("커피 %d잔", comment: "Supporter: a level's threshold in cups of coffee. %d = cups"), l.need))
+                .font(.footnote.monospacedDigit())
+                .foregroundStyle(theme.textMuted)
+                .lineLimit(1)
+                .fixedSize()
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(l == current ? .isSelected : [])
+    }
+
+    /// 단계의 색. 동반자부터는 금빛.
+    private func levelColor(_ level: LeeoSupporterLevel?) -> Color {
+        level?.isGold == true ? LeeoSupporterBadge.gold : theme.accent
     }
 
     /// 연 보상. 단골: 후원자 아이콘 · 다음 기능에 한 표, 후견인: 베타.

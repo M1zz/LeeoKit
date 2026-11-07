@@ -165,6 +165,9 @@ public final class LeeoGiftStore: ObservableObject {
     private let defaults: UserDefaults
     private let bundleID: String
     private var pendingCodes: [String: String] = [:]   // 결제 번호 → 코드
+    /// 선물 결제가 들어왔다. LeeoStore 가 후원 장부(`LeeoTipJar.recordPayment`)에 적는다.
+    var onPaid: ((Transaction) async -> Void)?
+
     /// 문의에 붙일 미완료 선물(`supportLines`).
     var pendingSupportCodes: [String: String] { pendingCodes }
 
@@ -259,6 +262,7 @@ public final class LeeoGiftStore: ObservableObject {
     /// 묶음에서 App Store 오퍼 코드를 한 장 가져오고, 가져온 다음에만 결제를 끝낸다.
     /// 못 가져오면(묶음이 비었거나 연결 문제) 끝내지 않는다 — 다음에 열 때 `resumePending` 이 다시 한다.
     private func issue(_ tx: Transaction, jws: String) async -> LeeoSentGift? {
+        await onPaid?(tx)
         let txid = String(tx.id)
         if let done = sentGifts.first(where: { $0.transactionID == txid }) {
             await tx.finish()

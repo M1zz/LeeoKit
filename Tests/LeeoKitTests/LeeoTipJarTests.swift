@@ -161,7 +161,8 @@ final class LeeoTipJarTests: XCTestCase {
         let meal = LeeoTipJar(config: LeeoTipJarConfig(productIDs: tipIDs), defaults: d3, bundleID: "com.example.a")
         meal.record(transactionID: "1", productID: tipIDs[2])
         XCTAssertEqual(meal.level, .patron, "든든한 한 끼면 바로 후견인")
-        XCTAssertNil(LeeoSupporterLevel.patron.next)
+        XCTAssertEqual(LeeoSupporterLevel.patron.next, .companion, "후견인 위로도 쌓여서 오른다")
+        XCTAssertNil(LeeoSupporterLevel.honorary.next)
 
         let reopened = LeeoTipJar(config: LeeoTipJarConfig(productIDs: tipIDs), defaults: d3, bundleID: "com.example.a")
         XCTAssertEqual(reopened.level, .patron, "다시 켜도 단계가 남는다")
@@ -179,12 +180,30 @@ final class LeeoTipJarTests: XCTestCase {
     }
 
     func test_단계마다_이르는_칸이_하나씩이다() {
-        XCTAssertEqual(LeeoSupporterLevel.allCases.map(\.tip), [.small, .medium, .large])
+        XCTAssertEqual(LeeoSupporterLevel.allCases.map(\.tip), [.small, .medium, .large, nil, nil],
+                       "위 두 단계는 팁 한 칸으로 닿지 않는다")
         for size in [LeeoTipTier.Size.small, .medium, .large] {
             let tier = LeeoTipTier(size: size)
             XCTAssertEqual(LeeoSupporterLevel.of(points: LeeoSupporterLedger.points(for: size)), tier.level,
                            "칸 옆에 적은 단계와 그 칸을 내고 받는 단계가 같다")
         }
+    }
+
+    func test_팁이_아닌_결제는_값을_커피_잔으로_쌓고_팁_횟수에는_넣지_않는다() {
+        XCTAssertEqual(LeeoSupporterLedger.cups(price: 39000, unit: 1100), 35, "평생 Pro 는 커피 35잔")
+        XCTAssertEqual(LeeoSupporterLedger.cups(price: 500, unit: 1100), 1, "커피 값에 못 미쳐도 낸 결제는 한 잔")
+        XCTAssertEqual(LeeoSupporterLedger.cups(price: 0, unit: 1100), 0, "체험 · 오퍼 코드는 세지 않는다")
+
+        let (defaults, suite) = makeDefaults()
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let shared = [LeeoSupporterLedger.entry(bundleID: "com.example.a", transactionID: "paid.7", points: 35)]
+        defaults.set(shared, forKey: "leeo.tips.shared")
+        let jar = LeeoTipJar(config: LeeoTipJarConfig(productIDs: tipIDs), defaults: defaults, bundleID: "com.example.a")
+        jar.record(transactionID: "1", productID: tipIDs[0])
+        XCTAssertEqual(jar.points, 36)
+        XCTAssertEqual(jar.level, .companion, "평생 구매와 팁 하나면 동반자")
+        XCTAssertEqual(jar.tipCount, 1, "팁 횟수는 팁만 센다")
+        XCTAssertFalse(LeeoSupporterLedger.isTip(shared[0]))
     }
 
     func test_장부가_생기기_전에_센_팁은_작은_칸으로_옮긴다() {

@@ -149,6 +149,10 @@ public final class LeeoStore: ObservableObject {
                 return self.isGrandfathered || !self.storeKitOwned.isDisjoint(with: self.config.entitlementIDs)
             }
             gift.onChange = { [weak self] in self?.applyOwned() }
+            #if canImport(StoreKit)
+            // 선물도 후원으로 쌓인다. 소모성이라 `Transaction.all` 에 남지 않아 결제가 들어올 때 적는다.
+            gift.onPaid = { [weak self] tx in await self?.tipJar?.recordPayment(tx) }
+            #endif
         }
 
         // 앱 실행 중 발생하는 트랜잭션 갱신(다른 기기 구매·환불·가족 공유)을 항상 반영.
@@ -312,6 +316,9 @@ public final class LeeoStore: ObservableObject {
         // 캐시: override 는 매 실행 즉시 재평가되므로 캐시하지 않는다.
         defaults.set(Array(owned), forKey: cacheKeyOwned)
         defaults.set(isGrandfathered, forKey: cacheKeyGrandfather)
+
+        // 구독 갱신 · 평생 구매도 후원으로 쌓인다(팁 장부가 있는 앱만).
+        await tipJar?.countPurchases()
         #endif
     }
 

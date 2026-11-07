@@ -56,11 +56,14 @@ public struct LeeoTipJarLink<Spec: LeeoAppSpec>: View {
 
 // MARK: - 후원자 배지
 
-/// 응원 단계 배지(그림 · 단계 · 점수). 낸 적이 없으면 아무것도 그리지 않는다.
+/// 응원 단계 배지(그림 · 단계). 동반자부터 금빛. 낸 적이 없으면 아무것도 그리지 않는다.
 /// 설정의 '개발자 응원하기' 줄(`LeeoTipJarLink`)에 이미 들어 있다. 팁 줄을 직접 그리는 앱은 이것을 붙인다.
 public struct LeeoSupporterBadge: View {
     @ObservedObject private var tipJar: LeeoTipJar
     @Environment(\.leeoStyle) private var theme
+
+    /// 동반자부터 다는 금빛.
+    static let gold = Color(red: 0.85, green: 0.62, blue: 0.10)
 
     public init(tipJar: LeeoTipJar) {
         self.tipJar = tipJar
@@ -74,10 +77,10 @@ public struct LeeoSupporterBadge: View {
                 Image(systemName: level.symbol)
             }
             .font(.body.weight(.semibold))
-            .foregroundStyle(theme.accent)
+            .foregroundStyle(level.isGold ? Self.gold : theme.accent)
             .padding(.horizontal, 10)
             .padding(.vertical, 4)
-            .background(Capsule().fill(theme.accent.opacity(0.14)))
+            .background(Capsule().fill((level.isGold ? Self.gold : theme.accent).opacity(0.14)))
             .accessibilityLabel(String(format: L("후원자 배지: %@", comment: "Supporter badge: accessibility label. %@ = level"),
                                        level.title))
         }
