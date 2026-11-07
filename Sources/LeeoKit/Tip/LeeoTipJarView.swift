@@ -63,9 +63,11 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
             VStack(spacing: 20) {
                 header
                 if tipJar.justTipped { thanks }
+                // 단계 카드는 지금과 다음만. 낼 칸이 첫 화면에 보여야 한다.
                 levelCard
-                if tipJar.hasTipped, let page = tipJar.config.thanksPage { thanksList(page) }
                 tiers
+                rewards
+                if tipJar.hasTipped, let page = tipJar.config.thanksPage { thanksList(page) }
                 if let error = tipJar.lastError {
                     Text(error)
                         .font(.body)
@@ -75,6 +77,11 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
                 Text(L("한 번만 결제돼요. 구독이 아니고, 열리는 기능도 없어요.",
                        comment: "Tip jar: footnote, one-time payment that unlocks nothing"))
                     .font(.body)
+                    .foregroundStyle(theme.textMuted)
+                    .multilineTextAlignment(.center)
+                Text(L("팁 · 구독 · 선물 · 앱 구매가 모두 쌓여요. 리이오의 모든 앱에서 낸 것을 합쳐요.",
+                       comment: "Supporter: what counts toward the level. Tips, subscriptions, gifts and purchases across all of Leeo's apps"))
+                    .font(.footnote)
                     .foregroundStyle(theme.textMuted)
                     .multilineTextAlignment(.center)
             }
@@ -213,8 +220,8 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
 
     // MARK: 응원 단계
 
-    /// 지금 단계 · 다음 단계까지 얼마나 왔는지 · 단계마다 받는 것. 아직 안 낸 사람에게도 보인다
-    /// (무엇을 받는지 미리 안다). 기능은 열지 않으므로 '산다'가 아니라 '쌓인다'로 말한다.
+    /// 지금 단계와 다음 단계까지 남은 만큼, 그리고 다음 단계에서 받는 것. 단계 전체 목록은 두지 않는다
+    /// (다섯 단계를 다 늘어놓으면 낼 칸이 화면 밖으로 밀린다).
     private var levelCard: some View {
         let level = tipJar.level
         let next: LeeoSupporterLevel? = level == nil ? .supporter : level?.next
@@ -227,16 +234,6 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
                     .font(.body.weight(.semibold))
                     .foregroundStyle(theme.text)
             }
-            Divider()
-            VStack(alignment: .leading, spacing: 12) {
-                ForEach(LeeoSupporterLevel.allCases, id: \.self) { ladderRow($0, current: level) }
-            }
-            Text(L("팁 · 구독 · 선물 · 앱 구매가 모두 쌓여요. 리이오의 모든 앱에서 낸 것을 합쳐요.",
-                   comment: "Supporter: what counts toward the level. Tips, subscriptions, gifts and purchases across all of Leeo's apps"))
-                .font(.footnote)
-                .foregroundStyle(theme.textMuted)
-                .fixedSize(horizontal: false, vertical: true)
-            rewards
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(16)
@@ -284,37 +281,12 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
                 .font(.body.weight(.semibold))
                 .foregroundStyle(theme.text)
                 .fixedSize(horizontal: false, vertical: true)
-        }
-        .accessibilityElement(children: .combine)
-    }
-
-    /// 사다리 한 칸. 닿은 단계는 채운 그림, 지금 단계는 굵게, 오른쪽에 문턱(잔 수).
-    private func ladderRow(_ l: LeeoSupporterLevel, current: LeeoSupporterLevel?) -> some View {
-        let reached = current.map { $0 >= l } ?? false
-        return HStack(alignment: .firstTextBaseline, spacing: 10) {
-            Image(systemName: reached ? l.symbol : "circle")
-                .font(.body)
-                .foregroundStyle(reached ? levelColor(l) : theme.textMuted)
-                .frame(width: 22)
-                .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(l.title)
-                    .font(.body.weight(l == current ? .bold : .regular))
-                    .foregroundStyle(reached ? theme.text : theme.textMuted)
-                Text(l.perks)
-                    .font(.footnote)
-                    .foregroundStyle(theme.textMuted)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            Spacer(minLength: 8)
-            Text(String(format: L("커피 %d잔", comment: "Supporter: a level's threshold in cups of coffee. %d = cups"), l.need))
-                .font(.footnote.monospacedDigit())
+            Label(next.perks, systemImage: next.symbol)
+                .font(.footnote)
                 .foregroundStyle(theme.textMuted)
-                .lineLimit(1)
-                .fixedSize()
+                .fixedSize(horizontal: false, vertical: true)
         }
         .accessibilityElement(children: .combine)
-        .accessibilityAddTraits(l == current ? .isSelected : [])
     }
 
     /// 단계의 색. 동반자부터는 금빛.
