@@ -28,6 +28,49 @@ public enum LeeoTipText {
     }
 }
 
+// MARK: - 고맙다는 그림
+
+/// 응원 화면 맨 위의 그림 — 두 손이 하트를 받쳐 들고 반짝인다. "받았어요, 고마워요" 의 느낌.
+struct LeeoThanksHeart: View {
+    let color: Color
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var glow = false
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .fill(RadialGradient(colors: [color.opacity(0.28), color.opacity(0)], center: .center,
+                                     startRadius: 8, endRadius: 70))
+                .frame(width: 140, height: 140)
+                .scaleEffect(glow ? 1.06 : 0.94)
+            Image(systemName: "heart.fill")
+                .font(.system(size: 46, weight: .semibold))
+                .foregroundStyle(LinearGradient(colors: [.pink, color], startPoint: .topLeading, endPoint: .bottomTrailing))
+                .offset(y: -10)
+            Image(systemName: "hands.and.sparkles.fill")
+                .font(.system(size: 30, weight: .semibold))
+                .foregroundStyle(color.opacity(0.85))
+                .offset(y: 30)
+            Image(systemName: "sparkle")
+                .font(.system(size: 16, weight: .bold))
+                .foregroundStyle(LeeoSupporterBadge.gold)
+                .offset(x: 36, y: -36)
+                .opacity(glow ? 1 : 0.5)
+            Image(systemName: "sparkle")
+                .font(.system(size: 10, weight: .bold))
+                .foregroundStyle(LeeoSupporterBadge.gold)
+                .offset(x: -38, y: -20)
+                .opacity(glow ? 0.5 : 1)
+        }
+        .frame(height: 120)
+        .accessibilityHidden(true)
+        .onAppear {
+            guard !reduceMotion else { return }
+            withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) { glow = true }
+        }
+    }
+}
+
 // MARK: - 화면
 
 public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
@@ -60,11 +103,12 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
 
     public var body: some View {
         ScrollView {
+            // 순서: 내 응원 단계 → 고맙다는 말 → 낼 칸 → 보상 · 고마운 사람들 → 작은 설명.
+            // 제목은 두지 않는다 — 들어온 줄 이름(개발자 응원하기)이 이미 말했다.
             VStack(spacing: 20) {
-                header
-                if tipJar.justTipped { thanks }
                 // 단계 카드는 지금과 다음만. 낼 칸이 첫 화면에 보여야 한다.
                 levelCard
+                message
                 tiers
                 rewards
                 if tipJar.hasTipped, let page = tipJar.config.thanksPage { thanksList(page) }
@@ -90,7 +134,9 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
             .frame(maxWidth: .infinity)
         }
         .background(theme.bg.ignoresSafeArea())
-        .navigationTitle(LeeoTipText.entry)
+        #if os(iOS)
+        .navigationBarTitleDisplayMode(.inline)
+        #endif
         .task {
             guard previewPrices == nil else { return }
             #if canImport(StoreKit)
@@ -107,25 +153,22 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
 
     // MARK: 부분
 
-    private var header: some View {
-        VStack(spacing: 10) {
-            Image(systemName: "heart.fill")
-                .font(.system(size: 38, weight: .semibold))
-                .foregroundStyle(theme.accent)
-                .frame(width: 84, height: 84)
-                .background(Circle().fill(theme.accent.opacity(0.14)))
-                .accessibilityHidden(true)
-            Text(String(format: L("%@ 개발을 응원해 주세요", comment: "Tip jar: title. %@ = app name"), Spec.displayName))
-                .font(.title2.bold())
-                .foregroundStyle(theme.text)
-                .multilineTextAlignment(.center)
-                .accessibilityAddTraits(.isHeader)
-            Text(L("이미 모든 기능을 쓰고 계신다면, 여기서 조금 더 응원할 수 있어요. 혼자 만드는 앱이라 한 번 한 번이 다음 업데이트를 만드는 힘이 돼요.",
-                   comment: "Tip jar: explanation for people who already have everything"))
+    /// 고맙다는 말. 방금 냈으면 개발자의 짧은 편지, 낸 적이 있으면 그 편지를 조용히, 처음이면 왜 응원이 힘이 되는지.
+    @ViewBuilder
+    private var message: some View {
+        if tipJar.justTipped {
+            thanks
+        } else {
+            Text(tipJar.hasTipped
+                 ? L("혼자 만드는 앱이라 보내 주신 응원을 하나하나 다 보고 있어요. 다음 업데이트로 꼭 보답할게요.",
+                     comment: "Tip jar: short letter from the developer right after tipping")
+                 : L("이미 모든 기능을 쓰고 계신다면, 여기서 조금 더 응원할 수 있어요. 혼자 만드는 앱이라 한 번 한 번이 다음 업데이트를 만드는 힘이 돼요.",
+                     comment: "Tip jar: explanation for people who already have everything"))
                 .font(.body)
                 .foregroundStyle(theme.textMuted)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, 8)
         }
     }
 
@@ -226,6 +269,9 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
         let level = tipJar.level
         let next: LeeoSupporterLevel? = level == nil ? .supporter : level?.next
         return VStack(alignment: .leading, spacing: 14) {
+            LeeoThanksHeart(color: levelColor(level))
+                .frame(maxWidth: .infinity)
+                .padding(.top, 4)
             levelNow(level)
             if let next {
                 progress(from: level?.need ?? 0, to: next)
@@ -242,13 +288,8 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
 
     /// 지금 단계 한 줄: 큰 그림 · 단계 이름 · 지금까지 쌓은 잔 수.
     private func levelNow(_ level: LeeoSupporterLevel?) -> some View {
+        // 그림은 카드 맨 위의 고맙다는 하트(LeeoThanksHeart)가 맡는다 — 여기 또 두지 않는다
         HStack(spacing: 14) {
-            Image(systemName: level?.symbol ?? "heart")
-                .font(.title2.weight(.semibold))
-                .foregroundStyle(levelColor(level))
-                .frame(width: 52, height: 52)
-                .background(Circle().fill(levelColor(level).opacity(0.14)))
-                .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 3) {
                 Text(level?.title ?? L("응원 단계", comment: "Supporter: level card title before the first tip"))
                     .font(.title3.bold())

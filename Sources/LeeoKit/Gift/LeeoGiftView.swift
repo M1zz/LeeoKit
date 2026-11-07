@@ -78,6 +78,9 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
     private let previewPrice: String?
     /// 선물이 안 될 때 문의 창을 연다(`LeeoGiftSupport`). nil 이면 문의 줄이 없다.
     private let onContactSupport: (() -> Void)?
+    /// 고를 수 있는 선물(`LeeoGiftPickerView`). 둘 이상이면 머리말 대신 고르기가 선다.
+    private var choices: [LeeoGiftStore] = []
+    private var selection: Binding<String>?
 
     /// - Parameter showsRedeemLink: 아래에 "선물받은 코드가 있나요?" 링크를 둘지.
     ///   앱이 설정에 코드 입력 행을 따로 두면 false (화면 안에서 또 밀어 넣지 않게).
@@ -99,10 +102,20 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
         self.onContactSupport = nil
     }
 
+    /// 고르기 모드 — `LeeoGiftPickerView` 가 쓴다.
+    init(gift: LeeoGiftStore, choices: [LeeoGiftStore], selection: Binding<String>,
+         showsRedeemLink: Bool, onContactSupport: (() -> Void)?) {
+        self.init(gift: gift, showsRedeemLink: showsRedeemLink, onContactSupport: onContactSupport)
+        self.choices = choices
+        self.selection = selection
+    }
+
+    private var isPicking: Bool { choices.count > 1 && selection != nil }
+
     public var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                header
+                if isPicking { pickerHeader } else { header }
                 if let justSent {
                     LeeoGiftCodeCard<Spec>(gift: justSent, tierName: gift.config.tierName)
                     Button(L("새 선물 만들기", comment: "Gift: start another gift after one was created")) {
@@ -140,7 +153,11 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
             .frame(maxWidth: .infinity)
         }
         .background(theme.bg.ignoresSafeArea())
-        .navigationTitle(LeeoGiftText.sendEntry(tier: gift.config.tierName))
+        .navigationTitle(isPicking ? "" : LeeoGiftText.sendEntry(tier: gift.config.tierName))
+        #if os(iOS)
+        .navigationBarTitleDisplayMode(.inline)
+        #endif
+        .onChange(of: gift.config.productID) { _, _ in justSent = nil }
         .task {
             guard previewPrice == nil else { return }
             #if canImport(StoreKit)
@@ -152,6 +169,38 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
     }
 
     // MARK: 부분
+
+    /// 고르기 모드의 머리말: 고마운 사람에게 — 그리고 보낼 선물 고르기
+    private var pickerHeader: some View {
+        VStack(spacing: 16) {
+            ZStack {
+                Image(systemName: "gift.fill")
+                    .font(.system(size: 40, weight: .semibold))
+                    .foregroundStyle(theme.accent)
+                    .frame(width: 84, height: 84)
+                    .background(Circle().fill(theme.accent.opacity(0.14)))
+                Image(systemName: "heart.fill")
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundStyle(.pink)
+                    .offset(x: 30, y: -30)
+            }
+            .accessibilityHidden(true)
+            Text(L("고마운 사람에게 이 좋은 경험을 선물하세요", comment: "Gift picker: headline. Give this good experience to someone you are grateful to"))
+                .font(.title2.bold())
+                .foregroundStyle(theme.text)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityAddTraits(.isHeader)
+            VStack(spacing: 10) {
+                ForEach(choices, id: \.config.productID) { choice in
+                    LeeoGiftOptionRow(gift: choice, selected: choice.config.productID == gift.config.productID) {
+                        selection?.wrappedValue = choice.config.productID
+                    }
+                }
+            }
+        }
+        .padding(.top, 8)
+    }
 
     private var header: some View {
         VStack(spacing: 10) {
@@ -224,7 +273,9 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
     private func buyLabel(price: String) -> some View {
         HStack {
             if gift.isWorking { ProgressView().tint(.white) }
-            Text(String(format: L("%@에 선물하기", comment: "Gift: buy button. %@ = price"), price))
+            // 고르기 모드에서는 값이 고른 줄에 있으니 단추는 "선물하기" 한마디
+            Text(isPicking ? L("선물하기", comment: "Gift picker: buy button")
+                 : String(format: L("%@에 선물하기", comment: "Gift: buy button. %@ = price"), price))
                 .font(.headline)
         }
         .foregroundStyle(.white)
@@ -305,6 +356,79 @@ public struct LeeoGiftView<Spec: LeeoAppSpec>: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+}
+
+// MARK: - 고르기
+
+/// 여러 등급의 선물을 한 화면에서 고르고 보낸다 — "고마운 사람에게 이 좋은 경험을 선물하세요".
+/// 선물이 하나면 그 선물의 화면(`LeeoGiftView`)과 같다. `gifts` 순서대로 줄이 선다(싼 것부터 권한다).
+public struct LeeoGiftPickerView<Spec: LeeoAppSpec>: View {
+    private let gifts: [LeeoGiftStore]
+    private let showsRedeemLink: Bool
+    private let onContactSupport: (() -> Void)?
+    @State private var selectedID: String
+
+    public init(gifts: [LeeoGiftStore], showsRedeemLink: Bool = true, onContactSupport: (() -> Void)? = nil) {
+        self.gifts = gifts
+        self.showsRedeemLink = showsRedeemLink
+        self.onContactSupport = onContactSupport
+        // 처음에는 가장 높은 등급 — 받는 사람에게 가장 좋은 경험
+        _selectedID = State(initialValue: gifts.last?.config.productID ?? "")
+    }
+
+    public var body: some View {
+        if let gift = gifts.first(where: { $0.config.productID == selectedID }) ?? gifts.first {
+            LeeoGiftView<Spec>(gift: gift, choices: gifts, selection: $selectedID,
+                               showsRedeemLink: showsRedeemLink, onContactSupport: onContactSupport)
+        }
+    }
+}
+
+/// 고를 선물 한 줄: 등급 이름 · 값. 상품이 늦게 와도 값이 채워지게 줄마다 지켜본다.
+struct LeeoGiftOptionRow: View {
+    @ObservedObject var gift: LeeoGiftStore
+    let selected: Bool
+    let onSelect: () -> Void
+    @Environment(\.leeoStyle) private var theme
+
+    var body: some View {
+        Button(action: onSelect) {
+            HStack(spacing: 12) {
+                Image(systemName: selected ? "checkmark.circle.fill" : "circle")
+                    .font(.title3)
+                    .foregroundStyle(selected ? theme.accent : theme.textMuted)
+                    .accessibilityHidden(true)
+                Text(String(format: L("%@ 평생", comment: "Gift picker row: lifetime of the tier. %@ = tier name (Plus or Pro, keep as is)"),
+                            gift.config.tierName))
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(theme.text)
+                Spacer(minLength: 8)
+                #if canImport(StoreKit)
+                if let product = gift.product {
+                    Text(product.displayPrice)
+                        .font(.body.weight(.semibold))
+                        .monospacedDigit()
+                        .foregroundStyle(theme.text)
+                } else {
+                    ProgressView()
+                }
+                #endif
+            }
+            .padding(.horizontal, 16)
+            .frame(maxWidth: .infinity, minHeight: 56)
+            .background(theme.surface, in: RoundedRectangle(cornerRadius: theme.radiusLg, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: theme.radiusLg, style: .continuous)
+                .strokeBorder(selected ? theme.accent : .clear, lineWidth: 2))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(selected ? .isSelected : [])
+        .task {
+            #if canImport(StoreKit)
+            if gift.product == nil { await gift.loadProduct() }
+            #endif
         }
     }
 }

@@ -29,6 +29,8 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
     private let title: String
     private let subtitle: String
     private let features: [String]
+    /// 기능 그림 (`LeeoShowcase`). 있으면 글 대신 이것을 넘겨 보인다.
+    private let showcases: [LeeoShowcase]
     private let leadIcon: String
     private let onPurchased: (() -> Void)?
     /// 어떤 계기로 페이월이 떴는지 (분석 이벤트용). 리드 기능이 있으면 그 이름.
@@ -57,9 +59,11 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
         subtitle: String? = nil,
         features: [String] = [],
         leadFeature: LeeoProFeature? = nil,
+        showcases: [LeeoShowcase] = [],
         config: LeeoPaywallConfig? = Spec.paywall,
         onPurchased: (() -> Void)? = nil
     ) {
+        self.showcases = showcases
         // 리드 기능이 있으면 "방금 부딪힌 그 기능"을 팔도록 헤더/문구를 맞춘다.
         self.title = title ?? leadFeature?.leeoTitle
             ?? String(format: L("%@ 프리미엄", comment: "Paywall default title"), Spec.displayName)
@@ -76,22 +80,27 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
     }
 
     public var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                header
-                if tiers.isEmpty {
-                    if !features.isEmpty { featureList(features) }
-                } else {
-                    tierSection
+        // 그림으로 파는 틀(`LeeoShowcasePaywall`): 머리말 없이 등급 · 그림 · 요금이 첫 화면에, 구매 단추는 늘 떠 있다.
+        LeeoShowcasePaywall(showcases: pages) {
+            VStack(spacing: 0) {
+                Color.clear.frame(height: 36)   // 닫기 단추 자리
+                tierPicker
+            }
+        } plans: {
+            productSection
+        } button: {
+            purchaseButton
+        } details: {
+            VStack(spacing: 16) {
+                if let error = store.lastError, !visibleProducts.isEmpty {
+                    Text(error)
+                        .font(.footnote)
+                        .foregroundStyle(.red)
+                        .multilineTextAlignment(.center)
                 }
-                productSection
                 footer
             }
-            .padding(20)
-            .frame(maxWidth: 520)
-            .frame(maxWidth: .infinity)
         }
-        .background(theme.bg.ignoresSafeArea())
         .overlay(alignment: .topTrailing) { closeButton }
         .task {
             // 노출 자체가 퍼널의 시작점 — 앱이 따로 기록할 필요 없다.
@@ -107,41 +116,20 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
 
     // MARK: - 섹션
 
-    private var header: some View {
-        VStack(spacing: 10) {
-            Image(systemName: leadIcon)
-                .font(.system(size: 44))
-                .foregroundStyle(theme.accent)
-                .padding(.top, 28)
-                .accessibilityHidden(true)
-            Text(title)
-                .font(.title.bold())
-                .multilineTextAlignment(.center)
-                .foregroundStyle(theme.text)
-                .accessibilityAddTraits(.isHeader)
-            Text(subtitle)
-                .font(.subheadline)
-                .multilineTextAlignment(.center)
-                .foregroundStyle(theme.textMuted)
+    /// 넘겨 볼 장. 앱이 그린 그림이 있으면 그것, 없으면 방금 부딪힌 기능 · 등급 혜택 · 혜택 글을 큰 기호 한 장씩으로.
+    private var pages: [LeeoShowcase] {
+        if !showcases.isEmpty { return showcases }
+        var pages: [LeeoShowcase] = []
+        if leadKey != nil || analyticsReason != nil {
+            pages.append(LeeoShowcase(id: "lead", title: title, detail: subtitle, systemImage: leadIcon))
         }
-    }
-
-    private func featureList(_ features: [String]) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            ForEach(features, id: \.self) { feature in
-                HStack(alignment: .firstTextBaseline, spacing: 12) {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundStyle(theme.accent)
-                        .accessibilityHidden(true)
-                    Text(feature)
-                        .foregroundStyle(theme.text)
-                    Spacer(minLength: 0)
-                }
-            }
+        let lines = selectedTier.map(highlights(of:)) ?? features
+        pages += lines.enumerated().map { index, line in
+            LeeoShowcase(id: "\(selectedTier?.id ?? "")#\(index)", title: line, detail: "",
+                         systemImage: index == 0 && pages.isEmpty ? leadIcon : "checkmark.seal.fill")
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(16)
-        .background(theme.surface, in: RoundedRectangle(cornerRadius: theme.radiusLg))
+        if pages.isEmpty { pages.append(LeeoShowcase(id: "lead", title: title, detail: subtitle, systemImage: leadIcon)) }
+        return pages
     }
 
     @ViewBuilder
@@ -169,13 +157,6 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
                 }
             }
             .padding(.top, 10)
-            purchaseButton
-            if let error = store.lastError {
-                Text(error)
-                    .font(.footnote)
-                    .foregroundStyle(.red)
-                    .multilineTextAlignment(.center)
-            }
         }
     }
 
@@ -394,7 +375,7 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
     }
 
     @ViewBuilder
-    private var tierSection: some View {
+    private var tierPicker: some View {
         if offeredTiers.count > 1 {
             Picker(L("등급", comment: "Paywall: tier picker"), selection: Binding(
                 get: { selectedTier?.id ?? "" },
@@ -404,7 +385,6 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
             }
             .pickerStyle(.segmented)
         }
-        if let tier = selectedTier { featureList(highlights(of: tier)) }
     }
 
     /// 그 등급의 혜택 — 아래 등급이 있으면 "그 등급의 모든 기능" 을 맨 위에 둔다
@@ -511,6 +491,7 @@ public extension View {
         subtitle: String? = nil,
         features: [String] = [],
         leadFeature: LeeoProFeature? = nil,
+        showcases: [LeeoShowcase] = [],
         onPurchased: (() -> Void)? = nil
     ) -> some View {
         sheet(isPresented: isPresented) {
@@ -519,6 +500,7 @@ public extension View {
                 subtitle: subtitle,
                 features: features,
                 leadFeature: leadFeature,
+                showcases: showcases,
                 onPurchased: onPurchased
             )
         }
