@@ -166,43 +166,16 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
     }
 
     private func productRow(_ product: Product) -> some View {
-        let isSelected = selectedProductID == product.id
         let saving = savingPercent(product)
-        return Button {
+        return LeeoOptionRow(title: rowTitle(product), detail: rowDetail(product, saving: saving),
+                             selected: selectedProductID == product.id) {
             selectedProductID = product.id
-        } label: {
-            HStack(spacing: 12) {
-                Image(systemName: isSelected ? "largecircle.fill.circle" : "circle")
-                    .foregroundStyle(isSelected ? theme.accent : theme.textMuted)
-                    .accessibilityHidden(true)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(rowTitle(product))
-                        .font(.headline)
-                        .foregroundStyle(theme.text)
-                    if let detail = rowDetail(product, saving: saving) {
-                        Text(detail)
-                            .font(.caption)
-                            .foregroundStyle(theme.textMuted)
-                    }
-                    // 아주 큰 글자에서는 가격을 이름 아래로 내린다. 옆에 두면 이름 칸이 몇 글자 폭으로 좁아진다.
-                    if typeSize.isAccessibilitySize { price(product) }
-                }
-                Spacer(minLength: 8)
-                if !typeSize.isAccessibilitySize { price(product) }
-            }
-            .padding(16)
-            .background(theme.surface, in: RoundedRectangle(cornerRadius: theme.radiusLg))
-            .overlay(
-                RoundedRectangle(cornerRadius: theme.radiusLg)
-                    .stroke(isSelected ? theme.accent : .clear, lineWidth: 2)
-            )
-            .overlay(alignment: .topTrailing) {
-                if let saving { savingBadge(saving) }
-            }
+        } trailing: {
+            price(product)
         }
-        .buttonStyle(.plain)
-        .accessibilityAddTraits(isSelected ? .isSelected : [])
-        .accessibilityInputLabels([Text(rowTitle(product))])
+        .overlay(alignment: .topTrailing) {
+            if let saving { savingBadge(saving) }
+        }
     }
 
     // MARK: - 상품 줄의 글
@@ -290,27 +263,11 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
     }
 
     private var purchaseButton: some View {
-        Button {
+        LeeoPrimaryButton(title: purchaseTitle, isWorking: store.purchasingProductID != nil) {
             guard let product = selectedProduct else { return }
             Task { await store.purchase(product) }
-        } label: {
-            HStack {
-                if store.purchasingProductID != nil {
-                    ProgressView().tint(.white)
-                } else {
-                    Text(purchaseTitle)
-                        .font(.headline)
-                }
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 16)
-            .background(theme.accent, in: RoundedRectangle(cornerRadius: theme.radiusLg))
-            .foregroundStyle(.white)
         }
-        .disabled(selectedProduct == nil || store.purchasingProductID != nil)
-        // 결제 중에는 글자 대신 스피너가 서므로 이름을 따로 붙인다.
-        .accessibilityLabel(purchaseTitle)
-        .padding(.top, 4)
+        .disabled(selectedProduct == nil)
     }
 
     private var footer: some View {

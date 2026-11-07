@@ -4,6 +4,7 @@
 //
 //  팁을 내는 화면. 무엇을 위한 돈인지(기능이 아니라 앱을 계속 다듬는 데) 먼저 말하고,
 //  작은 것부터 큰 것까지 고르게 한다. 낸 뒤에는 같은 자리에서 고맙다고 말한다.
+//  틀은 페이월 · 선물과 같은 `LeeoPurchaseScaffold` 다: 단계 카드 → 고를 칸 → 떠 있는 응원하기 단추 → 아래 설명.
 //  응원 단계(`LeeoSupporterLevel`)와 단계마다 받는 것을 늘 보여 주고, 연 보상(아이콘 · 한 표 · 베타)은 여기서 쓴다.
 //
 //  설정에서 한 줄:
@@ -76,7 +77,6 @@ struct LeeoThanksHeart: View {
 public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
     @ObservedObject private var tipJar: LeeoTipJar
     @Environment(\.leeoStyle) private var theme
-    @Environment(\.dynamicTypeSize) private var typeSize
     #if canImport(StoreKit)
     @Environment(\.purchase) private var purchaseAction
     #endif
@@ -84,6 +84,9 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
     #if os(iOS)
     @State private var iconName: String? = UIApplication.shared.alternateIconName
     #endif
+
+    /// 고른 칸(상품 id, 미리보기면 순번). 처음에는 가장 작은 칸.
+    @State private var selectedID: String?
 
     /// 미리보기 가격(작은 것부터). 있으면 상품을 기다리지 않고 이 값으로 칸을 그리며, 눌러도 결제하지 않는다.
     private let previewPrices: [String]?
@@ -102,22 +105,29 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
     }
 
     public var body: some View {
-        ScrollView {
-            // 순서: 내 응원 단계 → 고맙다는 말 → 낼 칸 → 보상 · 고마운 사람들 → 작은 설명.
-            // 제목은 두지 않는다 — 들어온 줄 이름(개발자 응원하기)이 이미 말했다.
+        // 순서: 내 응원 단계 · 고맙다는 말 → 낼 칸 → (떠 있는) 응원하기 → 보상 · 고마운 사람들 · 작은 설명.
+        // 제목은 두지 않는다. 들어온 줄 이름(개발자 응원하기)이 이미 말했다.
+        LeeoPurchaseScaffold {
+            // 단계 카드는 지금과 다음만. 낼 칸이 첫 화면에 보여야 한다.
             VStack(spacing: 20) {
-                // 단계 카드는 지금과 다음만. 낼 칸이 첫 화면에 보여야 한다.
                 levelCard
                 message
-                tiers
-                rewards
-                if tipJar.hasTipped, let page = tipJar.config.thanksPage { thanksList(page) }
+            }
+            .padding(.horizontal, LeeoPurchaseScaffoldMetrics.margin)
+        } options: {
+            tiers
+        } button: {
+            tipButton
+        } details: {
+            VStack(spacing: 20) {
                 if let error = tipJar.lastError {
                     Text(error)
                         .font(.body)
                         .foregroundStyle(.red)
                         .multilineTextAlignment(.center)
                 }
+                rewards
+                if tipJar.hasTipped, let page = tipJar.config.thanksPage { thanksList(page) }
                 Text(L("한 번만 결제돼요. 구독이 아니고, 열리는 기능도 없어요.",
                        comment: "Tip jar: footnote, one-time payment that unlocks nothing"))
                     .font(.body)
@@ -129,11 +139,7 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
                     .foregroundStyle(theme.textMuted)
                     .multilineTextAlignment(.center)
             }
-            .padding(20)
-            .frame(maxWidth: 560)
-            .frame(maxWidth: .infinity)
         }
-        .background(theme.bg.ignoresSafeArea())
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
@@ -385,12 +391,13 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
             .joined(separator: "\n") + "\n"
     }
 
+    /// 낼 칸. 누르면 고르기만 하고, 내는 것은 떠 있는 응원하기 단추다.
     @ViewBuilder
     private var tiers: some View {
         if let previewPrices {
             VStack(spacing: 10) {
                 ForEach(Array(previewPrices.enumerated()), id: \.offset) { index, price in
-                    tierRow(tier: LeeoTipTier(index: index, of: previewPrices.count), price: price) {}
+                    tierRow(tier: LeeoTipTier(index: index, of: previewPrices.count), price: price, id: "\(index)")
                 }
             }
         } else {
@@ -406,79 +413,46 @@ public struct LeeoTipJarView<Spec: LeeoAppSpec>: View {
         } else {
             VStack(spacing: 10) {
                 ForEach(Array(tipJar.products.enumerated()), id: \.element.id) { index, product in
-                    tierRow(tier: tipJar.tier(for: product.id, fallbackIndex: index), price: product.displayPrice) {
-                        Task { await tipJar.purchase(product, using: { try await purchaseAction($0) }) }
-                    }
+                    tierRow(tier: tipJar.tier(for: product.id, fallbackIndex: index), price: product.displayPrice, id: product.id)
                 }
             }
         }
         #endif
     }
 
-    private func tierRow(tier: LeeoTipTier, price: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            HStack(spacing: 14) {
-                Image(systemName: tier.symbol)
-                    .font(.title3.weight(.semibold))
-                    .foregroundStyle(theme.accent)
-                    .frame(width: 32)
-                    .accessibilityHidden(true)
-                // 아주 큰 글자에서는 가격을 이름 아래로 내린다. 옆에 두면 이름이 몇 글자 폭으로 눌린다.
-                if typeSize.isAccessibilitySize {
-                    VStack(alignment: .leading, spacing: 8) {
-                        tierName(tier)
-                        priceTag(price)
-                    }
-                    Spacer(minLength: 0)
-                } else {
-                    tierName(tier)
-                        .lineLimit(2)
-                        .minimumScaleFactor(0.85)
-                    Spacer(minLength: 8)
-                    priceTag(price)
-                }
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 12)
-            .background(RoundedRectangle(cornerRadius: theme.radiusSm + 4, style: .continuous).fill(theme.surface))
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .disabled(tipJar.isWorking)
-        .accessibilityLabel("\(tier.title), \(tierLevelLine(tier)), \(price)")
-        .accessibilityInputLabels([Text(tier.title)])
+    /// 고른 칸. 아직 안 골랐으면 가장 작은 칸(첫 응원은 가볍게).
+    private var currentID: String? {
+        if let selectedID { return selectedID }
+        if previewPrices != nil { return "0" }
+        #if canImport(StoreKit)
+        return tipJar.products.first?.id
+        #else
+        return nil
+        #endif
     }
 
-    /// 칸 이름과, 그 칸을 내면 되는 단계. 무엇을 사면 어느 단계가 되는지 칸에서 바로 읽힌다.
-    private func tierName(_ tier: LeeoTipTier) -> some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(tier.title)
-                .font(.body.weight(.semibold))
-                .foregroundStyle(theme.text)
-            Text(tierLevelLine(tier))
-                .font(.subheadline)
-                .foregroundStyle(theme.textMuted)
+    private func tierRow(tier: LeeoTipTier, price: String, id: String) -> some View {
+        LeeoOptionRow(title: tier.title, detail: tierLevelLine(tier), symbol: tier.symbol, price: price,
+                      selected: currentID == id) {
+            selectedID = id
         }
-        .multilineTextAlignment(.leading)
-        .fixedSize(horizontal: false, vertical: true)
     }
 
+    /// 떠 있는 단추. 미리보기면 보여 주기만 한다.
+    private var tipButton: some View {
+        LeeoPrimaryButton(title: L("응원하기", comment: "Tip ask card: open the tip jar"), isWorking: tipJar.isWorking) {
+            guard previewPrices == nil else { return }
+            #if canImport(StoreKit)
+            guard let product = tipJar.products.first(where: { $0.id == currentID }) else { return }
+            Task { await tipJar.purchase(product, using: { try await purchaseAction($0) }) }
+            #endif
+        }
+        .disabled(currentID == nil)
+    }
+
+    /// 그 칸을 내면 되는 단계. 무엇을 사면 어느 단계가 되는지 칸에서 바로 읽힌다.
     private func tierLevelLine(_ tier: LeeoTipTier) -> String {
         String(format: L("%@ 단계", comment: "Tip jar: the supporter level this tip reaches. %@ = level such as Regular"), tier.level.title)
-    }
-
-    /// ⚠️ 가격은 **한 줄**이다. 자리가 모자라면 이름 쪽이 줄을 바꾸거나 작아진다.
-    ///    (가격이 두 줄로 꺾이면 "₩1," / "100" 처럼 읽혀 얼마인지 헷갈린다)
-    private func priceTag(_ price: String) -> some View {
-        Text(price)
-            .font(.body.weight(.semibold).monospacedDigit())
-            .foregroundStyle(.white)
-            .lineLimit(1)
-            .fixedSize(horizontal: true, vertical: false)
-            .padding(.horizontal, 14)
-            .padding(.vertical, 8)
-            .background(Capsule().fill(theme.accent))
-            .layoutPriority(1)
     }
 }
 

@@ -3,6 +3,7 @@
 //  LeeoKit
 //
 //  **그림으로 파는 페이월 틀.** 글을 늘어놓지 않고, 기능이 적용된 화면 그림을 옆으로 넘겨 보인다.
+//  틀 자체는 응원 · 선물과 같은 `LeeoPurchaseScaffold` 다. 여기서는 hero 자리에 그림 띠를 얹는다.
 //
 //    등급 고르기(있으면)           ← top
 //    ┌──────────────────────┐
@@ -163,17 +164,15 @@ public struct LeeoShowcaseCarousel: View {
     }
 }
 
-/// 그림으로 파는 페이월의 틀. 앞 화면에 고르기 · 그림 · 요금이 다 들어오고, 구매 단추는 늘 떠 있다.
+/// 그림으로 파는 페이월의 틀. 돈을 받는 화면의 한 틀(`LeeoPurchaseScaffold`)에 기능 그림 띠를 hero 로 얹은 것이다.
+/// 앞 화면에 고르기 · 그림 · 요금이 다 들어오고, 구매 단추는 늘 떠 있다.
 public struct LeeoShowcasePaywall<Top: View, Plans: View, Button: View, Details: View>: View {
     let showcases: [LeeoShowcase]
     let top: Top
     let plans: Plans
     let button: Button
     let details: Details
-    @Environment(\.leeoStyle) private var theme
     @Environment(\.dynamicTypeSize) private var typeSize
-    /// 떠 있는 단추 높이 — 본문 끝이 단추에 가리지 않게 그만큼 비운다
-    @State private var buttonHeight: CGFloat = 80
 
     public init(showcases: [LeeoShowcase],
                 @ViewBuilder top: () -> Top,
@@ -188,46 +187,20 @@ public struct LeeoShowcasePaywall<Top: View, Plans: View, Button: View, Details:
     }
 
     public var body: some View {
-        ZStack(alignment: .bottom) {
-            ScrollView {
-                VStack(spacing: 20) {
-                    top.padding(.horizontal, 20)
-                    if !showcases.isEmpty {
-                        // 아주 큰 글씨에서는 그림을 줄여 요금 줄이 첫 화면에 남게 한다
-                        LeeoShowcaseCarousel(showcases: showcases, artHeight: typeSize.isAccessibilitySize ? 150 : 240)
-                    }
-                    plans.padding(.horizontal, 20)
-                    details
-                        .padding(.horizontal, 20)
-                        .padding(.top, 28)
+        LeeoPurchaseScaffold {
+            VStack(spacing: 20) {
+                top.padding(.horizontal, LeeoPurchaseScaffoldMetrics.margin)
+                if !showcases.isEmpty {
+                    // 아주 큰 글씨에서는 그림을 줄여 요금 줄이 첫 화면에 남게 한다
+                    LeeoShowcaseCarousel(showcases: showcases, artHeight: typeSize.isAccessibilitySize ? 150 : 240)
                 }
-                .padding(.top, 8)
-                .padding(.bottom, buttonHeight + 16)
-                .frame(maxWidth: 560)
-                .frame(maxWidth: .infinity)
             }
-            .scrollBounceBehavior(.basedOnSize)
-
+        } options: {
+            plans
+        } button: {
             button
-                .padding(.horizontal, 20)
-                .padding(.top, 12)
-                .padding(.bottom, 8)
-                .frame(maxWidth: 560)
-                .frame(maxWidth: .infinity)
-                .background(alignment: .top) {
-                    // 본문이 단추 밑으로 흘러들어도 단추가 읽히게 — 위로 갈수록 투명해진다
-                    LinearGradient(colors: [theme.bg.opacity(0), theme.bg], startPoint: .top, endPoint: .center)
-                        .ignoresSafeArea(edges: .bottom)
-                        .allowsHitTesting(false)
-                }
-                .background {
-                    GeometryReader { proxy in
-                        Color.clear
-                            .onAppear { buttonHeight = proxy.size.height }
-                            .onChange(of: proxy.size.height) { _, height in buttonHeight = height }
-                    }
-                }
+        } details: {
+            details
         }
-        .background(theme.bg.ignoresSafeArea())
     }
 }
