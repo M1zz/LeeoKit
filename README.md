@@ -461,6 +461,30 @@ LeeoShareAppLink<MyAppSpec>()
 - 문구(`LeeoShareText`)는 패키지 카탈로그에 23개 언어로 들어 있다. 앱 카탈로그에 다시 적지 않는다.
 - 유료 기능이 있는 앱은 이것 대신 Pro 선물(`LeeoGiftConfig`)을 쓴다.
 
+## 내 데이터는 어디에 (LeeoDataPromise, v3.41)
+
+리이오의 앱이 하는 약속을 한 화면에 — **내가 만든 것은 이 기기와 내 iCloud 에만.** 모든 앱이 같은 모양이라
+사용자가 "이 개발자의 앱은 다 이렇다" 를 알게 된다.
+
+```swift
+// 설정에서 한 줄
+LeeoDataPromiseLink<MyAppSpec>()
+
+// Spec — 이 기기에만 있는 것 · 내 iCloud 에 가는 것(백업은 금고가 iCloud 를 쓰면 저절로)
+static let dataPromise = LeeoDataPromise(onDevice: ["장표 · 녹음 · 받아쓴 글"],
+                                         inICloud: ["발표 동기화 (켰을 때)"],
+                                         worksOffline: true)
+```
+
+세 겹이다.
+1. **어디에 있나** — 이 기기에만 · 내 iCloud에만 · 개발자의 부탁 · 없는 것.
+2. **개발자의 부탁 스위치** (`LeeoImprovementData.isOn`, 처음엔 켜짐). 끄면 `LeeoUsageReporter` · `LeeoDiagnostics` 가
+   **정말로 보내지 않는다**. 사용자가 직접 보내는 의견과는 따로다.
+3. **직접 확인하기** — iOS 앱 개인정보 보호 리포트, `worksOffline` 이면 비행기 모드 한 줄.
+
+- ⚠️ 사용자에게 보이는 말에 **'통계' 를 쓰지 않는다.** 개발자가 앱을 고치려고 부탁하는 데이터다.
+- ⚠️ 개발자에게 무언가를 새로 보내는 코드는 이 스위치를 지나게 하고, '개발자의 부탁' 설명에 그것을 적는다.
+
 ## 함께 쓰는 앱 (LeeoFamily)
 
 내가 만든 앱들이 **서로를 소개한다.** 목록·문구·이야기는 `LeeoFamilyCatalog` 한 곳에만 있어서,

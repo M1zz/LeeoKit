@@ -92,11 +92,15 @@ public protocol LeeoAppSpec {
     /// 금고가 하루 한 번 최신 백업을 사용자 iCloud(피드백 허브 컨테이너의 private DB)에 올릴지.
     /// 미지정이면 켬. 그 컨테이너가 entitlements 에 없는 앱은 false 로 둔다 — 없는 컨테이너를 열면 앱이 죽는다.
     static var vaultUsesICloud: Bool { get }
+
+    /// 내 데이터는 어디에 — 이 기기에만 있는 것 · 내 iCloud 에 가는 것 (→ LeeoDataPromiseView).
+    static var dataPromise: LeeoDataPromise { get }
 }
 
 public extension LeeoAppSpec {
     static var appGroups: [String] { [] }
     static var vaultUsesICloud: Bool { true }
+    static var dataPromise: LeeoDataPromise { LeeoDataPromise() }
     /// 기본값 — 현지화된 번들 표시 이름, 없으면 `appName`.
     static var displayName: String { LeeoAppDisplayName.resolve(fallback: appName) }
 

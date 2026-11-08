@@ -156,6 +156,8 @@ public final class LeeoUsageReporter: @unchecked Sendable {
                 await logDailyAppOpenIfNeeded()
             }
         }
+        // 개발자의 부탁을 껐으면 아무것도 보내지 않는다 (→ LeeoDataPromise).
+        guard LeeoImprovementData.isOn else { return }
         let now = Date()
         if let last = defaults.object(forKey: lastSnapshotKey) as? Date,
            now.timeIntervalSince(last) < minInterval { return }
@@ -229,7 +231,8 @@ public final class LeeoUsageReporter: @unchecked Sendable {
 
     /// 관문 없이 곧장 보낸다. 모든 이벤트가 결국 여기로 온다.
     private func send(_ name: String, occurredAt: Date?) async -> Bool {
-        guard await iCloudReady() else { return false }
+        // 개발자의 부탁을 껐으면 아무것도 보내지 않는다 (→ LeeoDataPromise).
+        guard LeeoImprovementData.isOn, await iCloudReady() else { return false }
         let record = CKRecord(recordType: Self.eventType)
         if let appId = config.appIdentifier { record["appId"] = appId }
         record["appName"] = appName

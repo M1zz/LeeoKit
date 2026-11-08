@@ -85,7 +85,8 @@ public final class LeeoDiagnostics: NSObject, MXMetricManagerSubscriber {
     // MARK: - MXMetricManagerSubscriber
 
     public func didReceive(_ payloads: [MXDiagnosticPayload]) {
-        guard let config, isEnabled?() ?? true else { return }
+        // 개발자의 부탁을 껐으면 오류 기록도 보내지 않는다 (→ LeeoDataPromise).
+        guard let config, isEnabled?() ?? true, LeeoImprovementData.isOn else { return }
 
         var reports: [Pending] = []
         for payload in payloads {
