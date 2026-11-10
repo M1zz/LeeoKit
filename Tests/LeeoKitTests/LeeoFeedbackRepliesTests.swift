@@ -15,14 +15,44 @@ import XCTest
 
 final class LeeoFeedbackRepliesTests: XCTestCase {
 
-    private func item(_ id: String, daysAgo: Double = 0, reply: String? = nil, seen: Bool = false) -> LeeoSentFeedback {
+    private func item(_ id: String, daysAgo: Double = 0, reply: String? = nil, seen: Bool = false,
+                      confirmed: String? = nil) -> LeeoSentFeedback {
         LeeoSentFeedback(id: id, type: "feature", excerpt: "e",
                          sentAt: Date().addingTimeInterval(-daysAgo * 86_400),
-                         reply: reply, repliedAt: reply == nil ? nil : Date(), replySeen: seen)
+                         reply: reply, repliedAt: reply == nil ? nil : Date(), replySeen: seen,
+                         confirmedReply: confirmed)
     }
 
     func testReplyRecordNameIsStable() {
         XCTAssertEqual(LeeoFeedbackLedger.replyRecordName(forFeedback: "ABC-123"), "reply-ABC-123")
+        XCTAssertEqual(LeeoFeedbackLedger.receiptRecordName(forFeedback: "ABC-123"), "read-ABC-123")
+    }
+
+    // MARK: - 읽음 확인
+
+    func testReceiptIsPendingOnlyAfterReadAndUntilConfirmed() {
+        let list = [item("unseen", reply: "고쳤어요"),
+                    item("seen", reply: "고쳤어요", seen: true),
+                    item("done", reply: "고쳤어요", seen: true, confirmed: "고쳤어요"),
+                    item("none", seen: true)]
+        XCTAssertEqual(LeeoFeedbackLedger.pendingReceipts(in: list).map(\.id), ["seen"])
+    }
+
+    func testEditedReplyNeedsAnotherReceipt() {
+        // 읽음 확인은 그 답장 글에 대한 것이다. 글이 바뀌면 다시 읽어야 하고, 읽으면 다시 알린다.
+        let confirmed = item("a", reply: "고쳤어요", seen: true, confirmed: "고쳤어요")
+        let edited = LeeoFeedbackLedger.merging(replies: ["a": ("다음 업데이트에 들어가요", Date())], into: [confirmed])
+        XCTAssertTrue(edited[0].hasUnreadReply)
+        XCTAssertFalse(edited[0].needsReadReceipt, "아직 안 읽었으면 알릴 것이 없다")
+        var read = edited[0]; read.replySeen = true
+        XCTAssertTrue(read.needsReadReceipt)
+    }
+
+    func testConfirmingRecordsTheReplyThatWasAcknowledged() {
+        let list = LeeoFeedbackLedger.confirming(["a": "고쳤어요"],
+                                                 in: [item("a", reply: "고쳤어요", seen: true), item("b", reply: "확인", seen: true)])
+        XCTAssertFalse(list[0].needsReadReceipt)
+        XCTAssertTrue(list[1].needsReadReceipt, "허브가 안 받아 준 것은 그대로 남는다")
     }
 
     func testNewReplyIsUnread() {

@@ -17,6 +17,11 @@
 //  ⚠️ 피드백 레코드 자체에는 쓰지 않는다. 공용 DB 에서는 남이 만든 레코드를 고칠 수 없다
 //     (완료 표시를 로컬로 옮긴 것과 같은 이유, `LeeoFeedbackService.fetchAll`).
 //
+//  읽음 확인: 사용자가 답장을 열어 보면 앱이 **같은 타입**으로 `read-<recordName>` 레코드를
+//  하나 만들고 `message` 에 읽은 답장 글을 그대로 적는다. 답장 레코드는 개발자 것이라 거기에
+//  쓸 수 없고, 자기 레코드 하나면 Dashboard 에 더할 것이 없다. 개발자는 두 글이 같으면 읽은 것으로
+//  안다 — 답장을 고치면 글이 달라져 다시 안 읽음이 되고, 앱은 확인을 한 번 더 보낸다.
+//
 //  ⚠️ 답장 타입이 아직 Production 에 없으면 읽기가 실패한다. 그때는 **조용히 빈 결과**다.
 //     답장 기능 때문에 의견 보내기나 설정 화면이 깨지면 안 된다.
 //
@@ -37,11 +42,16 @@ public struct LeeoSentFeedback: Codable, Identifiable, Hashable, Sendable {
     public var repliedAt: Date?
     /// 답장을 열어 봤는가. 답장이 고쳐지면 다시 false 가 된다.
     public var replySeen: Bool
+    /// 읽었다고 허브에 알린 답장 글. 지금 답장과 다르면(아직 못 보냈거나 답장이 고쳐졌으면) 다시 알린다.
+    public var confirmedReply: String?
 
     public var hasUnreadReply: Bool { reply != nil && !replySeen }
+    /// 읽었지만 허브에 아직 알리지 못한 답장이 있는가.
+    public var needsReadReceipt: Bool { replySeen && reply != nil && confirmedReply != reply }
 
     public init(id: String, type: String, excerpt: String, sentAt: Date,
-                reply: String? = nil, repliedAt: Date? = nil, replySeen: Bool = false) {
+                reply: String? = nil, repliedAt: Date? = nil, replySeen: Bool = false,
+                confirmedReply: String? = nil) {
         self.id = id
         self.type = type
         self.excerpt = excerpt
@@ -49,6 +59,7 @@ public struct LeeoSentFeedback: Codable, Identifiable, Hashable, Sendable {
         self.reply = reply
         self.repliedAt = repliedAt
         self.replySeen = replySeen
+        self.confirmedReply = confirmedReply
     }
 }
 
@@ -63,6 +74,8 @@ public enum LeeoFeedbackLedger {
 
     /// 답장 레코드의 이름. 피드백 하나에 답장 하나라 이름만으로 찾는다.
     public static func replyRecordName(forFeedback id: String) -> String { "reply-\(id)" }
+    /// 읽음 확인 레코드의 이름. 답장과 같은 타입, 사용자가 만든다.
+    public static func receiptRecordName(forFeedback id: String) -> String { "read-\(id)" }
 
     /// 앞부분 120자. 줄바꿈은 한 칸으로.
     public static func excerpt(of message: String) -> String {
@@ -99,6 +112,21 @@ public enum LeeoFeedbackLedger {
     /// 답장을 찾아볼 의견들.
     public static func lookupIDs(in list: [LeeoSentFeedback], now: Date = Date()) -> [String] {
         list.filter { now.timeIntervalSince($0.sentAt) < replyLookback }.map(\.id)
+    }
+
+    /// 허브에 읽음 확인을 보낼 의견들 — 읽었는데 아직 그 답장 글로 알리지 않은 것.
+    public static func pendingReceipts(in list: [LeeoSentFeedback]) -> [LeeoSentFeedback] {
+        list.filter(\.needsReadReceipt)
+    }
+
+    /// 허브가 받아 준 읽음 확인을 장부에 적는다. `confirmed` 는 피드백 id → 알린 답장 글.
+    public static func confirming(_ confirmed: [String: String], in list: [LeeoSentFeedback]) -> [LeeoSentFeedback] {
+        list.map { item in
+            guard let reply = confirmed[item.id] else { return item }
+            var next = item
+            next.confirmedReply = reply
+            return next
+        }
     }
 }
 
@@ -176,7 +204,43 @@ extension LeeoFeedbackService {
             saveLedger(LeeoFeedbackLedger.merging(replies: found, into: sentFeedback))
         }
         print("📬 [LeeoFeedbackService.refreshReplies] 답장 \(found.count)건 · 안 읽음 \(unreadReplyCount)건")
+        // 지난번에 못 보낸 읽음 확인(오프라인이었거나 iCloud 가 꺼져 있었거나)은 이때 다시 보낸다.
+        await sendReadReceipts()
         return unreadReplyCount
+    }
+
+    /// 읽은 답장을 허브에 알린다 — 답장과 같은 타입으로 `read-<id>` 레코드를 만들고 `message` 에
+    /// 읽은 답장 글을 적는다. 실패해도 던지지 않는다. 장부에 남아 다음 `refreshReplies` 가 다시 보낸다.
+    ///
+    /// ⚠️ 이 레코드는 **사용자 것**이다. 답장이 고쳐져 다시 보낼 때도 같은 이름에 덮어쓴다(`.allKeys`).
+    public func sendReadReceipts() async {
+        let pending = LeeoFeedbackLedger.pendingReceipts(in: sentFeedback)
+        guard !pending.isEmpty else { return }
+
+        let records = pending.map { item -> CKRecord in
+            let id = CKRecord.ID(recordName: LeeoFeedbackLedger.receiptRecordName(forFeedback: item.id))
+            let record = CKRecord(recordType: config.replyRecordType, recordID: id)
+            record["feedbackID"] = item.id
+            record["message"] = item.reply
+            if let appId = config.appIdentifier { record["appId"] = appId }
+            return record
+        }
+        let db = CKContainer(identifier: config.containerIdentifier).publicCloudDatabase
+        do {
+            let (saved, _) = try await db.modifyRecords(saving: records, deleting: [], savePolicy: .allKeys)
+            var confirmed: [String: String] = [:]
+            for (_, result) in saved {
+                guard case .success(let record) = result,
+                      let feedbackID = record["feedbackID"] as? String,
+                      let reply = record["message"] as? String else { continue }
+                confirmed[feedbackID] = reply
+            }
+            guard !confirmed.isEmpty else { return }
+            saveLedger(LeeoFeedbackLedger.confirming(confirmed, in: sentFeedback))
+            print("👀 [LeeoFeedbackService.sendReadReceipts] 읽음 확인 \(confirmed.count)건")
+        } catch {
+            print("⚠️ [LeeoFeedbackService.sendReadReceipts] 읽음 확인 실패(다음에 다시): \(error)")
+        }
     }
 
     // MARK: 개발자 쪽

@@ -557,11 +557,15 @@ LeeoKit 이 만든 코드로 Pro 를 여는 것은 심사 3.1.1 리젝 사유라
   답장 레코드 이름은 `reply-<피드백 recordName>` 이라 앱이 ID 로 바로 읽는다(쿼리·인덱스 없음).
 - 사용자는 설정의 `LeeoSentFeedbackRow<Spec>()` (안 읽은 답장 배지) → `LeeoFeedbackRepliesView` 에서 읽는다.
   `LeeoSupportSection` 에는 이미 들어 있다.
+- **읽음 확인.** 사용자가 답장을 열어 보면 앱이 같은 타입으로 `read-<피드백 recordName>` 레코드를 만들고
+  `message` 에 읽은 답장 글을 그대로 적는다(답장 레코드는 개발자 것이라 거기에는 쓸 수 없다).
+  개발자(피드백 허브)는 두 글이 같으면 읽은 것으로 본다. 답장을 고치면 다시 안 읽음이고, 앱은 확인을 한 번 더 보낸다.
+  못 보냈으면(오프라인 · iCloud 꺼짐) 장부에 남아 다음 답장 확인 때 다시 보낸다.
 
 Dashboard 에서 앱(컨테이너)마다 한 번:
 
 1. 레코드 타입 `FeedbackReply` (필드 `feedbackID` · `message` · `appId`, 모두 String)
-2. Security Roles 의 World 에 Read
+2. Security Roles 의 World 에 Read (Authenticated 의 Create 는 기본 그대로 — 읽음 확인이 이것으로 들어간다)
 3. Production 배포
 
 배포 전에는 답장 읽기가 조용히 빈 결과다. 의견 보내기는 영향이 없다.

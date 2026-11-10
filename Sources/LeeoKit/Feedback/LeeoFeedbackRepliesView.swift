@@ -56,6 +56,8 @@ public struct LeeoFeedbackRepliesView<Spec: LeeoAppSpec>: View {
         items = latest
         service.markRepliesSeen()
         isLoading = false
+        // 읽은 것을 허브에 알린다 — 개발자가 답장이 닿았는지 안다.
+        await service.sendReadReceipts()
     }
 
     // MARK: - 한 건
