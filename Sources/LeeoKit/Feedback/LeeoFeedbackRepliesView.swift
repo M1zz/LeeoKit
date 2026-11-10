@@ -8,6 +8,8 @@
 //     방금 도착한 답장이 "새 답장" 표시 없이 섞여 들어온다.
 //
 
+// watchOS 에는 없다 — 답장 시트는 iPhone 에서.
+#if !os(watchOS)
 import SwiftUI
 
 public struct LeeoFeedbackRepliesView<Spec: LeeoAppSpec>: View {
@@ -187,3 +189,4 @@ public struct LeeoSentFeedbackRow<Spec: LeeoAppSpec>: View {
         }
     }
 }
+#endif

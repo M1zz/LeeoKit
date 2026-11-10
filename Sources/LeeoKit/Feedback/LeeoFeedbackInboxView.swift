@@ -9,6 +9,8 @@
 //  read 권한과 본인 userRecordName을 등록해야 한다.
 //
 
+// watchOS 에는 없다 — 개발자용 인박스는 iPhone · Mac 에서만.
+#if !os(watchOS)
 import SwiftUI
 
 public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
@@ -560,3 +562,4 @@ struct LeeoFeedbackReplyComposer: View {
         }
     }
 }
+#endif

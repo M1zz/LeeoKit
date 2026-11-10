@@ -11,6 +11,8 @@
 //  링크를 눌러 App Store 에서 바로 받는다 — 이 화면은 코드만 따로 받은 사람을 위한 자리다.
 //
 
+// watchOS 에는 없다 — 선물 코드 입력 · 붙여넣기 · 오퍼 코드 시트는 iPhone 에서.
+#if !os(watchOS)
 import SwiftUI
 import StoreKit
 
@@ -314,3 +316,4 @@ struct LeeoOfferCodeSheet: ViewModifier {
         #endif
     }
 }
+#endif

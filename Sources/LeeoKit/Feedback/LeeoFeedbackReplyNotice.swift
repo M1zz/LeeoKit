@@ -29,6 +29,8 @@
 //  ⚠️ 같은 답장으로 두 번 알리지 않는다. 답장 글이 바뀌면(개발자가 고치면) 다시 한 번.
 //
 
+// watchOS 에는 없다 — 답장 시트는 iPhone 에서.
+#if !os(watchOS)
 import SwiftUI
 #if canImport(UserNotifications)
 import UserNotifications
@@ -247,3 +249,4 @@ public extension Scene {
         #endif
     }
 }
+#endif

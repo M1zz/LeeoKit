@@ -149,7 +149,7 @@ public final class LeeoConsumableStore: ObservableObject {
         lastError = nil
         defer { purchasingProductID = nil }
         do {
-            switch try await product.purchase() {
+            switch try await product.leeoPurchase() {
             case .success(let verification):
                 guard let transaction = Self.verified(verification) else {
                     lastError = L("구매를 확인하지 못했어요. 잠시 후 다시 시도해 주세요.", comment: "Paywall: unverified purchase")

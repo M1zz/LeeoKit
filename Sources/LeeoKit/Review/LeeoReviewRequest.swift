@@ -12,7 +12,9 @@
 //
 
 import Foundation
-#if canImport(UIKit)
+#if os(watchOS)
+import WatchKit
+#elseif canImport(UIKit)
 import UIKit
 #elseif canImport(AppKit)
 import AppKit
@@ -142,7 +144,9 @@ public enum LeeoReviewRequest {
     @available(macCatalystApplicationExtension, unavailable)
     public static func openWriteReview(appStoreID: String) {
         guard let url = writeReviewURL(appStoreID: appStoreID) else { return }
-        #if canImport(UIKit)
+        #if os(watchOS)
+        WKExtension.shared().openSystemURL(url)
+        #elseif canImport(UIKit)
         UIApplication.shared.open(url)
         #elseif canImport(AppKit)
         NSWorkspace.shared.open(url)

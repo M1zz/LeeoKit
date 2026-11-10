@@ -103,8 +103,14 @@ public enum LeeoBugProbe: String, CaseIterable, Sendable {
     /// 사용자가 실제로 쓸 수 있는 공간(`importantUsage`). 1GB 아래면 저장 실패 · 꺼짐이 먼저 의심된다.
     static func freeDiskBytes() -> Int64? {
         let home = URL(fileURLWithPath: NSHomeDirectory())
+        #if os(watchOS)
+        // watchOS 에는 importantUsage 키가 없다.
+        let values = try? home.resourceValues(forKeys: [.volumeAvailableCapacityKey])
+        return values?.volumeAvailableCapacity.map(Int64.init)
+        #else
         let values = try? home.resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey])
         return values?.volumeAvailableCapacityForImportantUsage
+        #endif
     }
 
     static func thermalName(_ state: ProcessInfo.ThermalState) -> String {
@@ -223,9 +229,11 @@ public enum LeeoBugProbe: String, CaseIterable, Sendable {
             "auth=\(authName(s.authorizationStatus))",
             "alert=\(settingName(s.alertSetting))",
             "sound=\(settingName(s.soundSetting))",
-            "lockScreen=\(settingName(s.lockScreenSetting))",
             "center=\(settingName(s.notificationCenterSetting))"
         ]
+        #if !os(watchOS)
+        parts.append("lockScreen=\(settingName(s.lockScreenSetting))")
+        #endif
         #if os(iOS)
         parts.append("timeSensitive=\(settingName(s.timeSensitiveSetting))")
         // 예약 요약에 묶이면 알림이 정한 시각이 아니라 요약 시각에 몰려 온다. "늦게 와요" 의 단골 원인.
@@ -263,7 +271,8 @@ public enum LeeoBugProbe: String, CaseIterable, Sendable {
     // MARK: - widgets
 
     static func widgetLine() async -> String {
-        #if canImport(WidgetKit) && !os(watchOS)
+        #if canImport(WidgetKit) && !os(watchOS) && !os(visionOS)
+        // visionOS 는 WidgetInfo 가 26 부터라 뺀다.
         // 비동기판(`currentConfigurations()`)은 iOS 18 부터라 콜백판을 감싼다.
         let result: Result<[WidgetInfo], Error> = await withCheckedContinuation { done in
             WidgetCenter.shared.getCurrentConfigurations { done.resume(returning: $0) }

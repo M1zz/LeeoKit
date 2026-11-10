@@ -457,6 +457,8 @@ public enum LeeoVault {
         #if canImport(UIKit) && !os(watchOS)
         guard Thread.isMainThread else { return "iPhone" }
         return MainActor.assumeIsolated { UIDevice.current.model }
+        #elseif os(watchOS)
+        return "Apple Watch"
         #else
         return Host.current().localizedName ?? "Mac"
         #endif

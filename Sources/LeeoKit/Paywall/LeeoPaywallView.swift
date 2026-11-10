@@ -345,7 +345,9 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
             )) {
                 ForEach(offeredTiers) { Text($0.name).tag($0.id) }
             }
+            #if !os(watchOS)
             .pickerStyle(.segmented)
+            #endif
         }
     }
 

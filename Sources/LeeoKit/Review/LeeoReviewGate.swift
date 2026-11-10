@@ -20,6 +20,8 @@
 //      .leeoReviewGate(MyAppSpec.self, isPresented: $showGate)
 //
 
+// watchOS 에는 없다 — StoreKit 리뷰 요청이 watchOS 에 없다. 리뷰는 iPhone 에서 부탁한다.
+#if !os(watchOS)
 import SwiftUI
 #if canImport(StoreKit)
 import StoreKit
@@ -125,3 +127,4 @@ public extension View {
             policy: policy, engagement: engagement, delay: delay))
     }
 }
+#endif

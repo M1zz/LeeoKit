@@ -10,6 +10,8 @@
 //      }
 //
 
+// watchOS 에는 없다 — 리뷰 요청 · 메일 · 인박스가 손목에는 없다.
+#if !os(watchOS)
 import SwiftUI
 #if canImport(StoreKit)
 import StoreKit
@@ -93,3 +95,4 @@ public struct LeeoSupportSection<Spec: LeeoAppSpec>: View {
         .onTapGesture(count: 7) { devMode.toggle() }
     }
 }
+#endif

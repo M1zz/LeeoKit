@@ -15,6 +15,9 @@
 
 import Foundation
 import CloudKit
+#if os(watchOS)
+import WatchKit
+#endif
 #if canImport(UIKit)
 import UIKit
 import UserNotifications
@@ -259,7 +262,11 @@ public final class LeeoFeedbackService {
             .requestAuthorization(options: [.alert, .sound])
         guard granted else { throw NotificationError.permissionDenied(appName: displayName) }
         await MainActor.run {
+            #if os(watchOS)
+            WKExtension.shared().registerForRemoteNotifications()
+            #else
             UIApplication.shared.registerForRemoteNotifications()
+            #endif
         }
         #endif
 
@@ -394,7 +401,7 @@ public final class LeeoFeedbackService {
             let current = loadLastSeenDate()
             if newest > current { saveLastSeenDate(newest) }
         }
-        #if canImport(UIKit)
+        #if canImport(UIKit) && !os(watchOS)
         Task { @MainActor in
             UNUserNotificationCenter.current().setBadgeCount(0)
         }

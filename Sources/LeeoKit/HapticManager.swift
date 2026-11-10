@@ -2,10 +2,10 @@
 //  HapticManager.swift
 //  LeeoKit
 //
-//  햅틱 피드백 래퍼. UIKit 없는 환경(macOS native)에서는 no-op 폴백.
+//  햅틱 피드백 래퍼. UIKit 없는 환경(macOS native)과 햅틱 생성기가 없는 visionOS · watchOS 에서는 no-op 폴백.
 //
 
-#if canImport(UIKit)
+#if canImport(UIKit) && !os(visionOS) && !os(watchOS)
 import UIKit
 
 public struct HapticManager {
@@ -58,7 +58,7 @@ public struct HapticManager {
     }
 }
 #else
-// macOS native fallback - no haptics
+// macOS native · visionOS · watchOS fallback - no haptics
 public struct HapticManager {
     public static let shared = HapticManager()
     private init() {}

@@ -23,6 +23,9 @@
 
 import Foundation
 import CloudKit
+#if os(watchOS)
+import WatchKit
+#endif
 #if canImport(UIKit)
 import UIKit
 #elseif canImport(AppKit)
@@ -335,7 +338,7 @@ public final class LeeoUsageReporter: @unchecked Sendable {
     /// 익스텐션에서는 `UIApplication.shared` 를 쓸 수 없어서 이름으로 찾는다. 익스텐션에는
     /// 공유 앱 객체가 없으므로 nil 이 오고, 그때는 false(익스텐션은 "앱을 연 날"이 아니다).
     static func isAppInForeground() async -> Bool {
-        #if canImport(UIKit)
+        #if canImport(UIKit) && !os(watchOS)
         return await MainActor.run {
             guard let app = UIApplication.value(forKey: "sharedApplication") as? UIApplication else {
                 return false
@@ -364,7 +367,9 @@ public final class LeeoUsageReporter: @unchecked Sendable {
     /// 다만 익스텐션에는 이 알림이 오지 않으므로 아무 일도 일어나지 않는다.
     public func observeAppActivation() {
         guard sendsDailyAppOpen else { return }
-        #if canImport(UIKit)
+        #if os(watchOS)
+        let name = WKExtension.applicationDidBecomeActiveNotification
+        #elseif canImport(UIKit)
         let name = UIApplication.didBecomeActiveNotification
         #elseif canImport(AppKit)
         let name = NSApplication.didBecomeActiveNotification

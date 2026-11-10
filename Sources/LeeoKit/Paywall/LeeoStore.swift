@@ -22,6 +22,9 @@
 //
 
 import Foundation
+#if os(visionOS)
+import UIKit
+#endif
 #if canImport(StoreKit)
 import StoreKit
 #endif
@@ -211,7 +214,7 @@ public final class LeeoStore: ObservableObject {
     @discardableResult
     public func purchase(_ product: Product) async -> Bool {
         #if canImport(StoreKit)
-        return await purchase(product) { try await $0.purchase() }
+        return await purchase(product) { try await $0.leeoPurchase() }
         #else
         return false
         #endif
@@ -388,3 +391,24 @@ public final class LeeoStore: ObservableObject {
                                      tipProductIDs: Set<String>) -> Task<Void, Never> { Task {} }
     #endif
 }
+
+#if canImport(StoreKit)
+extension Product {
+    /// 창을 모르는 쪽에서 부르는 구매. visionOS 는 `purchase()` 가 없어
+    /// 앞에 있는 창 장면을 찾아 `purchase(confirmIn:)` 으로 보낸다.
+    func leeoPurchase() async throws -> PurchaseResult {
+        #if os(visionOS)
+        let scene = await MainActor.run {
+            UIApplication.shared.connectedScenes
+                .compactMap { $0 as? UIWindowScene }
+                .first { $0.activationState == .foregroundActive }
+                ?? UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first
+        }
+        guard let scene else { throw StoreKitError.unknown }
+        return try await purchase(confirmIn: scene)
+        #else
+        return try await purchase()
+        #endif
+    }
+}
+#endif
