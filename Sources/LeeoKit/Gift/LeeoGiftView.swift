@@ -18,6 +18,8 @@
 //      }
 //
 
+// watchOS 에는 없다 — 선물 · 오퍼 코드 결제는 iPhone 에서.
+#if !os(watchOS)
 import SwiftUI
 #if canImport(StoreKit)
 import StoreKit
@@ -505,3 +507,4 @@ enum LeeoGiftClipboard {
         #endif
     }
 }
+#endif

@@ -6,6 +6,8 @@
 //  다른 자리에 두려면: `NavigationLink(LeeoVaultText.entry) { LeeoVaultView(appName: "앱") }`
 //
 
+// watchOS 에는 없다 — FileDocument 내보내기가 watchOS 에 없다.
+#if !os(watchOS)
 import SwiftUI
 import UniformTypeIdentifiers
 
@@ -202,3 +204,4 @@ struct LeeoVaultFile: FileDocument {
         try FileWrapper(url: url, options: .immediate)
     }
 }
+#endif

@@ -10,6 +10,8 @@
 //          .leeoStyle(myStyle)   // 선택 — 없으면 시스템 색
 //
 
+// watchOS 에는 없다 — TextEditor · 사진 선택기가 없고, 의견은 iPhone 에서 보낸다.
+#if !os(watchOS)
 import SwiftUI
 #if canImport(UIKit)
 import UIKit
@@ -156,8 +158,10 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
                 }
                 .padding(20)
             }
-            // 입력창 밖 스크롤 시 키보드 내리기 (달빛 v4.0.5 UX 수정에서 이식)
+            // 입력창 밖 스크롤 시 키보드 내리기 (달빛 v4.0.5 UX 수정에서 이식). visionOS 에는 없다.
+            #if !os(visionOS)
             .scrollDismissesKeyboard(.interactively)
+            #endif
             .background(theme.bg.ignoresSafeArea())
             .navigationTitle(L("피드백 보내기", comment: "Feedback view title"))
             #if os(iOS)
@@ -811,3 +815,4 @@ public struct LeeoFeedbackView<Spec: LeeoAppSpec>: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) { dismiss() }
     }
 }
+#endif

@@ -63,7 +63,9 @@
 //
 
 import Foundation
-#if canImport(UIKit)
+#if os(watchOS)
+import WatchKit
+#elseif canImport(UIKit)
 import UIKit
 #endif
 
@@ -226,7 +228,10 @@ public final class LeeoCrashLoopGuard: @unchecked Sendable {
 
     // MARK: 앱 생명주기
 
-    #if canImport(UIKit)
+    #if os(watchOS)
+    private static let launchNotification: Notification.Name? = WKExtension.applicationDidFinishLaunchingNotification
+    private static let backgroundNotification: Notification.Name? = WKExtension.applicationDidEnterBackgroundNotification
+    #elseif canImport(UIKit)
     private static let launchNotification: Notification.Name? = UIApplication.didFinishLaunchingNotification
     /// 익스텐션에는 오지 않는다. 익스텐션은 `viewWillDisappear` 에서 직접 성공 표시를 한다.
     private static let backgroundNotification: Notification.Name? = UIApplication.didEnterBackgroundNotification

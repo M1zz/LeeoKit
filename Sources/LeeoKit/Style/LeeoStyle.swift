@@ -70,24 +70,30 @@ public extension View {
 
 public extension Color {
     static var leeoSystemBackground: Color {
-        #if canImport(UIKit)
+        #if canImport(UIKit) && !os(watchOS)
         Color(UIColor.systemBackground)
+        #elseif os(watchOS)
+        Color.black
         #else
         Color(NSColor.windowBackgroundColor)
         #endif
     }
 
     static var leeoSecondaryBackground: Color {
-        #if canImport(UIKit)
+        #if canImport(UIKit) && !os(watchOS)
         Color(UIColor.secondarySystemBackground)
+        #elseif os(watchOS)
+        Color(white: 0.11)
         #else
         Color(NSColor.controlBackgroundColor)
         #endif
     }
 
     static var leeoTertiaryLabel: Color {
-        #if canImport(UIKit)
+        #if canImport(UIKit) && !os(watchOS)
         Color(UIColor.tertiaryLabel)
+        #elseif os(watchOS)
+        Color.secondary.opacity(0.6)
         #else
         Color(NSColor.tertiaryLabelColor)
         #endif
