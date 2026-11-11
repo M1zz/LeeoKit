@@ -14,7 +14,7 @@
 //     고르는 쪽 폭(약 463pt)을 넘는다. 나머지 칸은 아이콘과 접근성 이름으로 읽힌다.
 //
 
-#if os(iOS)
+#if os(iOS) || os(visionOS)
 import SwiftUI
 
 public struct FoldTabBar<Value: Hashable>: View {
@@ -102,11 +102,15 @@ public struct FoldTabBar<Value: Hashable>: View {
 private extension View {
     @ViewBuilder
     func foldGlass<S: Shape>(in shape: S) -> some View {
+        #if os(iOS)
         if #available(iOS 26.0, *) {
             glassEffect(.regular.interactive(), in: shape)
         } else {
             background(.regularMaterial, in: shape)
         }
+        #else
+        background(.regularMaterial, in: shape)
+        #endif
     }
 }
 

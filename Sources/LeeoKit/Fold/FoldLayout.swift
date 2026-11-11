@@ -30,9 +30,15 @@
 //  쓰는 법: 앱 루트에 `.foldAware()` 를 한 번 건다. 화면은 `FoldSplitView { 고르는 쪽 } result: { 결과 쪽 }`.
 //
 
-#if os(iOS)
+//  ⚠️ 접히는 기기는 아이폰뿐이다. 다른 플랫폼(macOS · visionOS · watchOS)에서는 같은 API 가
+//     **늘 접힌 상태**(`FoldLayout.single`)로 동작한다 — `FoldSplitView` 는 고르는 쪽만 그리고,
+//     `foldAware()` 는 아무것도 재지 않는다. 앱 코드에 `#if os(iOS)` 를 달 필요가 없다.
+//
+
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
+#endif
 
 // MARK: - 자세
 
@@ -251,6 +257,15 @@ private struct FoldConfinedModifier: ViewModifier {
     @Environment(\.foldLayout) private var fold
     let result: AnyView?
 
+    /// 비워 둔 판의 바탕. 펼치는 기기는 아이폰뿐이라 다른 곳에서는 쓰이지 않는다.
+    static var paneBackground: Color {
+        #if os(iOS)
+        Color(uiColor: .systemBackground)
+        #else
+        Color.clear
+        #endif
+    }
+
     func body(content: Content) -> some View {
         if fold.isUnfolded {
             FoldSplitView {
@@ -259,16 +274,17 @@ private struct FoldConfinedModifier: ViewModifier {
                 if let result {
                     result
                 } else {
-                    Color(uiColor: .systemBackground).opacity(0.6)
+                    Self.paneBackground.opacity(0.6)
                 }
             }
-            .background(Color(uiColor: .systemBackground).ignoresSafeArea())
+            .background(Self.paneBackground.ignoresSafeArea())
         } else {
             content
         }
     }
 }
 
+#if os(iOS)
 // MARK: - 루트에서 재기
 
 public extension View {
@@ -487,4 +503,9 @@ private struct FoldPreviewFrame<Content: View>: View {
     }
 }
 #endif
+#else
+public extension View {
+    /// 접히지 않는 플랫폼: 잴 것이 없다. 앱 루트에 그대로 둬도 된다.
+    func foldAware() -> some View { self }
+}
 #endif
