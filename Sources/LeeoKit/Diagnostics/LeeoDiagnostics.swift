@@ -16,6 +16,9 @@
 //   · 시뮬레이터에서는 거의 오지 않는다. 실기기 + 사용자 규모가 필요하다.
 //   · macOS/Catalyst 는 MetricKit 진단 페이로드를 주지 않아 자동으로 비활성이다.
 //
+//  성능 묶음(실행 시간 · 멈춤 · 메모리)도 같은 레코드 타입에 kind "metrics" 로 한 줄 싣는다
+//  (`LeeoMetricsSummary`). 버전마다 설치 하나에서 한 번.
+//
 //  ⚠️ 개인정보: 콜스택·앱 버전·OS·기기 종류만 보낸다. 설치 식별자조차 붙이지 않는다
 //     (크래시 집계에 필요 없다). App Privacy 는 `CrashData`(미연결·비추적)로 신고한다.
 //
@@ -130,8 +133,45 @@ public final class LeeoDiagnostics: NSObject, MXMetricManagerSubscriber {
         Task(priority: .utility) { await Self.upload(snapshot, config: config) }
     }
 
-    /// 성능 지표는 지금은 받기만 한다(적재는 크래시 가시성이 자리잡은 뒤).
-    public func didReceive(_ payloads: [MXMetricPayload]) { }
+    /// 성능 묶음 — 버전마다 설치 하나에서 **한 번만** 올린다(`LeeoMetricsSummary`).
+    ///
+    /// 묶음은 설치마다 하루 한 번 온다. 다 올리면 설치 1,000대 앱이 하루 1,000건을 쓴다.
+    /// 허브가 묻는 것은 "이 버전이 앞 버전보다 느린가" 라, 버전마다 설치 하나의 한 장이면 된다.
+    /// 앞에 1분도 안 떠 있던 날이나 두 버전이 섞인 날은 건너뛰고 다음 날 것을 쓴다.
+    public func didReceive(_ payloads: [MXMetricPayload]) {
+        guard let config, isEnabled?() ?? true else { return }
+        let sentKey = "leeo.metrics.sentVersion"
+        let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "-"
+        guard UserDefaults.standard.string(forKey: sentKey) != version else { return }
+
+        for payload in payloads.reversed() where !payload.includesMultipleApplicationVersions
+            && payload.latestApplicationVersion == version {
+            let foreground = payload.applicationTimeMetrics?.cumulativeForegroundTime.converted(to: .seconds).value
+            guard (foreground ?? 0) >= 60 else { continue }
+            let launch = payload.applicationLaunchMetrics.map { Self.buckets($0.histogrammedTimeToFirstDraw, unit: .milliseconds) } ?? []
+            let hang = payload.applicationResponsivenessMetrics.map { Self.buckets($0.histogrammedApplicationHangTime, unit: .seconds) } ?? []
+            let peak = payload.memoryMetrics?.peakMemoryUsage.converted(to: .megabytes).value
+            guard let line = LeeoMetricsSummary.line(launchMilliseconds: launch, hangSeconds: hang,
+                                                     foregroundSeconds: foreground, peakMemoryMB: peak) else { continue }
+            let report = Pending(kind: LeeoMetricsSummary.kind, detail: line, stack: "",
+                                 osVersion: payload.metaData?.osVersion ?? "-",
+                                 deviceType: payload.metaData?.deviceType ?? "-",
+                                 buildNumber: payload.metaData?.applicationBuildVersion ?? "-",
+                                 occurredAt: payload.timeStampEnd)
+            UserDefaults.standard.set(version, forKey: sentKey)
+            Task(priority: .utility) { await Self.upload([report], config: config) }
+            return
+        }
+    }
+
+    private static func buckets(_ histogram: MXHistogram<UnitDuration>, unit: UnitDuration) -> [LeeoMetricsSummary.Bucket] {
+        histogram.bucketEnumerator.compactMap { item -> LeeoMetricsSummary.Bucket? in
+            guard let bucket = item as? MXHistogramBucket<UnitDuration> else { return nil }
+            return .init(start: bucket.bucketStart.converted(to: unit).value,
+                         end: bucket.bucketEnd.converted(to: unit).value,
+                         count: bucket.bucketCount)
+        }
+    }
 
     // MARK: - 내부
 
