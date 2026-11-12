@@ -31,7 +31,9 @@ public enum LeeoCrashStack {
     /// 한 줄이 30자 안팎이라 8000자면 200프레임쯤 들어간다.
     public static let defaultMaxLength = 8000
 
-    public static func text(fromJSON data: Data, maxLength: Int = defaultMaxLength) -> String {
+    /// - Parameter appBinary: 앱 자신의 실행 파일 이름. 잘라야 할 때도 이 바이너리의 프레임은 남긴다.
+    public static func text(fromJSON data: Data, maxLength: Int = defaultMaxLength,
+                            appBinary: String? = Bundle.main.executableURL?.lastPathComponent) -> String {
         let raw = String(data: data, encoding: .utf8) ?? "-"
 
         let parsed = framesByParsing(data)
@@ -46,24 +48,65 @@ public enum LeeoCrashStack {
 
         // 오프셋을 함수 이름으로 되돌리려면 **어느 dSYM 인지** 알아야 하고, 그걸 가리키는
         // 것이 바이너리 UUID 다. 프레임마다 붙이면 줄 길이가 두 배가 되므로
-        // 바이너리마다 한 번, 맨 끝에 모아 적는다.
+        // 바이너리마다 한 번, 맨 끝에 모아 적는다. 앱 자신은 깊이와 상관없이 맨 앞에.
+        if let appBinary, let index = binaries.firstIndex(where: { $0.name == appBinary }) {
+            binaries.insert(binaries.remove(at: index), at: 0)
+        }
         let legend = binaries.prefix(12).map { "@ \($0.name) \($0.uuid)" }
         let legendText = legend.isEmpty ? "" : "\n--\n" + legend.joined(separator: "\n")
         // 생략 안내가 들어갈 자리도 남겨 둔다.
         let budget = maxLength - legendText.count - 40
 
-        var lines: [String] = []
-        var length = 0
-        for (index, frame) in frames.enumerated() {
-            let line = String(format: "%2d ", index) + frame
-            if length + line.count + 1 > budget {
-                lines.append("... 뿌리 쪽 \(frames.count - index)프레임 생략")
-                break
-            }
-            lines.append(line)
-            length += line.count + 1
+        let isApp: (String) -> Bool = { frame in
+            appBinary.map { binaryName(of: frame) == $0 } ?? false
         }
-        return lines.joined(separator: "\n") + legendText
+        return fit(frames, budget: budget, keep: isApp).joined(separator: "\n") + legendText
+    }
+
+    /// 상한 안에 들 줄을 고른다. 다 들어가면 전부, 아니면 **잎부터** 담되 앱 프레임은 깊어도 남긴다.
+    ///
+    /// ⚠️ 잎부터만 담으면 SwiftUI 멈춤에서 앱 코드가 사라진다. 그런 스택은 300프레임이 넘고
+    ///    잎 쪽 200프레임이 전부 SwiftUI · AttributeGraph 라, 그 화면을 그리던 앱 코드는
+    ///    잘려 나간 뿌리 쪽에만 있다. 허브에서는 범인이 늘 시스템 프레임이 되어 원인을 알 수 없었다
+    ///    (StampCamera 1.0.5 · HigGym 1.0.7 멈춤).
+    ///
+    /// 그래서 앱 프레임 몫(상한의 1/3까지)을 먼저 떼어 두고, 남은 자리를 잎부터 채운다.
+    /// 번호는 원래 번호 그대로 두고, 건너뛴 자리마다 몇 프레임을 뺐는지 한 줄을 남긴다.
+    static func fit(_ frames: [String], budget: Int, keep: (String) -> Bool) -> [String] {
+        func line(_ index: Int) -> String { String(format: "%2d ", index) + frames[index] }
+        let lengths = frames.indices.map { line($0).count + 1 }
+        let noteLength = 30   // "... 123프레임 생략" 한 줄의 넉넉한 몫
+
+        var chosen = Set<Int>()
+        var used = 0
+        if lengths.reduce(0, +) > budget {
+            for index in frames.indices where keep(frames[index]) {
+                let cost = lengths[index] + noteLength
+                guard used + cost <= budget / 3 else { break }
+                chosen.insert(index)
+                used += cost
+            }
+        }
+        for index in frames.indices where !chosen.contains(index) {
+            guard used + lengths[index] <= budget else { break }
+            chosen.insert(index)
+            used += lengths[index]
+        }
+
+        var lines: [String] = []
+        var next = 0
+        for index in chosen.sorted() {
+            if index > next { lines.append("... \(index - next)프레임 생략") }
+            lines.append(line(index))
+            next = index + 1
+        }
+        if next < frames.count { lines.append("... 뿌리 쪽 \(frames.count - next)프레임 생략") }
+        return lines
+    }
+
+    /// `"SwiftUI +1042364"` → `"SwiftUI"`.
+    static func binaryName(of frame: String) -> String {
+        String(frame.prefix(while: { $0 != " " }))
     }
 
     /// 제대로 읽는 길. **잎부터** 담긴 프레임 목록과, 거기 나온 바이너리들의 UUID 를 준다.
@@ -98,7 +141,7 @@ public enum LeeoCrashStack {
         var seen = Set<String>()
         var binaries: [(name: String, uuid: String)] = []
         for frame in ordered {
-            let name = String(frame.prefix(while: { $0 != " " }))
+            let name = binaryName(of: frame)
             guard let uuid = uuids[name], seen.insert(name).inserted else { continue }
             binaries.append((name: name, uuid: uuid))
         }

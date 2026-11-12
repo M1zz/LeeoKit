@@ -241,5 +241,40 @@ final class LeeoCrashStackTests: XCTestCase {
         let text = LeeoCrashStack.text(fromJSON: data)
         XCTAssertLessThanOrEqual(text.count, 8000, "갈라진 트리에서도 상한을 지켜야 한다")
     }
+
+    // MARK: - 잘라도 앱 코드는 남는다
+
+    /// SwiftUI 멈춤 모양: 앱 코드는 뿌리 가까이에 두 줄, 그 위로 시스템 프레임 수백 줄.
+    /// 잎부터만 담으면 앱 프레임이 잘려 허브가 원인을 못 찾는다(StampCamera 1.0.5).
+    func test_상한을_넘어도_깊은_앱_프레임은_남긴다() {
+        var rootToLeaf: [(name: String, offset: Int)] = [("dyld", 21796), ("StampCamera", 317476)]
+        rootToLeaf += (0..<20).map { ("SwiftUI", 100_000 + $0) }
+        rootToLeaf.append(("StampCamera", 2_017_324))   // 화면을 그리던 앱 코드
+        rootToLeaf += (0..<300).map { ("AttributeGraph", 40_000 + $0) }
+        let text = LeeoCrashStack.text(fromJSON: tree(frames: rootToLeaf), appBinary: "StampCamera")
+
+        XCTAssertLessThanOrEqual(text.count, 8000)
+        XCTAssertTrue(text.contains("StampCamera +2017324"), "깊은 앱 프레임이 잘렸다")
+        XCTAssertTrue(text.contains("StampCamera +317476"), "뿌리 가까운 앱 프레임이 잘렸다")
+        XCTAssertTrue(text.contains("프레임 생략"), "건너뛴 자리를 알려야 한다")
+        let lines = text.components(separatedBy: "\n--\n")[0].split(separator: "\n").map(String.init)
+        XCTAssertTrue(lines[0].hasPrefix(" 0 AttributeGraph"), "0번은 여전히 잎이다. 실제: \(lines[0])")
+        // 번호는 원래 번호 그대로라 허브가 깊이를 안다.
+        XCTAssertTrue(lines.contains { $0.hasPrefix("300 StampCamera +2017324") }, "번호가 바뀌었다")
+    }
+
+    func test_앱_바이너리는_범례_맨_앞에_온다() {
+        var rootToLeaf: [(name: String, offset: Int)] = [("dyld", 1), ("StampCamera", 2)]
+        rootToLeaf += (0..<20).map { ("Lib\($0)", $0) }
+        let text = LeeoCrashStack.text(fromJSON: tree(frames: rootToLeaf), appBinary: "StampCamera")
+        let legend = text.components(separatedBy: "\n--\n")[1]
+        XCTAssertTrue(legend.hasPrefix("@ StampCamera "), "앱 범례가 12개 안에서 밀려났다: \(legend.prefix(40))")
+    }
+
+    func test_다_들어가면_건너뛰지_않는다() {
+        let text = LeeoCrashStack.text(fromJSON: tree(frames: [("dyld", 1), ("StampCamera", 2), ("SwiftUI", 3)]),
+                                       appBinary: "StampCamera")
+        XCTAssertFalse(text.contains("생략"))
+    }
 }
 
