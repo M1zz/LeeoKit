@@ -30,7 +30,9 @@ SIZE = 192
 
 # 카탈로그 id → 그 앱 레포 안의 AppIcon 원본(라이트 모양).
 SOURCES = {
-    "clipkeyboard": "클립키보드/ClipKeyboard/Assets.xcassets/AppIcon.appiconset/1024.png",
+    # 클립키보드는 2026-11 에 Icon Composer(AppIcon.icon)로 옮겨 appiconset 이 없다.
+    # 그 레포가 아이콘을 바꿀 때 함께 렌더해 두는 1024px PNG 를 읽는다.
+    "clipkeyboard": "클립키보드/docs/app-icon.png",
     "clipkeyboard-mac": "탭클립키보드/ClipKeyboard.tap/Assets.xcassets/AppIcon.appiconset/1024.png",
     "rainbow-ios": "욕망의 무지개/ScheduleDensityApp/Assets.xcassets/AppIcon.appiconset/image1414.png",
     "rainbow-mac": "무지개 공방/WeekBlocks/Assets.xcassets/AppIcon.appiconset/1024.png",
