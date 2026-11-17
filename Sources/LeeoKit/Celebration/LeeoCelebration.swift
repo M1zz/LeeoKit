@@ -86,8 +86,10 @@ public final class LeeoCelebration: ObservableObject {
         current = moment
     }
 
-    /// 유료 등급을 알려 준다(`LeeoStore` 가 부른다). `justNow` 면 이 실행에서 생겼거나 오른 것.
-    func noteOwned(tierID: String, tierName: String, justNow: Bool) {
+    /// 유료 등급을 알려 준다. `LeeoStore` 를 쓰면 저절로 불린다 — 자체 스토어를 쓰는 앱만 권한을 다시 읽은 뒤 부른다.
+    /// `justNow` 면 이 실행에서 생겼거나 오른 것(축하), 아니면 이미 유료(등급마다 한 번 감사).
+    /// TestFlight · 개발 강제 해제처럼 산 게 아닌 권한으로는 부르지 않는다.
+    public func noteOwned(tierID: String, tierName: String, justNow: Bool) {
         let key = "tier." + tierID
         if justNow {
             guard !upgradedThisRun.contains(key) else { return }
