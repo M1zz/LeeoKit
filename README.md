@@ -634,6 +634,21 @@ VoiceOver · 음성 명령 · 다이내믹 타입 · 다크 모드 · 색 없이
 - ⚠️ `LeeoStyle.textFaint` 는 **꾸밈 전용**이다. 읽어야 하는 글은 `textMuted` 로 — 앱 테마를 넣을 때도
   `text` · `textMuted` 는 바탕과 4.5:1 이상, `accent` 는 흰 글자와 4.5:1 이상인 색을 준다(단추 글자가 흰색이다).
 
+## Siri와 단축어 (LeeoShortcuts, v3.45) — 모든 앱 필수
+
+모든 LeeoKit 앱은 Siri · 단축어 앱에 나올 **App Shortcuts** 를 갖는다(`AppShortcutsProvider` 하나).
+그러면 설정의 `LeeoSupportSection` 에 "Siri와 단축어" 행이 저절로 생긴다 — 단축어 이름 · Siri 에게 할 말을
+그 언어로 보여 주고, 애플 표준 단추(`ShortcutsLink`)로 단축어 앱의 이 앱 칸을 연다. 목록은 빌드가 앱에 묶는
+`Metadata.appintents` 에서 읽으므로 앱이 다시 적을 것이 없다.
+
+`LeeoPreflight` 가 앱 안에서 두 가지를 **오류**로 잡는다(`specIsReleasable` 시험이 배포를 막는다):
+- `shortcuts.missing` — App Shortcuts 가 없다.
+- `shortcuts.untranslated` — 단축어 이름(`shortTitle`)의 번역이 앱에 묶이지 않았다. 단축어 앱에 키(보통 영어)가 그대로 나온다.
+  가장 흔한 원인: `Localizable.xcstrings` 가 위젯 타겟에만 들어 있고 앱 타겟에는 빠졌다.
+
+Siri 에게 할 말은 `AppShortcuts.xcstrings`(앱 타겟), 단축어 · 인텐트 이름과 Siri 의 대답은 `Localizable.xcstrings`(앱 타겟)에
+앱의 모든 언어로 둔다.
+
 ## 백업 금고 (LeeoVault, v3.30)
 
 사용자의 기록이 날아가지 않게 하는 세 겹. **`LeeoKit.bootstrap` 을 앱 시작에서 가장 먼저 부르면 켜진다**

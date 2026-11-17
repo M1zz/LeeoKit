@@ -65,6 +65,12 @@ public struct LeeoSupportSection<Spec: LeeoAppSpec>: View {
         } label: {
             Label(L("리뷰 남기기", comment: "Write a review entry"), systemImage: "star.bubble")
         }
+        // Siri와 단축어 — 앱이 App Shortcuts 를 내놓았으면 모든 앱에 같은 자리에 뜬다
+        if !LeeoShortcuts.current.isEmpty {
+            NavigationLink(destination: LeeoShortcutsView(appName: Spec.displayName)) {
+                Label(LeeoShortcutsText.entry, systemImage: "square.2.layers.3d")
+            }
+        }
         // 계약에 선언된 법적/지원 링크 — 앱이 따로 넣지 않아도 항상 존재한다.
         if showLegalLinks {
             ForEach(Spec.legal.displayLinks, id: \.url) { link in
