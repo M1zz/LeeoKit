@@ -151,7 +151,7 @@ public final class LeeoStore: ObservableObject {
                 guard let self else { return false }
                 return self.isGrandfathered || !self.storeKitOwned.isDisjoint(with: self.config.entitlementIDs)
             }
-            gift.onChange = { [weak self] in self?.applyOwned() }
+            gift.onChange = { [weak self] in self?.applyOwned(); self?.celebrateIfPaid() }
             #if canImport(StoreKit)
             // 선물도 후원으로 쌓인다. 소모성이라 `Transaction.all` 에 남지 않아 결제가 들어올 때 적는다.
             gift.onPaid = { [weak self] tx in await self?.tipJar?.recordPayment(tx) }
@@ -244,6 +244,8 @@ public final class LeeoStore: ObservableObject {
                     return false
                 }
                 await transaction.finish()
+                // 권한을 아직 한 번도 안 읽은 새 스토어(결제 화면이 만든 것)라도 '방금 샀다' 로 축하하게 지금 단계를 적어 둔다.
+                if lastPaidLevel == nil { lastPaidLevel = paidLevel }
                 await refreshEntitlements()
                 if hasPro { LeeoAnalyticsCenter.track(.purchaseCompleted(productID: product.id)) }
                 return hasPro
@@ -323,6 +325,24 @@ public final class LeeoStore: ObservableObject {
         // 구독 갱신 · 평생 구매도 후원으로 쌓인다(팁 장부가 있는 앱만).
         await tipJar?.countPurchases()
         #endif
+        celebrateIfPaid()
+    }
+
+    // MARK: - 축하 · 감사 (LeeoCelebration)
+
+    /// 이 실행에서 마지막으로 본 유료 단계(0=무료, 1부터 등급). nil 이면 아직 권한을 한 번도 안 읽었다.
+    private var lastPaidLevel: Int?
+    private var paidLevel: Int { hasPro ? (currentTierIndex ?? 0) + 1 : 0 }
+
+    /// 유료면 알린다 — 이 실행에서 단계가 올랐으면 축하, 아니면(이미 유료) 등급마다 한 번 감사.
+    /// 개발 · 맥 강제 해제는 산 게 아니라서 건너뛴다.
+    private func celebrateIfPaid() {
+        let level = paidLevel
+        defer { lastPaidLevel = level }
+        guard level > 0, unlockOverride?() != true else { return }
+        LeeoCelebration.shared.noteOwned(tierID: currentTier?.id ?? "pro",
+                                         tierName: currentTier?.name ?? "Pro",
+                                         justNow: lastPaidLevel.map { level > $0 } ?? false)
     }
 
     // MARK: - 내부

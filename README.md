@@ -634,6 +634,19 @@ VoiceOver · 음성 명령 · 다이내믹 타입 · 다크 모드 · 색 없이
 - ⚠️ `LeeoStyle.textFaint` 는 **꾸밈 전용**이다. 읽어야 하는 글은 `textMuted` 로 — 앱 테마를 넣을 때도
   `text` · `textMuted` 는 바탕과 4.5:1 이상, `accent` 는 흰 글자와 4.5:1 이상인 색을 준다(단추 글자가 흰색이다).
 
+## 축하 · 감사 (LeeoCelebration, v3.46) — 모든 사용자가 한 번은
+
+루트 화면(온보딩이 끝난 뒤 보이는 화면)에 한 줄:
+
+    ContentView().leeoCelebrations(appName: MyAppSpec.displayName)
+
+- 앱을 쓰는 중에 유료가 되거나 등급이 오르면(구매 · 선물 코드 · 가족 공유) → 콘페티 + "축하합니다! 이제 Pro입니다"
+- 이미 유료인 사람(업데이트 뒤 · 새 기기 · 복원) → 하트 + "감사합니다! Pro로 함께해 주셔서 고마워요" (등급마다 한 번)
+- 무료 사용자 → 하트 + "반가워요!"(처음 설치) / "감사합니다!"(원래 쓰던 사람) (한 번)
+
+판정은 `LeeoStore` 가 권한을 읽을 때마다 알아서 한다 — 결제 화면마다 붙일 것이 없다. 등급 이름은 `LeeoTier.name`,
+등급이 없는 앱은 "Pro". 개발 · 맥 강제 해제(`unlockOverride`)는 축하하지 않는다. 동작 줄이기를 켠 사람에게는 카드만 뜬다.
+
 ## Siri와 단축어 (LeeoShortcuts, v3.45) — 모든 앱 필수
 
 모든 LeeoKit 앱은 Siri · 단축어 앱에 나올 **App Shortcuts** 를 갖는다(`AppShortcutsProvider` 하나).
