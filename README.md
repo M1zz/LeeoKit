@@ -645,7 +645,8 @@ VoiceOver · 음성 명령 · 다이내믹 타입 · 다크 모드 · 색 없이
 - 무료 사용자 → 하트 + "반가워요!"(처음 설치) / "감사합니다!"(원래 쓰던 사람) (한 번)
 
 판정은 `LeeoStore` 가 권한을 읽을 때마다 알아서 한다 — 결제 화면마다 붙일 것이 없다. 등급 이름은 `LeeoTier.name`,
-등급이 없는 앱은 "Pro". 개발 · 맥 강제 해제(`unlockOverride`)는 축하하지 않는다. 동작 줄이기를 켠 사람에게는 카드만 뜬다.
+등급이 없는 앱은 "Pro". 개발 · 맥 강제 해제(`unlockOverride`)는 축하하지 않는다.
+자체 스토어를 쓰는 앱은 권한을 다시 읽은 뒤 `LeeoCelebration.shared.noteOwned(tierID:tierName:justNow:)` 를 부른다. 동작 줄이기를 켠 사람에게는 카드만 뜬다.
 
 ## Siri와 단축어 (LeeoShortcuts, v3.45) — 모든 앱 필수
 
