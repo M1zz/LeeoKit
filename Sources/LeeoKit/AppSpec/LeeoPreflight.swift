@@ -156,6 +156,10 @@ public enum LeeoPreflight {
             issues.append(.init(.error, "roadmap.emptyTitle", "로드맵에 이름이 빈 항목이 있습니다."))
         }
 
+        // MARK: Siri와 단축어 — 앱 안(앱 번들)에서 돌 때만 본다
+
+        issues += shortcutIssues(in: .main)
+
         // MARK: 게이트 — 팔 물건은 있는데 살 이유가 없는 상태
 
         if money.hasFreeTier, money.requiresPaywall, !money.gate.hasAnyGate {
@@ -229,6 +233,29 @@ public enum LeeoPreflight {
         }
 
         return issues.sorted { $0.severity < $1.severity }
+    }
+
+    /// 모든 LeeoKit 앱은 Siri · 단축어에 나올 App Shortcuts 를 갖고, 그 이름이 앱의 모든 언어로 번역돼 있어야 한다.
+    /// 앱 번들(.app)이 아닌 곳(패키지 테스트 등)에서는 볼 것이 없어 건너뛴다. 손목 앱은 대상이 아니다.
+    static func shortcutIssues(in bundle: Bundle) -> [LeeoPreflightIssue] {
+        #if os(watchOS)
+        return []
+        #else
+        guard bundle.bundleURL.pathExtension == "app" else { return [] }
+        let shortcuts = LeeoShortcuts.load(from: bundle)
+        guard !shortcuts.isEmpty else {
+            return [.init(.error, "shortcuts.missing",
+                "Siri · 단축어에 나올 App Shortcuts 가 없습니다. AppShortcutsProvider 를 하나 만드세요 — "
+                + "설정의 'Siri와 단축어' 줄은 LeeoSupportSection 이 저절로 답니다.")]
+        }
+        return LeeoShortcuts.untranslatedTitles(in: bundle, shortcuts: shortcuts)
+            .sorted { $0.key < $1.key }
+            .map { key, languages in
+                .init(.error, "shortcuts.untranslated",
+                      "단축어 이름 '\(key)' 이 \(languages.joined(separator: ", ")) 로 번역돼 앱에 묶이지 않았습니다 — "
+                      + "단축어 앱에 키가 그대로 나옵니다. 번역 파일(Localizable.xcstrings)이 앱 타겟에 들어 있는지 보세요.")
+            }
+        #endif
     }
 
     /// 런타임 사용량까지 함께 본다 — 계약은 맞는데 **실제로 호출하지 않은** 경우를 잡는다.
