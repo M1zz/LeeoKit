@@ -72,7 +72,10 @@ public enum LeeoShortcuts {
     /// 번역 표가 앱에 아예 묶이지 않은 경우는 모든 언어가 빠지므로 여기에 걸린다.
     public static func untranslatedTitles(in bundle: Bundle = .main,
                                           shortcuts: [LeeoAppShortcut]? = nil) -> [String: [String]] {
-        let languages = bundle.localizations.filter { $0 != "Base" }
+        // ⚠️ 같은 언어가 두 번 올 수 있다 — Info.plist 의 CFBundleLocalizations 와 lproj 폴더가
+        //    겹치면 Bundle.localizations 가 둘 다 돌려준다. 겹친 채로 사전을 만들면 앱이 멈춘다.
+        var seen = Set<String>()
+        let languages = bundle.localizations.filter { $0 != "Base" && seen.insert($0).inserted }
         guard languages.count >= 2 else { return [:] }
         let tables: [String: [String: String]] = Dictionary(uniqueKeysWithValues: languages.map { lang in
             let url = bundle.url(forResource: "Localizable", withExtension: "strings", subdirectory: nil, localization: lang)
