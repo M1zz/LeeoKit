@@ -21,13 +21,15 @@ final class LeeoShortcutsTests: XCTestCase {
     }
 
     /// 맥 모양 앱 번들을 만든다. `strings` 는 언어 → Localizable 표.
-    private func makeApp(shortcuts: Bool, strings: [String: [String: String]]) throws -> Bundle {
+    private func makeApp(shortcuts: Bool, strings: [String: [String: String]],
+                         declaredLocalizations: [String]? = nil) throws -> Bundle {
         let app = root.appendingPathComponent("Fake.app")
         let resources = app.appendingPathComponent("Contents/Resources")
         let fm = FileManager.default
         try fm.createDirectory(at: resources, withIntermediateDirectories: true)
-        let info: [String: Any] = ["CFBundleIdentifier": "com.example.fake", "CFBundlePackageType": "APPL",
+        var info: [String: Any] = ["CFBundleIdentifier": "com.example.fake", "CFBundlePackageType": "APPL",
                                    "CFBundleDevelopmentRegion": "en"]
+        if let declaredLocalizations { info["CFBundleLocalizations"] = declaredLocalizations }
         try PropertyListSerialization.data(fromPropertyList: info, format: .xml, options: 0)
             .write(to: app.appendingPathComponent("Contents/Info.plist"))
 
@@ -81,6 +83,15 @@ final class LeeoShortcutsTests: XCTestCase {
             "en": [:], "ko": ["Remaining Leave": "남은 연차"], "ja": ["Remaining Leave": "残りの有給"]
         ])
         XCTAssertTrue(LeeoPreflight.shortcutIssues(in: bundle).isEmpty)
+    }
+
+    func test_Info_plist_언어_목록과_lproj_가_겹쳐도_멈추지_않는다() throws {
+        // CFBundleLocalizations 의 언어와 lproj 폴더가 겹치면 Bundle.localizations 에 같은 언어가
+        // 두 번 나온다. 예전에는 Dictionary(uniqueKeysWithValues:) 가 거기서 앱을 멈췄다.
+        let bundle = try makeApp(shortcuts: true,
+                                 strings: ["en": [:], "ko": [:], "ja": [:]],
+                                 declaredLocalizations: ["ko", "en"])
+        XCTAssertEqual(LeeoShortcuts.untranslatedTitles(in: bundle), ["Remaining Leave": ["en", "ja", "ko"]])
     }
 
     func test_앱_번들이_아니면_건너뛴다() {
