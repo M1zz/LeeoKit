@@ -24,7 +24,12 @@
 //    - iOS 가 미리 띄운 실행(prewarm, `ActivePrewarm=1`) → 판정만 하고 표식은 실제로
 //      켜질 때(`didFinishLaunching`) 남긴다. `App.init` 은 prewarm 에서도 돌고, 쓰이지 않고
 //      버려지는 일이 흔하다.
+//    - 화면 없이 뒤에서 깨운 실행(Siri·단축어 의도, 조용한 알림, 백그라운드 작업) → 세지 않는다.
+//      사용자가 켠 실행이 아니고, 할 일을 마치면 시스템이 소리 없이 정리한다. 앞으로 나오면
+//      그때 표식을 다시 남긴다.
 //  이 둘을 세던 3.26 까지는 낫마템포 1.0.10 이 크래시 0건에 "크래시 없는 설치 69%"로 나왔다.
+//  뒤에서 깨운 실행을 세던 3.46 까지는 Siri 로 메트로놈을 켜는 낫마템포, iCloud 알림을 받는
+//  골드위크, 단축어가 있는 불타는내인생이 크래시 보고 없이 설치 열에 둘꼴로 "끊김"이 찍혔다.
 //
 //  익스텐션 안전: Foundation 만 쓴다. `UIApplication.shared` 같은 익스텐션 금지 API 가 없다.
 //
@@ -120,6 +125,16 @@ public enum LeeoCrashLoopPolicy {
     }
 }
 
+extension LeeoCrashLoopPolicy {
+    /// 이 실행은 셀 실행이 아니다(뒤에서 깨운 실행). 내 표식만 걷고 연속 횟수는 그대로 둔다 —
+    /// 직전에 죽은 기록은 사실이고, 이번 실행이 끝까지 간 것도 아니다.
+    static func withdraw(_ state: LeeoCrashLoopState, session: String) -> LeeoCrashLoopState {
+        var next = state
+        if state.inFlightSession == session { next.inFlightSession = nil }
+        return next
+    }
+}
+
 // MARK: - 저장소를 붙인 가드
 
 /// 크래시 루프 가드. 이름마다 기록이 따로 있다(`"keyboard"`, `"share"` 처럼).
@@ -206,11 +221,11 @@ public final class LeeoCrashLoopGuard: @unchecked Sendable {
             lock.lock()
             safeMode = LeeoCrashLoopPolicy.begin(load(), session: session, threshold: threshold).safeMode
             lock.unlock()
-            observeOnce(Self.launchNotification) { [weak self] in self?.commitLaunch() }
         } else {
             commitLaunch()
         }
-        observeOnce(Self.backgroundNotification) { [weak self] in self?.markLaunchSucceeded() }
+        observeOnce(Self.launchNotification) { [weak self] note in self?.didFinishLaunching(note) }
+        observeOnce(Self.backgroundNotification) { [weak self] _ in self?.markLaunchSucceeded() }
         return isInSafeMode
     }
 
@@ -224,6 +239,23 @@ public final class LeeoCrashLoopGuard: @unchecked Sendable {
             print("❌ [LeeoCrashLoopGuard.beginLaunch] '\(name)' 직전 실행이 끝나지 못했다 "
                   + "(연속 \(result.state.consecutiveIncomplete)회)\(result.safeMode ? ", 세이프 모드로 연다" : "")")
         }
+    }
+
+    /// 실행이 끝났다. prewarm 이었으면 이제 표식을 남기고, 화면 없이 뒤에서 깨운 실행이면 걷는다.
+    private func didFinishLaunching(_ note: Notification) {
+        if isPrewarm { commitLaunch() }
+        #if canImport(UIKit) && !os(watchOS)
+        // `UIApplication.shared` 는 익스텐션에서 못 쓰므로 알림이 실어 온 인스턴스를 읽는다.
+        guard let app = note.object as? UIApplication, app.applicationState == .background else { return }
+        withdrawLaunch()
+        observeOnce(UIApplication.willEnterForegroundNotification) { [weak self] _ in self?.commitLaunch() }
+        #endif
+    }
+
+    /// 이번 실행의 표식을 걷는다. 연속 횟수는 건드리지 않는다.
+    func withdrawLaunch() {
+        lock.lock(); defer { lock.unlock() }
+        store(LeeoCrashLoopPolicy.withdraw(load(), session: session))
     }
 
     // MARK: 앱 생명주기
@@ -241,12 +273,12 @@ public final class LeeoCrashLoopGuard: @unchecked Sendable {
     #endif
 
     /// 알림을 한 번만 받는다. 알림이 없는 플랫폼(맥)에는 prewarm 도 없으니 기다리지 않는다.
-    private func observeOnce(_ name: Notification.Name?, _ action: @escaping () -> Void) {
+    private func observeOnce(_ name: Notification.Name?, _ action: @escaping (Notification) -> Void) {
         guard let name else { return }
         var token: NSObjectProtocol?
-        token = NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) { _ in
+        token = NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) { note in
             if let token { NotificationCenter.default.removeObserver(token) }
-            action()
+            action(note)
         }
         lock.lock(); observers.append(token!); lock.unlock()
     }

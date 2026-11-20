@@ -137,6 +137,32 @@ final class LeeoCrashLoopGuardTests: XCTestCase {
     }
     #endif
 
+    /// 화면 없이 뒤에서 깨운 실행(Siri · 조용한 알림)은 표식을 걷는다. 시스템이 정리해도 죽은 게 아니다.
+    func testBackgroundLaunchIsNotADeath() {
+        let bg = process("1")
+        bg.beginLaunch()
+        bg.withdrawLaunch()          // didFinishLaunching, applicationState == .background
+        let next = process("2")
+        XCTAssertFalse(next.beginLaunch())
+        XCTAssertEqual(next.unreportedIncompleteLaunches, 0)
+    }
+
+    /// 걷어도 직전의 진짜 죽음은 지우지 않고, 앞으로 나온 뒤 죽으면 다시 센다.
+    func testBackgroundLaunchKeepsStreakAndCountsAfterForeground() {
+        process("1").beginLaunch()   // 죽음
+        let bg = process("2")
+        bg.beginLaunch()
+        XCTAssertEqual(bg.consecutiveIncompleteLaunches, 1)
+        bg.withdrawLaunch()
+        XCTAssertEqual(bg.consecutiveIncompleteLaunches, 1, "직전 죽음은 사실이다")
+        bg.commitLaunch()            // willEnterForeground — 같은 세션이라 두 번 세지 않는다
+        XCTAssertEqual(bg.consecutiveIncompleteLaunches, 1)
+        XCTAssertEqual(process("3").consecutiveIncompleteLaunches, 1)
+        let next = process("4")
+        next.beginLaunch()           // 앞으로 나온 뒤 죽은 것은 센다
+        XCTAssertEqual(next.consecutiveIncompleteLaunches, 2)
+    }
+
     func testThresholdIsConfigurable() {
         XCTAssertFalse(process("1", threshold: 1).beginLaunch())
         XCTAssertTrue(process("2", threshold: 1).beginLaunch(), "문턱 1 이면 한 번 죽고 바로 세이프 모드")
