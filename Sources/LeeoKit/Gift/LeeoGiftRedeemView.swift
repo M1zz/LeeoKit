@@ -229,6 +229,8 @@ struct LeeoGiftCodeBoxes: View {
                 box(at: index)
             }
         }
+        // 코드는 라틴 글자라 아랍어에서도 왼쪽부터 채운다.
+        .environment(\.layoutDirection, .leftToRight)
         .contentShape(Rectangle())
         .onTapGesture { focused = true }
         .accessibilityHidden(true)

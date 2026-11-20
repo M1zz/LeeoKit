@@ -210,7 +210,7 @@ public struct LeeoFamilyAppCard: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            Image(systemName: "chevron.right")
+            Image(systemName: "chevron.forward")
                 .font(.footnote.weight(.semibold))
                 .foregroundStyle(style.textFaint)
                 .padding(.top, 4)
@@ -266,7 +266,7 @@ public struct LeeoFamilySynergyRow: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            Image(systemName: "chevron.right")
+            Image(systemName: "chevron.forward")
                 .font(.footnote.weight(.semibold))
                 .foregroundStyle(style.textFaint)
                 .padding(.top, 4)

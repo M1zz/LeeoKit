@@ -152,7 +152,7 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
                                         replyTarget = record
                                     } label: {
                                         Label(L("답장", comment: "Feedback inbox: reply"),
-                                              systemImage: "arrowshape.turn.up.left")
+                                              systemImage: "arrowshape.turn.up.backward")
                                     }
                                     .tint(theme.accent)
                                 }
@@ -445,7 +445,7 @@ public struct LeeoFeedbackInboxView<Spec: LeeoAppSpec>: View {
                                         replyTarget = record
                                     } label: {
                                         Label(L("답장", comment: "Feedback inbox: reply"),
-                                              systemImage: "arrowshape.turn.up.left")
+                                              systemImage: "arrowshape.turn.up.backward")
                                     }
                                     .tint(theme.accent)
                                 }

@@ -224,7 +224,7 @@ public struct LeeoForeverPassLine: View {
                 Text(LeeoLadderText.passLine)
                     .font(.subheadline.weight(.semibold))
                 Spacer(minLength: 0)
-                Image(systemName: "chevron.right")
+                Image(systemName: "chevron.forward")
                     .font(.footnote.weight(.semibold))
                     .foregroundStyle(theme.textFaint)
                     .accessibilityHidden(true)

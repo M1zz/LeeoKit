@@ -237,7 +237,8 @@ public struct LeeoPaywallView<Spec: LeeoAppSpec>: View {
             .padding(.vertical, 5)
             .background(theme.accent, in: Capsule())
             .shadow(color: theme.accent.opacity(0.35), radius: 4, y: 2)
-            .offset(x: -14, y: -14)
+            .padding(.trailing, 14)   // 오른쪽에서 왼쪽으로 쓰는 언어에서도 카드 안쪽으로
+            .offset(y: -14)
     }
 
     private func price(_ product: Product) -> some View {

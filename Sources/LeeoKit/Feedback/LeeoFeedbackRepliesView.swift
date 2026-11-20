@@ -92,7 +92,7 @@ public struct LeeoFeedbackRepliesView<Spec: LeeoAppSpec>: View {
     private func replyBubble(_ reply: String, isFresh: Bool) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 6) {
-                Image(systemName: "arrowshape.turn.up.left.fill")
+                Image(systemName: "arrowshape.turn.up.backward.fill")
                     .accessibilityHidden(true)
                 Text(L("개발자 답장", comment: "Sent feedback: developer reply label"))
                     .fontWeight(.semibold)
