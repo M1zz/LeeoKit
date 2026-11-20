@@ -496,6 +496,7 @@ public enum LeeoVault {
     public static func exportFile(_ snap: LeeoVaultSnapshot, appName: String) throws -> URL {
         guard let s = store else { throw LeeoVaultError.notStarted }
         let f = DateFormatter()
+        f.locale = Locale(identifier: "en_US_POSIX")   // 아랍어 숫자 · 이슬람력으로 바뀌지 않게
         f.dateFormat = "yyyy-MM-dd HHmm"
         let name = "\(appName) \(f.string(from: snap.createdAt)).leeobackup"
         let url = FileManager.default.temporaryDirectory.appendingPathComponent(name)

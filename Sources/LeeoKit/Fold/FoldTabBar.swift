@@ -153,12 +153,15 @@ private struct FoldTabBarRoomModifier: ViewModifier {
 
 private struct FoldTabBarOverlay<Value: Hashable>: ViewModifier {
     @Environment(\.foldLayout) private var fold
+    @Environment(\.layoutDirection) private var direction
     let items: [FoldTabBar<Value>.Item]
     let selected: Value
     let select: (Value) -> Void
 
     func body(content: Content) -> some View {
-        content.overlay(alignment: fold.posture == .innerLandscape ? .bottomLeading : .bottom) {
+        // 탭바는 고르는 쪽(물리적 왼쪽) 아래에 선다. 오른쪽에서 왼쪽으로 쓰는 언어면 trailing 이 왼쪽이다.
+        let side: Alignment = direction == .rightToLeft ? .bottomTrailing : .bottomLeading
+        content.overlay(alignment: fold.posture == .innerLandscape ? side : .bottom) {
             if fold.isUnfolded {
                 FoldTabBar(items: items, selected: selected, select: select)
                     .frame(width: fold.posture == .innerLandscape ? fold.leadEnd : nil)

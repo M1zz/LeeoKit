@@ -187,6 +187,7 @@ public extension EnvironmentValues {
 ///    돌아간다. 그래서 틀은 `AnyLayout` 하나로 바꾸고, 고르는 쪽은 늘 같은 칸(가운데)에 둔다.
 public struct FoldSplitView<Choose: View, Result: View>: View {
     @Environment(\.foldLayout) private var fold
+    @Environment(\.layoutDirection) private var direction
     private let choose: Choose
     private let result: Result
 
@@ -207,11 +208,14 @@ public struct FoldSplitView<Choose: View, Result: View>: View {
             layout {
                 // 세로: 결과 쪽이 위
                 if fold.posture == .innerPortrait {
-                    result.frame(width: frame.width, height: sizes.lead)
+                    result
+                        .environment(\.layoutDirection, direction)
+                        .frame(width: frame.width, height: sizes.lead)
                     hinge
                 }
 
                 choose
+                    .environment(\.layoutDirection, direction)
                     .environment(\.foldPaneTop,
                                  fold.posture == .innerPortrait ? fold.trailStart : 0)
                     .frame(
@@ -222,10 +226,14 @@ public struct FoldSplitView<Choose: View, Result: View>: View {
                 // 가로: 결과 쪽이 오른쪽
                 if fold.posture == .innerLandscape {
                     hinge
-                    result.frame(width: sizes.trail, height: frame.height)
+                    result
+                        .environment(\.layoutDirection, direction)
+                        .frame(width: sizes.trail, height: frame.height)
                 }
             }
         }
+        // 접힌 선은 물리적 자리라 판은 늘 왼쪽부터 놓는다. 판 안쪽은 원래 방향을 따른다.
+        .environment(\.layoutDirection, .leftToRight)
     }
 
     /// 접힌 선 자리. 비워 두되, 세로일 때 위아래 크기를 맞추려고 판 하나를 앉힌다.
