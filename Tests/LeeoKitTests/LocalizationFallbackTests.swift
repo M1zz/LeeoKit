@@ -59,6 +59,18 @@ final class LocalizationFallbackTests: XCTestCase {
         XCTAssertEqual(String(format: format, locale: Locale(identifier: "cs"), 5), "5 dní")
     }
 
+    /// 아랍어는 숫자에 따라 낱말 꼴이 여섯이다 — 3~10 은 복수, 11~99 는 단수 대격.
+    func testArabicPluralFormsFollowCount() throws {
+        let picked = Bundle.preferredLocalizations(from: bundle.localizations, forPreferences: ["ar"])
+        XCTAssertEqual(picked.first, "ar", "ar.lproj 가 패키지에 없다")
+        let path = try XCTUnwrap(bundle.path(forResource: "ar", ofType: "lproj"))
+        let ar = try XCTUnwrap(Bundle(path: path))
+        let format = ar.localizedString(forKey: "%d일", value: nil, table: nil)
+        let latn = Locale(identifier: "ar@numbers=latn")
+        XCTAssertEqual(String(format: format, locale: latn, 3), "3 أيام")
+        XCTAssertEqual(String(format: format, locale: latn, 11), "11 يومًا")
+    }
+
     /// 앱 이름만 든 키가 어느 언어에서도 한국어로 남지 않는다 (교차 홍보 카드).
     func testAppNameKeysAreLocalized() throws {
         for lang in ["en", "ja", "ru", "zh-Hans", "nl"] {
