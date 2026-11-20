@@ -63,6 +63,17 @@ public enum LeeoEvent: Sendable, Equatable {
         }
     }
 
+    /// 사용 통계(CloudKit)로 보낼 이름. 그 통계는 이름 한 칸만 싣기 때문에, 갈래가 곧 답인
+    /// 이벤트는 `이름:갈래` 로 보낸다 — 허브는 앞부분으로 묶어 세고 갈래는 따로 보여 준다
+    /// (`launch_incomplete:<name>` 과 같은 약속). 결제 실패는 이유가 없으면 사용자가 취소한 것인지
+    /// 진짜 오류인지 가를 수 없다.
+    public var usageName: String {
+        switch self {
+        case .purchaseFailed(_, let reason?) where !reason.isEmpty: return "\(name):\(reason)"
+        default: return name
+        }
+    }
+
     /// 전송용 파라미터.
     public var parameters: [String: String] {
         switch self {
@@ -129,7 +140,7 @@ public struct LeeoUsageAnalytics: LeeoAnalytics {
     }
 
     public func track(_ event: LeeoEvent) {
-        reporter.logEventInBackground(event.name)
+        reporter.logEventInBackground(event.usageName)
     }
 }
 
