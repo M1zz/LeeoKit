@@ -737,3 +737,13 @@ swift test
 ## 플랫폼
 
 iOS 17+ · macOS 14+ · Mac Catalyst 17+
+
+## 요금제 링크 (LeeoPaywallLink, v3.47) — App Store 이벤트에서 바로 요금제로
+
+App Store '앱 내 이벤트'(세일 카드)는 앱 안으로 들어가는 링크가 있어야 심사에 낼 수 있다.
+링크는 `<번들 ID 소문자>://paywall` 하나로 정했다.
+
+1. 앱 타겟 Info.plist 의 `CFBundleURLTypes` 에 번들 ID 소문자 스킴을 더한다.
+2. 루트 화면에 한 줄: `.leeoPaywallLink { PaywallView() }` — 그 앱의 요금제 화면을 넘긴다.
+
+이벤트에 적을 주소는 `LeeoPaywallLink.url`.
