@@ -13,6 +13,12 @@
 //      ContentView()
 //          .leeoPaywallLink { PaywallView() }
 //
+//  페이월을 `isPresented` 로 띄우는 앱(`leeoPaywallSheet` 등)은 그 바인딩을 넘긴다:
+//
+//      ContentView()
+//          .proPaywall(isPresented: $showPlans)
+//          .leeoPaywallLink(isPresented: $showPlans)
+//
 //  이벤트에 적을 주소는 `LeeoPaywallLink.url` 이 알려 준다.
 //
 
@@ -38,6 +44,15 @@ public extension View {
     /// `<스킴>://paywall` 로 앱이 열리면 `paywall` 을 시트로 띄운다. 루트 화면에 한 번 붙인다.
     func leeoPaywallLink<Paywall: View>(@ViewBuilder paywall: @escaping () -> Paywall) -> some View {
         modifier(LeeoPaywallLinkHost(paywall: paywall))
+    }
+}
+
+public extension View {
+    /// `<스킴>://paywall` 로 앱이 열리면 `isPresented` 를 켠다 — 페이월은 앱이 이미 거는 시트가 띄운다.
+    func leeoPaywallLink(isPresented: Binding<Bool>) -> some View {
+        onOpenURL { url in
+            if LeeoPaywallLink.opensPaywall(url) { isPresented.wrappedValue = true }
+        }
     }
 }
 
