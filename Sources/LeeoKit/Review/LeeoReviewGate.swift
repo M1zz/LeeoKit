@@ -85,19 +85,29 @@ private struct LeeoAutoSatisfactionModifier<Spec: LeeoAppSpec>: ViewModifier {
     let delay: Double
 
     @State private var isPresented = false
+    /// 리뷰를 물을 때가 아니면 잘 쓰는 사람에게 한 문장을 묻는다(`LeeoVoice`). 한 번 켤 때 둘 중 하나만.
+    @State private var voiceQuestion: LeeoVoiceQuestion?
 
     func body(content: Content) -> some View {
         content
             .task {
-                guard LeeoReviewRequest.shouldRequest(policy: policy, engagement: engagement) else { return }
-                // 화면이 자리 잡은 뒤 살짝 지연해서 자연스럽게 노출
-                try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
-                // 노출하는 순간 쿨다운을 기록해 다음 실행에서 곧바로 다시 뜨지 않게 한다
-                LeeoReviewRequest.markRequested(engagement: engagement)
-                isPresented = true
+                if LeeoReviewRequest.shouldRequest(policy: policy, engagement: engagement) {
+                    // 화면이 자리 잡은 뒤 살짝 지연해서 자연스럽게 노출
+                    try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
+                    // 노출하는 순간 쿨다운을 기록해 다음 실행에서 곧바로 다시 뜨지 않게 한다
+                    LeeoReviewRequest.markRequested(engagement: engagement)
+                    isPresented = true
+                } else if let next = LeeoVoice.nextQuestion(engagement: engagement) {
+                    try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
+                    LeeoVoice.markShown(next, engagement: engagement)
+                    voiceQuestion = next
+                }
             }
             .modifier(LeeoReviewGateModifier<Spec>(
                 isPresented: $isPresented, policy: policy, engagement: engagement))
+            .sheet(item: $voiceQuestion) { question in
+                LeeoVoiceSheet<Spec>(question: question, policy: .default, engagement: engagement)
+            }
     }
 }
 

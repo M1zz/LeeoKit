@@ -89,6 +89,10 @@ public final class LeeoEngagement: @unchecked Sendable {
     func laterCount(_ id: String, version: String) -> Int { defaults.integer(forKey: key("laterCount.\(id).\(version)")) }
     func setLaterCount(_ id: String, version: String, _ n: Int) { defaults.set(n, forKey: key("laterCount.\(id).\(version)")) }
 
+    // 한 문장 의견 기록 (LeeoVoice 가 사용) — 같은 저장소 · 같은 접두어라 reset() 이 함께 지운다.
+    func voiceValue(_ k: String) -> Any? { defaults.object(forKey: key("voice.\(k)")) }
+    func setVoiceValue(_ v: Any?, _ k: String) { defaults.set(v, forKey: key("voice.\(k)")) }
+
     /// 테스트/디버그용 — 모든 기록 초기화.
     public func reset() {
         for k in defaults.dictionaryRepresentation().keys where k.hasPrefix(prefix) {
