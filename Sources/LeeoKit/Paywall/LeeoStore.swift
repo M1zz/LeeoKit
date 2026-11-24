@@ -144,6 +144,7 @@ public final class LeeoStore: ObservableObject {
         }
         isGrandfathered = defaults.bool(forKey: cacheKeyGrandfather)
         applyOwned()
+        Self.live.append(Weak(self))
 
         for gift in gifts {
             // 이미 산 사람은 선물을 받지 않는다 (코드를 다른 사람에게 넘기게 둔다).
@@ -178,6 +179,17 @@ public final class LeeoStore: ObservableObject {
     }
 
     deinit { updatesListener?.cancel() }
+
+    // MARK: - 앱이 만든 스토어들
+
+    private struct Weak { weak var store: LeeoStore?; init(_ s: LeeoStore) { store = s } }
+    private static var live: [Weak] = []
+
+    /// 이 앱이 만들어 둔 스토어 전부(살아 있는 것). 할인 배너처럼 앱 코드 밖에서 권한 · 상품을 볼 때 쓴다.
+    static var all: [LeeoStore] {
+        live.removeAll { $0.store == nil }
+        return live.compactMap(\.store)
+    }
 
     // MARK: - 상품 로드
 

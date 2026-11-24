@@ -21,6 +21,8 @@
 //
 //  이벤트에 적을 주소는 `LeeoPaywallLink.url` 이 알려 준다.
 //
+//  할인 기간에는 이 한 줄이 할인 전면 배너도 띄운다(`LeeoSale`).
+//
 
 import SwiftUI
 
@@ -32,6 +34,13 @@ public enum LeeoPaywallLink {
     public static var url: URL? {
         Bundle.main.bundleIdentifier.flatMap { URL(string: "\($0.lowercased())://\(host)") }
     }
+
+    /// 앱 안에서 요금제 화면을 연다(할인 배너의 단추). `.leeoPaywallLink` 가 붙은 화면이 받는다.
+    @MainActor public static func open() {
+        NotificationCenter.default.post(name: openNotification, object: nil)
+    }
+
+    static let openNotification = Notification.Name("leeo.paywallLink.open")
 
     /// 요금제 화면을 여는 링크인가 — 스킴은 따지지 않는다(앱마다 다르고, 앱에 들어온 이상 그 앱의 것이다).
     public static func opensPaywall(_ url: URL) -> Bool {
@@ -53,6 +62,10 @@ public extension View {
         onOpenURL { url in
             if LeeoPaywallLink.opensPaywall(url) { isPresented.wrappedValue = true }
         }
+        .onReceive(NotificationCenter.default.publisher(for: LeeoPaywallLink.openNotification)) { _ in
+            isPresented.wrappedValue = true
+        }
+        .leeoSaleBanner()
     }
 }
 
@@ -65,7 +78,11 @@ struct LeeoPaywallLinkHost<Paywall: View>: ViewModifier {
             .onOpenURL { url in
                 if LeeoPaywallLink.opensPaywall(url) { isPresented = true }
             }
+            .onReceive(NotificationCenter.default.publisher(for: LeeoPaywallLink.openNotification)) { _ in
+                isPresented = true
+            }
             .sheet(isPresented: $isPresented) { paywall() }
+            .leeoSaleBanner()
     }
 }
 #endif

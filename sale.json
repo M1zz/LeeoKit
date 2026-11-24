@@ -1,0 +1,18 @@
+{
+  "campaigns": [
+    {
+      "id": "blackfriday-2026",
+      "kind": "blackFriday",
+      "announce": "2026-11-24",
+      "start": "2026-11-27",
+      "end": "2026-12-04",
+      "percent": 80,
+      "apps": ["com.leeo.slidesnap", "com.Ysoup.TokenMemo", "com.leeo.LullabyRecipe", "com.Ysoup.LeaveWise",
+               "com.leeo.PixelMe", "com.leeo.HandsFreeMetronome", "com.devkoan.ScheduleDensityApp",
+               "com.example.ScheduleDensityApp", "com.xa.toki", "com.ysoup.RoutineCamera", "com.leeo.TetraTint",
+               "com.leeo.yeoul", "com.devkoan.IndonesianSmallTalk", "com.leeo.FootprintDiary",
+               "com.burningparchment.app", "com.leeo.JuniorDevMistakes", "com.leeo.higgym", "com.leeo.thinkflow",
+               "com.lectureq.LectureQ", "com.devkoan.StaffSinger", "com.leeo.SkyDex", "com.leeo.sunflower"]
+    }
+  ]
+}
