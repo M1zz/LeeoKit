@@ -138,6 +138,8 @@ struct LeeoCelebrationHost: ViewModifier {
                 }
             }
             .animation(.easeInOut(duration: 0.25), value: center.current)
+            // 새 버전이 나왔으면 무엇이 좋아졌는지 아래쪽 카드로 한 번 (LeeoUpdate).
+            .leeoUpdateBanner()
             .task {
                 // 스토어가 권한을 먼저 읽을 틈을 준다 — 유료 사용자에게 '반가워요' 가 먼저 뜨지 않게.
                 try? await Task.sleep(for: .seconds(2))

@@ -261,12 +261,14 @@ struct LeeoSaleBannerView: View {
 
 /// 이 앱의 아이콘. 못 찾으면 그리지 않는다.
 struct LeeoSaleAppIcon: View {
+    var size: CGFloat = 76
+
     var body: some View {
         if let image = Self.image {
             image
                 .resizable()
-                .frame(width: 76, height: 76)
-                .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+                .frame(width: size, height: size)
+                .clipShape(RoundedRectangle(cornerRadius: size * 0.235, style: .continuous))
                 .accessibilityHidden(true)
         }
     }
