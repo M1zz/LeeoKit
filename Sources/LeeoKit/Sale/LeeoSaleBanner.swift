@@ -17,12 +17,22 @@ import AppKit
 #endif
 
 #if !os(watchOS)
+public extension View {
+    /// 할인 기간이면 앱을 연 뒤 한 번 전면 배너를 띄운다. `.leeoPaywallLink` 를 쓰면 저절로 붙는다.
+    /// 링크를 직접 받아 요금제를 여는 앱만 이 줄을 붙이고, 배너 단추가 누를 때 할 일(요금제 열기)을 넘긴다:
+    ///
+    ///     .leeoSaleBanner { pro.present(.settings) }
+    func leeoSaleBanner(onOpen: @escaping @MainActor () -> Void) -> some View {
+        modifier(LeeoSaleHost(openPaywall: onOpen))
+    }
+}
+
 extension View {
-    /// 할인 기간이면 앱을 연 뒤 한 번 전면 배너를 띄운다. `.leeoPaywallLink` 가 붙인다.
-    func leeoSaleBanner() -> some View { modifier(LeeoSaleHost()) }
+    func leeoSaleBanner() -> some View { modifier(LeeoSaleHost(openPaywall: { LeeoPaywallLink.open() })) }
 }
 
 struct LeeoSaleHost: ViewModifier {
+    let openPaywall: @MainActor () -> Void
     @State private var offer: LeeoSaleOffer?
     @Environment(\.scenePhase) private var scenePhase
 
@@ -38,7 +48,7 @@ struct LeeoSaleHost: ViewModifier {
                                            // 배너가 걷힌 뒤에 요금제 시트를 올린다.
                                            Task { @MainActor in
                                                try? await Task.sleep(for: .milliseconds(350))
-                                               LeeoPaywallLink.open()
+                                               openPaywall()
                                            }
                                        })
                     .transition(.opacity)

@@ -760,3 +760,4 @@ App Store '앱 내 이벤트'(세일 카드)는 앱 안으로 들어가는 링�
 - 누구에게: 이미 유료(구매 · 선물 · 그랜드파더링)거나 첫 구독 할인을 받을 수 없는 사람에게는 띄우지 않는다. 처음 깐 날도 쉰다.
 - 얼마나 자주: 하루에 한 번. [3일 동안 보지 않기] 를 누르면 사흘 쉰다.
 - LeeoStore 를 쓰지 않는 앱만 상품 ID 를 알려 준다: `LeeoSale.productIDs = StoreKitManager.allIds`
+- `.leeoPaywallLink` 없이 링크를 직접 받는 앱은 루트에 `.leeoSaleBanner { 요금제 열기 }` 한 줄.
