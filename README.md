@@ -761,3 +761,13 @@ App Store '앱 내 이벤트'(세일 카드)는 앱 안으로 들어가는 링�
 - 얼마나 자주: 하루에 한 번. [3일 동안 보지 않기] 를 누르면 사흘 쉰다.
 - LeeoStore 를 쓰지 않는 앱만 상품 ID 를 알려 준다: `LeeoSale.productIDs = StoreKitManager.allIds`
 - `.leeoPaywallLink` 없이 링크를 직접 받는 앱은 루트에 `.leeoSaleBanner { 요금제 열기 }` 한 줄.
+
+## 새 버전 안내 (LeeoUpdate, v3.50) — 무엇이 좋아졌는지 한 번, 강제하지 않고
+
+`.leeoCelebrations` 를 붙인 앱은 할 일이 없다. App Store 에 깔린 것보다 새 버전이 있으면
+화면 아래 작은 카드로 "새 버전이 나왔어요 · 버전 X에서 좋아진 점" 과 릴리즈 노트 앞 세 줄, [업데이트] 를 보여 준다.
+
+- 버전마다 딱 한 번. 손대지 않으면 12초 뒤 저절로 걷히고, 화면을 막지 않는다.
+- 이 기기 OS 로 받을 수 없는 버전이거나 처음 깐 날이면 띄우지 않는다.
+- 글은 iTunes 조회(`lookup?bundleId=`)의 `releaseNotes` — 배포 때 `RELEASE_NOTES.md` 에서 올라간 그 글이다.
+- 다른 자리에 붙이려면 `.leeoUpdateBanner()`.
