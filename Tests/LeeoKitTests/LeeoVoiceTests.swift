@@ -82,4 +82,21 @@ final class LeeoVoiceTests: XCTestCase {
         // 허브가 이 값으로 묶는다 — 바뀌면 지난 답과 새 답이 갈라진다.
         XCTAssertEqual(LeeoVoiceQuestion.allCases.map(\.rawValue), ["voice.useful", "voice.unmet", "voice.wish"])
     }
+
+    // MARK: - 함께 보내는 사정 (허브가 이 줄 이름을 읽는다)
+
+    func testUsefulAnswerCarriesLevelInstallDaysAndPaid() {
+        let lines = LeeoVoice.contextLines(question: .useful, usefulness: 3, daysSinceInstall: 12, isPaid: true)
+        XCTAssertEqual(lines, ["질문: useful", "쓸모: 3/3", "설치: 12일", "유료: 예"])
+    }
+
+    func testOtherQuestionsNeverCarryUsefulness() {
+        let lines = LeeoVoice.contextLines(question: .wish, usefulness: 2, daysSinceInstall: 0, isPaid: false)
+        XCTAssertEqual(lines, ["질문: wish", "설치: 0일", "유료: 아니오"])
+    }
+
+    func testNoPaywallMeansNoPaidLineAndBadLevelIsDropped() {
+        let lines = LeeoVoice.contextLines(question: .useful, usefulness: 7, daysSinceInstall: -3, isPaid: nil)
+        XCTAssertEqual(lines, ["질문: useful", "설치: 0일"])
+    }
 }
