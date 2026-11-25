@@ -89,6 +89,24 @@ public enum LeeoVoice {
     /// 한 문장이라도 길게 쓰는 사람이 있다. 이보다 길면 자른다.
     public static let maxLength = 280
 
+    /// 쓸모 정도 — 1 조금 · 2 꽤 · 3 없으면 안 돼요. "없으면 안 돼요" 의 몫이 그 앱을 꼭 필요로 하는
+    /// 사람의 비율이다(허브 `Feedback.usefulness` 가 `쓸모: n/3` 줄을 읽는다).
+    public static let usefulnessRange = 1...3
+
+    /// 한 문장 옆에 붙여 보낼 그 사람의 사정. 같은 "느려요" 도 설치 1일차 무료 사용자와 30일차 유료
+    /// 사용자는 뜻이 다르다. 허브는 `질문:` · `쓸모:` · `설치:` · `유료:` 줄을 읽는다 — 이름을 바꾸지 않는다.
+    /// - Parameter isPaid: 유료 기능이 열렸나. 결제가 없는 앱이면 nil 이고 줄을 붙이지 않는다.
+    static func contextLines(question: LeeoVoiceQuestion, usefulness: Int?,
+                             daysSinceInstall: Int, isPaid: Bool?) -> [String] {
+        var lines = ["질문: \(question.tag)"]
+        if question == .useful, let usefulness, usefulnessRange.contains(usefulness) {
+            lines.append("쓸모: \(usefulness)/3")
+        }
+        lines.append("설치: \(max(0, daysSinceInstall))일")
+        if let isPaid { lines.append("유료: \(isPaid ? "예" : "아니오")") }
+        return lines
+    }
+
     /// 지금 물을 질문. 물을 때가 아니면 nil.
     public static func nextQuestion(policy: LeeoVoicePolicy = .default,
                                     engagement: LeeoEngagement = .shared,
@@ -159,6 +177,8 @@ struct LeeoVoiceSheet<Spec: LeeoAppSpec>: View {
     @State private var text = ""
     @State private var sent = false
     @State private var answered = false
+    /// 쓸모 질문에서 고른 정도. 고르지 않아도 보낼 수 있다.
+    @State private var usefulness: Int?
     @FocusState private var focused: Bool
 
     private var trimmed: String { text.trimmingCharacters(in: .whitespacesAndNewlines) }
@@ -184,6 +204,7 @@ struct LeeoVoiceSheet<Spec: LeeoAppSpec>: View {
                         if new.count > LeeoVoice.maxLength { text = String(new.prefix(LeeoVoice.maxLength)) }
                     }
                     .onSubmit(send)
+                if question == .useful { usefulnessPicker }
                 HStack {
                     Button(L("다음에", comment: "Voice: not now")) { dismiss() }
                         .buttonStyle(.bordered)
@@ -196,7 +217,7 @@ struct LeeoVoiceSheet<Spec: LeeoAppSpec>: View {
         }
         .padding(20)
         #if os(iOS) || os(visionOS)
-        .presentationDetents([.height(300)])
+        .presentationDetents([.height(question == .useful ? 380 : 300)])
         #else
         .frame(minWidth: 380)
         #endif
@@ -210,13 +231,15 @@ struct LeeoVoiceSheet<Spec: LeeoAppSpec>: View {
         guard !message.isEmpty, !answered else { return }
         answered = true
         LeeoVoice.markSent(question, engagement: engagement)
+        let lines = LeeoVoice.contextLines(question: question, usefulness: usefulness,
+                                           daysSinceInstall: engagement.daysSinceInstall, isPaid: Self.isPaid)
         // 보내기는 기다리지 않는다 — 못 가면(오프라인 · iCloud 없음) 그 한 줄은 놓친다. 다시 묻지 않는다.
         Task.detached {
             do {
                 try await LeeoFeedbackService(spec: Spec.self).submit(
                     type: question.rawValue, message: message,
                     deviceInfo: LeeoFeedbackService.composeDeviceInfo(base: LeeoFeedbackService.baseDeviceInfo(),
-                                                                      extra: ["질문: \(question.tag)"]))
+                                                                      extra: lines))
             } catch {
                 print("⚠️ [LeeoVoice.send] 한 문장을 보내지 못했습니다: \(error)")
             }
@@ -226,6 +249,50 @@ struct LeeoVoiceSheet<Spec: LeeoAppSpec>: View {
             try? await Task.sleep(nanoseconds: 1_200_000_000)
             dismiss()
         }
+    }
+}
+
+extension LeeoVoiceSheet {
+    /// 조금 · 꽤 · 없으면 안 돼요 — 누르면 고르고, 다시 누르면 푼다.
+    var usefulnessPicker: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(L("이 앱이 얼마나 쓸모 있나요?", comment: "Voice: how useful is this app"))
+                .font(.body)
+                .foregroundStyle(.secondary)
+            HStack(spacing: 8) {
+                ForEach(Array(LeeoVoice.usefulnessRange), id: \.self) { level in
+                    let isOn = usefulness == level
+                    Button {
+                        usefulness = isOn ? nil : level
+                    } label: {
+                        Text(Self.usefulnessTitle(level))
+                            .font(.body.weight(isOn ? .semibold : .regular))
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(isOn ? .accentColor : .secondary)
+                    .accessibilityAddTraits(isOn ? .isSelected : [])
+                }
+            }
+        }
+    }
+
+    static func usefulnessTitle(_ level: Int) -> String {
+        switch level {
+        case 1: return L("조금", comment: "Voice usefulness: a little")
+        case 2: return L("꽤", comment: "Voice usefulness: quite")
+        default: return L("없으면 안 돼요", comment: "Voice usefulness: can't do without it")
+        }
+    }
+
+    /// 유료 기능이 열렸나. 결제 스토어가 없는 앱이면 nil.
+    @MainActor static var isPaid: Bool? {
+        #if canImport(StoreKit)
+        let stores = LeeoStore.all
+        return stores.isEmpty ? nil : stores.contains(where: \.hasPro)
+        #else
+        return nil
+        #endif
     }
 }
 
