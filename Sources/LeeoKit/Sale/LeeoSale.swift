@@ -98,11 +98,9 @@ public enum LeeoSale {
                    "com.example.ScheduleDensityApp", "com.xa.toki", "com.ysoup.RoutineCamera", "com.leeo.TetraTint",
                    "com.leeo.yeoul", "com.devkoan.IndonesianSmallTalk", "com.leeo.FootprintDiary",
                    "com.burningparchment.app", "com.leeo.JuniorDevMistakes", "com.leeo.higgym", "com.leeo.thinkflow",
-                   "com.lectureq.LectureQ", "com.devkoan.StaffSinger", "com.leeo.SkyDex", "com.leeo.sunflower",
-                   "com.leeo.StickyPresenter", "com.devkoan.worryparking", "com.leeo.geusaie", "com.example.MoonlitOrder",
-                   "com.leeo.DontGoMart", "com.leeo.wifisnap", "com.leeo.ReboundJournal", "com.leeo.bookmarkshot",
+                   "com.lectureq.LectureQ", "com.devkoan.StaffSinger", "com.leeo.SkyDex", "com.leeo.sunflower", "com.example.MoonlitOrder", "com.leeo.wifisnap", "com.leeo.ReboundJournal", "com.leeo.bookmarkshot",
                    "com.family.FamilyBank", "com.devkoan.CalendarSnap", "com.leeo.JuJob", "com.family.familycourt",
-                   "com.Ysoup.restaurantmap", "com.Ysoup.CoolTime", "com.devkoan.FireTracker", "com.devkoan.StampCamera"])
+                   "com.Ysoup.restaurantmap", "com.Ysoup.CoolTime", "com.devkoan.StampCamera"])
     ])
 
     /// 남겨 둔 일정(받은 것), 없으면 `builtIn`.
