@@ -771,3 +771,19 @@ App Store '앱 내 이벤트'(세일 카드)는 앱 안으로 들어가는 링�
 - 이 기기 OS 로 받을 수 없는 버전이거나 처음 깐 날이면 띄우지 않는다.
 - 글은 iTunes 조회(`lookup?bundleId=`)의 `releaseNotes` — 배포 때 `RELEASE_NOTES.md` 에서 올라간 그 글이다.
 - 다른 자리에 붙이려면 `.leeoUpdateBanner()`.
+
+## 앱 안에서 언어 고르기 (LeeoLanguageLink, v3.52)
+
+기기는 영어인데 이 앱만 한국어로 쓰고 싶은 사람을 위한 설정 한 줄. 앱 언어가 둘 이상일 때만 그린다.
+
+```swift
+// 설정의 NavigationStack 안에서 한 줄
+LeeoLanguageLink()
+```
+
+- iOS 설정 ▸ 앱 ▸ (앱) ▸ 언어 와 같은 값(앱 도메인 `AppleLanguages`)을 쓴다. 두 곳이 늘 같은 것을 본다.
+  iOS 설정의 그 칸은 기기에 선호 언어가 둘 이상일 때만 보여서 모르는 사람이 많다.
+- 번들 언어는 앱이 뜰 때 정해진다 — 고른 뒤 **앱을 다시 열어야** 바뀐다. 화면이 그 방법을 알려 주고,
+  iOS 설정으로 가는 버튼도 둔다(거기서 바꾸면 시스템이 앱을 바로 다시 연다). 앱이 스스로 끄지 않는다.
+- 앱 문구 · LeeoKit 문구가 같이 바뀐다. 고를 수 있는 언어는 앱 번들의 언어(`CFBundleLocalizations`)다.
+- 문구(`LeeoLanguageText`)는 패키지 카탈로그에 23개 언어로 들어 있다.
