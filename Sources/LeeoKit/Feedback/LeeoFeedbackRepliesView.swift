@@ -19,6 +19,10 @@ public struct LeeoFeedbackRepliesView<Spec: LeeoAppSpec>: View {
     /// 이 화면을 열 때 안 읽음이던 것. 읽음으로 적은 뒤에도 이번에는 "새 답장" 으로 보여 준다.
     @State private var freshIDs: Set<String> = []
     @State private var isLoading = false
+    /// 선물 코드를 꺼내는 중인 의견.
+    @State private var claiming: String?
+    @State private var giftFailed: Set<String> = []
+    @Environment(\.openURL) private var openURL
 
     private var service: LeeoFeedbackService { LeeoFeedbackService(spec: Spec.self) }
 
@@ -79,6 +83,9 @@ public struct LeeoFeedbackRepliesView<Spec: LeeoAppSpec>: View {
 
             if let reply = item.reply {
                 replyBubble(reply, isFresh: freshIDs.contains(item.id))
+                if let gift = item.gift {
+                    giftCard(gift, for: item.id)
+                }
             } else {
                 Text(L("아직 답장이 없어요. 모든 의견은 개발자가 직접 읽어요.", comment: "Sent feedback: no reply yet"))
                     .font(.body)
@@ -119,6 +126,58 @@ public struct LeeoFeedbackRepliesView<Spec: LeeoAppSpec>: View {
             RoundedRectangle(cornerRadius: theme.radiusSm, style: .continuous)
                 .fill(theme.accent.opacity(0.1))
         )
+    }
+
+    // MARK: - 채택 선물
+
+    private func giftCard(_ gift: LeeoFeedbackGift, for id: String) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Label(String(format: L("의견이 채택됐어요. %@ 를 선물로 드려요.", comment: "Sent feedback: adopted, gift tier (Plus/Pro)"), gift.tier),
+                  systemImage: "gift.fill")
+                .font(.body.weight(.semibold))
+                .foregroundColor(theme.text)
+            Button {
+                Task { await redeem(id) }
+            } label: {
+                HStack {
+                    if claiming == id { ProgressView() }
+                    Text(gift.code == nil
+                         ? L("선물 받기", comment: "Sent feedback: claim gift button")
+                         : L("App Store 에서 사용하기", comment: "Sent feedback: open redeem link button"))
+                        .fontWeight(.semibold)
+                }
+                .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(theme.accent)
+            .disabled(claiming != nil)
+            if giftFailed.contains(id) {
+                Text(L("지금은 선물을 꺼내지 못했어요. 잠시 뒤에 다시 눌러 주세요.", comment: "Sent feedback: gift claim failed"))
+                    .font(.body)
+                    .foregroundColor(theme.textMuted)
+            }
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: theme.radiusSm, style: .continuous)
+                .stroke(theme.accent.opacity(0.4), lineWidth: 1)
+        )
+    }
+
+    /// 코드를 꺼내(처음 한 번) App Store 의 코드 사용 창을 연다. 여는 것은 App Store 다(심사 3.1.1).
+    private func redeem(_ id: String) async {
+        claiming = id
+        giftFailed.remove(id)
+        defer { claiming = nil }
+        do {
+            let gift = try await service.claimGift(forFeedback: id)
+            items = service.sentFeedback
+            if let url = gift.redeemURL { openURL(url) }
+        } catch {
+            giftFailed.insert(id)
+            print("❌ [LeeoFeedbackRepliesView.redeem] \(error)")
+        }
     }
 
     private var emptyState: some View {

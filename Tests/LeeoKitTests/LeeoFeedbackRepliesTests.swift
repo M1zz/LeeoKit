@@ -44,6 +44,19 @@ final class LeeoFeedbackRepliesTests: XCTestCase {
         XCTAssertTrue(merged[0].hasUnreadReply)
     }
 
+    func testGiftArrivesOnceAndKeepsClaimedCode() {
+        let gift = LeeoFeedbackGift(tier: "Plus", poolKey: "com.app#com.app.plus", appStoreID: "1", code: nil)
+        var merged = LeeoFeedbackLedger.merging(replies: ["a": ("고마워요", Date())], gifts: ["a": gift], into: [item("a")])
+        XCTAssertEqual(merged[0].gift?.tier, "Plus")
+        // 꺼낸 코드는 같은 선물을 다시 읽어 와도 지워지지 않는다.
+        merged[0].gift?.code = "ABC123"
+        merged[0].replySeen = true
+        let again = LeeoFeedbackLedger.merging(replies: ["a": ("고마워요", Date())], gifts: ["a": gift], into: merged)
+        XCTAssertEqual(again[0].gift?.code, "ABC123")
+        XCTAssertTrue(again[0].replySeen)
+        XCTAssertNotNil(again[0].gift?.redeemURL)
+    }
+
     func testLedgerKeepsNewestFirstAndCapacity() {
         var list: [LeeoSentFeedback] = []
         for i in 0..<(LeeoFeedbackLedger.capacity + 5) {

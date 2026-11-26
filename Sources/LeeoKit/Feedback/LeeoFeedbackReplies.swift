@@ -24,6 +24,24 @@
 import Foundation
 import CloudKit
 
+// MARK: - 채택 선물
+
+/// 개발자가 이 의견을 채택하고 보낸 선물. 답장 레코드에는 **코드가 아니라 표시만** 실린다 —
+/// 앱이 허브가 채워 둔 오퍼 코드 묶음(`LeeoOfferCodePool`)에서 한 장을 꺼낸다.
+public struct LeeoFeedbackGift: Codable, Hashable, Sendable {
+    /// 열리는 등급 이름("Plus", "Pro"). 고유명사라 번역하지 않는다.
+    public let tier: String
+    /// 꺼낼 묶음의 열쇠(묶음 레코드의 `bundleId`). 허브가 정한다.
+    let poolKey: String
+    /// App Store 사용 링크에 넣을 앱 ID.
+    let appStoreID: String?
+    /// 꺼낸 코드. 한 번 꺼내면 이 기기에 남아 다시 열 수 있다.
+    var code: String?
+
+    /// 받는 사람이 누르는 App Store 사용 링크. 코드를 꺼내기 전엔 nil.
+    public var redeemURL: URL? { code.flatMap { LeeoOfferCodePool.redeemURL(code: $0, appStoreID: appStoreID) } }
+}
+
 // MARK: - 보낸 의견 한 건 (이 기기 장부)
 
 public struct LeeoSentFeedback: Codable, Identifiable, Hashable, Sendable {
@@ -37,6 +55,8 @@ public struct LeeoSentFeedback: Codable, Identifiable, Hashable, Sendable {
     public var repliedAt: Date?
     /// 답장을 열어 봤는가. 답장이 고쳐지면 다시 false 가 된다.
     public var replySeen: Bool
+    /// 채택 선물. 없으면 nil(예전 장부도 그대로 읽힌다).
+    public var gift: LeeoFeedbackGift?
 
     public var hasUnreadReply: Bool { reply != nil && !replySeen }
 
@@ -84,6 +104,7 @@ public enum LeeoFeedbackLedger {
     /// ⚠️ 답장이 **바뀌었을 때만** 안 읽음으로 돌린다. 같은 답장을 다시 읽어 올 때마다
     ///    배지가 되살아나면 사람은 배지를 무시하게 된다.
     public static func merging(replies: [String: (message: String, date: Date)],
+                               gifts: [String: LeeoFeedbackGift] = [:],
                                into list: [LeeoSentFeedback]) -> [LeeoSentFeedback] {
         list.map { item in
             guard let reply = replies[item.id] else { return item }
@@ -92,6 +113,11 @@ public enum LeeoFeedbackLedger {
             next.reply = reply.message
             next.repliedAt = reply.date
             if changed { next.replySeen = false }
+            // 선물은 새로 생겼을 때만 적는다 — 이미 꺼낸 코드를 지우지 않게.
+            if let gift = gifts[item.id], item.gift?.poolKey != gift.poolKey {
+                next.gift = gift
+                next.replySeen = false
+            }
             return next
         }
     }
@@ -157,6 +183,7 @@ extension LeeoFeedbackService {
         let db = CKContainer(identifier: config.containerIdentifier).publicCloudDatabase
         let recordIDs = ids.map { CKRecord.ID(recordName: LeeoFeedbackLedger.replyRecordName(forFeedback: $0)) }
         var found: [String: (message: String, date: Date)] = [:]
+        var gifts: [String: LeeoFeedbackGift] = [:]
         do {
             let results = try await db.records(for: recordIDs)
             for (recordID, result) in results {
@@ -166,6 +193,11 @@ extension LeeoFeedbackService {
                 let feedbackID = (record["feedbackID"] as? String)
                     ?? String(recordID.recordName.dropFirst("reply-".count))
                 found[feedbackID] = (message, record.modificationDate ?? Date())
+                if let tier = record["gift"] as? String, let pool = record["giftPool"] as? String,
+                   !tier.isEmpty, !pool.isEmpty {
+                    gifts[feedbackID] = LeeoFeedbackGift(tier: tier, poolKey: pool,
+                                                         appStoreID: record["appStoreID"] as? String)
+                }
             }
         } catch {
             print("⚠️ [LeeoFeedbackService.refreshReplies] 답장 조회 실패(배포 전이면 정상): \(error)")
@@ -173,10 +205,26 @@ extension LeeoFeedbackService {
         }
 
         if !found.isEmpty {
-            saveLedger(LeeoFeedbackLedger.merging(replies: found, into: sentFeedback))
+            saveLedger(LeeoFeedbackLedger.merging(replies: found, gifts: gifts, into: sentFeedback))
         }
         print("📬 [LeeoFeedbackService.refreshReplies] 답장 \(found.count)건 · 안 읽음 \(unreadReplyCount)건")
         return unreadReplyCount
+    }
+
+    /// 채택 선물의 코드를 묶음에서 꺼낸다. 이미 꺼냈으면 그것을. 같은 의견이면 다른 기기에서도 같은 코드다.
+    func claimGift(forFeedback id: String) async throws -> LeeoFeedbackGift {
+        guard var item = sentFeedback.first(where: { $0.id == id }), var gift = item.gift else {
+            throw LeeoGiftError.notFound
+        }
+        if gift.code != nil { return gift }
+        let db = CKContainer(identifier: config.containerIdentifier).publicCloudDatabase
+        let bundleID = Bundle.main.bundleIdentifier ?? "-"
+        gift.code = try await LeeoOfferCodePool.claim(
+            in: db, poolKey: gift.poolKey, bundleID: bundleID, owner: "feedback-\(id)",
+            issueName: "offerissue-\(gift.poolKey)-feedback-\(id)")
+        item.gift = gift
+        saveLedger(sentFeedback.map { $0.id == id ? item : $0 })
+        return gift
     }
 
     // MARK: 개발자 쪽

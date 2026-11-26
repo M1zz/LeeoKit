@@ -300,53 +300,11 @@ public final class LeeoGiftStore: ObservableObject {
     ///  3. 발급 기록을 만든다. 다른 기기가 먼저 만들었으면 그쪽 코드를 쓴다
     private func claimOfferCode(transactionID txid: String) async throws -> String {
         try await requireAccount()
-        let issueID = CKRecord.ID(recordName: config.offerIssueRecordName(bundleID: bundleID, transactionID: txid))
-        if let existing = try? await publicDB.record(for: issueID), let code = existing["code"] as? String, !code.isEmpty {
-            return code
-        }
-
         // 등급마다 묶음이 따로다(`poolKey`). 첫 선물은 번들 ID 그대로라 예전 묶음을 쓴다.
-        let query = CKQuery(recordType: config.offerCodeRecordType,
-                            predicate: NSPredicate(format: "bundleId == %@", config.poolKey ?? bundleID))
-        let (matches, _) = try await publicDB.records(matching: query, resultsLimit: LeeoOfferCodePool.fetchLimit)
-        let pool = matches.compactMap { try? $0.1.get() }
-        guard !pool.isEmpty else { throw LeeoGiftError.poolEmpty }
-
-        let claimIDs = pool.map { CKRecord.ID(recordName: config.offerClaimRecordName(poolRecordName: $0.recordID.recordName)) }
-        let claimResults = try await publicDB.records(for: claimIDs)
-        let claimed = Set(claimResults.compactMap { id, result in (try? result.get()) != nil ? id.recordName : nil })
-        let candidates = LeeoOfferCodePool.candidates(pool.map(\.recordID.recordName), claimedClaimNames: claimed,
-                                                      claimName: config.offerClaimRecordName(poolRecordName:))
-        let byName = Dictionary(pool.map { ($0.recordID.recordName, $0) }, uniquingKeysWith: { a, _ in a })
-
-        for name in candidates.shuffled() {
-            guard let record = byName[name], let code = record["code"] as? String, !code.isEmpty else { continue }
-            let claim = CKRecord(recordType: config.offerClaimRecordType,
-                                 recordID: CKRecord.ID(recordName: config.offerClaimRecordName(poolRecordName: name)))
-            claim["transactionId"] = txid
-            claim["bundleId"] = bundleID
-            do {
-                try await saveNew(claim, in: publicDB) { $0["transactionId"] as? String == txid }
-            } catch LeeoGiftError.alreadyUsed {
-                continue   // 다른 결제가 막 가져갔다
-            }
-            let issue = CKRecord(recordType: config.offerClaimRecordType, recordID: issueID)
-            issue["code"] = code
-            issue["transactionId"] = txid
-            issue["bundleId"] = bundleID
-            issue["poolRecord"] = name
-            do {
-                try await saveNew(issue, in: publicDB) { $0["code"] as? String == code }
-            } catch LeeoGiftError.alreadyUsed {
-                // 같은 결제를 다른 기기가 먼저 발급했다. 그쪽 코드를 쓴다(방금 가져간 한 장은 버린다).
-                if let other = try? await publicDB.record(for: issueID), let otherCode = other["code"] as? String {
-                    return otherCode
-                }
-                throw LeeoGiftError.network
-            }
-            return code
-        }
-        throw LeeoGiftError.poolEmpty
+        return try await LeeoOfferCodePool.claim(
+            in: publicDB, poolKey: config.poolKey ?? bundleID, bundleID: bundleID, owner: txid,
+            issueName: config.offerIssueRecordName(bundleID: bundleID, transactionID: txid),
+            codeType: config.offerCodeRecordType, claimType: config.offerClaimRecordType)
     }
 
     /// 보낸 선물이 환불됐다.
@@ -674,18 +632,7 @@ public final class LeeoGiftStore: ObservableObject {
     /// 새 레코드를 만든다. 같은 이름이 이미 있으면 `isOurs` 로 내가 앞서 만든 것인지 본다
     /// (응답을 못 받고 다시 보낸 경우). 아니면 `alreadyUsed`.
     private func saveNew(_ record: CKRecord, in db: CKDatabase, isOurs: (CKRecord) -> Bool) async throws {
-        do {
-            _ = try await db.save(record)
-        } catch let error as CKError where error.code == .serverRecordChanged {
-            let existing: CKRecord
-            if let server = error.serverRecord { existing = server } else { existing = try await db.record(for: record.recordID) }
-            guard isOurs(existing) else { throw LeeoGiftError.alreadyUsed }
-        } catch let error as CKError where error.code == .permissionFailure {
-            // 남이 만든 같은 이름의 기록에 쓰려 하면 공개 DB 는 "충돌" 대신 "권한 없음" 으로 거절하기도 한다.
-            // 이미 있으면 그건 "이미 쓴 코드" 다. 없는데 권한이 없다면 진짜 권한 문제다.
-            guard let existing = try? await db.record(for: record.recordID) else { throw error }
-            guard isOurs(existing) else { throw LeeoGiftError.alreadyUsed }
-        }
+        try await LeeoOfferCodePool.saveNew(record, in: db, isOurs: isOurs)
     }
 
     nonisolated static func map(_ error: Error) -> LeeoGiftError {

@@ -21,6 +21,7 @@
 //
 
 import Foundation
+import CloudKit
 
 public enum LeeoOfferCodePool {
 
@@ -34,6 +35,74 @@ public enum LeeoOfferCodePool {
     static func candidates(_ poolNames: [String], claimedClaimNames: Set<String>,
                            claimName: (String) -> String) -> [String] {
         poolNames.filter { !claimedClaimNames.contains(claimName($0)) }
+    }
+
+    /// 묶음에서 한 장 가져온다. 같은 `issueName` 이면 어느 기기에서 다시 불러도 같은 코드다(발급 기록).
+    ///
+    ///  1. 발급 기록(`issueName`)이 있으면 그 코드
+    ///  2. 묶음(`poolKey`)에서 아직 아무도 안 가져간 장을 골라 가져감 기록 `offerclaim-<묶음 레코드 이름>` 을 만든다
+    ///     — 이름이 하나라 한 장은 한 사람만 가진다
+    ///  3. 발급 기록을 만든다. 다른 기기가 먼저 만들었으면 그쪽 코드를 쓴다
+    ///
+    /// 선물 결제(`LeeoGiftStore`)와 채택한 의견의 선물(`LeeoFeedbackService.claimGift`)이 같이 쓴다.
+    static func claim(in db: CKDatabase, poolKey: String, bundleID: String, owner: String, issueName: String,
+                      codeType: String = "LeeoOfferCode", claimType: String = "LeeoOfferCodeClaim") async throws -> String {
+        let issueID = CKRecord.ID(recordName: issueName)
+        if let existing = try? await db.record(for: issueID), let code = existing["code"] as? String, !code.isEmpty {
+            return code
+        }
+        let query = CKQuery(recordType: codeType, predicate: NSPredicate(format: "bundleId == %@", poolKey))
+        let (matches, _) = try await db.records(matching: query, resultsLimit: fetchLimit)
+        let pool = matches.compactMap { try? $0.1.get() }
+        guard !pool.isEmpty else { throw LeeoGiftError.poolEmpty }
+
+        let claimName = { (name: String) in "offerclaim-\(name)" }
+        let claimResults = try await db.records(for: pool.map { CKRecord.ID(recordName: claimName($0.recordID.recordName)) })
+        let claimed = Set(claimResults.compactMap { id, result in (try? result.get()) != nil ? id.recordName : nil })
+        let byName = Dictionary(pool.map { ($0.recordID.recordName, $0) }, uniquingKeysWith: { a, _ in a })
+
+        for name in candidates(pool.map(\.recordID.recordName), claimedClaimNames: claimed, claimName: claimName).shuffled() {
+            guard let record = byName[name], let code = record["code"] as? String, !code.isEmpty else { continue }
+            let claim = CKRecord(recordType: claimType, recordID: CKRecord.ID(recordName: claimName(name)))
+            claim["transactionId"] = owner
+            claim["bundleId"] = bundleID
+            do {
+                try await saveNew(claim, in: db) { $0["transactionId"] as? String == owner }
+            } catch LeeoGiftError.alreadyUsed {
+                continue   // 다른 사람이 막 가져갔다
+            }
+            let issue = CKRecord(recordType: claimType, recordID: issueID)
+            issue["code"] = code
+            issue["transactionId"] = owner
+            issue["bundleId"] = bundleID
+            issue["poolRecord"] = name
+            do {
+                try await saveNew(issue, in: db) { $0["code"] as? String == code }
+            } catch LeeoGiftError.alreadyUsed {
+                // 다른 기기가 먼저 발급했다. 그쪽 코드를 쓴다(방금 가져간 한 장은 버린다).
+                if let other = try? await db.record(for: issueID), let otherCode = other["code"] as? String {
+                    return otherCode
+                }
+                throw LeeoGiftError.network
+            }
+            return code
+        }
+        throw LeeoGiftError.poolEmpty
+    }
+
+    /// 새 기록을 저장한다. 같은 이름이 이미 있으면 `isOurs` 로 우리 것인지 보고, 남의 것이면 `alreadyUsed`.
+    static func saveNew(_ record: CKRecord, in db: CKDatabase, isOurs: (CKRecord) -> Bool) async throws {
+        do {
+            _ = try await db.save(record)
+        } catch let error as CKError where error.code == .serverRecordChanged {
+            let existing: CKRecord
+            if let server = error.serverRecord { existing = server } else { existing = try await db.record(for: record.recordID) }
+            guard isOurs(existing) else { throw LeeoGiftError.alreadyUsed }
+        } catch let error as CKError where error.code == .permissionFailure {
+            // 남이 만든 같은 이름의 기록에 쓰려 하면 공개 DB 는 "충돌" 대신 "권한 없음" 으로 거절하기도 한다.
+            guard let existing = try? await db.record(for: record.recordID) else { throw error }
+            guard isOurs(existing) else { throw LeeoGiftError.alreadyUsed }
+        }
     }
 
     /// 받는 사람이 누르는 App Store 사용 링크. 코드가 채워진 "코드 사용" 창이 뜬다.
