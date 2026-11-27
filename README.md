@@ -539,6 +539,29 @@ LeeoFamilySynergy(id: "apply-day", appIDs: ["rainbow-ios", "clipkeyboard", "rere
   `LeeoFamilyTests` 가 지킨다. 앱을 추가하면 테스트가 먼저 알려 준다.
 - 수집하는 것 없음. 누르면 App Store 가 열릴 뿐이다.
 
+## 앱 사이로 일을 넘기기 (LeeoAppHandoff)
+
+"이 일은 내 다른 앱이 더 잘한다" 일 때 그 앱으로 **값을 들고** 넘어간다. 소개(`LeeoFamily`)가
+"이런 앱도 있어요" 라면, 넘기기는 "지금 이걸 그 앱에서 하세요" 다.
+
+```swift
+// 보내는 앱 — 깔렸으면 그 앱, 아니면 App Clip(그 동작을 받으면) 또는 App Store 시트
+LeeoHandoffButton(.rereminderTimer(minutes: 10, title: memo.title), title: "10분 뒤 다시 알림")
+
+// 받는 앱
+.onOpenURL { url in
+    guard let request = LeeoHandoffRequest(url: url, for: .rereminder) else { return }
+    startTimer(minutes: request.int("minutes") ?? 10, title: request.parameters["title"])
+}
+```
+
+- 받는 앱 · 동작은 `LeeoHandoffTarget.all` 에 적는다. 이름 · App Store ID · 아이콘은 `LeeoFamilyCatalog` 에서 온다.
+  **받는 앱이 그 동작을 읽게 된 버전을 낸 뒤에** 더한다 — 옛 버전은 앱만 열리고 값을 버린다.
+- 깔렸는지 알려면 보내는 앱 Info.plist 의 `LSApplicationQueriesSchemes` 에 받는 앱 스킴을 적는다(두번알림: `com.xa.toki`).
+- 키보드 · 공유 확장에서는 다른 앱을 열 수 없다. 본 앱 화면 · 알림 · 위젯에서 쓴다.
+- 보내는 앱은 받는 앱 없이도 제 기능을 해야 한다(심사).
+- 이벤트: 보낼 때 `handoff_sent`(to · action · route = app/clip/store), 받을 때 `handoff_received`(action · from).
+
 ## 선물: App Store 오퍼 코드 링크
 
 LeeoKit 이 만든 코드로 Pro 를 여는 것은 심사 3.1.1 리젝 사유라, 선물은 App Store 오퍼 코드로 주고받는다.
